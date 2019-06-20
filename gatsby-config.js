@@ -1,11 +1,17 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
+    title: `A Blog`,
+    description: `A blog tutorial for gatsby with remarkable plugin`,
     author: `@gatsbyjs`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-catch-links`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
+    // You can have multiple instances of this plugin
+    // to read source nodes from different locations on your
+    // filesystem.
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -13,8 +19,14 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `pages`,
+        path: `${__dirname}/src/pages`,
+      },
+    },
+    //
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -30,5 +42,11 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
+    {
+      resolve: "gatsby-transformer-remark",
+      options: {
+        plugins: [],
+      },
+    },
   ],
 }
