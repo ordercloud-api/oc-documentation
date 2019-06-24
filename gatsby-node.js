@@ -26,20 +26,19 @@ exports.createPages = ({ actions, graphql }) => {
       return Promise.reject(result.errors)
     }
 
-    result.data.allMarkdownRemark.edges.forEach(({ edge }) => {
-      const slug = edge.node.fields.slug;
-
+    result.data.allMarkdownRemark.edges.forEach((edge) => {
+      const path = edge.node.frontmatter.path;
       createPage({
-        path: edge.frontmatter.path,
+        path: path,
         component: matchingComponent(),
         context: {}, // additional data can be passed via context
       });
 
       function matchingComponent() {
-        switch (slug) {
-          case 'http-methods':
+        switch (path) {
+          case '/http-methods':
             return blogPostTemplate;
-          case 'sample-markdown-format':
+          case '/sample-markdown-format':
             return sampleFileTemplate;
         }
       }
