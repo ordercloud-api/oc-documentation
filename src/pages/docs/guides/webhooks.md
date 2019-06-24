@@ -8,9 +8,11 @@ title: "Webhooks"
   "title" is the header one that will appear at the top of the page
  --->
 
-## Section
+## Overview
 
-Webhooks
+Webhooks enable user-defined HTTP callbacks for all writable endpoints in the OrderCloud.io API. Each webhook can be assigned to multiple applications within this Seller Organization.
+
+When a webhook event is triggered on an assigned application, OrderCloud.io will forward the request details to the Payload URL.
 
 ## Another Section
 
