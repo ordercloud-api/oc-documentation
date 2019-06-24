@@ -16,8 +16,8 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 Below is a table with four columns and three rows
 
-|   |   |   |   |
+|column 1|column 2|column 3|column 4|
 |---|---|---|---|
-|   |   |   |   |
-|   |   |   |   |
-|   |   |   |   |
+|row 1|row 1|row 1|row 1|
+|row 2|row 2|row 2|row 2|
+|row 3|row 3|row 3|row 3|

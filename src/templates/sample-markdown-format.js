@@ -5,9 +5,9 @@ import Layout from "../components/layout"
 // import '../css/blog-post.css'; // make it pretty!
 
 export default function Template({
-  data, // this prop will be injected by the GraphQL query we'll write in a bit
+  data
 }) {
-  const { markdownRemark: post } = data // data.markdownRemark holds our post data
+  const { markdownRemark: post } = data
   return (
     <Layout>
       <div className="blog-post-container">
