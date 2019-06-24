@@ -3,7 +3,8 @@ const path = require("path")
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
-  const blogPostTemplate = path.resolve(`src/templates/http-methods.js`)
+  const sampleFileTemplate = path.resolve(`src/templates/sample-markdown-format.js`);
+  const blogPostTemplate = path.resolve(`src/templates/http-methods.js`);
 
   return graphql(`
     {
@@ -25,12 +26,23 @@ exports.createPages = ({ actions, graphql }) => {
       return Promise.reject(result.errors)
     }
 
-    result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+    result.data.allMarkdownRemark.edges.forEach(({ edge }) => {
+      const slug = edge.node.fields.slug;
+
       createPage({
-        path: node.frontmatter.path,
-        component: blogPostTemplate,
+        path: edge.frontmatter.path,
+        component: matchingComponent(),
         context: {}, // additional data can be passed via context
-      })
+      });
+
+      function matchingComponent() {
+        switch (slug) {
+          case 'http-methods':
+            return blogPostTemplate;
+          case 'sample-markdown-format':
+            return sampleFileTemplate;
+        }
+      }
     })
   })
 }
