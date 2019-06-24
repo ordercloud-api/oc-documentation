@@ -25,7 +25,7 @@ export default function Template({
 }
 
 export const pageQuery = graphql`
-  query GuideTemplateByPath($path: String!) {
+  query DocTemplateByPath($path: String!) {
     markdownRemark(frontmatter: { path: { eq: $path } }) {
       html
       frontmatter {
