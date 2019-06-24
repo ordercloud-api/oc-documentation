@@ -3,10 +3,7 @@ const path = require("path")
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
-  const sampleFileTemplate = path.resolve(`src/templates/sample-markdown-format.js`);
-  const blogPostTemplate = path.resolve(`src/templates/http-methods.js`);
-  const webooksTemplate = path.resolve(`src/templates/webhooks.js`);
-  const overviewTemplate = path.resolve(`src/templates/organizational-structure.js`);
+  const docTemplate = path.resolve(`src/templates/doc-template.js`);
 
   return graphql(`
     {
@@ -32,22 +29,9 @@ exports.createPages = ({ actions, graphql }) => {
       const path = edge.node.frontmatter.path;
       createPage({
         path: path,
-        component: matchingComponent(),
+        component: docTemplate,
         context: {}, // additional data can be passed via context
       });
-
-      function matchingComponent() {
-        switch (path) {
-          case '/http-methods':
-            return blogPostTemplate;
-          case '/sample-markdown-format':
-            return sampleFileTemplate;
-          case '/webhooks':
-            return webooksTemplate;
-          case '/organizational-structure':
-            return overviewTemplate;
-        }
-      }
     })
   })
 }

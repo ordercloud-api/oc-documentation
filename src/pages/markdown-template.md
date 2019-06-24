@@ -4,7 +4,7 @@ date: 2017-07-12T17:12:33.962Z
 title: "Sample Markdown File Format"
 ---
 <!---
-  This configuration is for gartsby-transformer-remark plugin
+  This configuration is for gatsby-transformer-remark plugin
   "title" is the header one that will appear at the top of the page
  --->
 
