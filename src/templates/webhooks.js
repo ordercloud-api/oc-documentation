@@ -1,13 +1,6 @@
 import React from "react"
 import { Helmet } from "react-helmet"
 import Layout from "../components/layout"
-import { Link } from "gatsby"
-
-const ListLink = props => (
-  <li style={{ display: `inline-block`, marginRight: `1rem` }}>
-    <Link to={props.to}>{props.children}</Link>
-  </li>
-)
 
 // import '../css/blog-post.css'; // make it pretty!
 
@@ -25,11 +18,6 @@ export default function Template({
             className="blog-post-content"
             dangerouslySetInnerHTML={{ __html: post.html }}
           />
-          {/* { post.frontmatter.relatedDocumentation.map((r) => {
-            return (
-              <ListLink to={r}>{r}</ListLink>
-            )
-          })} */}
         </div>
       </div>
     </Layout>
@@ -37,7 +25,7 @@ export default function Template({
 }
 
 export const pageQuery = graphql`
-  query SampleMarkdownByPath($path: String!) {
+  query WebhooksByPath($path: String!) {
     markdownRemark(frontmatter: { path: { eq: $path } }) {
       html
       frontmatter {

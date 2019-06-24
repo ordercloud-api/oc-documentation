@@ -5,6 +5,7 @@ exports.createPages = ({ actions, graphql }) => {
 
   const sampleFileTemplate = path.resolve(`src/templates/sample-markdown-format.js`);
   const blogPostTemplate = path.resolve(`src/templates/http-methods.js`);
+  const webooksTemplate = path.resolve(`src/templates/webhooks.js`);
 
   return graphql(`
     {
@@ -40,6 +41,8 @@ exports.createPages = ({ actions, graphql }) => {
             return blogPostTemplate;
           case '/sample-markdown-format':
             return sampleFileTemplate;
+          case '/webhooks':
+            return webooksTemplate;
         }
       }
     })
