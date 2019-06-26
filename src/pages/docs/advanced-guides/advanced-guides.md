@@ -1,5 +1,5 @@
 ---
-path: "/sample-markdown-format"
+path: "/advanced-guides"
 date: 2017-07-12T17:12:33.962Z
 title: "Sample Markdown File Format"
 ---
