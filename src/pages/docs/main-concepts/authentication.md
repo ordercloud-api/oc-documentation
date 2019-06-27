@@ -31,7 +31,7 @@ This is the most common workflow you'll see. A user is providing their username/
 | password   | the user's password           |
 | grant_type | value must be `password`      |
 
-```https
+```http
 POST https://auth.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: text/html; charset=UTF-8
 
@@ -50,7 +50,7 @@ To use this workflow you'll need to set the ClientSecret on the API Client in th
 | client_secret | the api client secret defined in the console  |
 | grant_type    | value must be `client_credentials`            |
 
-```https
+```http
 POST https://auth.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: text/html; charset=UTF-8
 
@@ -68,7 +68,7 @@ Before you can make a request to get a token via this workflow you must ensure t
 | client_id  | the api client's id                |
 | grant_type | value must be `client_credentials` |
 
-```https
+```http
 POST https://auth.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: text/html; charset=UTF-8
 
@@ -87,7 +87,7 @@ Access tokens will expire after some pre-determined time (set on the API Client 
 | refresh_token | the refresh_token property from initial access token response |
 | grant_type    | value must be `refresh_token`                                 |
 
-```https
+```http
 POST https://auth.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: text/html; charset=UTF-8
 
@@ -108,7 +108,7 @@ To use this workflow you'll need to set the ClientSecret on the API Client in th
 | client_secret | the api client secret defined in the console |
 | grant_type    | value must be `client_credentials`           |
 
-```https
+```http
 POST https://auth.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: text/html; charset=UTF-8
 
