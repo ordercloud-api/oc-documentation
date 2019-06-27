@@ -5,7 +5,7 @@ import Footer from './Footer';
 export default ({ children }) => (
   <div>
     <Header siteTitle="OrderCloud Documentation" />
-    {children}
+      {children}
     <Footer />
   </div>
 )

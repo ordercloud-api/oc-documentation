@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import Layout from '../components/Layout/Layout';
+import RightMenu from '../components/Layout/RightMenu';
 import '../styles/doc-template.css';
 
 export default function Template({
@@ -10,9 +11,9 @@ export default function Template({
   const gitHubUrl = 'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs';
   return (
     <Layout>
-      <div className="documentation-container">
+      <div className="documentation-container" style={{margin: '0 3rem', display: 'flex', 'flex-direction': 'row'}}>
         <Helmet title={`OrderCloud Documentation - ${post.frontmatter.title}`} />
-        <div className="documentation-body">
+        <div className="documentation-body" style={{ maxWidth: '60%'}}>
           <h1>{post.frontmatter.title}</h1>
           <div
             className="documentation-contents"
@@ -20,6 +21,7 @@ export default function Template({
           />
           <a href={`${gitHubUrl}${post.frontmatter.path}.md`} target="_blank">Contribute to this doc</a>
         </div>
+        <RightMenu style={{ maxWidth: '40%'}}/>
       </div>
     </Layout>
   )
