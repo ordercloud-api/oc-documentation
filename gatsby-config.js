@@ -1,17 +1,15 @@
 module.exports = {
   siteMetadata: {
-    title: `A Blog`,
-    description: `A blog tutorial for gatsby with remarkable plugin`,
+    title: `OrderCloud Documentation`,
+    description: `Documentation for OrderCloud's B2B eCommerce API`,
     author: `@gatsbyjs`,
   },
   plugins: [
-    `gatsby-plugin-react-helmet`,
     `gatsby-plugin-catch-links`,
-    `gatsby-transformer-sharp`,
+    `gatsby-plugin-material-ui`,
+    `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sharp`,
-    // You can have multiple instances of this plugin
-    // to read source nodes from different locations on your
-    // filesystem.
+    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -35,29 +33,21 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/oc-favicon.png`,
       },
     },
-    {
-      resolve: `gatsby-plugin-material-ui`,
-      // If you want to use styled components, in conjunction to Material-UI, you should:
-      // - Change the injection order
-      // - Add the plugin
-      options: {
-        // stylesProvider: {
-        //   injectFirst: true,
-        // },
-      },
-      // 'gatsby-plugin-styled-components',
-    },
-    
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
     {
       resolve: "gatsby-transformer-remark",
       options: {
-        plugins: [`gatsby-remark-prismjs`],
+        plugins: [
+          `gatsby-remark-prismjs`,
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 590 // must be set
+            }
+          }
+        ],
       },
     },
   ],
