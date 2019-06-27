@@ -1,7 +1,4 @@
-/**
- * Implement Gatsby's Browser APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/browser-apis/
- */
+// https://www.gatsbyjs.org/docs/browser-apis/
+
 require('prismjs/themes/prism-tomorrow.css');
 require('./src/styles/primsjs.css');
