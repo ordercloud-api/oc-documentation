@@ -1,13 +1,12 @@
-import React from "react"
-import { Helmet } from "react-helmet"
-import Layout from "../components/Layout/Layout"
-
-// import '../css/blog-post.css'; // make it pretty!
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import Layout from '../components/Layout/Layout';
 
 export default function Template({
   data
 }) {
   const { markdownRemark: post } = data
+  const gitHubUrl = 'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs';
   return (
     <Layout>
       <div className="documentation-container">
@@ -18,6 +17,7 @@ export default function Template({
             className="documentation-contents"
             dangerouslySetInnerHTML={{ __html: post.html }}
           />
+          <a href={`${gitHubUrl}${post.frontmatter.path}.md`} target="_blank">Contribute to this doc</a>
         </div>
       </div>
     </Layout>
