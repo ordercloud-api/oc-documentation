@@ -122,4 +122,15 @@ An ordered list with a sub set list
     - Indented item
 - Fourth item
 
+```javascript{1,7,8}
+// I should be highlighted
+var name = 'Crhistian';
+function sayHello(name) {
+    console.log(`Hello ${name}`);
+}
+sayHello(name);
+// me
+// too
+```
+
 Source: [Basic Syntax](https://www.markdownguide.org/basic-syntax/)
