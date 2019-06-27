@@ -19,4 +19,3 @@ A resource is a set of endpoints used to interact with an object of that same na
 |LIST|GET|Returns a list of items|Get a list of addresses|
 |CREATE|POST|Creates a new item, we generate a unique ID if no ID is provided|Create a new address|
 |DELETE|DELETE|Deletes an item|Delete address ABC from the database|
-
