@@ -26,7 +26,6 @@ module.exports = {
         path: `${__dirname}/src/pages`,
       },
     },
-    //
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -58,7 +57,7 @@ module.exports = {
     {
       resolve: "gatsby-transformer-remark",
       options: {
-        plugins: [],
+        plugins: [`gatsby-remark-prismjs`],
       },
     },
   ],
