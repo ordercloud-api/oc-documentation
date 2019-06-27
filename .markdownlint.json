@@ -2,6 +2,6 @@
   "default": true,
   "MD007": { "indent": 4 },
   "MD013": { "line_length": 1000 },
-  "MD033": { "allowed_elements": ["table", "tbody", "th", "tr", "td"] },
+  "MD033": { "allowed_elements": [] },
   "MD040": false
 }
