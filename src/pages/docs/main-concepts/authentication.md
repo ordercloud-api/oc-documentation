@@ -1,5 +1,5 @@
 ---
-path: "/authentication"
+path: "/main-concepts/authentication"
 title: Authentication
 date: 2019-06-24T23:33:21.852Z
 ---
