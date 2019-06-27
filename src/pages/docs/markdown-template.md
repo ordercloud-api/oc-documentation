@@ -72,12 +72,29 @@ Below is a table with four columns and three rows
 
 A standard ordered list
 
+```plaintext
+1. First item
+2. Second item
+3. Third item
+4. Fourth item
+```
+
 1. First item
 2. Second item
 3. Third item
 4. Fourth item
 
 An ordered list with a sub set list
+
+```
+1. First item
+2. Second item
+    1. Indented
+3. Third item
+    1. Indented
+    2. Indented
+4. Fourth item
+```
 
 1. First item
 2. Second item
@@ -88,6 +105,15 @@ An ordered list with a sub set list
 4. Fourth item
 
 ### Unordered Lists
+
+```
+- First item
+- Second item
+- Third item
+    - Indented item
+    - Indented item
+- Fourth item
+```
 
 - First item
 - Second item
