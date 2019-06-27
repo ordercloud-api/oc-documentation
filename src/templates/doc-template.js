@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import Layout from '../components/Layout/Layout';
+import '../styles/doc-template.css';
 
 export default function Template({
   data
