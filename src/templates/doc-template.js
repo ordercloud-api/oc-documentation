@@ -4,6 +4,8 @@ import Layout from '../components/Layout/Layout';
 import RightMenu from '../components/Layout/RightMenu';
 import '../styles/doc-template.css';
 
+const tableOfContents = require('../pages/table-of-contents.json');
+
 export default function Template({
   data
 }) {
@@ -11,9 +13,9 @@ export default function Template({
   const gitHubUrl = 'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs';
   return (
     <Layout>
-      <div className="documentation-container" style={{margin: '0 3rem', display: 'flex', 'flex-direction': 'row'}}>
+      <div className="documentation-container" style={{margin: '0 3rem', display: 'flex', flexDirection: 'row'}}>
         <Helmet title={`OrderCloud Documentation - ${post.frontmatter.title}`} />
-        <div className="documentation-body" style={{ maxWidth: '60%'}}>
+        <div className="documentation-body" style={{ maxWidth: '70%'}}>
           <h1>{post.frontmatter.title}</h1>
           <div
             className="documentation-contents"
@@ -21,7 +23,7 @@ export default function Template({
           />
           <a href={`${gitHubUrl}${post.frontmatter.path}.md`} target="_blank">Contribute to this doc</a>
         </div>
-        <RightMenu style={{ maxWidth: '40%'}}/>
+        <RightMenu style={{ maxWidth: '30%'}} tableOfContents={tableOfContents.sections} />
       </div>
     </Layout>
   )
