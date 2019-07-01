@@ -1,24 +1,24 @@
 import React from 'react';
 import { ListLink } from '../Shared/ListLink';
+import { groupBy as _groupBy, forEach as _forEach } from 'lodash';
 
-const RightMenu = ({ tableOfContents }) => (
-  <div>
-    <h1>Right Menu</h1>
-    {tableOfContents.map((section, index) => {
-      return (
-        <span key={index}>
-          <h2>{section.title}</h2>
-          <ul>
-            { section.guides.map((guide, key) => {
-              return (
-                <ListLink key={key} guideProps={{ path: `${section.path}${guide}`, title: guide}} />
-              )
-            }) }
-          </ul>
-        </span>
-      )
-    })}
-  </div>
-)
-
-export default RightMenu;
+export default function RightMenu({ tableOfContents}) {
+  const sectionsWithGuides = _groupBy(tableOfContents, 'node.frontmatter.section');
+  let contentsArray = [];
+  _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
+  return (
+    <div>
+      { contentsArray.map((guideSection) => {
+          return (
+            <div>
+              <h2>{guideSection.title}</h2>
+              <ul>
+                { guideSection.sections.map((s) => <ListLink key={s.id} guideProps={{ path: `${s.frontmatter.path}`, title: s.frontmatter.title}} />)}
+              </ul>
+            </div>
+          )
+        }) 
+      }
+    </div>
+  )
+};

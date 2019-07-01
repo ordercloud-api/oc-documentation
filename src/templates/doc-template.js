@@ -11,7 +11,7 @@ const tableOfContents = require('../pages/table-of-contents.json');
 export default function Template({
   data
 }) {
-  const { markdownRemark: post } = data
+  const { markdownRemark: post } = data;
   const gitHubUrl = 'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs';
   const section = tableOfContents.sections.find((section) => post.frontmatter.path.indexOf(section.path) > -1);
   const sectionIndex = tableOfContents.sections.findIndex((section) => post.frontmatter.path.indexOf(section.path) > -1);
@@ -50,7 +50,7 @@ export default function Template({
           {directionalButton('Next')}         
           <a href={`${gitHubUrl}${post.frontmatter.path}.md`} target="_blank">Contribute to this doc</a>
         </div>
-        <RightMenu style={{ maxWidth: '30%'}} tableOfContents={tableOfContents.sections} />
+        <RightMenu style={{ maxWidth: '30%'}} tableOfContents={data.allMarkdownRemark.edges} />
       </div>
     </Layout>
   )
@@ -64,6 +64,19 @@ export const pageQuery = graphql`
         date(formatString: "MMMM DD, YYYY")
         path
         title
+      }
+    }
+    allMarkdownRemark {
+      totalCount
+      edges {
+        node {
+          id
+          frontmatter {
+            section
+            title
+            path
+          }
+        }
       }
     }
   }
