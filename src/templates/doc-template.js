@@ -53,14 +53,18 @@ export default function Template({
 
 export const pageQuery = graphql`
   query DocTemplateByPath($path: String!) {
-    markdownRemark(frontmatter: { path: { eq: $path } }) {
+    markdownRemark(
+      frontmatter: { path: { eq: $path } }
+    ) {
       html
       frontmatter {
         path
         title
       }
     }
-    allMarkdownRemark {
+    allMarkdownRemark(
+      sort: { order: ASC, fields: [frontmatter___section] }
+    ) {
       totalCount
       edges {
         node {
