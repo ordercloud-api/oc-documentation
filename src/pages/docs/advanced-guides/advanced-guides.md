@@ -1,6 +1,5 @@
 ---
 path: "/advanced-guides/advanced-guide-one"
-date: 2017-07-12T17:12:33.962Z
 title: "Sample Advanced Guide"
 section: "Advanced Guides"
 ---

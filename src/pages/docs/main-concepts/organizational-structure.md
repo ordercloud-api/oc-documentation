@@ -1,6 +1,5 @@
 ---
 path: "/main-concepts/organizational-structure"
-date: 2017-07-12T17:12:33.962Z
 title: "Organizational Structure"
 section: "Main Concepts"
 ---

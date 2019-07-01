@@ -1,6 +1,5 @@
 ---
 path: "/main-concepts/orders"
-date: 2019-06-24T22:09:49.849Z
 title: "Orders"
 section: "Main Concepts"
 ---

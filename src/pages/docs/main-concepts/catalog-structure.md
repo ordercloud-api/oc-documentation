@@ -1,6 +1,5 @@
 ---
 path: "/main-concepts/catalog-structure"
-date: 2017-07-12T17:12:33.962Z
 title: "Catalog Structure"
 section: "Main Concepts"
 ---

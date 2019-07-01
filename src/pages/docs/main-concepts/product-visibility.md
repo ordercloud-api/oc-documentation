@@ -1,6 +1,5 @@
 ---
 path: "/main-concepts/product-visibility"
-date: 2017-07-12T17:12:33.962Z
 title: "Product Visibility"
 section: "Main Concepts"
 ---
