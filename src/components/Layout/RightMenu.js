@@ -1,24 +1,20 @@
 import React from 'react';
 import { ListLink } from '../Shared/ListLink';
 
-const RightMenu = ({ tableOfContents }) => (
-  <div>
-    <h1>Right Menu</h1>
-    {tableOfContents.map((section, index) => {
-      return (
-        <span key={index}>
-          <h2>{section.title}</h2>
-          <ul>
-            { section.guides.map((guide, key) => {
-              return (
-                <ListLink key={key} guideProps={{ path: `${section.path}${guide}`, title: guide}} />
-              )
-            }) }
-          </ul>
-        </span>
-      )
-    })}
-  </div>
-)
-
-export default RightMenu;
+export default function RightMenu({ tableOfContents }) {
+  return (
+    <div>
+      { tableOfContents.map((guideSection, index) => {
+          return (
+            <div key={index}>
+              <h2>{guideSection.title}</h2>
+              <ul>
+                { guideSection.sections.map((s) => <ListLink key={s.id} guideProps={{ path: `${s.frontmatter.path}`, title: s.frontmatter.title}} />)}
+              </ul>
+            </div>
+          )
+        }) 
+      }
+    </div>
+  )
+};

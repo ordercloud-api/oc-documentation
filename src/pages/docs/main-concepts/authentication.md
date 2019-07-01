@@ -1,7 +1,8 @@
 ---
 path: "/main-concepts/authentication"
-title: Authentication
 date: 2019-06-24T23:33:21.852Z
+title: Authentication
+section: "Main Concepts"
 ---
 
 ## OrderCloud Workflows

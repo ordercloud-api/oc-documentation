@@ -2,11 +2,8 @@
 path: "/sample-markdown-format"
 date: 2017-07-12T17:12:33.962Z
 title: "Sample Markdown File Format"
+section: "Contributing"
 ---
-<!---
-  This configuration is for gatsby-transformer-remark plugin
-  "title" is the heading level 1 that will appear at the top of the page
- --->
 
 ## Headings
 

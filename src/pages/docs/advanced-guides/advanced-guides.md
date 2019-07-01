@@ -1,12 +1,9 @@
 ---
-path: "/advanced-guides"
+path: "/advanced-guides/advanced-guide-one"
 date: 2017-07-12T17:12:33.962Z
-title: "Sample Markdown File Format"
+title: "Sample Advanced Guide"
+section: "Advanced Guides"
 ---
-<!---
-  This configuration is for gatsby-transformer-remark plugin
-  "title" is the header one that will appear at the top of the page
- --->
 
 ## Section
 
