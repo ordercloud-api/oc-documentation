@@ -45,7 +45,7 @@ export default function Template({
           {directionalButton('Next')}
           <a href={`${gitHubUrl}${post.frontmatter.path}.md`} target="_blank" rel="noopener noreferrer">Contribute to this doc</a>
         </div>
-        <RightMenu style={{ maxWidth: '30%'}} tableOfContents={sectionsWithGuides} />
+        <RightMenu style={{ maxWidth: '30%'}} tableOfContents={contentsArray} />
       </div>
     </Layout>
   )

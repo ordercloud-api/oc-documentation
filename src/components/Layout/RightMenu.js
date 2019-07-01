@@ -1,13 +1,10 @@
 import React from 'react';
 import { ListLink } from '../Shared/ListLink';
-import { groupBy as _groupBy, forEach as _forEach } from 'lodash';
 
 export default function RightMenu({ tableOfContents }) {
-  let contentsArray = [];
-  _forEach(tableOfContents, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
   return (
     <div>
-      { contentsArray.map((guideSection, index) => {
+      { tableOfContents.map((guideSection, index) => {
           return (
             <div key={index}>
               <h2>{guideSection.title}</h2>
