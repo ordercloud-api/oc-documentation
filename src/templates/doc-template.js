@@ -11,10 +11,10 @@ export default function Template({
   data
 }) {
   const { markdownRemark: post } = data;
+  // THIS SNIPPET IS REUSED IN Main.js CONSIDER MOVING TO A SERVICE
   const sectionsWithGuides = _groupBy(data.allMarkdownRemark.edges, 'node.frontmatter.section');
   let contentsArray = [];
   _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
-
 
   const gitHubUrl = 'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs';
   const flatContents = _flatten(contentsArray.map((c) => c.sections));
