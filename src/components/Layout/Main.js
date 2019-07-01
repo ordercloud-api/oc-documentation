@@ -59,7 +59,9 @@ export function Main({tableOfContents}) {
 
 export default () => (
   <StaticQuery query={graphql`query {
-    allMarkdownRemark {
+    allMarkdownRemark(
+      sort: { order: ASC, fields: [frontmatter___section] }
+    ) {
       totalCount
       edges {
         node {
