@@ -2,6 +2,7 @@
 path: "/main-concepts/product-visibility"
 date: 2017-07-12T17:12:33.962Z
 title: "Product Visibility"
+section: "Main Concepts"
 ---
 
 Product visibility is without a doubt one of the most complex things you'll encounter in OrderCloud but by the end of this guide you will be familiar with all the different ways product visibility works and will be educated enough to choose a method that works best for your use case. Feel free to skip ahead to the [visibility cheat sheet](#product-visibility-cheat-sheet) if prefer a condensed version.

@@ -1,7 +1,8 @@
 ---
-path: "/http-methods"
+path: "features/http-methods"
 date: 2017-07-12T17:12:33.962Z
 title: "Http Methods"
+section: "Features"
 ---
 <!--- Might move as part of "Conventions", keeping here for now  --->
 
