@@ -1,5 +1,5 @@
 ---
-path: "features/http-methods"
+path: "/features/http-methods"
 date: 2017-07-12T17:12:33.962Z
 title: "Http Methods"
 section: "Features"

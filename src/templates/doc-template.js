@@ -17,7 +17,6 @@ export default function Template({
 
 
   const gitHubUrl = 'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs';
-  // TODO: FIX THIS
   const flatContents = _flatten(contentsArray.map((c) => c.sections));
   const guideIndex = flatContents.findIndex((section) => section.frontmatter.path === post.frontmatter.path);
 
