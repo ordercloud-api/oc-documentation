@@ -21,12 +21,14 @@ export default function Template({
     const newGuideIndex = direction === 'Previous' ? guideIndex - 1 : guideIndex + 1;
     const newSectionIndex = direction === 'Previous' ? sectionIndex - 1 : sectionIndex + 1;
     const newSection = tableOfContents.sections[newSectionIndex];
+    const guideCondition = direction === 'Previous' ? guideIndex > 0 : newGuideIndex < section.guides.length;
+    const sectionCondition = direction === 'Previous' ? newGuideIndex < section.guides.length : newGuideIndex >= section.guides.length - 1;
     return (
-      guideIndex > 0 ? (
+      guideCondition ? (
         <Button>
           <Link to={`${section.path}${section.guides[newGuideIndex]}`}>{direction} Guide</Link>
         </Button>
-      ) : sectionIndex > 0 ? (
+      ) : sectionCondition && newSection ? (
         <Button>
           <Link to={`${newSection.path}${newSection.guides[0]}`}>{direction} Section</Link>
         </Button> 
