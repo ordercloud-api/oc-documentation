@@ -3,12 +3,12 @@ const path = require("path")
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
-  const docTemplate = path.resolve(`src/templates/doc-template.js`);
+  const docTemplate = path.resolve(`src/templates/doc-template.tsx`);
 
   return graphql(`
     {
       allMarkdownRemark(
-        sort: { order: ASC, fields: [frontmatter___section] }
+        sort: { order: ASC, fields: [frontmatter___priority] }
         limit: 1000
       ) {
         edges {

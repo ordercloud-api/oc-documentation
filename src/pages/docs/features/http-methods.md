@@ -2,6 +2,7 @@
 path: "/features/http-methods"
 title: "Http Methods"
 section: "Features"
+priority: 3
 ---
 <!--- Might move as part of "Conventions", keeping here for now  --->
 

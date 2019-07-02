@@ -9,6 +9,7 @@ module.exports = {
     `gatsby-plugin-material-ui`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sharp`,
+    `gatsby-plugin-typescript`,
     `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
