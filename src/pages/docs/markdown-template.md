@@ -1,6 +1,5 @@
 ---
 path: "/sample-markdown-format"
-date: 2017-07-12T17:12:33.962Z
 title: "Sample Markdown File Format"
 section: "Contributing"
 ---

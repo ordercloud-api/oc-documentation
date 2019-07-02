@@ -1,6 +1,5 @@
 ---
 path: "/main-concepts/assignments"
-date: 2019-06-24T22:09:49.849Z
 title: "Assignments"
 section: "Main Concepts"
 ---
