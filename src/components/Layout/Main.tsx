@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { groupBy as _groupBy, forEach as _forEach } from 'lodash';
 
 import { ListLink } from '../Shared/ListLink';
-import { StaticQuery, graphql } from 'gatsby';
+import { StaticQuery, graphql, Link } from 'gatsby';
 
 
 const styles = (theme: Theme) => 
@@ -32,18 +32,11 @@ const styles = (theme: Theme) =>
         return (
           <div className={classes.root}>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Paper className={classes.paper}>
-                  Welcome to OrderCloud
-                  <Button>Intro to OrderCloud</Button>
-                  <Button>Quick Start Guide</Button>
-                </Paper>
-              </Grid>
               { contentsArray.map((section, index) => {
                 return (
-                  <Grid item xs={12} sm={6} key={index}>
+                  <Grid item xs={12} sm={section.title != 'Getting Started' ? 6 : 12} key={index}>
                     <Paper className={classes.paper}>
-                      <h2>{section.title}</h2>
+                      <h2>{section.title === 'Getting Started' ? "Welcome to OrderCloud" : section.title}</h2>
                       <ul>
                         { section.sections.map((s) => {
                           return (
