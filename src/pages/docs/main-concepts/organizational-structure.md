@@ -9,7 +9,7 @@ OrderCloud provides rich support for modeling a typical B2B organization. Within
 
 The following diagram depicts the B2B organization structure as represented by Ordercloud:
 
-![Organizational Structure](../images/organizational-structure.png)
+![Organizational Structure](../../../assets/images/organizational-structure.png)
 
 ## Sellers Organization
 

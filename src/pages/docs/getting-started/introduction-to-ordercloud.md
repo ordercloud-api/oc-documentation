@@ -14,10 +14,12 @@ OrderCloud.io is a cloud-hosted B2B eCommerce platform exposed entirely via a RE
 Whether it’s the central hub of a mobile purchasing app or one small piece of a larger microservices-based solution, the benefits of a RESTful API vs. other approaches are clear.
 
 TODO: IMAGE HERE
+![Language Agnostic](../../../assets/images/agnostic.jpg)
 
 OrderCloud.io enables developers to use their tech stack of choice. Plus, releases are automatic and non-breaking; there’s a clear, inherent boundary between our code and yours. Nearly all modern web and mobile front-end frameworks are designed to work well out of the box with JSON-over-HTTP services that follow RESTful patterns.
 
 TODO: IMAGE HERE
+![Scalling](../../../assets/images/scale.jpg)
 
 Unlike on-premise solutions, server infrastructure and data security are taken care of for you. Start small and scale up only as your business usage grows. Unlike SaaS products, your ability to customize user interfaces and workflows is virtually limitless
 
