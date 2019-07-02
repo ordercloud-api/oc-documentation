@@ -37,7 +37,7 @@ const styles = (theme: Theme) =>
                     <Paper className={classes.paper}>
                       <h2>{section.title === 'Getting Started' ? "Welcome to OrderCloud" : section.title}</h2>
                       <ul>
-                        { section.sections.map((s) => {
+                        { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
                           return (
                             <ListLink key={s.id} guideProps={{ path: s.frontmatter.path, title: s.frontmatter.title}} />
                           )
