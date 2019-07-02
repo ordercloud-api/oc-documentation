@@ -3,6 +3,7 @@ path: "/main-concepts/me-resource"
 title: "Me Resource"
 section: "Main Concepts"
 priority: 2
+hidden: false
 ---
 
 ## Me Resource

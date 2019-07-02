@@ -2,11 +2,10 @@ import React from 'react';
 import { Theme, withStyles, createStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import { groupBy as _groupBy, forEach as _forEach } from 'lodash';
 
 import { ListLink } from '../Shared/ListLink';
-import { StaticQuery, graphql, Link } from 'gatsby';
+import { StaticQuery, graphql } from 'gatsby';
 
 
 const styles = (theme: Theme) => 
@@ -69,6 +68,7 @@ export default (() => (
             section
             title
             path
+            hidden
           }
         }
       }

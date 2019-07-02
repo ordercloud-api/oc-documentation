@@ -3,6 +3,7 @@ path: "/getting-started/introduction-to-ordercloud"
 title: "What is OrderCloud?"
 section: "Getting Started"
 priority: 1
+hidden: false
 ---
 
 ## Overview
@@ -13,13 +14,11 @@ OrderCloud.io is a cloud-hosted B2B eCommerce platform exposed entirely via a RE
 
 Whether it’s the central hub of a mobile purchasing app or one small piece of a larger microservices-based solution, the benefits of a RESTful API vs. other approaches are clear.
 
-TODO: IMAGE HERE
-![Language Agnostic](../../../assets/images/agnostic.jpg)
+![Language Agnostic](../_images/agnostic.jpg)
 
 OrderCloud.io enables developers to use their tech stack of choice. Plus, releases are automatic and non-breaking; there’s a clear, inherent boundary between our code and yours. Nearly all modern web and mobile front-end frameworks are designed to work well out of the box with JSON-over-HTTP services that follow RESTful patterns.
 
-TODO: IMAGE HERE
-![Scalling](../../../assets/images/scale.jpg)
+![Scalling](../_images/scale.jpg)
 
 Unlike on-premise solutions, server infrastructure and data security are taken care of for you. Start small and scale up only as your business usage grows. Unlike SaaS products, your ability to customize user interfaces and workflows is virtually limitless
 
@@ -79,17 +78,20 @@ As a RESTful API, OrderCloud.io lends itself equally well to back-end integratio
 
 The OrderCloud.io API has some standard conventions that permeate the entire platform. You can expect these features to behave the same no matter which resource you're working with.
 
-### SSL
-
-API access is only allowed via HTTPS; connections on port 80 are refused entirely.
-
-### JSON Everywhere
-
-UTF-8 encoded JSON is the only supported data format for both request and response payloads.
-
-### OAuth 2.0
-
-OrderCloud.io API authentication is based on the OAuth 2 specification and supports multiple workflows.
+<section id="feature-rich" style="display: inline-flex">
+    <div style="max-width: 30%;">
+        <h2>SSL</h2>
+        <p>API access is only allowed via HTTPS; connections on port 80 are refused entirely.</p>
+    </div>
+    <div style="max-width: 30%;">
+        <h2>JSON Everywhere</h2>
+        <p>UTF-8 encoded JSON is the only supported data format for both request and response payloads.</p>
+    </div>
+    <div style="max-width: 30%;">
+        <h2>OAuth 2.0</h2>
+        <p>OrderCloud.io API authentication is based on the OAuth 2 specification and supports multiple workflows.</p>
+    </div>
+</section>
 
 ### Writable IDs
 
