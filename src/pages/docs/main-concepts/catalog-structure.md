@@ -2,6 +2,7 @@
 path: "/main-concepts/catalog-structure"
 title: "Catalog Structure"
 section: "Main Concepts"
+priority: 2
 ---
 
 To understand a catalog, we will begin by understanding the individual pieces.

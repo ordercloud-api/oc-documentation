@@ -63,7 +63,7 @@ export const pageQuery = graphql`
       }
     }
     allMarkdownRemark(
-      sort: { order: ASC, fields: [frontmatter___section] }
+      sort: { order: ASC, fields: [frontmatter___priority] }
     ) {
       totalCount
       edges {
@@ -73,6 +73,7 @@ export const pageQuery = graphql`
             section
             title
             path
+            priority
           }
         }
       }

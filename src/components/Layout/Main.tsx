@@ -59,7 +59,7 @@ const styles = (theme: Theme) =>
 export default (() => (
   <StaticQuery query={graphql`query {
     allMarkdownRemark(
-      sort: { order: ASC, fields: [frontmatter___section] }
+      sort: { order: ASC, fields: [frontmatter___priority] }
     ) {
       totalCount
       edges {

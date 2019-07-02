@@ -2,6 +2,7 @@
 path: "/features/webhooks"
 title: "Webhooks"
 section: "Features"
+priority: 3
 ---
 
 ## Overview

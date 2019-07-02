@@ -2,6 +2,7 @@
 path: "/advanced-guides/advanced-guide-one"
 title: "Sample Advanced Guide"
 section: "Advanced Guides"
+priority: 4
 ---
 
 ## Section
