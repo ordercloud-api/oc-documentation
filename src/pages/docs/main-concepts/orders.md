@@ -3,6 +3,7 @@ path: "/main-concepts/orders"
 title: "Orders"
 section: "Main Concepts"
 priority: 2
+hidden: false
 ---
 
 The central concept within OrderCloud is not surprisingly the order. This is the object where buyers, sellers, products, payments, and almost everything come together to form a business transaction.

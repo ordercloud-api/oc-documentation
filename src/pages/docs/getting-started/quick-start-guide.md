@@ -3,6 +3,7 @@ path: "/getting-started/quick-start-guide"
 title: "Getting Started with OrderCloud"
 section: "Getting Started"
 priority: 1
+hidden: false
 ---
 
 ## Getting Started with OrderCloud.io
@@ -23,7 +24,7 @@ Now that you have an OrderCloud.io account you can navigate to your [dashboard](
 
 It is the highest level container that encompasses everything else in OrderCloud.io (applications, products, pricing, users, etc.). You can have multiple Seller Organizations; however, data is not shared between them.
 
-Newly created Seller Organizations come with a "default access" application giving you immediate access to the API however you can also create your own. To do this first click on the seller applications pane on the left and then click the <label class="btn btn-sm btn-inline btn-success">New</label> button located in the upper right hand corner.
+Newly created Seller Organizations come with a "default access" application giving you immediate access to the API however you can also create your own. To do this first click on the seller applications pane on the left and then click the "New" button located in the upper right hand corner.
 
 Using the API Console is the simplest way to start exploring OrderCloud.io; however, understanding the fundamentals of how to access and use the API on it's own is extremely important for any OrderCloud.io developer.
 
@@ -33,7 +34,7 @@ Before you are able to interact with the OrderCloud.io API you will need to get 
 
 The first thing you need is the `ClientID`. This unique identifier represents a single application on OrderCloud.io. Feel free to use the ClientID from the "Seller App" API Client that was automatically created on your first Seller Organization.
 
-`TODO: ADD IMAGE`
+![API Settings](../_images/api-settings.png)
 
 The second thing you will need is a list of roles, or in OAuth terms, scope. For this example you are authenticating as the Initial Seller user, which has "FullAccess".
 

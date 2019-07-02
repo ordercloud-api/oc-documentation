@@ -3,6 +3,7 @@ path: "/main-concepts/security-profiles"
 title: "Security Profiles"
 section: "Main Concepts"
 priority: 2
+hidden: false
 ---
 
 ## Overview

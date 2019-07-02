@@ -2,11 +2,10 @@ import React from 'react';
 import { Theme, withStyles, createStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import { groupBy as _groupBy, forEach as _forEach } from 'lodash';
 
 import { ListLink } from '../Shared/ListLink';
-import { StaticQuery, graphql, Link } from 'gatsby';
+import { StaticQuery, graphql } from 'gatsby';
 
 
 const styles = (theme: Theme) => 
@@ -38,7 +37,7 @@ const styles = (theme: Theme) =>
                     <Paper className={classes.paper}>
                       <h2>{section.title === 'Getting Started' ? "Welcome to OrderCloud" : section.title}</h2>
                       <ul>
-                        { section.sections.map((s) => {
+                        { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
                           return (
                             <ListLink key={s.id} guideProps={{ path: s.frontmatter.path, title: s.frontmatter.title}} />
                           )
@@ -69,6 +68,7 @@ export default (() => (
             section
             title
             path
+            hidden
           }
         }
       }

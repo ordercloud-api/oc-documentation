@@ -1,0 +1,45 @@
+---
+path: "/getting-started/using-the-api-console"
+title: "Using the API Console"
+section: "Getting Started"
+priority: 1
+hidden: true
+---
+
+## Introduction
+
+The OrderCloud.io API Console provides instant access to your OrderCloud applications. It is extremely useful for rapidly spinning up some data to develop against or learning about all the different endpoints OrderCloud.io has to offer.
+
+
+## Getting to the Console
+
+`TODO: Fix links`
+The console is available at <a ng-href="{{application.links.console}}">console.ordercloud.io</a> and can be navigated to via the top navigation or by clicking "Open API Console" when viewing an API Client in the <a ng-href="{{application.links.dashboard}}">dashboard</a>. If you navigate directly to the console via the top navigation, you will be prompted to choose a Seller Organization, then an API Client, and finally a user. The Available Users are based on which API Client you select and the Commerce Roles it has assigned. In general, you wil always be selecting a specific user when entering the Console.
+
+## Current Context and User
+
+When first opening the console, you will notice a black box in the top left that lets you know the user your are currently authenticated as, and the context in which the user lives within its Seller Organization. Along the right are buttons to copy the IDs of the respective property.
+
+![Console User Context](../_images/buyer-current-user-console.png)
+
+When clicking the arrow, a dropdown will display with options to copy the current user's authorization token, the ability to change users within the same API Client, or change the Seller Organization context.
+
+![Console User Context](../_images/dropdown-console.png)
+
+
+## Lockable Parameters
+
+Sometimes you will be making many successive requests with the same parameters. To make this easier for you, we included the ability to lock specific parameter values for the duration of your console session. If you know you'll always be working with the same buyer, enter the Buyer ID parameter once, click the lock button and forget about it!
+
+![Lockable Params](../_images/lockable-params.png)
+
+## Making Requests
+
+`TODO: Fix links`
+Making a request in the API Console is relatively simple. Begin by choosing a resource from the console menu on the left. Once the resource loads in the second pane, you can choose the method (endpoint) you would like to use. If you're not sure which endpoint to use, check out our <a ui-sref="api-reference">API Reference</a> for a full list. If you're following along with our <a ui-sref="platform-guides({sectionID: null, guideID: null, detailID: null})">guides</a>, each step will have a link to the specific endpoint being used.
+
+Depending on the endpoint, you will be required to fill out some parameters and/or a request body. When all required parameters have been filled out, click "Send" and the successful response or error message will appear in the pane on the right. View previous responses by clicking on the response in the list above the active response body.
+
+## Conclusion
+
+The Console eliminates the headache of making authentication requests before using the OrderCloud API. Use it to dive into your data quickly and make rapid changes while developing your applications. We're always looking for ways to improve the experience, so any feedback or suggestions you have as a user of the platform are greatly appreciated!

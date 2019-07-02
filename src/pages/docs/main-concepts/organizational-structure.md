@@ -3,13 +3,14 @@ path: "/main-concepts/organizational-structure"
 title: "Organizational Structure"
 section: "Main Concepts"
 priority: 2
+hidden: false
 ---
 
 OrderCloud provides rich support for modeling a typical B2B organization. Within each organization there is a common hierarchy that is central to controlling the relationship between users and data.
 
 The following diagram depicts the B2B organization structure as represented by Ordercloud:
 
-![Organizational Structure](../../../assets/images/organizational-structure.png)
+![Organizational Structure](../_images/organizational-structure.png)
 
 ## Sellers Organization
 

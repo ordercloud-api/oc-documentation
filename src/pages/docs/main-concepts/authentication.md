@@ -3,6 +3,7 @@ path: "/main-concepts/authentication"
 title: Authentication
 section: "Main Concepts"
 priority: 2
+hidden: false
 ---
 
 ## OrderCloud Workflows
