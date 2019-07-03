@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListLink } from '../Shared/ListLink';
+import ListLink from '../Shared/ListLink';
 
 export default function RightMenu({ tableOfContents }) {
   return (

@@ -1,42 +1,43 @@
 import { Link } from 'gatsby';
-import PropTypes from 'prop-types';
 import React from 'react';
+import { Theme, createStyles, withStyles } from '@material-ui/core';
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `linear-gradient(180deg, #2D92C0 0%, #045479 100%`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
-    >
-      <h1 style={{ margin: 0, fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`}}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
-  </header>
-)
+const styles = (theme: Theme) => 
+  createStyles({
+    header: {
+      background: 'linear-gradient(180deg, #2D92C0 0%, #045479 100%)',
+      marginBottom: '1.45rem',
+    },
+    titleContainer: {
+      margin: '0 auto',
+      maxWidth: 960,
+      padding: '1.45rem 1.0875rem',
+    },
+    title: {
+      margin: 0, 
+      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif'
+    },
+    titleLink: {
+      color: 'white',
+      textDecoration: 'none',
+    }
+  });
 
-Header.propTypes = {
-  siteTitle: PropTypes.string,
+class Header extends React.Component<any> {
+  public render() {
+    const { siteTitle, classes } = this.props;
+    return (
+      <header className={classes.header}>
+        <div className={classes.titleContainer}>
+          <h1 className={classes.title}>
+            <Link to="/" className={classes.titleLink}>
+              {siteTitle}
+            </Link>
+          </h1>
+        </div>
+      </header>
+    )
+  }
 }
 
-Header.defaultProps = {
-  siteTitle: ``,
-}
-
-export default Header
+export default withStyles(styles)(Header);
