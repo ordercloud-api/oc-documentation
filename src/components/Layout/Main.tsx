@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { groupBy as _groupBy, forEach as _forEach } from 'lodash';
 
-import { ListLink } from '../Shared/ListLink';
+import ListLink from '../Shared/ListLink';
 import { StaticQuery, graphql } from 'gatsby';
 
 

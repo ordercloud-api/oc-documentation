@@ -1,13 +1,20 @@
 import React from 'react';
 import { ThumbUp, ThumbDown } from '@material-ui/icons';
 import { groupBy as _groupBy, forEach as _forEach, flatten as _flatten } from 'lodash';
-import { Button } from '@material-ui/core';
+import { Button, createStyles, Theme, withStyles } from '@material-ui/core';
 import { Link } from 'gatsby';
 
+const styles = (theme: Theme) => 
+  createStyles({
+    section: {
+        marginBottom: '1rem',
+        marginTop: '1.45rem'
+    }
+  });
+
 class DocFooter extends React.Component<any> {
-    
     public render() {
-        const { contents, currentGuide } = this.props;
+        const { contents, currentGuide, classes } = this.props;
 
         const gitHubUrl = 'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs';
         const flatContents = _flatten(contents.map((c) => c.sections));
@@ -25,7 +32,7 @@ class DocFooter extends React.Component<any> {
         }
 
         return(
-            <div>
+            <div className={classes.section}>
                 {directionalButton('Previous')}
                 {directionalButton('Next')}
                 <ThumbUp />
@@ -37,4 +44,4 @@ class DocFooter extends React.Component<any> {
     }
 }
 
-export default DocFooter;
+export default withStyles(styles)(DocFooter);

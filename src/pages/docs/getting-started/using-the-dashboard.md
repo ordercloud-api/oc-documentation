@@ -36,19 +36,19 @@ Most B2B eCommerce projects require some level of collaboration. By sharing your
 
 #### Contributor Permissions
 
-![](../_images/using-the-dashboard/permissions.png)
+![Permissions](../_images/using-the-dashboard/permissions.png)
 
 Each permission controls whether or not a given contributor can access specific dashboard functionality for your seller organization. For example, you may have one contributor that is responsible for creating webhooks and integrations and another who is responsible for setting up security profiles for your end users.
 
 #### Contributor Data Access
 
-![](../_images/using-the-dashboard/data_access.jpg)
+![Data Access](../_images/using-the-dashboard/data_access.jpg)
 
 Data Access gives you control over which roles (if any) a given contributor can request when using the OrderCloud API with this seller organization or any of it's buyer organizations. A contributor with `FullAccess` here will have total control over any of the data under the seller organization. It is strongly recommended you use a combination of the granular roles that enable each developer to accomplish their project tasks to avoid unwanted or unexpected changes to your organization's data. OrderCloud roles are covered in-depth later in this guide.
 
 ## Dashboard Features
 
-![](../_images/using-the-dashboard/left-navbar.png)
+![Dashboard Left Navigation](../_images/using-the-dashboard/left-navbar.png)
 
 The left-hand menu is where you can access each of the dashboard features available to you for a given seller organization. Some features such as Message Senders or Integrations will be hidden from this menu if you do not have permission to access them.
 
@@ -58,7 +58,7 @@ Beyond these basic navigation items, there is a _"Switch Organization"_ button w
 
 An API Client is like an application or a pass that allows you to get an access token from Ordercloud. The API Client ID is given when authorizing into OrderCloud's API, and based off the API Client's configuration, OrderCloud knows which user types have access to your application and which access token it should return.
 
-![](../_images/using-the-dashboard/api-client-list.png)
+![API Client List](../_images/using-the-dashboard/api-client-list.png)
 
 There are 3 types of Commerce Roles or distinct user types that exist in OrderCloud. There are _Sellers_, _Buyers_, and _Suppliers_. We want developers on Ordecloud to have flexiblity on how they make their applications, so they can configure and an API Client's with any number of Commerce Roles combinations.This feature allows for the ability to configure unique buyer and supplier networks, which can come in handy for SASS applications.
 
@@ -123,7 +123,7 @@ This feature is available to organization owners and contributors with permissio
 
 The granular nature of OrderCloud roles enables you to control exactly which API endpoints and/or data each user can access within your organization (similar to your contributor's data access!). In general, an **Admin** role allows read and write access of a given resource while a **Reader** role allows only read access.
 
-![](../_images/using-the-dashboard/security.jpg)
+![Security](../_images/using-the-dashboard/security.jpg)
 
 It is **strongly discouraged** and considered a security risk to give your admin or buyer users the `FullAccess` role. While it may be convenient to use in the early stages of development - it is **always** better to give end users a combination of more granular roles that align to the actions they will be taking in the application.
 
@@ -177,11 +177,11 @@ Beyond this basic info, we've enhanced our webhooks with some other, more nuance
 
 Organization owners and contributors with permission to administer integrations can access this feature. Choose a service from the _"Available Services"_ tab and click _"Add"_.
 
-![](../_images/using-the-dashboard/available_services.jpg)
+![Available Integrations](../_images/using-the-dashboard/available_services.jpg)
 
 You will be prompted to fill out the information required for OrderCloud to communicate with the new account.
 
-![](../_images/using-the-dashboard/authorize_net.jpg)
+![Authorize Dot Net Integration](../_images/using-the-dashboard/authorize_net.jpg)
 
 Any applications that have the configured integration activated will have access to use it.
 
