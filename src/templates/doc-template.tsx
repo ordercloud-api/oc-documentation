@@ -6,34 +6,51 @@ import '../styles/doc-template.css';
 import { graphql } from 'gatsby';
 import  DocFooter  from '../components/Layout/DocFooter';
 import { groupBy as _groupBy, forEach as _forEach, flatten as _flatten } from 'lodash';
+import { withStyles, createStyles, Theme } from '@material-ui/core';
 
+const styles = (theme: Theme) => 
+  createStyles({
+    docContainer: {
+      margin: '0 3rem',
+      display: 'flex',
+      flexDirection: 'row'
+    },
+    docBody: {
+      maxWidth: '70%'
+    },
+    docMenu: {
+      maxWidth: '30%'
+    }
+  })
 
-const Template = ({ data }) => {
-  const { markdownRemark: post } = data;
-  // THIS SNIPPET IS REUSED IN Main.js CONSIDER MOVING TO A SERVICE
-  const sectionsWithGuides = _groupBy(data.allMarkdownRemark.edges, 'node.frontmatter.section');
-  let contentsArray = [];
-  _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
+const Template = withStyles(styles)(
+  class extends React.Component<any> {
+    public render() {
+      const { data: post, classes } = this.props;
+      // THIS SNIPPET IS REUSED IN Main.js CONSIDER MOVING TO A SERVICE
+      const sectionsWithGuides = _groupBy(post.allMarkdownRemark.edges, 'node.frontmatter.section');
+      let contentsArray = [];
+      _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
 
-  return (
-    <Layout>
-      <div className="documentation-container" style={{margin: '0 3rem', display: 'flex', flexDirection: 'row'}}>
-        <Helmet title={`OrderCloud Documentation - ${post.frontmatter.title}`} />
-        <div className="documentation-body" style={{ maxWidth: '70%'}}>
-          <h1>{post.frontmatter.title}</h1>
-          <div
-            className="documentation-contents"
-            dangerouslySetInnerHTML={{ __html: post.html }}
-          />
-          <DocFooter contents={contentsArray} currentGuide={post.frontmatter.path} />
-        </div>
-        <div style={{ maxWidth: '30%'}}>
-          <RightMenu tableOfContents={contentsArray} />
-        </div>
-      </div>
-    </Layout>
-  )
-}
+      return (
+        <Layout>
+          <div className={classes.docContainer}>
+            <Helmet title={`OrderCloud Documentation - ${post.markdownRemark.frontmatter.title}`} />
+            <div className={classes.docBody}>
+              <h1>{post.markdownRemark.frontmatter.title}</h1>
+              <div dangerouslySetInnerHTML={{ __html: post.markdownRemark.html }}
+              />
+              <DocFooter contents={contentsArray} currentGuide={post.markdownRemark.frontmatter.path} />
+            </div>
+            <div className={classes.docMenu}>
+              <RightMenu tableOfContents={contentsArray} />
+            </div>
+          </div>
+        </Layout>
+      )
+    }
+  }
+)
 
 export const pageQuery = graphql`
   query DocTemplateByPath($path: String!) {
