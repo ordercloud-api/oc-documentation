@@ -25,7 +25,7 @@ const styles = (theme: Theme) =>
     class extends React.Component<any> {
       public render() {
         const { tableOfContents, classes } = this.props;
-        const sectionsWithGuides = _groupBy(tableOfContents.allMarkdownRemark.edges, 'node.frontmatter.section');
+        const sectionsWithGuides = _groupBy(tableOfContents.allMdx.edges, 'node.frontmatter.section');
         let contentsArray = [];
         _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
         return (
@@ -60,7 +60,7 @@ const styles = (theme: Theme) =>
 
 export default (() => (
   <StaticQuery query={graphql`query {
-    allMarkdownRemark(
+    allMdx(
       sort: { order: ASC, fields: [frontmatter___priority] }
     ) {
       totalCount
