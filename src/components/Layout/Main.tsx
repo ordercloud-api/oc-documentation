@@ -34,16 +34,19 @@ const styles = (theme: Theme) =>
               { contentsArray.map((section, index) => {
                 return (
                   <Grid item xs={12} sm={section.title != 'Getting Started' ? 6 : 12} key={index}>
-                    <Paper className={classes.paper}>
-                      <h2>{section.title === 'Getting Started' ? "Welcome to OrderCloud" : section.title}</h2>
-                      <ul>
-                        { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
-                          return (
-                            <ListLink key={s.id} guideProps={{ path: s.frontmatter.path, title: s.frontmatter.title}} />
-                          )
-                        }) }
-                      </ul>
-                    </Paper>
+                    { /** only display sections that have more than one visible guide */}
+                    {section.sections.filter((c) => !c.frontmatter.hidden).length > 0 ? 
+                      <Paper className={classes.paper}>
+                        <h2>{section.title === 'Getting Started' ? 'Welcome to OrderCloud' : section.title}</h2>
+                        <ul>
+                          { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
+                            return (
+                              <ListLink key={s.id} guideProps={{ path: s.frontmatter.path, title: s.frontmatter.title}} />
+                            )
+                          }) }
+                        </ul>
+                      </Paper>
+                    : null }
                   </Grid>
                 )
               }) }

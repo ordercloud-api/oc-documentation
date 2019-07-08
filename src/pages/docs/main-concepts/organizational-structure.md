@@ -10,7 +10,7 @@ OrderCloud provides rich support for modeling a typical B2B organization. Within
 
 The following diagram depicts the B2B organization structure as represented by Ordercloud:
 
-![Organizational Structure](../_images/organizational-structure.png)
+![Organizational Structure](../_images/main-concepts/organizational-structure/organizational-structure.png)
 
 ## Sellers Organization
 
@@ -35,3 +35,7 @@ Similar to buyers, sellers can contain more than one supplier. They exist on the
 ## User Groups
 
 Within each type of company mentioned above, user groups are available to simplify the management of a large user base. Sellers can create highly personalized experiences for users within each type of company by taking advantage of user group level relationships. Each user can be assigned to multiple groups within their company and they will inherit all of the relationships between those groups and the data associated with them. We will see more fully how this system of assignments works in the following section.
+
+## Conclusion
+
+![TODO:need-conclusion]

@@ -88,3 +88,7 @@ All of the following must be true for a Buyer User to see a Product (via me rout
 ### Validation Rules
 
 In order to create a ProductAssignment, the Buyer and Product must be assigned to a common Catalog (via CatalogAssignment and CatalogProductAssignment).
+
+## Conclusion
+
+![TODO:need-conclusion]
