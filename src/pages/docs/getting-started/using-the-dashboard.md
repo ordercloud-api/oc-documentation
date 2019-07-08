@@ -68,7 +68,7 @@ When creating a new Seller Organization, we create 2 API Clients for you, assumi
 
 Opening an individual API Client will bring you to the **Settings** tab for that application. Seller Organization owners and contributors with permission to administer applications can update application information in this tab and activate/deactivate the application. Within this tab you’ll find the following:
 
-<table class="table table-striped table-bordered"><colgroup><col width="25%"></colgroup> 
+<table class="table table-striped table-bordered"> 
   <tbody>
     <tr>
       <th scope="row">Client ID</th>
@@ -93,7 +93,7 @@ Opening an individual API Client will bring you to the **Settings** tab for that
 
 The _"user access"_ tab is visible to owners and contributors with permission to administer API Clients. Within this tab you’ll find the following:
 
-<table class="table table-striped table-bordered"><colgroup><col width="25%"></colgroup> 
+<table class="table table-striped table-bordered">
   <tbody>
     <tr>
       <th scope="row">Client Access Configuration</th>
@@ -145,7 +145,7 @@ Owners and contributors with permission to administer webhooks can access this f
 |Secret|OrderCloud will encrypt this secret and pass it through the request headers.|
 |Trigger Events|The OrderCloud API endpoints that will trigger the webhook event. Webhooks can only be triggered by endpoints that write to the database (`POST`/`PUT`/ `PATCH`/`DELETE`). The request body sent to the OrderCloud endpoint (if any) will be passed along to the webhooks that use it.|--->
 
-<table class="table table-striped table-bordered"><colgroup><col width="25%"></colgroup> 
+<table class="table table-striped table-bordered">
   <tbody>
     <tr>
       <th scope="row">Payload URL</th>
@@ -164,7 +164,7 @@ Owners and contributors with permission to administer webhooks can access this f
 
 Beyond this basic info, we've enhanced our webhooks with some other, more nuanced options:
 
-<table class="table table-striped table-bordered"><colgroup><col width="25%"></colgroup> 
+<table class="table table-striped table-bordered"> 
   <tbody>
     <tr>
       <th scope="row">Elevated Roles</th>
