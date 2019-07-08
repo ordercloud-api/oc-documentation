@@ -26,3 +26,7 @@ Products don't really live inside categories or catalogs in the same way that ca
 Putting it all together we can say a catalog is a container for category hierarchies and all product assignments to either the catalog directly or the categories within it. 
 
 Next, we'll discuss see the different ways that we can make visible all or part of the catalog.
+
+## Conclusion
+
+![TODO:need-conclusion]

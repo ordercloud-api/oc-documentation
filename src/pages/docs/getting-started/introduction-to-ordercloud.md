@@ -121,3 +121,6 @@ Authentication is handled by an API independent of the core platform. It impleme
 
 OrderCloud makes it incredibly easy to collaborate with other developers by adding them as contributors through the Dashboard. Adding a contributor developer is as easy as obtaining the email address they used to sign up with on DevCenter. You can even define how much access you would like them to have within any given seller organization.
 
+## Conclusion
+
+![TODO:need-conclusion]

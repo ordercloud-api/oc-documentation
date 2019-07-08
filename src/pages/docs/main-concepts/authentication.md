@@ -125,6 +125,6 @@ At a high level OrderCloud allows your users to log into the OrderCloud API by l
 
 A detailed guide for using OpenID Connect with OrderCloud can be found [here](TODO:-link-to-OpenID-connect-guide)
 
-### Overview
+### Conclusion
 
 As you can see there are many different ways that you can obtain an access token, all designed to cater to your specific use case. In the next section we'll be talking about how product visibility works at a high level.

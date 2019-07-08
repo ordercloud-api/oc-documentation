@@ -47,3 +47,7 @@ Let's highlight some of the most common resources that interact with the order. 
 | Payments             | Allow a user to pay for an order with a payment method of their choosing      |
 | Approvals            | If an order meets some criteria, put the order on hold for approval.          |
 | Shipments            | Break an order up into shipments                                              |
+
+## Conclusion
+
+![TODO:need-conclusion]
