@@ -5,6 +5,7 @@ import RightMenu from '../components/Layout/RightMenu';
 import '../styles/doc-template.css';
 import { graphql } from 'gatsby';
 import  DocFooter  from '../components/Layout/DocFooter';
+import MDXRenderer from "gatsby-plugin-mdx/mdx-renderer"
 import { groupBy as _groupBy, forEach as _forEach, flatten as _flatten } from 'lodash';
 import { withStyles, createStyles, Theme } from '@material-ui/core';
 
@@ -38,8 +39,7 @@ const Template = withStyles(styles)(
             <Helmet title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`} />
             <div className={classes.docBody}>
               <h1>{post.mdx.frontmatter.title}</h1>
-              <div dangerouslySetInnerHTML={{ __html: post.mdx.html }}
-              />
+              <MDXRenderer>{post.mdx.body}</MDXRenderer>
               <DocFooter contents={contentsArray} currentGuide={post.mdx.frontmatter.path} />
             </div>
             <div className={classes.docMenu}>
@@ -57,7 +57,7 @@ export const pageQuery = graphql`
     mdx(
       frontmatter: { path: { eq: $path } }
     ) {
-      html
+      body
       frontmatter {
         path
         title

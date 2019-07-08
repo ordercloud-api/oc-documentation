@@ -7,7 +7,10 @@ exports.createPages = ({ actions, graphql }) => {
 
   return graphql(`
     {
-      allMdx {
+      allMdx (
+        sort: { order: ASC, fields: [frontmatter___priority] }	
+        limit: 1000
+      ) {
         edges {
           node {
             frontmatter {
