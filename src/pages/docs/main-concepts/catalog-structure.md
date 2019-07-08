@@ -1,8 +1,9 @@
 ---
 path: "/main-concepts/catalog-structure"
-date: 2017-07-12T17:12:33.962Z
 title: "Catalog Structure"
 section: "Main Concepts"
+priority: 2
+hidden: false
 ---
 
 To understand a catalog, we will begin by understanding the individual pieces.
@@ -25,3 +26,7 @@ Products don't really live inside categories or catalogs in the same way that ca
 Putting it all together we can say a catalog is a container for category hierarchies and all product assignments to either the catalog directly or the categories within it. 
 
 Next, we'll discuss see the different ways that we can make visible all or part of the catalog.
+
+## Conclusion
+
+![TODO:need-conclusion]

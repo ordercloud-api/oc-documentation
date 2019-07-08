@@ -1,8 +1,9 @@
 ---
 path: "/main-concepts/security-profiles"
-date: 2019-06-24T23:33:21.852Z
 title: "Security Profiles"
 section: "Main Concepts"
+priority: 2
+hidden: false
 ---
 
 ## Overview

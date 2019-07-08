@@ -1,8 +1,9 @@
 ---
 path: "/features/http-methods"
-date: 2017-07-12T17:12:33.962Z
 title: "Http Methods"
 section: "Features"
+priority: 3
+hidden: false
 ---
 <!--- Might move as part of "Conventions", keeping here for now  --->
 
@@ -20,3 +21,7 @@ A resource is a set of endpoints used to interact with an object of that same na
 |LIST|GET|Returns a list of items|Get a list of addresses|
 |CREATE|POST|Creates a new item, we generate a unique ID if no ID is provided|Create a new address|
 |DELETE|DELETE|Deletes an item|Delete address ABC from the database|
+
+## Conclusion
+
+![TODO:need-conclusion]

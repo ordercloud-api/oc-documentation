@@ -1,8 +1,9 @@
 ---
 path: "/main-concepts/assignments"
-date: 2019-06-24T22:09:49.849Z
 title: "Assignments"
 section: "Main Concepts"
+priority: 2
+hidden: false
 ---
 
 Now that we have an understanding of the various ordercloud parties (companies and groups) we can begin to talk about assignments. When you save an assignment you are creating a relationship between a party and an object (ordercloud "thing" such as product, category, etc). For example you might assign a usergroup to a category, thereby granting a user in that group visibility to that category.

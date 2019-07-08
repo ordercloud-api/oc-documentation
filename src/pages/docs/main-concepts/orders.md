@@ -1,8 +1,9 @@
 ---
 path: "/main-concepts/orders"
-date: 2019-06-24T22:09:49.849Z
 title: "Orders"
 section: "Main Concepts"
+priority: 2
+hidden: false
 ---
 
 The central concept within OrderCloud is not surprisingly the order. This is the object where buyers, sellers, products, payments, and almost everything come together to form a business transaction.
@@ -46,3 +47,7 @@ Let's highlight some of the most common resources that interact with the order. 
 | Payments             | Allow a user to pay for an order with a payment method of their choosing      |
 | Approvals            | If an order meets some criteria, put the order on hold for approval.          |
 | Shipments            | Break an order up into shipments                                              |
+
+## Conclusion
+
+![TODO:need-conclusion]

@@ -1,8 +1,9 @@
 ---
 path: "/main-concepts/me-resource"
-date: 2019-06-24T23:33:21.852Z
 title: "Me Resource"
 section: "Main Concepts"
+priority: 2
+hidden: false
 ---
 
 ## Me Resource

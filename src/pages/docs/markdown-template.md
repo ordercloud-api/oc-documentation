@@ -1,8 +1,8 @@
 ---
 path: "/sample-markdown-format"
-date: 2017-07-12T17:12:33.962Z
 title: "Sample Markdown File Format"
 section: "Contributing"
+hidden: true
 ---
 
 ## Headings
@@ -131,3 +131,4 @@ sayHello(name);
 ```
 
 Source: [Basic Syntax](https://www.markdownguide.org/basic-syntax/)
+

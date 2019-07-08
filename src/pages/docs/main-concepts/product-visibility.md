@@ -1,8 +1,9 @@
 ---
 path: "/main-concepts/product-visibility"
-date: 2017-07-12T17:12:33.962Z
 title: "Product Visibility"
 section: "Main Concepts"
+priority: 2
+hidden: false
 ---
 
 Product visibility is without a doubt one of the most complex things you'll encounter in OrderCloud but by the end of this guide you will be familiar with all the different ways product visibility works and will be educated enough to choose a method that works best for your use case. Feel free to skip ahead to the [visibility cheat sheet](#product-visibility-cheat-sheet) if prefer a condensed version.
@@ -87,3 +88,7 @@ All of the following must be true for a Buyer User to see a Product (via me rout
 ### Validation Rules
 
 In order to create a ProductAssignment, the Buyer and Product must be assigned to a common Catalog (via CatalogAssignment and CatalogProductAssignment).
+
+## Conclusion
+
+![TODO:need-conclusion]
