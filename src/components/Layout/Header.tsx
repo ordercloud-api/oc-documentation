@@ -27,7 +27,7 @@ class Header extends React.Component<any> {
   public render() {
     const { siteTitle, classes } = this.props
     return (
-      <AppBar position="sticky">
+      <AppBar color="primary" position="sticky">
         <Toolbar>
           <Link className={classes.menuLogo} to="/">
             <SvgIcon
