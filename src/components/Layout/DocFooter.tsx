@@ -32,7 +32,9 @@ class DocFooter extends React.Component<any> {
         }
 
         return(
+            //TODO: Link to Slack, syntax on ordercloud tag 
             <div className={classes.section}>
+                <p>If you have any questions, please ask our Developer Community on Slack, or post your question on Stack Overflow - just use the tag ordercloud.</p>
                 {directionalButton('Previous')}
                 {directionalButton('Next')}
                 <ThumbUp />
