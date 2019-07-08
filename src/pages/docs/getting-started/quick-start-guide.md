@@ -34,7 +34,7 @@ Before you are able to interact with the OrderCloud.io API you will need to get 
 
 The first thing you need is the `ClientID`. This unique identifier represents a single application on OrderCloud.io. Feel free to use the ClientID from the "Seller App" API Client that was automatically created on your first Seller Organization.
 
-![API Settings](../_images/api-settings.png)
+![API Settings](../_images/getting-started/quick-start-guide/api-settings.png)
 
 The second thing you will need is a list of roles, or in OAuth terms, scope. For this example you are authenticating as the Initial Seller user, which has "FullAccess".
 
@@ -44,14 +44,14 @@ Using your ClientID, roles list, and Seller username/password (created with a ne
 
 Request
 
-```
+```http
 POST https://auth.ordercloud.io/oauth/token HTTP/1.1
 client_id=7F119ECD-1890-415C-B321-C252658DE5F0&grant_type=password&username=exampleuser&password=
 examplepass&scope=FullAccess
 ```
 
 Response
-```
+```http
 HTTP/1.1 200 OK
 content-type: application/json;
 
@@ -65,11 +65,11 @@ content-type: application/json;
 
 ## Subsequent Requests
 
-Using the access_token from the OAuth response make your first `GET` request to the UserPerspecive → Me → <a ui-sref="api-reference({sectionID: 'MeAndMyStuff', resourceID:'Me', endpointID: 'Get'})">Get</a> endpoint. This will return the details for the currently authenticated user. (In this case, you will appear as the default user because we authenticated as a developer). Make sure you put your `access_token` in the Authentication header before making the request.
+Using the access_token from the OAuth response make your first `GET` request to the UserPerspecive → Me → <a ui-sref="api-reference({sectionID: 'MeAndMyStuff', resourceID:'Me', endpointID: 'Get'})">Get</a> endpoint. This will return the details for the currently authenticated user. (In this case, you will appear as the default user because we authenticated as a developer). Make sure you put your `access_token` in the Authentication header before making the request. `TODO - fix link`
 
 Request
 
-```
+```http
 GET https://api.ordercloud.io/v1/me HTTP/1.1
 Authentication: Bearer put_access_token_here
 Content-Type: application/json; charset=UTF-8
@@ -77,7 +77,7 @@ Content-Type: application/json; charset=UTF-8
 
 Response
 
-```
+```http
 HTTP/1.1 200 OK
 content-type: application/json;
 
