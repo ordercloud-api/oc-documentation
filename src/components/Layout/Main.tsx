@@ -25,19 +25,18 @@ const styles = (theme: Theme) =>
     class extends React.Component<any> {
       public render() {
         const { tableOfContents, classes } = this.props;
-        const sectionsWithGuides = _groupBy(tableOfContents.allMarkdownRemark.edges, 'node.frontmatter.section');
+        const sectionsWithGuides = _groupBy(tableOfContents.allMdx.edges, 'node.frontmatter.section');
         let contentsArray = [];
         _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
         return (
           <div className={classes.root}>
             <Grid container spacing={3}>
-              { contentsArray.map((section, index) => {
-                return (
-                  <Grid item xs={12} sm={section.title != 'Getting Started' ? 6 : 12} key={index}>
-                    { /** only display sections that have more than one visible guide */}
+              { contentsArray.map((section, index) => 
+                section.title === 'Getting Started' ? 
+                  <Grid item xs={12} sm={12} key={index}>
                     {section.sections.filter((c) => !c.frontmatter.hidden).length > 0 ? 
                       <Paper className={classes.paper}>
-                        <h2>{section.title === 'Getting Started' ? 'Welcome to OrderCloud' : section.title}</h2>
+                        <h2>Welcome to OrderCloud</h2>
                         <ul>
                           { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
                             return (
@@ -48,8 +47,21 @@ const styles = (theme: Theme) =>
                       </Paper>
                     : null }
                   </Grid>
-                )
-              }) }
+                 : <Grid item xs={12} sm={6} key={index}>
+                     {section.sections.filter((c) => !c.frontmatter.hidden).length > 0 ? 
+                       <Paper className={classes.paper}>
+                         <h2>{section.title}</h2>
+                         <ul>
+                           { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
+                             return (
+                               <ListLink key={s.id} guideProps={{ path: s.frontmatter.path, title: s.frontmatter.title}} />
+                             )
+                           }) }
+                         </ul>
+                       </Paper>
+                     : null }
+                   </Grid>
+              ) }
             </Grid>
           </div>
         )
@@ -60,7 +72,7 @@ const styles = (theme: Theme) =>
 
 export default (() => (
   <StaticQuery query={graphql`query {
-    allMarkdownRemark(
+    allMdx(
       sort: { order: ASC, fields: [frontmatter___priority] }
     ) {
       totalCount

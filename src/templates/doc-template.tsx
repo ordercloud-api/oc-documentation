@@ -5,6 +5,7 @@ import RightMenu from '../components/Layout/RightMenu';
 import '../styles/doc-template.css';
 import { graphql } from 'gatsby';
 import  DocFooter  from '../components/Layout/DocFooter';
+import MDXRenderer from "gatsby-plugin-mdx/mdx-renderer"
 import { groupBy as _groupBy, forEach as _forEach, flatten as _flatten } from 'lodash';
 import { withStyles, createStyles, Theme } from '@material-ui/core';
 
@@ -28,19 +29,18 @@ const Template = withStyles(styles)(
     public render() {
       const { data: post, classes } = this.props;
       // THIS SNIPPET IS REUSED IN Main.js CONSIDER MOVING TO A SERVICE
-      const sectionsWithGuides = _groupBy(post.allMarkdownRemark.edges, 'node.frontmatter.section');
+      const sectionsWithGuides = _groupBy(post.allMdx.edges, 'node.frontmatter.section');
       let contentsArray = [];
       _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
 
       return (
         <Layout>
           <div className={classes.docContainer}>
-            <Helmet title={`OrderCloud Documentation - ${post.markdownRemark.frontmatter.title}`} />
+            <Helmet title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`} />
             <div className={classes.docBody}>
-              <h1>{post.markdownRemark.frontmatter.title}</h1>
-              <div dangerouslySetInnerHTML={{ __html: post.markdownRemark.html }}
-              />
-              <DocFooter contents={contentsArray} currentGuide={post.markdownRemark.frontmatter.path} />
+              <h1>{post.mdx.frontmatter.title}</h1>
+              <MDXRenderer>{post.mdx.body}</MDXRenderer>
+              <DocFooter contents={contentsArray} currentGuide={post.mdx.frontmatter.path} />
             </div>
             <div className={classes.docMenu}>
               <RightMenu tableOfContents={contentsArray} />
@@ -54,16 +54,16 @@ const Template = withStyles(styles)(
 
 export const pageQuery = graphql`
   query DocTemplateByPath($path: String!) {
-    markdownRemark(
+    mdx(
       frontmatter: { path: { eq: $path } }
     ) {
-      html
+      body
       frontmatter {
         path
         title
       }
     }
-    allMarkdownRemark(
+    allMdx(
       sort: { order: ASC, fields: [frontmatter___priority] }
     ) {
       totalCount
