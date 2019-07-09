@@ -34,7 +34,6 @@ const styles = (theme: Theme) =>
               { contentsArray.map((section, index) => 
                 section.title === 'Getting Started' ? 
                   <Grid item xs={12} sm={12} key={index}>
-                    { /** only display sections that have more than one visible guide */}
                     {section.sections.filter((c) => !c.frontmatter.hidden).length > 0 ? 
                       <Paper className={classes.paper}>
                         <h2>Welcome to OrderCloud</h2>
@@ -49,7 +48,6 @@ const styles = (theme: Theme) =>
                     : null }
                   </Grid>
                  : <Grid item xs={12} sm={6} key={index}>
-                     { /** only display sections that have more than one visible guide */}
                      {section.sections.filter((c) => !c.frontmatter.hidden).length > 0 ? 
                        <Paper className={classes.paper}>
                          <h2>{section.title}</h2>
