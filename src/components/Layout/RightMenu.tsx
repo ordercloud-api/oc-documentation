@@ -1,15 +1,35 @@
 import React from 'react';
 import ListLink from '../Shared/ListLink';
+import { Section } from '../Shared/models/section.model';
 
-export default function RightMenu({ tableOfContents }) {
+export default function RightMenu({ tableOfContents }: {tableOfContents: Section[]}) {
+
+  function toSectionLink(heading: string): string {
+      return '#' + heading.toLowerCase()
+      .replace(/[!@#$%^&*()-=_+|;':",.<>?']/, '') // remove punctuation 
+      .replace(/ /g, '-'); // replace spaces with hypens
+  }
+  
   return (
     <div>
-      { tableOfContents.map((guideSection, index) => {
+      { tableOfContents.map((section, index) => {
           return (
             <div key={index}>
-              <h2>{guideSection.title}</h2>
+              <h2>{section.title}</h2>
               <ul>
-                { guideSection.sections.map((s) => <ListLink key={s.id} guideProps={{ path: `${s.frontmatter.path}`, title: s.frontmatter.title}} />)}
+                { section.guides.map((s) =>  {
+                  return (
+                    <div>
+                      <ListLink key={s.id} guideProps={{ path: `${s.frontmatter.path}`, title: s.frontmatter.title}} />
+                      <ul>
+                        {s.headings.map(sectionHeading => {
+                          const sectionLink = s.frontmatter.path + toSectionLink(sectionHeading.value);
+                          return <ListLink key={sectionLink} guideProps={{ path: `${sectionLink}`, title: sectionHeading.value}} />
+                        })}
+                      </ul>
+                    </div>
+                  );
+                })}
               </ul>
             </div>
           )
