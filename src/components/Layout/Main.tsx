@@ -31,13 +31,13 @@ const styles = (theme: Theme) =>
         return (
           <div className={classes.root}>
             <Grid container spacing={3}>
-              { contentsArray.map((section, index) => {
-                return (
-                  <Grid item xs={12} sm={section.title != 'Getting Started' ? 6 : 12} key={index}>
+              { contentsArray.map((section, index) => 
+                section.title === 'Getting Started' ? 
+                  <Grid item xs={12} sm={12} key={index}>
                     { /** only display sections that have more than one visible guide */}
                     {section.sections.filter((c) => !c.frontmatter.hidden).length > 0 ? 
                       <Paper className={classes.paper}>
-                        <h2>{section.title === 'Getting Started' ? 'Welcome to OrderCloud' : section.title}</h2>
+                        <h2>Welcome to OrderCloud</h2>
                         <ul>
                           { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
                             return (
@@ -48,8 +48,22 @@ const styles = (theme: Theme) =>
                       </Paper>
                     : null }
                   </Grid>
-                )
-              }) }
+                 : <Grid item xs={12} sm={6} key={index}>
+                     { /** only display sections that have more than one visible guide */}
+                     {section.sections.filter((c) => !c.frontmatter.hidden).length > 0 ? 
+                       <Paper className={classes.paper}>
+                         <h2>{section.title}</h2>
+                         <ul>
+                           { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
+                             return (
+                               <ListLink key={s.id} guideProps={{ path: s.frontmatter.path, title: s.frontmatter.title}} />
+                             )
+                           }) }
+                         </ul>
+                       </Paper>
+                     : null }
+                   </Grid>
+              ) }
             </Grid>
           </div>
         )
