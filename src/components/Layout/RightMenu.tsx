@@ -3,13 +3,13 @@ import ListLink from '../Shared/ListLink';
 import { Section } from '../Shared/models/section.model';
 
 export default function RightMenu({ tableOfContents }: {tableOfContents: Section[]}) {
-  console.log(tableOfContents);
 
   function toSectionLink(heading: string): string {
       return '#' + heading.toLowerCase()
       .replace(/[!@#$%^&*()-=_+|;':",.<>?']/, '') // remove punctuation 
       .replace(/ /g, '-'); // replace spaces with hypens
   }
+  
   return (
     <div>
       { tableOfContents.map((section, index) => {
