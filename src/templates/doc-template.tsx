@@ -8,6 +8,7 @@ import  DocFooter  from '../components/Layout/DocFooter';
 import MDXRenderer from "gatsby-plugin-mdx/mdx-renderer"
 import { groupBy as _groupBy, forEach as _forEach, flatten as _flatten } from 'lodash';
 import { withStyles, createStyles, Theme } from '@material-ui/core';
+import utility from '../components/Shared/utility';
 
 const styles = (theme: Theme) => 
   createStyles({
@@ -28,11 +29,7 @@ const Template = withStyles(styles)(
   class extends React.Component<any> {
     public render() {
       const { data: post, classes } = this.props;
-      // THIS SNIPPET IS REUSED IN Main.js CONSIDER MOVING TO A SERVICE
-      const sectionsWithGuides = _groupBy(post.allMdx.edges, 'node.frontmatter.section');
-      let contentsArray = [];
-      _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
-
+      const sections = utility.getSectionsFromQuery(post);
       return (
         <Layout>
           <div className={classes.docContainer}>
@@ -40,10 +37,10 @@ const Template = withStyles(styles)(
             <div className={classes.docBody}>
               <h1>{post.mdx.frontmatter.title}</h1>
               <MDXRenderer>{post.mdx.body}</MDXRenderer>
-              <DocFooter contents={contentsArray} currentGuide={post.mdx.frontmatter.path} />
+              <DocFooter contents={sections} currentGuide={post.mdx.frontmatter.path} />
             </div>
             <div className={classes.docMenu}>
-              <RightMenu tableOfContents={contentsArray} />
+              <RightMenu tableOfContents={sections} />
             </div>
           </div>
         </Layout>
@@ -70,6 +67,9 @@ export const pageQuery = graphql`
       edges {
         node {
           id
+          headings {
+            value
+          }
           frontmatter {
             section
             title

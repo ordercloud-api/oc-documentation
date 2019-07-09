@@ -6,7 +6,7 @@ import { groupBy as _groupBy, forEach as _forEach } from 'lodash';
 
 import ListLink from '../Shared/ListLink';
 import { StaticQuery, graphql } from 'gatsby';
-
+import utility from '../Shared/utility';
 
 const styles = (theme: Theme) => 
   createStyles({
@@ -25,20 +25,19 @@ const styles = (theme: Theme) =>
     class extends React.Component<any> {
       public render() {
         const { tableOfContents, classes } = this.props;
-        const sectionsWithGuides = _groupBy(tableOfContents.allMdx.edges, 'node.frontmatter.section');
-        let contentsArray = [];
-        _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
+        const sections = utility.getSectionsFromQuery(tableOfContents);
+
         return (
           <div className={classes.root}>
             <Grid container spacing={3}>
-              { contentsArray.map((section, index) => 
+              { sections.map((section, index) => 
                 section.title === 'Getting Started' ? 
                   <Grid item xs={12} sm={12} key={index}>
-                    {section.sections.filter((c) => !c.frontmatter.hidden).length > 0 ? 
+                    {section.guides.filter((g) => !g.frontmatter.hidden).length > 0 ? 
                       <Paper className={classes.paper}>
                         <h2>Welcome to OrderCloud</h2>
                         <ul>
-                          { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
+                          { section.guides.filter((c) => !c.frontmatter.hidden).map((s) => {
                             return (
                               <ListLink key={s.id} guideProps={{ path: s.frontmatter.path, title: s.frontmatter.title}} />
                             )
@@ -48,11 +47,11 @@ const styles = (theme: Theme) =>
                     : null }
                   </Grid>
                  : <Grid item xs={12} sm={6} key={index}>
-                     {section.sections.filter((c) => !c.frontmatter.hidden).length > 0 ? 
+                     {section.guides.filter((c) => !c.frontmatter.hidden).length > 0 ? 
                        <Paper className={classes.paper}>
                          <h2>{section.title}</h2>
                          <ul>
-                           { section.sections.filter((c) => !c.frontmatter.hidden).map((s) => {
+                           { section.guides.filter((c) => !c.frontmatter.hidden).map((s) => {
                              return (
                                <ListLink key={s.id} guideProps={{ path: s.frontmatter.path, title: s.frontmatter.title}} />
                              )

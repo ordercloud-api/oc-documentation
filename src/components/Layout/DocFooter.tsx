@@ -15,9 +15,8 @@ const styles = (theme: Theme) =>
 class DocFooter extends React.Component<any> {
     public render() {
         const { contents, currentGuide, classes } = this.props;
-
         const gitHubUrl = 'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs';
-        const flatContents = _flatten(contents.map((c) => c.sections));
+        const flatContents = _flatten(contents.map((c) => c.guides));
         const guideIndex = flatContents.findIndex((section) => section.frontmatter.path === currentGuide);
         
         const directionalButton = (direction) => {
