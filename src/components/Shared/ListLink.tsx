@@ -5,7 +5,7 @@ import { createStyles, Theme, withStyles } from '@material-ui/core';
 const styles = (theme: Theme) => 
   createStyles({
     listItem: {
-        display: 'inline-block', 
+        display: 'block', 
         marginRight: '1rem'
     }
   });
