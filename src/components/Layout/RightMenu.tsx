@@ -6,10 +6,11 @@ export default function RightMenu({ tableOfContents }: {tableOfContents: Section
 
   function toSectionLink(heading: string): string {
       return '#' + heading.toLowerCase()
-      .replace(/[!@#$%^&*()-=_+|;':",.<>?']/, '') // remove punctuation 
+      .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '') // remove punctuation 
+      .replace(/  +/g, ' ') // replace multiple whitespaces by just one
       .replace(/ /g, '-'); // replace spaces with hypens
   }
-  
+
   return (
     <div>
       { tableOfContents.map((section, index) => {
