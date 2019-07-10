@@ -2,14 +2,16 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import Main from '../Layout/Main';
+import ApiReference from '../Layout/ApiReference';
 
 class App extends React.Component {
-  render() {
+  public render() {
     return (
       <Router>
         <Layout>
           <Switch>
             <Route exact path="/" component={Main} />
+            <Route path="/api-reference" component={ApiReference} />
           </Switch>
         </Layout>
       </Router>
