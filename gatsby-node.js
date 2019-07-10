@@ -1,9 +1,15 @@
 const path = require("path")
 
-exports.createPages = ({ actions, graphql }) => {
-  const { createPage } = actions
+exports.createPages = ({
+  actions,
+  graphql
+}) => {
+  const {
+    createPage
+  } = actions
 
   const docTemplate = path.resolve(`src/templates/doc-template.tsx`);
+  const apiReferenceDoc = path.resolve(`src/components/ApiReference.tsx`);
 
   return graphql(`
     {
@@ -33,6 +39,10 @@ exports.createPages = ({ actions, graphql }) => {
         component: docTemplate,
         context: {}, // additional data can be passed via context
       });
+    });
+    createPage({
+      path: '/api-reference',
+      component: apiReferenceDoc
     })
   })
 }
