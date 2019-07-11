@@ -1,6 +1,6 @@
 import React from 'react';
-import apiReferenceUtil from './Shared/apiReferenceUtility';
-import Layout from './Layout/Layout';
+import apiReferenceUtil from '../Shared/apiReferenceUtility';
+import Layout from '../Layout/Layout';
 
 class ApiReference extends React.Component<any> {
 

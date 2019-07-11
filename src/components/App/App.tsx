@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Layout from '../Layout/Layout';
 import Main from '../Layout/Main';
-import ApiReference from '../ApiReference';
+import ApiReference from '../Templates/ApiReference';
 
 class App extends React.Component {
   public render() {

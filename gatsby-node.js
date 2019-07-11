@@ -8,8 +8,8 @@ exports.createPages = ({
     createPage
   } = actions
 
-  const docTemplate = path.resolve(`src/templates/doc-template.tsx`);
-  const apiReferenceDoc = path.resolve(`src/components/ApiReference.tsx`);
+  const docTemplate = path.resolve(`src/components/Templates/DocTemplate.tsx`);
+  const apiReferenceDoc = path.resolve(`src/components/Templates/ApiReference.tsx`);
 
   return graphql(`
     {
