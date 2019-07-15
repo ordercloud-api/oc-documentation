@@ -10,7 +10,17 @@ import {
 
 const styles = (theme: Theme) =>
   createStyles({
-    //styles go:{here}
+    listItem: {
+      '&:hover': {
+        backgroundColor: 'rgba(12, 100, 142, 0.15)',
+      },
+    },
+    listItemLink: {
+      color: theme.palette.primary.main,
+      '&:hover': {
+        color: theme.palette.primary.light,
+      },
+    },
   })
 
 function humanizePath(path) {
@@ -32,7 +42,9 @@ class ListLink extends React.Component<any> {
     return (
       <ListItem button className={classes.listItem}>
         <ListItemText>
-          <Link to={guideProps.path}>{humanizePath(guideProps.title)}</Link>
+          <Link className={classes.listItemLink} to={guideProps.path}>
+            {humanizePath(guideProps.title)}
+          </Link>
         </ListItemText>
       </ListItem>
     )

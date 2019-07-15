@@ -8,6 +8,7 @@ import Jumbotron from '../Shared/Jumbotron'
 import { StaticQuery, graphql } from 'gatsby'
 import utility from '../Shared/utility'
 import { Typography, Container, List } from '@material-ui/core'
+import { mediumgrey } from '../../theme/ocPalette.constants'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -33,35 +34,49 @@ const styles = (theme: Theme) =>
     },
     paperCard: {
       position: 'relative',
-      minHeight: '50vh',
+      minHeight: '35vh',
       display: 'flex',
       flexFlow: 'column nowrap',
       alignItems: 'center',
     },
     paperTitle: {
       width: '100%',
-      backgroundColor: theme.palette.primary.dark,
+      backgroundColor: mediumgrey[50],
       backgroundSize: 'cover',
       minHeight: '15vh',
       display: 'flex',
-      paddingLeft: theme.spacing(2),
-      alignItems: 'center',
+      flexDirection: 'column',
       justifyContent: 'center',
       color: 'white',
+    },
+    paperTitleHeading: {
+      color: mediumgrey[800],
+      paddingLeft: theme.spacing(3),
+      fontWeight: 'bold',
+    },
+    paperTitleSubeading: {
+      color: mediumgrey[300],
+      paddingLeft: theme.spacing(3),
     },
     paperBody: {
       position: 'absolute',
       top: '12vh',
+      left: '20vh',
       margin: '0 auto',
-      width: '85%',
-      padding: theme.spacing(2),
-      color: 'white',
+      width: '75%',
+      padding: 0,
       minHeight: 'min-content',
       zIndex: 1,
+      '@media (max-width:992px)': {
+        left: '10vh',
+      },
     },
     paperList: {
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
+      '@media (max-width:768px)': {
+        gridTemplateColumns: '1fr',
+      },
     },
     //utility classes
     mr3: {
@@ -83,6 +98,9 @@ const styles = (theme: Theme) =>
     mx3: {
       marginLeft: theme.spacing(3),
       marginRight: theme.spacing(3),
+    },
+    pl3: {
+      paddingLeft: theme.spacing(3),
     },
   })
 
@@ -106,12 +124,28 @@ const Main = withStyles(styles)(
                     0 ? (
                       <div className={classes.paperCard}>
                         <Paper className={classes.paperTitle}>
-                          <Typography variant="h4" component="h2">
+                          <Typography
+                            className={classes.paperTitleHeading}
+                            variant="h5"
+                            component="h2"
+                          >
                             {section.title}
+                          </Typography>
+                          {/* TODO: ALEXA CAN YOU MAKE THIS??? <Typography>{section.subtitle}</Typography> */}
+                          <Typography
+                            className={classes.paperTitleSubeading}
+                            variant="body2"
+                          >
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Duis vel libero sed arcu convallis tempus.
                           </Typography>
                         </Paper>
                         <Paper className={classes.paperBody}>
-                          <List className={classes.paperList} component="nav">
+                          <List
+                            disablePadding="true"
+                            dense="true"
+                            className={classes.paperList}
+                          >
                             {section.guides
                               .filter(c => !c.frontmatter.hidden)
                               .map(s => {
