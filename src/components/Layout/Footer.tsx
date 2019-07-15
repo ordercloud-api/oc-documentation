@@ -13,7 +13,7 @@ import { mediumgrey } from '../../theme/ocPalette.constants'
 const styles = (theme: Theme) =>
   createStyles({
     ocFooter: {
-      backgroundColor: mediumgrey[100],
+      backgroundColor: mediumgrey[50],
       flexDirection: 'column',
       alignItems: 'stretch',
       display: 'flex',
