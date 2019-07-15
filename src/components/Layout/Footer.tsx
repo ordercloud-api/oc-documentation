@@ -1,14 +1,26 @@
-import React from 'react';
-import { Link } from 'gatsby';
+import { Link } from 'gatsby'
+import React from 'react'
+import { Theme, createStyles, withStyles } from '@material-ui/core'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import { darkgrey } from '../../theme/ocPalette.constants'
+const styles = (theme: Theme) =>
+  createStyles({
+    footer: {
+      minHeight: '10vh',
+      backgroundColor: darkgrey[500],
+    },
+  })
 
-const Footer = () => (
-  <footer style={{
-      background: 'linear-gradient(180deg, #045479 0%, #2D92C0 100%',
-      height: '84px',
-    }}
-  >
-    <Link to="/sample-markdown-format">Sample Markdown File</Link>
-  </footer>
-);
+class Footer extends React.Component<any> {
+  public render() {
+    const { classes } = this.props
+    return (
+      <AppBar className={classes.footer} color="primary" position="sticky">
+        <Toolbar></Toolbar>
+      </AppBar>
+    )
+  }
+}
 
-export default Footer
+export default withStyles(styles)(Footer)
