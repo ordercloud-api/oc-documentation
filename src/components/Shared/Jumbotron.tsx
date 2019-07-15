@@ -9,45 +9,47 @@ import {
   Button,
 } from '@material-ui/core'
 import { Link as LinkyDinky } from 'gatsby'
-import classnames from 'classnames'
 import Particles from 'react-particles-js'
 
 const styles = (theme: Theme) =>
   createStyles({
     jumbotron: {
       display: 'flex',
+      position: 'relative',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
       height: '50vh',
       backgroundColor: 'transparent',
-      color: 'white',
       borderRadius: 0,
-      position: 'relative',
+      overflowY: 'hidden',
+      backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
     },
     jumbotronParticle: {
       position: 'absolute',
-      backgroundColor: theme.palette.primary.main,
-      backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
+      backgroundColor: 'transparent',
       width: '100vw',
-      height: '50vh',
+      overflowY: 'hidden',
     },
-    jumbotronHeading: {
+    jumbotronContainer: {
+      backgroundColor: 'transparent',
+      boxShadow: 'none',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
       zIndex: 1,
     },
     jumbotronLinkGroup: {
       display: 'flex',
       maxWidth: '75vw',
-      marginTop: theme.spacing(4),
-    },
-    jumbtronBtnGroupLink: {
-      color: theme.palette.text.primary,
+      marginTop: theme.spacing(5),
     },
     jumbotronLinkGroupLink: {
-      color: 'white',
-    },
-    mr3: {
-      marginRight: theme.spacing(3),
+      '&:first-of-type': {
+        marginRight: theme.spacing(3),
+      },
     },
   })
 
@@ -55,13 +57,13 @@ class Jumbotron extends React.Component<any> {
   public render() {
     const { classes } = this.props
     return (
-      <Fragment>
+      <div className={classes.jumbotron}>
         <Particles
           className={classes.jumbotronParticle}
           params={{
             particles: {
               number: {
-                value: 150,
+                value: 250,
               },
               size: {
                 value: 0.25,
@@ -77,7 +79,7 @@ class Jumbotron extends React.Component<any> {
             },
           }}
         />
-        <Paper className={classes.jumbotron}>
+        <Paper className={classes.jumbotronContainer}>
           <Typography
             className={classes.jumbotronHeading}
             variant="h2"
@@ -85,24 +87,24 @@ class Jumbotron extends React.Component<any> {
           >
             OrderCloud Documentation
           </Typography>
-          <div className="{classes.jumbotronLinkGroup}">
+          <div className={classes.jumbotronLinkGroup}>
             <Button
               href="/herp"
               variant="contained"
-              className="{classes.jumbotronLinkGroupLink, mr3}"
+              className={classes.jumbotronLinkGroupLink}
             >
               Herp!
             </Button>
             <Button
               href="/derp"
               variant="contained"
-              className="{classes.jumbotronLinkGroupLink}"
+              className={classes.jumbotronLinkGroupLink}
             >
               Derp!
             </Button>
           </div>
         </Paper>
-      </Fragment>
+      </div>
     )
   }
 }
