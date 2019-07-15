@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react'
-// import { Link } from 'gatsby';
 import {
+  Link,
   createStyles,
   Theme,
   withStyles,
   Typography,
   Paper,
+  Button,
 } from '@material-ui/core'
+import { Link as LinkyDinky } from 'gatsby'
+import classnames from 'classnames'
 import Particles from 'react-particles-js'
 
 const styles = (theme: Theme) =>
@@ -21,24 +24,30 @@ const styles = (theme: Theme) =>
       color: 'white',
       borderRadius: 0,
       position: 'relative',
-      backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
     },
     jumbotronParticle: {
       position: 'absolute',
-      // backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.main,
+      backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
       width: '100vw',
       height: '50vh',
     },
     jumbotronHeading: {
       zIndex: 1,
     },
-    jumbtronBtnGroup: {
+    jumbotronLinkGroup: {
       display: 'flex',
       maxWidth: '75vw',
       marginTop: theme.spacing(4),
     },
     jumbtronBtnGroupLink: {
       color: theme.palette.text.primary,
+    },
+    jumbotronLinkGroupLink: {
+      color: 'white',
+    },
+    mr3: {
+      marginRight: theme.spacing(3),
     },
   })
 
@@ -76,6 +85,22 @@ class Jumbotron extends React.Component<any> {
           >
             OrderCloud Documentation
           </Typography>
+          <div className="{classes.jumbotronLinkGroup}">
+            <Button
+              href="/herp"
+              variant="contained"
+              className="{classes.jumbotronLinkGroupLink, mr3}"
+            >
+              Herp!
+            </Button>
+            <Button
+              href="/derp"
+              variant="contained"
+              className="{classes.jumbotronLinkGroupLink}"
+            >
+              Derp!
+            </Button>
+          </div>
         </Paper>
       </Fragment>
     )
