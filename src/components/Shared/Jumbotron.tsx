@@ -89,6 +89,7 @@ class Jumbotron extends React.Component<any> {
           </Typography>
           <div className={classes.jumbotronLinkGroup}>
             <Button
+              size="large"
               href="/herp"
               variant="contained"
               className={classes.jumbotronLinkGroupLink}
@@ -96,11 +97,13 @@ class Jumbotron extends React.Component<any> {
               Herp!
             </Button>
             <Button
+              size="large"
+              color="secondary"
               href="/derp"
-              variant="contained"
+              variant="outlined"
               className={classes.jumbotronLinkGroupLink}
             >
-              Derp!
+              Derp?
             </Button>
           </div>
         </Paper>
