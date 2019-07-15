@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Theme, withStyles, createStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
@@ -7,6 +7,7 @@ import ListLink from '../Shared/ListLink'
 import Jumbotron from '../Shared/Jumbotron'
 import { StaticQuery, graphql } from 'gatsby'
 import utility from '../Shared/utility'
+import { Typography, Container } from '@material-ui/core'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -18,11 +19,34 @@ const styles = (theme: Theme) =>
       marginTop: theme.spacing(3),
       marginBottom: theme.spacing(3),
     },
-    paper: {
+    paperCard: {
+      position: 'relative',
+      minHeight: '35vh',
+      display: 'flex',
+      flexFlow: 'column nowrap',
+      alignItems: 'center',
+    },
+    paperTitle: {
+      width: '100%',
+      backgroundImage:
+        'url(https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80)',
+      backgroundSize: 'cover',
+      minHeight: '15vh',
+      display: 'flex',
+      paddingLeft: theme.spacing(2),
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
+    },
+    paperList: {
+      position: 'absolute',
+      top: '12vh',
+      margin: '0 auto',
+      width: '85%',
       padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-      minHeight: 300,
+      color: 'white',
+      minHeight: 'min-content',
+      zIndex: 1,
     },
     //utility classes
     mr3: {
@@ -71,24 +95,30 @@ const Main = withStyles(styles)(
                 >
                   {section.guides.filter(c => !c.frontmatter.hidden).length >
                   0 ? (
-                    <Paper className={classes.paper}>
-                      <h2>{section.title}</h2>
-                      <ul>
-                        {section.guides
-                          .filter(c => !c.frontmatter.hidden)
-                          .map(s => {
-                            return (
-                              <ListLink
-                                key={s.id}
-                                guideProps={{
-                                  path: s.frontmatter.path,
-                                  title: s.frontmatter.title,
-                                }}
-                              />
-                            )
-                          })}
-                      </ul>
-                    </Paper>
+                    <div className={classes.paperCard}>
+                      <Paper className={classes.paperTitle}>
+                        <Typography variant="h4" component="h2">
+                          {section.title}
+                        </Typography>
+                      </Paper>
+                      <Paper className={classes.paperList}>
+                        <ul>
+                          {section.guides
+                            .filter(c => !c.frontmatter.hidden)
+                            .map(s => {
+                              return (
+                                <ListLink
+                                  key={s.id}
+                                  guideProps={{
+                                    path: s.frontmatter.path,
+                                    title: s.frontmatter.title,
+                                  }}
+                                />
+                              )
+                            })}
+                        </ul>
+                      </Paper>
+                    </div>
                   ) : null}
                 </Grid>
               )
