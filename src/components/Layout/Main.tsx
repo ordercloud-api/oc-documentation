@@ -3,18 +3,20 @@ import { Theme, withStyles, createStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import { groupBy as _groupBy, forEach as _forEach } from 'lodash'
-import Particles from 'react-particles-js'
 import ListLink from '../Shared/ListLink'
 import Jumbotron from '../Shared/Jumbotron'
 import { StaticQuery, graphql } from 'gatsby'
 import utility from '../Shared/utility'
-import { Typography } from '@material-ui/core'
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      overflowX: 'hidden',
+      overflow: 'hidden',
+    },
+    cardGroup: {
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(3),
     },
     paper: {
       padding: theme.spacing(2),
@@ -35,6 +37,14 @@ const styles = (theme: Theme) =>
     mb3: {
       marginBottom: theme.spacing(3),
     },
+    my3: {
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(3),
+    },
+    mx3: {
+      marginLeft: theme.spacing(3),
+      marginRight: theme.spacing(3),
+    },
   })
 
 const Main = withStyles(styles)(
@@ -52,7 +62,13 @@ const Main = withStyles(styles)(
                   <Jumbotron />
                 </Grid>
               ) : (
-                <Grid item xs={12} sm={6} key={index}>
+                <Grid
+                  className={classes.cardGroup}
+                  item
+                  xs={12}
+                  sm={6}
+                  key={index}
+                >
                   {section.guides.filter(c => !c.frontmatter.hidden).length >
                   0 ? (
                     <Paper className={classes.paper}>
