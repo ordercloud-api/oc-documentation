@@ -33,8 +33,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
-    "react-particles-js": "^2.6.0",
-    "react-router-dom": "^5.0.1"
+    "react-particles-js": "^2.6.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.136",
@@ -49,7 +48,7 @@
   "license": "MIT",
   "scripts": {
     "start": "gatsby develop --open",
-    "build": "gatsby build",
+    "build": "gatsby build --prefix-paths",
     "format": "prettier --write src/**/*.{js,jsx}",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
