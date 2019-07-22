@@ -19,18 +19,6 @@ const styles = (theme: Theme) =>
     cardContainer: {
       display: 'flex',
       flex: '1 1 auto',
-      'paperTitle:nth-of-type(1)': {
-        backgroundImage:
-          'url(https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80)',
-      },
-      'paperTitle:nth-of-type(2)': {
-        backgroundImage:
-          'url(https://images.unsplash.com/photo-1559762691-617a33825bc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80)',
-      },
-      'paperTitle:nth-of-type(3)': {
-        backgroundImage:
-          'url(https://images.unsplash.com/photo-1560131323-29d50e8d1b22?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2167&q=80)',
-      },
     },
     paperCard: {
       position: 'relative',
@@ -142,8 +130,8 @@ const Main = withStyles(styles)(
                         </Paper>
                         <Paper className={classes.paperBody}>
                           <List
-                            disablePadding="true"
-                            dense="true"
+                            disablePadding={true}
+                            dense={true}
                             className={classes.paperList}
                           >
                             {section.guides
