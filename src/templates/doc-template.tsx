@@ -11,7 +11,7 @@ import {
   forEach as _forEach,
   flatten as _flatten,
 } from 'lodash'
-import { withStyles, createStyles, Theme } from '@material-ui/core'
+import { withStyles, createStyles, Theme, Typography } from '@material-ui/core'
 import utility from '../components/Shared/utility'
 
 const styles = (theme: Theme) =>
@@ -41,8 +41,12 @@ const Template = withStyles(styles)(
               title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`}
             />
             <div className={classes.docBody}>
-              <h1>{post.mdx.frontmatter.title}</h1>
-              <MDXRenderer>{post.mdx.body}</MDXRenderer>
+              <Typography variant="h2" component="h1">
+                {post.mdx.frontmatter.title}
+              </Typography>
+              <Typography>
+                <MDXRenderer>{post.mdx.body}</MDXRenderer>
+              </Typography>
               <DocFooter
                 contents={sections}
                 currentGuide={post.mdx.frontmatter.path}
