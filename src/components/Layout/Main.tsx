@@ -1,14 +1,20 @@
 import React, { Fragment } from 'react'
-import { Theme, withStyles, createStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
+import {
+  Theme,
+  withStyles,
+  createStyles,
+  Paper,
+  Grid,
+  Typography,
+  Container,
+  List,
+} from '@material-ui/core/'
 import { groupBy as _groupBy, forEach as _forEach } from 'lodash'
 import ListLink from '../Shared/ListLink'
 import Jumbotron from '../Shared/Jumbotron'
 import { StaticQuery, graphql } from 'gatsby'
 import utility from '../Shared/utility'
-import { Typography, Container, List } from '@material-ui/core'
-import { mediumgrey } from '../../theme/ocPalette.constants'
+import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
 
 const styles = (theme: Theme) =>
   createStyles({
