@@ -1,10 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 // import SEO from '../components/seo';
-import App from '../components/App/app';
+import App from '../components/App/App'
 
-const IndexPage = () => (
-  <App />
-)
+const IndexPage = () => <App />
 
-export default IndexPage;
+export default IndexPage
