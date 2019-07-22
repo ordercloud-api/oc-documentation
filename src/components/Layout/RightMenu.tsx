@@ -1,6 +1,6 @@
 import React from 'react'
 import { Section, Guide } from '../Shared/models/section.model'
-import { Link } from '@reach/router'
+import { Link } from 'gatsby'
 
 import {
   List,
