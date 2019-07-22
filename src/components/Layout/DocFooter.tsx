@@ -19,6 +19,7 @@ import {
   Typography,
   Fab,
   IconButton,
+  Grid,
 } from '@material-ui/core'
 import { Link } from 'gatsby'
 import { ordercloudblue } from '../../theme/ocPalette.constants'
@@ -45,6 +46,23 @@ const styles = (theme: Theme) =>
       justifyContent: 'space-between',
       alignItems: 'center',
     },
+    gridContainer: {
+      marginBlock: '2rem;',
+    },
+    gridItem: {
+      display: 'flex',
+    },
+    btnNavigation: {
+      display: 'flex',
+      justifyContent: 'center',
+      width: '100%',
+    },
+    paperMain: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: '1rem',
+    },
   })
 
 class DocFooter extends React.Component<any> {
@@ -62,61 +80,78 @@ class DocFooter extends React.Component<any> {
         direction === 'Previous' ? guideIndex - 1 : guideIndex + 1
       return newGuideIndex > 0 && newGuideIndex < flatContents.length - 1 ? (
         <Button
+          className={classes.btnNavigation}
           size="small"
           color="primary"
-          aria-label="Delete"
-          className={classes.fab}
+          aria-label="Guide Navigation Button"
         >
-          <KeyboardArrowLeft className={classes.extendedIcon} />{' '}
+          {direction === 'Previous' ? (
+            <KeyboardArrowLeft className={classes.extendedIcon} />
+          ) : null}
           <Link to={flatContents[newGuideIndex].frontmatter.path}>
             {direction} Guide
           </Link>
-          <KeyboardArrowRight className={classes.extendedIcon} />{' '}
+          {direction === 'Next' ? <KeyboardArrowRight /> : null}
         </Button>
       ) : null
     }
 
     return (
       //TODO: Link to Slack, syntax on ordercloud tag
-      <Paper className={classes.section}>
-        <div className={classes.groupHelpful}>
-          <IconButton className={classes.groupHelpfulBtn} aria-label="Helpful">
-            <ThumbUp fontSize="small" />
-          </IconButton>
-          <Typography variant="body2">Was this guide helpful?</Typography>
-          <IconButton
-            className={classes.groupHelpfulBtn}
-            aria-label="Not Helpful"
-          >
-            <ThumbDown fontSize="small" />
-          </IconButton>
-        </div>
-        <Typography>
-          If you have any questions, please ask our Developer Community on
-          Slack, or post your question on{' '}
-          <a
-            href="https://stackoverflow.com/questions/tagged/ordercloud"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Stack Overflow
-          </a>{' '}
-          using the tag: <strong>ordercloud</strong>.
-        </Typography>
-        <div className={classes.groupDirection}>
+      <Grid
+        className={classes.gridContainer}
+        container
+        spacing={3}
+        justify="space-between"
+        alignItems="stretch"
+      >
+        <Grid className={classes.gridItem} item xs={2}>
           {directionalButton('Previous')}
+        </Grid>
+        <Grid item xs={8}>
+          <Paper className={classes.paperMain}>
+            <div className={classes.groupHelpful}>
+              <IconButton
+                className={classes.groupHelpfulBtn}
+                aria-label="Helpful"
+              >
+                <ThumbUp fontSize="small" />
+              </IconButton>
+              <Typography variant="body2">Was this guide helpful?</Typography>
+              <IconButton
+                className={classes.groupHelpfulBtn}
+                aria-label="Not Helpful"
+              >
+                <ThumbDown fontSize="small" />
+              </IconButton>
+            </div>
+            <Typography align="center">
+              If you have any questions, please ask our Developer Community on
+              Slack, or post your question on{' '}
+              <a
+                href="https:stackoverflow.com/questions/tagged/ordercloud"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Stack Overflow
+              </a>{' '}
+              using the tag: <strong>ordercloud</strong>.
+            </Typography>
+            <Typography variant="body2">
+              <a
+                href={`${gitHubUrl}${currentGuide}.md`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Contribute to this doc
+              </a>
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid className={classes.gridItem} item xs={2}>
           {directionalButton('Next')}
-        </div>
-        <Typography variant="body2">
-          <a
-            href={`${gitHubUrl}${currentGuide}.md`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Contribute to this doc
-          </a>
-        </Typography>
-      </Paper>
+        </Grid>
+      </Grid>
     )
   }
 }
