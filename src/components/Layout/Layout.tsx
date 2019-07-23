@@ -1,11 +1,11 @@
-import React from 'react';
-import Header from './Header';
-import Footer from './Footer';
+import React, { Fragment } from 'react'
+import Header from './Header'
+import Footer from './Footer'
 
 export default ({ children }) => (
-  <div>
+  <Fragment>
     <Header siteTitle="OrderCloud Documentation" />
-      {children}
+    {children}
     <Footer />
-  </div>
+  </Fragment>
 )

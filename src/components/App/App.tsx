@@ -1,20 +1,26 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Layout from '../Layout/Layout';
-import Main from '../Layout/Main';
+import React from 'react'
+import { Router } from '@reach/router'
+import Layout from '../Layout/Layout'
+import Main from '../Layout/Main'
+import { MuiThemeProvider } from '@material-ui/core/styles'
+import ORDERCLOUD_THEME from '../../theme/theme.constants'
 
 class App extends React.Component {
-  render() {
+  public render() {
     return (
-      <Router>
+      <MuiThemeProvider theme={ORDERCLOUD_THEME}>
         <Layout>
-          <Switch>
-            <Route exact path="/" component={Main} />
-          </Switch>
+          <Router>
+            <Main
+              path={
+                process.env.NODE_ENV === 'production' ? '/documentation' : '/'
+              }
+            />
+          </Router>
         </Layout>
-      </Router>
-    );
+      </MuiThemeProvider>
+    )
   }
 }
 
-export default App;
+export default App

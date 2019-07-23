@@ -1,51 +1,68 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
-import Layout from '../components/Layout/Layout';
-import RightMenu from '../components/Layout/RightMenu';
-import '../styles/doc-template.css';
-import { graphql } from 'gatsby';
-import  DocFooter  from '../components/Layout/DocFooter';
-import { groupBy as _groupBy, forEach as _forEach, flatten as _flatten } from 'lodash';
-import { withStyles, createStyles, Theme } from '@material-ui/core';
+import React from 'react'
+import { Helmet } from 'react-helmet'
+import Layout from '../components/Layout/Layout'
+import RightMenu from '../components/Layout/RightMenu'
+import '../styles/doc-template.css'
+import { graphql } from 'gatsby'
+import DocFooter from '../components/Layout/DocFooter'
+import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
+import {
+  groupBy as _groupBy,
+  forEach as _forEach,
+  flatten as _flatten,
+} from 'lodash'
+import {
+  withStyles,
+  createStyles,
+  Theme,
+  Typography,
+  Grid,
+  Container,
+} from '@material-ui/core'
+import utility from '../components/Shared/utility'
 
-const styles = (theme: Theme) => 
+const styles = (theme: Theme) =>
   createStyles({
     docContainer: {
-      margin: '0 3rem',
-      display: 'flex',
-      flexDirection: 'row'
+      marginBlockStart: '2rem',
+      marginBlockEnd: '4rem',
     },
-    docBody: {
-      maxWidth: '70%'
-    },
-    docMenu: {
-      maxWidth: '30%'
-    }
   })
 
 const Template = withStyles(styles)(
   class extends React.Component<any> {
     public render() {
-      const { data: post, classes } = this.props;
-      // THIS SNIPPET IS REUSED IN Main.js CONSIDER MOVING TO A SERVICE
-      const sectionsWithGuides = _groupBy(post.allMarkdownRemark.edges, 'node.frontmatter.section');
-      let contentsArray = [];
-      _forEach(sectionsWithGuides, (section, title) => contentsArray = [...contentsArray, {title: title, sections: section.map((s) => s.node)}]);
-
+      const { data: post, classes, location } = this.props
+      const sections = utility.getSectionsFromQuery(post)
       return (
         <Layout>
-          <div className={classes.docContainer}>
-            <Helmet title={`OrderCloud Documentation - ${post.markdownRemark.frontmatter.title}`} />
-            <div className={classes.docBody}>
-              <h1>{post.markdownRemark.frontmatter.title}</h1>
-              <div dangerouslySetInnerHTML={{ __html: post.markdownRemark.html }}
-              />
-              <DocFooter contents={contentsArray} currentGuide={post.markdownRemark.frontmatter.path} />
-            </div>
-            <div className={classes.docMenu}>
-              <RightMenu tableOfContents={contentsArray} />
-            </div>
-          </div>
+          <Container maxWidth="lg">
+            <Grid container className={classes.docContainer} spacing={3}>
+              <Grid item xs={9}>
+                <Helmet
+                  title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`}
+                />
+                <div className={classes.docBody}>
+                  <Typography variant="h2" component="h1">
+                    {post.mdx.frontmatter.title}
+                  </Typography>
+                  <Typography>
+                    <MDXRenderer>{post.mdx.body}</MDXRenderer>
+                  </Typography>
+                  <DocFooter
+                    contents={sections}
+                    currentGuide={post.mdx.frontmatter.path}
+                  />
+                </div>
+              </Grid>
+              <Grid item className={classes.docMenu} xs={3}>
+                <RightMenu
+                  sections={sections}
+                  currentPath={location.pathname}
+                />
+              </Grid>
+            </Grid>
+          </Container>
         </Layout>
       )
     }
@@ -54,22 +71,21 @@ const Template = withStyles(styles)(
 
 export const pageQuery = graphql`
   query DocTemplateByPath($path: String!) {
-    markdownRemark(
-      frontmatter: { path: { eq: $path } }
-    ) {
-      html
+    mdx(frontmatter: { path: { eq: $path } }) {
+      body
       frontmatter {
         path
         title
       }
     }
-    allMarkdownRemark(
-      sort: { order: ASC, fields: [frontmatter___priority] }
-    ) {
+    allMdx(sort: { order: ASC, fields: [frontmatter___priority] }) {
       totalCount
       edges {
         node {
           id
+          headings {
+            value
+          }
           frontmatter {
             section
             title
@@ -81,4 +97,4 @@ export const pageQuery = graphql`
   }
 `
 
-export default Template;
+export default Template

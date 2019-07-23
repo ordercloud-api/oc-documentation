@@ -7,13 +7,14 @@ exports.createPages = ({ actions, graphql }) => {
 
   return graphql(`
     {
-      allMarkdownRemark(
-        sort: { order: ASC, fields: [frontmatter___priority] }
+      allMdx (
+        sort: { order: ASC, fields: [frontmatter___priority] }	
         limit: 1000
       ) {
         edges {
           node {
             frontmatter {
+              title
               path
             }
           }
@@ -25,7 +26,7 @@ exports.createPages = ({ actions, graphql }) => {
       return Promise.reject(result.errors)
     }
 
-    result.data.allMarkdownRemark.edges.forEach((edge) => {
+    result.data.allMdx.edges.forEach((edge) => {
       const path = edge.node.frontmatter.path;
       createPage({
         path: path,
