@@ -4,6 +4,7 @@ module.exports = {
     description: `Documentation for OrderCloud's B2B eCommerce API`,
     author: `@gatsbyjs`,
   },
+  pathPrefix: '/documentation',
   plugins: [
     `gatsby-plugin-catch-links`,
     `gatsby-plugin-material-ui`,
