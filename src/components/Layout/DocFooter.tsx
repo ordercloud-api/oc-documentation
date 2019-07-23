@@ -6,7 +6,7 @@ import {
   flatten as _flatten,
 } from 'lodash'
 import { Button, createStyles, Theme, withStyles } from '@material-ui/core'
-import { Link } from 'gatsby'
+import { Link } from '../Shared/Link'
 
 const styles = (theme: Theme) =>
   createStyles({
