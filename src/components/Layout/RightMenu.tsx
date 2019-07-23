@@ -14,19 +14,45 @@ import {
   Typography,
   Divider,
   Paper,
+  AppBar,
+  Toolbar,
+  CssBaseline,
+  Drawer,
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
+
+const drawerWidth = '25vw'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
+      display: 'flex',
     },
-    nested: {
-      paddingLeft: theme.spacing(4),
+    drawer: {
+      [theme.breakpoints.up('sm')]: {
+        width: drawerWidth,
+        flexShrink: 0,
+      },
     },
+    appBar: {
+      marginLeft: drawerWidth,
+      [theme.breakpoints.up('sm')]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+      },
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up('sm')]: {
+        display: 'none',
+      },
+    },
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+      width: drawerWidth,
+    },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(3),
     sectionTitle: {
       textTransform: 'uppercase',
     },
@@ -51,7 +77,15 @@ export default function RightMenu(props: RightMenuProps) {
   const { sections, currentPath } = props
   const classes = useStyles(props)
   return (
-    <Paper>
+    <Drawer
+      className={classes.drawer}
+      variant="permanent"
+      classes={{
+        paper: classes.drawerPaper,
+      }}
+      anchor="right"
+    >
+      {' '}
       {sections.map(section => {
         return (
           <SectionMenu
@@ -61,7 +95,7 @@ export default function RightMenu(props: RightMenuProps) {
           />
         )
       })}
-    </Paper>
+    </Drawer>
   )
 }
 
