@@ -17,7 +17,6 @@ import {
   withStyles,
   Paper,
   Typography,
-  Fab,
   IconButton,
   Grid,
 } from '@material-ui/core'
@@ -30,7 +29,6 @@ const styles = (theme: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      marginBlock: '2rem',
       padding: theme.spacing(2),
       backgroundColor: ordercloudblue,
     },
@@ -47,7 +45,8 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
     },
     gridContainer: {
-      marginBlock: '2rem;',
+      marginBlockStart: '3rem',
+      marginBlockEnd: '2rem',
     },
     gridItem: {
       display: 'flex',
@@ -62,6 +61,9 @@ const styles = (theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
       padding: '1rem',
+    },
+    typographyMain: {
+      marginBlockEnd: '2rem;',
     },
   })
 
@@ -125,7 +127,7 @@ class DocFooter extends React.Component<any> {
                 <ThumbDown fontSize="small" />
               </IconButton>
             </div>
-            <Typography align="center">
+            <Typography classNam={classes.typographyMain} align="center">
               If you have any questions, please ask our Developer Community on
               Slack, or post your question on{' '}
               <a
@@ -137,15 +139,15 @@ class DocFooter extends React.Component<any> {
               </a>{' '}
               using the tag: <strong>ordercloud</strong>.
             </Typography>
-            <Typography variant="body2">
-              <a
-                href={`${gitHubUrl}${currentGuide}.md`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Contribute to this doc
-              </a>
-            </Typography>
+            <Button
+              size="small"
+              variant="text"
+              href={`${gitHubUrl}${currentGuide}.md`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Contribute to this doc
+            </Button>
           </Paper>
         </Grid>
         <Grid className={classes.gridItem} item xs={2}>
