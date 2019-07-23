@@ -13,6 +13,7 @@ import {
   makeStyles,
   Typography,
   Divider,
+  Paper,
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
@@ -50,7 +51,7 @@ export default function RightMenu(props: RightMenuProps) {
   const { sections, currentPath } = props
   const classes = useStyles(props)
   return (
-    <div>
+    <Paper>
       {sections.map(section => {
         return (
           <SectionMenu
@@ -60,7 +61,7 @@ export default function RightMenu(props: RightMenuProps) {
           />
         )
       })}
-    </div>
+    </Paper>
   )
 }
 
@@ -81,7 +82,7 @@ function SectionMenu(props: SectionMenuProps) {
   }
 
   return (
-    <List component="nav" className={classes.root}>
+    <List className={classes.root}>
       <ListItem button onClick={handleClick}>
         <ListItemText>
           <Typography className={classes.sectionTitle}>

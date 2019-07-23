@@ -11,21 +11,21 @@ import {
   forEach as _forEach,
   flatten as _flatten,
 } from 'lodash'
-import { withStyles, createStyles, Theme } from '@material-ui/core'
+import {
+  withStyles,
+  createStyles,
+  Theme,
+  Typography,
+  Grid,
+  Container,
+} from '@material-ui/core'
 import utility from '../components/Shared/utility'
 
 const styles = (theme: Theme) =>
   createStyles({
     docContainer: {
-      margin: '0 3rem',
-      display: 'flex',
-      flexDirection: 'row',
-    },
-    docBody: {
-      maxWidth: '70%',
-    },
-    docMenu: {
-      maxWidth: '30%',
+      marginBlockStart: '2rem',
+      marginBlockEnd: '4rem',
     },
   })
 
@@ -36,22 +36,33 @@ const Template = withStyles(styles)(
       const sections = utility.getSectionsFromQuery(post)
       return (
         <Layout>
-          <div className={classes.docContainer}>
-            <Helmet
-              title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`}
-            />
-            <div className={classes.docBody}>
-              <h1>{post.mdx.frontmatter.title}</h1>
-              <MDXRenderer>{post.mdx.body}</MDXRenderer>
-              <DocFooter
-                contents={sections}
-                currentGuide={post.mdx.frontmatter.path}
-              />
-            </div>
-            <div className={classes.docMenu}>
-              <RightMenu sections={sections} currentPath={location.pathname} />
-            </div>
-          </div>
+          <Container maxWidth="lg">
+            <Grid container className={classes.docContainer} spacing={3}>
+              <Grid item xs={9}>
+                <Helmet
+                  title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`}
+                />
+                <div className={classes.docBody}>
+                  <Typography variant="h2" component="h1">
+                    {post.mdx.frontmatter.title}
+                  </Typography>
+                  <Typography>
+                    <MDXRenderer>{post.mdx.body}</MDXRenderer>
+                  </Typography>
+                  <DocFooter
+                    contents={sections}
+                    currentGuide={post.mdx.frontmatter.path}
+                  />
+                </div>
+              </Grid>
+              <Grid item className={classes.docMenu} xs={3}>
+                <RightMenu
+                  sections={sections}
+                  currentPath={location.pathname}
+                />
+              </Grid>
+            </Grid>
+          </Container>
         </Layout>
       )
     }
