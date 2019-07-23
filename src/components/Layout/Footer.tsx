@@ -1,4 +1,4 @@
-import { Link } from 'gatsby'
+import { Link } from '../Shared/Link'
 import React from 'react'
 import {
   Theme,
