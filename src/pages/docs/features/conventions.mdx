@@ -1,12 +1,12 @@
 ---
-path: '/features/conventions'
-title: 'Conventions'
-section: 'Features'
+path: "/features/conventions"
+title: "Conventions"
+section: "Features"
 priority: 3
 hidden: false
 ---
 
-import { Link } from 'components/Shared/Link'
+import { Link } from 'gatsby'
 
 ## Overview
 
@@ -33,6 +33,7 @@ OrderCloud API authentication is based on the [OAuth 2 specification](http://too
 Writable IDs can be extremely useful for back-office integrations. They can potentially eliminate the need for a mapping middleware layer.
 
 Most resources that map to an entity of some sort (Orders, Users, Addresses, etc.) contain an ID that is optionally writable on creation or update. If you do not pass one, one will be auto-generated and returned in the response, and will be guaranteed to be unique. If you choose to pass an ID, you are responsible for ensuring uniqueness. Things that live under the context of a single Buyer need only be unique within that context. Things that are shared (such as products) must be unique across the entire Admin organization.
+
 
 ## Error Handling
 
