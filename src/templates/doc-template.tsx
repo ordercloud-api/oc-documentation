@@ -17,7 +17,7 @@ import utility from '../components/Shared/utility'
 const styles = (theme: Theme) =>
   createStyles({
     docContainer: {
-      margin: '0 3rem',
+      margin: '2rem 3rem',
       display: 'flex',
       flexDirection: 'row',
     },
