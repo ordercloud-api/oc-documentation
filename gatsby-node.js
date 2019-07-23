@@ -36,3 +36,15 @@ exports.createPages = ({ actions, graphql }) => {
     })
   })
 }
+
+exports.onCreateWebpackConfig = ({
+  actions
+}) => {
+  // lets us reference components in mdx files from 'components/my-awesome-component'
+  // since mdx doesn't support relative files: https://github.com/ChristopherBiscardi/gatsby-mdx/issues/176#issuecomment-429569578
+  actions.setWebpackConfig({
+    resolve: {
+      modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    },
+  })
+}

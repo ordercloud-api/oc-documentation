@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'gatsby'
+import { Link } from '../Shared/Link'
 import {
   createStyles,
   Theme,
