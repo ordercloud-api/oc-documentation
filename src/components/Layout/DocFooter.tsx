@@ -21,17 +21,10 @@ import {
   Grid,
 } from '@material-ui/core'
 import { Link } from 'gatsby'
-import { ordercloudblue } from '../../theme/ocPalette.constants'
+import { mediumgrey } from '../../theme/ocPalette.constants'
 
 const styles = (theme: Theme) =>
   createStyles({
-    section: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: theme.spacing(2),
-      backgroundColor: ordercloudblue,
-    },
     groupHelpful: {
       display: 'flex',
       alignItems: 'center',
@@ -61,9 +54,10 @@ const styles = (theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
       padding: '1rem',
+      backgroundColor: mediumgrey[50],
     },
     typographyMain: {
-      marginBlockEnd: '2rem;',
+      marginBlockEnd: '1rem;',
     },
   })
 
@@ -127,7 +121,7 @@ class DocFooter extends React.Component<any> {
                 <ThumbDown fontSize="small" />
               </IconButton>
             </div>
-            <Typography classNam={classes.typographyMain} align="center">
+            <Typography className={classes.typographyMain} align="center">
               If you have any questions, please ask our Developer Community on
               Slack, or post your question on{' '}
               <a
