@@ -1,14 +1,20 @@
 import React, { Fragment } from 'react'
-import { Theme, withStyles, createStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
+import {
+  Theme,
+  withStyles,
+  createStyles,
+  Paper,
+  Grid,
+  Typography,
+  Container,
+  List,
+} from '@material-ui/core/'
 import { groupBy as _groupBy, forEach as _forEach } from 'lodash'
 import ListLink from '../Shared/ListLink'
 import Jumbotron from '../Shared/Jumbotron'
 import { StaticQuery, graphql } from 'gatsby'
 import utility from '../Shared/utility'
-import { Typography, Container, List } from '@material-ui/core'
-import { mediumgrey } from '../../theme/ocPalette.constants'
+import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -23,28 +29,18 @@ const styles = (theme: Theme) =>
     paperCard: {
       position: 'relative',
       minHeight: '35vh',
-      display: 'flex',
       flexFlow: 'column nowrap',
       alignItems: 'center',
     },
-    paperTitle: {
-      width: '100%',
-      backgroundColor: mediumgrey[50],
-      backgroundSize: 'cover',
-      minHeight: '15vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      color: 'white',
-    },
     paperTitleHeading: {
-      color: mediumgrey[800],
-      paddingLeft: theme.spacing(3),
-      fontWeight: 'bold',
+      color: darkgrey[900],
+      paddingLeft: theme.spacing(2),
+      textAlign: 'left',
     },
     paperTitleSubeading: {
       color: mediumgrey[300],
-      paddingLeft: theme.spacing(3),
+      paddingLeft: theme.spacing(2),
+      marginBottom: theme.spacing(2),
     },
     paperBody: {
       position: 'absolute',
@@ -107,48 +103,44 @@ const Main = withStyles(styles)(
                 section.title === 'Getting Started' ? (
                   <Grid item xs={12} sm={12} key={index}></Grid>
                 ) : (
-                  <Grid item xs={12} sm={6} key={index}>
+                  <Grid item xs={12} sm={12} md={6} lg={4} key={index}>
                     {section.guides.filter(c => !c.frontmatter.hidden).length >
                     0 ? (
                       <div className={classes.paperCard}>
-                        <Paper className={classes.paperTitle}>
-                          <Typography
-                            className={classes.paperTitleHeading}
-                            variant="h5"
-                            component="h2"
-                          >
-                            {section.title}
-                          </Typography>
-                          {/* TODO: ALEXA CAN YOU MAKE THIS??? <Typography>{section.subtitle}</Typography> */}
-                          <Typography
-                            className={classes.paperTitleSubeading}
-                            variant="body2"
-                          >
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Duis vel libero sed arcu convallis tempus.
-                          </Typography>
-                        </Paper>
-                        <Paper className={classes.paperBody}>
-                          <List
-                            disablePadding={true}
-                            dense={true}
-                            className={classes.paperList}
-                          >
-                            {section.guides
-                              .filter(c => !c.frontmatter.hidden)
-                              .map(s => {
-                                return (
-                                  <ListLink
-                                    key={s.id}
-                                    guideProps={{
-                                      path: s.frontmatter.path,
-                                      title: s.frontmatter.title,
-                                    }}
-                                  />
-                                )
-                              })}
-                          </List>
-                        </Paper>
+                        <Typography
+                          className={classes.paperTitleHeading}
+                          variant="h5"
+                          component="h2"
+                        >
+                          {section.title}
+                        </Typography>
+                        {/* TODO: ALEXA CAN YOU MAKE THIS??? <Typography>{section.subtitle}</Typography> */}
+                        <Typography
+                          className={classes.paperTitleSubeading}
+                          variant="body2"
+                        >
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit. Duis vel libero sed arcu convallis tempus.
+                        </Typography>
+                        <List
+                          disablePadding={true}
+                          dense={true}
+                          className={classes.paperList}
+                        >
+                          {section.guides
+                            .filter(c => !c.frontmatter.hidden)
+                            .map(s => {
+                              return (
+                                <ListLink
+                                  key={s.id}
+                                  guideProps={{
+                                    path: s.frontmatter.path,
+                                    title: s.frontmatter.title,
+                                  }}
+                                />
+                              )
+                            })}
+                        </List>
                       </div>
                     ) : null}
                   </Grid>

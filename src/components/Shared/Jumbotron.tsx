@@ -19,10 +19,11 @@ const styles = (theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '50vh',
+      height: '35vh',
       backgroundColor: 'transparent',
       borderRadius: 0,
       overflowY: 'hidden',
+      overflowX: 'hidden',
       backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
     },
     jumbotronParticle: {
@@ -50,6 +51,9 @@ const styles = (theme: Theme) =>
       '&:first-of-type': {
         marginRight: theme.spacing(3),
       },
+    },
+    jumbotronHeading: {
+      fontWeight: 600,
     },
   })
 
