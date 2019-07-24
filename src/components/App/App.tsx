@@ -11,7 +11,11 @@ class App extends React.Component {
       <ThemeProvider theme={ORDERCLOUD_THEME}>
         <Layout>
           <Router>
-            <Main path="/" />
+            <Main
+              path={
+                process.env.NODE_ENV === 'production' ? '/documentation' : '/'
+              }
+            />
           </Router>
         </Layout>
       </ThemeProvider>
