@@ -21,8 +21,33 @@ import {
 } from '@material-ui/core'
 import utility from '../components/Shared/utility'
 
+const drawerWidth = 240
+
 const styles = (theme: Theme) =>
   createStyles({
+    root: {
+      display: 'flex',
+    },
+    appBar: {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginRight: drawerWidth,
+    },
+    drawer: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+    drawerPaper: {
+      width: drawerWidth,
+    },
+    docContainer: {
+      display: 'flex',
+    },
+    toolbar: theme.mixins.toolbar,
+    content: {
+      flexGrow: 1,
+      backgroundColor: theme.palette.background.default,
+      padding: theme.spacing(3),
+    },
     docContainer: {
       marginBlockStart: '2rem',
       marginBlockEnd: '4rem',
@@ -36,32 +61,23 @@ const Template = withStyles(styles)(
       const sections = utility.getSectionsFromQuery(post)
       return (
         <Layout>
-          <Container maxWidth="lg">
-            <Grid container className={classes.docContainer} spacing={3}>
-              <Grid item xs={9}>
-                <Helmet
-                  title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`}
-                />
-                <div className={classes.docBody}>
-                  <Typography variant="h2" component="h1">
-                    {post.mdx.frontmatter.title}
-                  </Typography>
-                  <Typography>
-                    <MDXRenderer>{post.mdx.body}</MDXRenderer>
-                  </Typography>
-                  <DocFooter
-                    contents={sections}
-                    currentGuide={post.mdx.frontmatter.path}
-                  />
-                </div>
-              </Grid>
-              <Grid item className={classes.docMenu} xs={3}>
-                <RightMenu
-                  sections={sections}
-                  currentPath={location.pathname}
-                />
-              </Grid>
-            </Grid>
+          <Container className={classes.docContainer} maxWidth="lg">
+            <div className={classes.docBody}>
+              <Helmet
+                title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`}
+              />
+              <Typography variant="h2" component="h1">
+                {post.mdx.frontmatter.title}
+              </Typography>
+              <Typography>
+                <MDXRenderer>{post.mdx.body}</MDXRenderer>
+              </Typography>
+              <DocFooter
+                contents={sections}
+                currentGuide={post.mdx.frontmatter.path}
+              />
+            </div>
+            <RightMenu sections={sections} currentPath={location.pathname} />
           </Container>
         </Layout>
       )

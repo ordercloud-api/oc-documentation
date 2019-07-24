@@ -13,11 +13,9 @@ import {
   makeStyles,
   Typography,
   Divider,
-  Paper,
-  AppBar,
-  Toolbar,
-  CssBaseline,
   Drawer,
+  Hidden,
+  useTheme,
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
@@ -27,22 +25,23 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
+      flexDirection: 'column',
     },
     drawer: {
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up('md')]: {
         width: drawerWidth,
         flexShrink: 0,
       },
     },
     appBar: {
       marginLeft: drawerWidth,
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up('md')]: {
         width: `calc(100% - ${drawerWidth}px)`,
       },
     },
     menuButton: {
       marginRight: theme.spacing(2),
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up('md')]: {
         display: 'none',
       },
     },
@@ -61,8 +60,8 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 /**
  * TODO: (possible enhancements)
- * 1. Make it sticky
- * 2. Make it responsive
+ * 1. Make it sticky @esitarz
+ * 2. Make it responsive @esitarz
  * 3. Style it better, need something that distinguishes the headings from the guides a bit more
  * 4. remove underline from guide links
  * 5. Make the scroll less jarring
@@ -73,30 +72,42 @@ const useStyles = makeStyles((theme: Theme) =>
 interface RightMenuProps {
   sections: Section[]
   currentPath: string
+  container: Element
+  mobileOpen: boolean
+  onMobileClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void
 }
+
 export default function RightMenu(props: RightMenuProps) {
   const { sections, currentPath } = props
+  // const { container, mobileOpen, onMobileClose } = props
   const classes = useStyles(props)
+  const theme = useTheme()
+
+  const drawer = (
+    <React.Fragment>
+      {sections.map(section => (
+        <SectionMenu
+          key={section.title}
+          section={section}
+          currentPath={currentPath}
+        />
+      ))}
+    </React.Fragment>
+  )
+
   return (
-    <Drawer
-      className={classes.drawer}
-      variant="permanent"
-      classes={{
-        paper: classes.drawerPaper,
-      }}
-      anchor="right"
-    >
-      {' '}
-      {sections.map(section => {
-        return (
-          <SectionMenu
-            key={section.title}
-            section={section}
-            currentPath={currentPath}
-          />
-        )
-      })}
-    </Drawer>
+    <Hidden xsDown implementation="css">
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+        anchor="right"
+      >
+        {drawer}
+      </Drawer>
+    </Hidden>
   )
 }
 
@@ -201,9 +212,7 @@ function GuideHeading(props: GuideHeadingProps) {
     <ListItem
       key={guidePath}
       button
-      className={classes.nested}
-      component={Link}
-      to={guideSectionLink}
+      component={props => <Link {...props} to={guideSectionLink}></Link>}
     >
       <ListItemText primary={heading} />
     </ListItem>

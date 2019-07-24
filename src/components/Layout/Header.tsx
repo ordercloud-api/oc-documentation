@@ -1,31 +1,46 @@
-import { Link } from "gatsby"
-import React from "react"
-import { Theme, createStyles, withStyles } from "@material-ui/core"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import Typography from "@material-ui/core/Typography"
-import Button from "@material-ui/core/Button"
-import SvgIcon from "@material-ui/core/SvgIcon"
+import { Link } from 'gatsby'
+import React, { useState } from 'react'
+import { Theme, createStyles, withStyles } from '@material-ui/core'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Button from '@material-ui/core/Button'
+import SvgIcon from '@material-ui/core/SvgIcon'
+
+const drawerWidth = 240
 
 const styles = (theme: Theme) =>
   createStyles({
+    appBar: {
+      marginLeft: drawerWidth,
+      [theme.breakpoints.up('sm')]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+      },
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up('sm')]: {
+        display: 'none',
+      },
+    },
     menuLogo: {
       maxWidth: 200,
     },
     menuLogoSvg: {
-      height: "auto",
-      width: "100%",
-      fill: "white",
-    },
-    menuButton: {
-      marginLeft: "auto",
-      marginRight: theme.spacing(2),
+      height: 'auto',
+      width: '100%',
+      fill: 'white',
     },
   })
 
-class Header extends React.Component<any> {
+interface HeaderProps {
+  onDrawerToggle: (event: React.MouseEvent) => void
+  siteTitle: string
+  classes: any
+}
+class Header extends React.Component<HeaderProps> {
   public render() {
     const { siteTitle, classes } = this.props
+
     return (
       <AppBar color="primary" position="sticky">
         <Toolbar>
