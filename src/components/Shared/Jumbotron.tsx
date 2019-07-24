@@ -20,7 +20,7 @@ const styles = (theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '35vh',
+      height: '50vh',
       backgroundColor: 'transparent',
       borderRadius: 0,
       overflowY: 'hidden',

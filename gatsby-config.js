@@ -50,7 +50,8 @@ module.exports = {
       resolve: 'gatsby-plugin-mdx',
       options: {
         extensions: ['.mdx', '.md'],
-        gatsbyRemarkPlugins: [{
+        gatsbyRemarkPlugins: [
+          {
             resolve: `gatsby-remark-autolink-headers`,
             //  TODO: we may want to consider these design options below to add our own icon or class
             //  options: {
