@@ -2,6 +2,7 @@ import React from 'react';
 import apiReferenceUtil from '../Shared/apiReferenceUtility';
 import Layout from '../Layout/Layout';
 import { withStyles, Theme, createStyles, Container, Grid } from '@material-ui/core';
+import ApiReferenceMenu from '../Layout/ApiReferenceMenu';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -20,6 +21,7 @@ const ApiReference = withStyles(styles)(
 
     public async componentDidMount() {
       apiReferenceUtil.GetAllDocs().then(docs => {
+        console.log(docs);
         this.setState({ docs });
       });
     }
@@ -29,11 +31,12 @@ const ApiReference = withStyles(styles)(
       return (
         <Layout>
           <Container maxWidth="lg">
-            <Grid container className={classes.docContainer} spacing={3}>
+            <ApiReferenceMenu apiReference={this.state.docs ? this.state.docs.data : null} />
+            {/* <Grid container className={classes.docContainer} spacing={3}>
               <Grid item xs={9}>
-                {this.state.docs ? this.state.docs.data.Sections.map(s => <p key={s}>{s}</p>) : <p>hi</p>}
+                {this.state.docs ? this.state.docs.data.Sections.map(s => <p key={s}>{s}</p>) : null}
               </Grid>
-            </Grid>
+            </Grid> */}
           </Container>
         </Layout>
       )
