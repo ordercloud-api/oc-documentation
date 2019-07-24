@@ -2,7 +2,7 @@ import { Link as ReachLink } from '@reach/router'
 import React from 'react'
 
 /**
- * Takes in a path and resovles to portal URL
+ * Takes in a path and resolves to portal URL
  */
 
 function withPrefix(path) {
@@ -41,8 +41,7 @@ export class PortalLink extends React.Component<PortalLinkProps> {
     const { to, ...rest } = this.props
 
     const prefixedTo = withPrefix(to)
-    // prefixing with '/' as required by reach router to
-    // denote an external link
+    // prefixing with '/' denotes an absolute url to reach router
     return <ReachLink to={`/${prefixedTo}`} {...rest} />
   }
 }
