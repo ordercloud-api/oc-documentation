@@ -18,8 +18,11 @@ import {
   Typography,
   Grid,
   Container,
+  Fab,
 } from '@material-ui/core'
 import utility from '../components/Shared/utility'
+import { MenuRounded } from '@material-ui/icons'
+import OverlayMenu from '../components/Layout/OverlayMenu'
 
 const drawerWidth = 240
 
@@ -41,16 +44,21 @@ const styles = (theme: Theme) =>
     },
     docContainer: {
       display: 'flex',
+      position: 'relative',
+      marginBlockStart: '2rem',
+      marginBlockEnd: '4rem',
+    },
+    fab: {
+      zIndex: theme.zIndex.drawer - 1,
+      position: 'fixed',
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
     },
     toolbar: theme.mixins.toolbar,
     content: {
       flexGrow: 1,
       backgroundColor: theme.palette.background.default,
       padding: theme.spacing(3),
-    },
-    docContainer: {
-      marginBlockStart: '2rem',
-      marginBlockEnd: '4rem',
     },
   })
 
@@ -61,7 +69,15 @@ const Template = withStyles(styles)(
       const sections = utility.getSectionsFromQuery(post)
       return (
         <Layout>
+          {/* <OverlayMenu sections={sections} currentPath={location.pathname} /> */}
           <Container className={classes.docContainer} maxWidth="lg">
+            <Fab
+              className={classes.fab}
+              color="primary"
+              aria-label="Overlaying Menu For Mobile"
+            >
+              <MenuRounded />
+            </Fab>
             <div className={classes.docBody}>
               <Helmet
                 title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`}
