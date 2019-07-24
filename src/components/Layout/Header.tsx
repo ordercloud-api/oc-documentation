@@ -130,7 +130,7 @@ class Header extends React.Component<any, HeaderState> {
           <Tooltip placement="right" title="Api Console">
             <IconButton
               color="inherit"
-              onClick={this.this.goToPortal('/console')}
+              onClick={this.goToPortal('/console')}
               aria-label="Api Console"
             >
               <ConsoleIcon />
