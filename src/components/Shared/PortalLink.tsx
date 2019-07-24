@@ -1,4 +1,4 @@
-import { Link as MaterialLink } from '@reach/router'
+import { Link as ReachLink } from '@reach/router'
 import React from 'react'
 
 /**
@@ -7,8 +7,7 @@ import React from 'react'
 
 function withPrefix(path) {
   const portalBaseUrl = getBaseUrl()
-  const url = [portalBaseUrl, normalizePath(path)].join(`/`)
-  return url
+  return [portalBaseUrl, normalizePath(path)].join(`/`)
 }
 
 function getBaseUrl() {
@@ -18,7 +17,7 @@ function getBaseUrl() {
   if (window.location.port) {
     port = `:${window.location.port}`
   }
-  return `/${protocol}//${hostname}${port}`
+  return `${protocol}//${hostname}${port}`
 }
 
 function normalizePath(path) {
@@ -42,11 +41,13 @@ export class PortalLink extends React.Component<PortalLinkProps> {
     const { to, ...rest } = this.props
 
     const prefixedTo = withPrefix(to)
-    return <MaterialLink to={prefixedTo} {...rest} />
+    // prefixing with '/' as required by reach router to
+    // denote an external link
+    return <ReachLink to={`/${prefixedTo}`} {...rest} />
   }
 }
 
 export function navigate(path) {
-  var prefixedTo = (withPrefix(path) as unknown) as Location
-  window.location = prefixedTo
+  var prefixedTo = withPrefix(path)
+  window.location.assign(prefixedTo)
 }
