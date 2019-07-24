@@ -7,6 +7,7 @@ import {
   Typography,
   Paper,
   Button,
+  Hidden,
 } from '@material-ui/core'
 import { Link as LinkyDinky } from 'gatsby'
 import Particles from 'react-particles-js'
@@ -25,6 +26,11 @@ const styles = (theme: Theme) =>
       overflowY: 'hidden',
       overflowX: 'hidden',
       backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
+    },
+    hidden: {
+      position: 'absolute',
+      width: '100vw',
+      height: '100%',
     },
     jumbotronParticle: {
       position: 'absolute',
@@ -54,6 +60,10 @@ const styles = (theme: Theme) =>
     },
     jumbotronHeading: {
       fontWeight: 600,
+      [theme.breakpoints.down('md')]: {
+        fontSize: '2rem',
+        margin: '0 auto',
+      },
     },
   })
 
@@ -62,27 +72,29 @@ class Jumbotron extends React.Component<any> {
     const { classes } = this.props
     return (
       <div className={classes.jumbotron}>
-        <Particles
-          className={classes.jumbotronParticle}
-          params={{
-            particles: {
-              number: {
-                value: 250,
-              },
-              size: {
-                value: 0.25,
-              },
-            },
-            interactivity: {
-              events: {
-                onhover: {
-                  enable: true,
-                  mode: 'repulse',
+        <Hidden className={classes.hidden} mdDown implementation="css">
+          <Particles
+            className={classes.jumbotronParticle}
+            params={{
+              particles: {
+                number: {
+                  value: 250,
+                },
+                size: {
+                  value: 0.25,
                 },
               },
-            },
-          }}
-        />
+              interactivity: {
+                events: {
+                  onhover: {
+                    enable: true,
+                    mode: 'repulse',
+                  },
+                },
+              },
+            }}
+          />
+        </Hidden>
         <Paper className={classes.jumbotronContainer}>
           <Typography
             className={classes.jumbotronHeading}
