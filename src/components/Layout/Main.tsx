@@ -8,6 +8,7 @@ import {
   Typography,
   Container,
   List,
+  Box,
 } from '@material-ui/core/'
 import { groupBy as _groupBy, forEach as _forEach } from 'lodash'
 import ListLink from '../Shared/ListLink'
@@ -19,12 +20,19 @@ import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
 const styles = (theme: Theme) =>
   createStyles({
     root: {
+      marginLeft: theme.spacing(9),
       flexGrow: 1,
-      overflow: 'hidden',
+      overflow: 'scroll',
+      flex: '1 1 auto',
+      backgroundColor: mediumgrey[50],
+      height: '100vh',
     },
     cardContainer: {
       display: 'flex',
       flex: '1 1 auto',
+    },
+    paperRoot: {
+      zIndex: 1,
     },
     paperCard: {
       position: 'relative',
@@ -62,30 +70,6 @@ const styles = (theme: Theme) =>
         gridTemplateColumns: '1fr',
       },
     },
-    //utility classes
-    mr3: {
-      marginRight: theme.spacing(3),
-    },
-    ml3: {
-      marginLeft: theme.spacing(3),
-    },
-    mt3: {
-      marginTop: theme.spacing(3),
-    },
-    mb3: {
-      marginBottom: theme.spacing(3),
-    },
-    my3: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(3),
-    },
-    mx3: {
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3),
-    },
-    pl3: {
-      paddingLeft: theme.spacing(3),
-    },
   })
 
 const Main = withStyles(styles)(
@@ -93,60 +77,74 @@ const Main = withStyles(styles)(
     public render() {
       const { tableOfContents, classes } = this.props
       const sections = utility.getSectionsFromQuery(tableOfContents)
-
       return (
         <div className={classes.root}>
           <Jumbotron />
           <Container maxWidth="xl">
-            <Grid container spacing={5} className={classes.cardContainer}>
-              {sections.map((section, index) =>
-                section.title === 'Getting Started' ? (
-                  <Grid item xs={12} sm={12} key={index}></Grid>
-                ) : (
-                  <Grid item xs={12} sm={12} md={6} lg={4} key={index}>
-                    {section.guides.filter(c => !c.frontmatter.hidden).length >
-                    0 ? (
-                      <div className={classes.paperCard}>
-                        <Typography
-                          className={classes.paperTitleHeading}
-                          variant="h5"
-                          component="h2"
-                        >
-                          {section.title}
-                        </Typography>
-                        {/* TODO: ALEXA CAN YOU MAKE THIS??? <Typography>{section.subtitle}</Typography> */}
-                        <Typography
-                          className={classes.paperTitleSubeading}
-                          variant="body2"
-                        >
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Duis vel libero sed arcu convallis tempus.
-                        </Typography>
-                        <List
-                          disablePadding={true}
-                          dense={true}
-                          className={classes.paperList}
-                        >
-                          {section.guides
-                            .filter(c => !c.frontmatter.hidden)
-                            .map(s => {
-                              return (
-                                <ListLink
-                                  key={s.id}
-                                  guideProps={{
-                                    path: s.frontmatter.path,
-                                    title: s.frontmatter.title,
-                                  }}
-                                />
-                              )
-                            })}
-                        </List>
-                      </div>
-                    ) : null}
-                  </Grid>
-                )
-              )}
-            </Grid>
+            <Box marginTop={-15}>
+              <Grid container spacing={5} className={classes.cardContainer}>
+                {sections.map((section, index) =>
+                  section.title === 'Getting Started' ? (
+                    <Grid item xs={12} sm={12} key={index}></Grid>
+                  ) : (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={12}
+                      md={6}
+                      lg={4}
+                      key={index}
+                      className={classes.paperRoot}
+                    >
+                      {section.guides.filter(c => !c.frontmatter.hidden)
+                        .length > 0 ? (
+                        <Paper elevation={2}>
+                          <Box p={2} zIndex={1}>
+                            <div className={classes.paperCard}>
+                              <Typography
+                                className={classes.paperTitleHeading}
+                                variant="h5"
+                                component="h2"
+                              >
+                                {section.title}
+                              </Typography>
+                              {/* TODO: ALEXA CAN YOU MAKE THIS??? <Typography>{section.subtitle}</Typography> */}
+                              <Typography
+                                className={classes.paperTitleSubeading}
+                                variant="body2"
+                              >
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Duis vel libero sed arcu
+                                convallis tempus.
+                              </Typography>
+                              <List
+                                disablePadding={true}
+                                dense={true}
+                                className={classes.paperList}
+                              >
+                                {section.guides
+                                  .filter(c => !c.frontmatter.hidden)
+                                  .map(s => {
+                                    return (
+                                      <ListLink
+                                        key={s.id}
+                                        guideProps={{
+                                          path: s.frontmatter.path,
+                                          title: s.frontmatter.title,
+                                        }}
+                                      />
+                                    )
+                                  })}
+                              </List>
+                            </div>
+                          </Box>
+                        </Paper>
+                      ) : null}
+                    </Grid>
+                  )
+                )}
+              </Grid>
+            </Box>
           </Container>
         </div>
       )

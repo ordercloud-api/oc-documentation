@@ -32,8 +32,10 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-gravatar": "^2.6.3",
     "react-helmet": "^5.2.1",
-    "react-particles-js": "^2.6.0"
+    "react-particles-js": "^2.6.0",
+    "universal-cookie": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
