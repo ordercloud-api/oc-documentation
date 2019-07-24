@@ -14,13 +14,13 @@ import { mediumgrey } from '../../theme/ocPalette.constants'
 const styles = (theme: Theme) =>
   createStyles({
     ocFooter: {
-      width: '100vw',
       backgroundColor: mediumgrey[50],
       border: '2px solid',
       borderColor: mediumgrey[100],
       flexDirection: 'column',
       alignItems: 'stretch',
       display: 'flex',
+      fontSize: '0.875rem',
     },
     Typography: {
       color: mediumgrey[800],
@@ -44,7 +44,7 @@ const styles = (theme: Theme) =>
     },
     linkGroup: {
       display: 'flex',
-      justifySelf: 'flex-end',
+      justifyContent: 'flex-end',
       alignItems: 'center',
       '& > *': {
         margin: '0 .5rem',
@@ -64,13 +64,18 @@ class Footer extends React.Component<any> {
     return (
       <footer className={classes.ocFooter}>
         <Toolbar className={classes.footerContainer}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={4}>
-              <Typography className={classes.Typography}>
+          <Grid
+            container
+            spacing={3}
+            justify="space-between"
+            alignItems="center"
+          >
+            <Grid item xs={12} sm={6}>
+              <Typography variant="body2" className={classes.Typography}>
                 © 2019 OrderCloud All rights reserved.
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={6}>
               <div className={classes.linkGroup}>
                 <Link to="/">Terms</Link>
                 <Link to="/">Privacy Policy</Link>
