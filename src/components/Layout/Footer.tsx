@@ -20,8 +20,10 @@ const styles = (theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'stretch',
       display: 'flex',
+      zIndex: 2,
     },
     footerContainer: {
+      marginLeft: theme.spacing(9),
       display: 'grid',
       gridTemplateColumns: 'repeat(3, 1fr)',
       justifyItems: 'center',

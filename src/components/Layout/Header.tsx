@@ -1,11 +1,229 @@
-import { Link } from "gatsby"
-import React from "react"
-import { Theme, createStyles, withStyles } from "@material-ui/core"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import Typography from "@material-ui/core/Typography"
-import Button from "@material-ui/core/Button"
-import SvgIcon from "@material-ui/core/SvgIcon"
+import { Link } from 'gatsby'
+import React from 'react'
+import { Theme, createStyles, withStyles } from '@material-ui/core'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import SvgIcon from '@material-ui/core/SvgIcon'
+import Gravatar from 'react-gravatar'
+import Avatar from '@material-ui/core/Avatar'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import Divider from '@material-ui/core/Divider'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+
+import ContributorsIcon from '@material-ui/icons/People'
+import SettingsIcon from '@material-ui/icons/Settings'
+import ProfileIcon from '@material-ui/icons/AccountCircle'
+import AccountIcon from '@material-ui/icons/Lock'
+import ConsoleIcon from '@material-ui/icons/Code'
+import DocumentationIcon from '@material-ui/icons/BookmarksTwoTone'
+import Cookies from 'universal-cookie'
+
+function isTokenExpired(token: string): boolean {
+  if (!token) {
+    return true
+  }
+  const parsedToken = parseJwt(token)
+  const currentSeconds = Date.now() / 1000
+  const currentSecondsWithBuffer = currentSeconds - 2
+  var expired = parsedToken.exp < currentSecondsWithBuffer
+  return expired
+}
+
+function parseJwt(token: string) {
+  if (!token) {
+    return null
+  }
+  var base64Url = token.split('.')[1]
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  var jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      })
+      .join('')
+  )
+
+  return JSON.parse(jsonPayload)
+}
+
+interface HeaderState {
+  auth: boolean
+  anchorEl?: HTMLElement
+  username: string
+  firstName: string
+  email: string
+}
+class Header extends React.Component<any, HeaderState> {
+  state = {
+    auth: false,
+    anchorEl: null,
+    username: '',
+    firstName: '',
+    email: '',
+  }
+
+  private readonly cookies = new Cookies()
+
+  public onInit() {
+    //TODO: NICE TO HAVE: Find out how to re-evaluate based on state change
+    const token = this.cookies.get('DevCenter.token')
+    const decoded = parseJwt(token)
+    if (decoded) {
+      this.setState({
+        username: decoded.usr,
+        firstName: this.cookies.get('DevCenter.firstName'),
+        email: this.cookies.get('DevCenter.email'),
+        auth: !isTokenExpired(token),
+      })
+    } else {
+      this.setState({
+        firstName: '',
+        email: '',
+        auth: null,
+      })
+    }
+    // this.setState({
+    //   firstName: 'DJ',
+    //   email: 'dsteinmetz@four51.com',
+    //   auth: true,
+    // })
+  }
+
+  public handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    this.setState({ anchorEl: event.currentTarget })
+  }
+
+  public handleClose = () => {
+    this.setState({ anchorEl: null })
+  }
+
+  public handleLogout = (): void => {
+    this.setState({ anchorEl: null })
+    this.cookies.remove('DevCenter.token')
+    this.cookies.remove('DevCenter.firstName')
+    this.cookies.remove('DevCenter.email')
+    this.onInit()
+  }
+
+  public componentWillMount() {
+    this.onInit()
+  }
+
+  public render() {
+    const { classes } = this.props
+    const { anchorEl, auth } = this.state
+    const open = Boolean(anchorEl)
+    return (
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar className={classes.verticalNav}>
+          <img
+            className={classes.logo}
+            src="/logo-white.svg"
+            alt="OrderCloud.io"
+          />
+          <Tooltip placement="right" title="Api Console">
+            <IconButton
+              color="inherit"
+              //TODO: Re-work this before deployment
+              // to="https://devcenterv2-test.azurewebsites.net/console/console"
+              aria-label="Api Console"
+            >
+              <ConsoleIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip placement="right" title="Organization Settings">
+            <IconButton color="inherit" aria-label="Organization Settings">
+              <SettingsIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip placement="right" title="Contributor Access">
+            <IconButton color="inherit" aria-label="Contributor Access">
+              <ContributorsIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip placement="right" title="Documentation">
+            <IconButton color="inherit" aria-label="Documentation">
+              <DocumentationIcon />
+            </IconButton>
+          </Tooltip>
+
+          <div className={classes.grow} />
+          {auth && (
+            <div>
+              <IconButton
+                aria-owns={open ? 'menu-appbar' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleMenu}
+                color="inherit"
+              >
+                <Avatar alt={this.state.username}>
+                  <Gravatar email={this.state.email} />
+                </Avatar>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                className={classes.adminMenu}
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={this.handleClose}
+              >
+                <MenuItem>
+                  <Avatar alt="Email" className={classes.mr1rem}>
+                    <Gravatar email={this.state.email} />
+                  </Avatar>
+                  Welcome {this.state.firstName}!
+                </MenuItem>
+                <Divider />
+                <MenuItem
+                //TODO: Fix link
+                // onClick={this.goTo('/profile')}
+                >
+                  <ListItemIcon className={classes.mr1rem}>
+                    <ProfileIcon />
+                  </ListItemIcon>
+                  Profile
+                </MenuItem>
+                <MenuItem
+                //TODO: Fix link
+                // onClick={this.goTo('/profile/account')}
+                >
+                  <ListItemIcon className={classes.mr1rem}>
+                    <AccountIcon />
+                  </ListItemIcon>
+                  Account
+                </MenuItem>
+                <MenuItem component={Link} to="/profile/console-settings">
+                  <ListItemIcon className={classes.mr1rem}>
+                    <ConsoleIcon />
+                  </ListItemIcon>
+                  Console Settings
+                </MenuItem>
+                <Divider />
+                <MenuItem dense={true} onClick={this.handleLogout}>
+                  Logout
+                </MenuItem>
+              </Menu>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
+    )
+  }
+}
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -13,43 +231,34 @@ const styles = (theme: Theme) =>
       maxWidth: 200,
     },
     menuLogoSvg: {
-      height: "auto",
-      width: "100%",
-      fill: "white",
+      height: 'auto',
+      width: '100%',
+      fill: 'white',
     },
     menuButton: {
-      marginLeft: "auto",
+      marginLeft: 'auto',
       marginRight: theme.spacing(2),
     },
+    logo: {
+      margin: theme.spacing(2),
+      width: theme.spacing(5),
+    },
+    grow: {
+      flexGrow: 1,
+    },
+    appBar: {
+      backgroundColor: theme.palette.primary.main,
+      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+      zIndex: theme.zIndex.appBar + 2,
+      height: '100%',
+      width: theme.spacing(9),
+      left: 0,
+      flexDirection: 'column',
+    },
+    verticalNav: {
+      flexDirection: 'column',
+      height: '100%',
+    },
   })
-
-class Header extends React.Component<any> {
-  public render() {
-    const { siteTitle, classes } = this.props
-    return (
-      <AppBar color="primary" position="sticky">
-        <Toolbar>
-          <Link className={classes.menuLogo} to="/">
-            <SvgIcon
-              className={classes.menuLogoSvg}
-              titleAccess={siteTitle}
-              viewBox="0 0 200 35"
-            >
-              <path d="M39.2 26.9c.3.1.4.3.2.5-1.7 4.2-5.4 6.7-10.6 6.7-2.1 0-4-.4-5.6-1.2 1.3-1.4 2.3-3.1 3-5.1l.1-.2c.7.5 1.6.7 2.7.7 2.5 0 4-1.5 4.8-3.4.1-.3.4-.4.6-.2l4.8 2.2m.2-17.3C37.7 5.4 34 2.9 28.8 2.9c-3.5 0-6.3 1.1-8.3 3.2-1.1 1.1-1.9 2.6-2.5 4.3-.6 1.8-.8 3.3-.9 7.2v1c0 4-.1 5.4-.5 6.5-.7 2.1-2.3 3.3-4.8 3.3S7.7 27.2 7 25.1c-.4-1.1-.5-2.5-.5-6.5s.1-5.4.5-6.5c.7-2.1 2.3-3.3 4.8-3.3 1.2 0 2.1.3 2.9.8l.1-.2c.7-2 1.6-3.7 2.9-5.2C16 3.4 14 3 11.8 3 6.5 3 2.3 5.5.7 10.4c-.5 2-.7 3.6-.7 8.2 0 4.5.2 6.2.8 8.3 1.6 4.9 5.8 7.4 11.1 7.4 3.5 0 6.5-1.1 8.6-3.2 1.1-1.1 1.9-2.5 2.5-4.2.6-2 .8-3.6.8-7.4v-.9c0-4.3.1-5.4.5-6.5.7-2.1 2.2-3.3 4.6-3.3 2.5 0 4 1.5 4.8 3.4.1.3.4.4.6.2l4.9-2.2c.3-.1.3-.3.2-.6m19.8 14.8c.9 2.8 3.1 4.3 6.2 4.3s5.2-1.5 6.1-4.3c.3-1 .6-2.2.6-5.5s-.2-4.5-.6-5.5c-.9-2.9-3.1-4.4-6.2-4.4s-5.2 1.5-6.2 4.3c-.3 1-.6 2.2-.6 5.5.1 3.3.3 4.5.7 5.6m10.7-10.6c.3.8.5 2 .5 5.1 0 3.1-.2 4.3-.5 5.1-.7 2.1-2.2 3.2-4.6 3.2-2.4 0-3.9-1.1-4.6-3.2-.3-.8-.5-2-.5-5.1 0-3.1.2-4.3.5-5.1.7-2.1 2.2-3.2 4.6-3.2 2.4-.1 3.9 1.1 4.6 3.2m6.3 14.6c.2 0 .3-.1.3-.3v-7.4c0-2.5.9-4.5 3.3-4.5.8 0 1.5.3 2.1.7.2.1.3.1.4-.1l.6-.8c.1-.1.1-.3-.1-.4-.6-.6-1.6-.9-2.7-.9-1.9 0-3.1 1-3.6 2.3v-1.7c0-.2-.1-.3-.3-.3h-1c-.2 0-.3.1-.3.3v12.8c0 .2.1.3.3.3h1zm18 0c.2 0 .3-.1.3-.3V9.6c0-.2-.1-.3-.3-.3h-1c-.2 0-.3.1-.3.3v7.3c-.6-1.3-1.9-2.2-4.1-2.2-2.4 0-3.9 1.1-4.5 3.2-.4 1.1-.5 2.3-.5 3.8s.1 2.7.5 3.8c.7 2.1 2.2 3.2 4.5 3.2 2.2 0 3.4-.9 4.1-2.2v1.6c0 .2.1.3.3.3h1zm-1.6-3.6c-.5 1.6-1.7 2.4-3.4 2.4s-2.9-.8-3.4-2.4c-.3-.8-.4-2-.4-3.1 0-1.2.1-2.3.4-3.2.5-1.5 1.7-2.4 3.4-2.4s2.9.8 3.4 2.4c.3.7.4 1.7.4 3.2s-.2 2.4-.4 3.1m5 .3c.8 2.3 2.5 3.5 5.1 3.5 2.2 0 3.9-.9 4.9-2.2.1-.1.1-.3 0-.4l-.6-.6c-.1-.1-.3-.1-.4.1-.8 1-2 1.7-3.7 1.7-1.8 0-3.2-.8-3.8-2.6-.2-.6-.3-1.2-.3-2.4 0-.1.1-.2.2-.2h8.7c.2 0 .3-.1.3-.3 0-1.9-.1-2.7-.4-3.6-.7-2.2-2.6-3.5-5-3.5s-4.2 1.2-5 3.5c-.3.8-.4 1.8-.4 3.5 0 1.8.1 2.7.4 3.5m1.3-4.4c-.1 0-.2-.1-.2-.2 0-.8.1-1.4.3-1.9.5-1.7 1.8-2.5 3.6-2.5s3.1.9 3.6 2.5c.2.5.3 1.1.3 1.9 0 .1-.1.2-.2.2h-7.4zm12.9 7.7c.2 0 .3-.1.3-.3v-7.4c0-2.5.9-4.5 3.3-4.5.8 0 1.5.3 2.1.7.2.1.3.1.4-.1l.6-.8c.1-.1.1-.3-.1-.4-.6-.6-1.6-.9-2.7-.9-1.9 0-3.1 1-3.6 2.3v-1.7c0-.2-.1-.3-.3-.3h-1c-.2 0-.3.1-.3.3v12.8c0 .2.1.3.3.3h1zm8.4-9.6c0 3.3.2 4.6.5 5.6 1 2.9 3 4.3 6 4.3 2.6 0 4.7-1.2 5.7-3.5.1-.1.1-.3-.1-.4l-.9-.4c-.1-.1-.3 0-.4.1-.9 1.6-2.2 2.7-4.4 2.7-2.3 0-3.8-1.1-4.5-3.2-.3-.8-.4-1.9-.4-5.1 0-3.2.2-4.4.4-5.1.7-2.1 2.2-3.2 4.5-3.2 2.2 0 3.5 1.1 4.4 2.7.1.1.2.2.4.1l.9-.4c.1-.1.1-.2.1-.4-1.1-2.3-3.1-3.5-5.7-3.5-3 0-5.1 1.4-6 4.3-.3.8-.5 2.1-.5 5.4m18.1 9.7c.2 0 .3-.1.3-.3v-.9c0-.2-.1-.3-.3-.3h-.5c-1 0-1.4-.4-1.4-1.7V9.6c0-.2-.1-.3-.3-.3h-1c-.2 0-.3.1-.3.3v15.7c0 2.2.8 3.1 2.8 3.1h.7zm1.8-3.3c.7 2.2 2.6 3.5 5 3.5 2.5 0 4.3-1.3 5-3.5.3-.9.4-1.9.4-3.5s-.2-2.6-.4-3.5c-.7-2.2-2.6-3.5-5-3.5s-4.3 1.3-5 3.5c-.3.9-.4 1.9-.4 3.5s.2 2.6.4 3.5m8.6-.5c-.5 1.6-1.8 2.5-3.6 2.5-1.7 0-3-.9-3.5-2.5-.3-.8-.4-1.6-.4-3s.1-2.2.4-3c.5-1.6 1.8-2.5 3.5-2.5s3 .9 3.6 2.5c.3.8.4 1.6.4 3-.1 1.4-.2 2.2-.4 3m14.2 3.7c.2 0 .3-.1.3-.3V15.3c0-.2-.1-.3-.3-.3h-1c-.2 0-.3.1-.3.3v8.2c0 2.3-1.6 3.7-3.6 3.7-2.3 0-3.4-1.3-3.4-4v-7.9c0-.2-.1-.3-.3-.3h-1c-.2 0-.3.1-.3.3v8.3c0 3.2 1.7 5.1 4.6 5.1 1.8 0 3.2-.8 3.9-2.1v1.6c0 .2.1.3.3.3h1.1zm13.4 0c.2 0 .3-.1.3-.3V9.6c0-.2-.1-.3-.3-.3h-1c-.2 0-.3.1-.3.3v7.3c-.6-1.3-1.9-2.2-4.1-2.2-2.4 0-3.9 1.1-4.5 3.2-.4 1.1-.5 2.3-.5 3.8s.1 2.7.5 3.8c.7 2.1 2.2 3.2 4.5 3.2 2.2 0 3.4-.9 4.1-2.2v1.6c0 .2.1.3.3.3h1zm-1.6-3.6c-.5 1.6-1.7 2.4-3.4 2.4s-2.9-.8-3.4-2.4c-.3-.8-.4-2-.4-3.1 0-1.2.1-2.3.4-3.2.5-1.5 1.7-2.4 3.4-2.4s2.9.8 3.4 2.4c.3.7.4 1.7.4 3.2s-.1 2.4-.4 3.1m5.1 3.3c0 .2.1.3.3.3h1.4c.2 0 .3-.1.3-.3v-1.9c0-.2-.1-.3-.3-.3h-1.4c-.2 0-.3.1-.3.3v1.9zm6.5-16.7c.2 0 .3-.1.3-.3V9.6c0-.2-.1-.3-.3-.3h-1.2c-.2 0-.3.1-.3.3v1.6c0 .2.1.3.3.3h1.2zm-.2 17c.2 0 .3-.1.3-.3V15.3c0-.2-.1-.3-.3-.3h-1c-.2 0-.3.1-.3.3v12.8c0 .2.1.3.3.3h1zm3.4-3.2c.7 2.2 2.6 3.5 5 3.5 2.5 0 4.3-1.3 5-3.5.3-.9.4-1.9.4-3.5s-.2-2.6-.4-3.5c-.7-2.2-2.6-3.5-5-3.5s-4.3 1.3-5 3.5c-.3.9-.4 1.9-.4 3.5s.2 2.6.4 3.5m8.6-.5c-.5 1.6-1.8 2.5-3.6 2.5-1.7 0-3-.9-3.5-2.5-.3-.8-.4-1.6-.4-3s.1-2.2.4-3c.5-1.6 1.8-2.5 3.5-2.5s3 .9 3.6 2.5c.3.8.4 1.6.4 3s-.2 2.2-.4 3M40.4 2.9V1.1h.6V.8h-1.5V1h.6v1.8h.3zm1 0h.2V1.4l.5 1.2H42.4l.6-1.2v1.5h.2v-2H43l-.6 1.4-.6-1.4h-.2v2z" />
-            </SvgIcon>
-          </Link>
-          <Button
-            className={classes.menuButton}
-            size="small"
-            variant="outlined"
-            color="inherit"
-          >
-            Login
-          </Button>
-        </Toolbar>
-      </AppBar>
-    )
-  }
-}
 
 export default withStyles(styles)(Header)
