@@ -117,7 +117,6 @@ class Header extends React.Component<any, HeaderState> {
   }
 
   public goToPortal = (route: string) => (event: React.MouseEvent) => {
-    debugger
     navigate(route)
   }
 
