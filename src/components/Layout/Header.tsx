@@ -1,11 +1,11 @@
-import { Link } from "gatsby"
-import React from "react"
-import { Theme, createStyles, withStyles } from "@material-ui/core"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import Typography from "@material-ui/core/Typography"
-import Button from "@material-ui/core/Button"
-import SvgIcon from "@material-ui/core/SvgIcon"
+import { Link } from 'gatsby'
+import React from 'react'
+import { Theme, createStyles, withStyles } from '@material-ui/core'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import SvgIcon from '@material-ui/core/SvgIcon'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -13,12 +13,12 @@ const styles = (theme: Theme) =>
       maxWidth: 200,
     },
     menuLogoSvg: {
-      height: "auto",
-      width: "100%",
-      fill: "white",
+      height: 'auto',
+      width: '100%',
+      fill: 'white',
     },
     menuButton: {
-      marginLeft: "auto",
+      marginLeft: 'auto',
       marginRight: theme.spacing(2),
     },
   })

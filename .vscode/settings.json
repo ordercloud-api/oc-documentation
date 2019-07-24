@@ -1,16 +1,16 @@
 {
-    "files.associations": {
-      "*.tsx": "typescriptreact"
-    },
-    "editor.formatOnSave": true,
-  
-    // we might choose to enable format
-    // on save for css/html but diabling for now
-    "[html]": {
-      "editor.formatOnSave": false
-    },
-    "[css]": {
-      "editor.formatOnSave": false
-    }
+  "files.associations": {
+    "*.tsx": "typescriptreact"
+  },
+  "eslint.autoFixOnSave": true,
+  "editor.formatOnSave": true,
+
+  // we might choose to enable format
+  // on save for css/html but diabling for now
+  "[html]": {
+    "editor.formatOnSave": false
+  },
+  "[css]": {
+    "editor.formatOnSave": false
   }
-  
+}
