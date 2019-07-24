@@ -4,6 +4,7 @@ module.exports = {
     description: `Documentation for OrderCloud's B2B eCommerce API`,
     author: `@gatsbyjs`,
   },
+  pathPrefix: '/documentation',
   plugins: [
     `gatsby-plugin-catch-links`,
     `gatsby-plugin-material-ui`,
@@ -49,7 +50,8 @@ module.exports = {
       resolve: 'gatsby-plugin-mdx',
       options: {
         extensions: ['.mdx', '.md'],
-        gatsbyRemarkPlugins: [{
+        gatsbyRemarkPlugins: [
+          {
             resolve: `gatsby-remark-autolink-headers`,
             //  TODO: we may want to consider these design options below to add our own icon or class
             //  options: {

@@ -8,7 +8,7 @@ import {
   Paper,
   Button,
 } from '@material-ui/core'
-import { Link as LinkyDinky } from '../Shared/Link'
+import { Link as LinkyDinky } from 'gatsby'
 import Particles from 'react-particles-js'
 
 const styles = (theme: Theme) =>
