@@ -22,6 +22,7 @@ import AccountIcon from '@material-ui/icons/Lock'
 import ConsoleIcon from '@material-ui/icons/Code'
 import DocumentationIcon from '@material-ui/icons/BookmarksTwoTone'
 import Cookies from 'universal-cookie'
+import { navigate } from '../Shared/PortalLink'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -115,6 +116,10 @@ class Header extends React.Component<any, HeaderState> {
     this.onInit()
   }
 
+  public goToPortal = (route: string) => (event: React.MouseEvent) => {
+    navigate(route)
+  }
+
   public render() {
     const { classes } = this.props
     const { anchorEl, auth } = this.state
@@ -198,8 +203,8 @@ class Header extends React.Component<any, HeaderState> {
                   Profile
                 </MenuItem>
                 <MenuItem
-                //TODO: Fix link
-                // onClick={this.goTo('/profile/account')}
+                  //TODO: Fix link
+                  onClick={this.goToPortal('/profile')}
                 >
                   <ListItemIcon className={classes.mr1rem}>
                     <AccountIcon />
