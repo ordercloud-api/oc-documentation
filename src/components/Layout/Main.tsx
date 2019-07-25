@@ -18,6 +18,11 @@ import utility from '../Shared/utility'
 import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
 import { navigate } from '../Shared/PortalLink'
 
+if (typeof window !== 'undefined') {
+  // attach smooth scroll to all hrefs
+  require('smooth-scroll')('a[href*="#"]')
+}
+
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -82,6 +87,7 @@ const Main = withStyles(styles)(
     public render() {
       const { tableOfContents, classes } = this.props
       const sections = utility.getSectionsFromQuery(tableOfContents)
+
       return (
         <div className={classes.root}>
           <Jumbotron />
