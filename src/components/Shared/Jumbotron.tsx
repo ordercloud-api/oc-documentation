@@ -36,7 +36,7 @@ const styles = (theme: Theme) =>
       position: 'absolute',
       backgroundColor: 'transparent',
       width: '100vw',
-      overflowY: 'hidden',
+      height: '100vh',
     },
     jumbotronContainer: {
       backgroundColor: 'transparent',
@@ -72,7 +72,7 @@ class Jumbotron extends React.Component<any> {
     const { classes } = this.props
     return (
       <div className={classes.jumbotron}>
-        <Hidden className={classes.hidden} mdDown implementation="css">
+        <Hidden mdDown implementation="js">
           <Particles
             className={classes.jumbotronParticle}
             params={{

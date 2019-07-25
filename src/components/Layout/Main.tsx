@@ -20,17 +20,20 @@ import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      marginLeft: theme.spacing(9),
-      flexGrow: 1,
-      overflow: 'scroll',
-      flex: '1 1 auto',
+      // overflowX: 'hidden',
+      // overflowY: 'auto',
+      [theme.breakpoints.up('md')]: {
+        marginLeft: theme.spacing(9),
+      },
+      // flexGrow: 1,
+      // flex: '1 1 auto',
+      // height: '100vh',
       backgroundColor: mediumgrey[50],
-      height: '100vh',
     },
-    cardContainer: {
-      display: 'flex',
-      flex: '1 1 auto',
-    },
+    // cardContainer: {
+    //   display: 'flex',
+    //   flex: '1 1 auto',
+    // },
     paperRoot: {
       zIndex: 1,
     },
@@ -39,6 +42,7 @@ const styles = (theme: Theme) =>
       minHeight: '35vh',
       flexFlow: 'column nowrap',
       alignItems: 'center',
+      maxWidth: '100vw',
     },
     paperTitleHeading: {
       color: darkgrey[900],
