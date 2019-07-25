@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
-const drawerWidth = '25vw'
+export const drawerWidth = 451
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,6 +48,10 @@ const useStyles = makeStyles((theme: Theme) =>
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
       width: drawerWidth,
+      maxWidth: '100vw',
+      [theme.breakpoints.up('md')]: {
+        maxWidth: 'none',
+      },
     },
     content: {
       flexGrow: 1,
@@ -72,13 +76,12 @@ const useStyles = makeStyles((theme: Theme) =>
 interface RightMenuProps {
   sections: Section[]
   currentPath: string
-  container: Element
   mobileOpen: boolean
   onMobileClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void
 }
 
 export default function RightMenu(props: RightMenuProps) {
-  const { sections, currentPath } = props
+  const { sections, currentPath, mobileOpen, onMobileClose } = props
   // const { container, mobileOpen, onMobileClose } = props
   const classes = useStyles(props)
   const theme = useTheme()
@@ -96,18 +99,34 @@ export default function RightMenu(props: RightMenuProps) {
   )
 
   return (
-    <Hidden xsDown implementation="css">
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-        anchor="right"
-      >
-        {drawer}
-      </Drawer>
-    </Hidden>
+    <nav>
+      <Hidden smDown implementation="css">
+        <Drawer
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          anchor="right"
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+      <Hidden mdUp implementation="css">
+        <Drawer
+          className={classes.drawer}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={onMobileClose}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          anchor="right"
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+    </nav>
   )
 }
 

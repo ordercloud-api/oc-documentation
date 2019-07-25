@@ -1,7 +1,7 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
-import RightMenu from '../components/Layout/RightMenu'
+import RightMenu, { drawerWidth } from '../components/Layout/RightMenu'
 import '../styles/doc-template.css'
 import { graphql } from 'gatsby'
 import DocFooter from '../components/Layout/DocFooter'
@@ -19,12 +19,12 @@ import {
   Grid,
   Container,
   Fab,
+  Hidden,
 } from '@material-ui/core'
 import utility from '../components/Shared/utility'
 import { MenuRounded } from '@material-ui/icons'
 import OverlayMenu from '../components/Layout/OverlayMenu'
-
-const drawerWidth = 240
+import Footer from '../components/Layout/Footer'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -32,7 +32,7 @@ const styles = (theme: Theme) =>
       display: 'flex',
     },
     appBar: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: `calc(100vw - ${drawerWidth}px)`,
       marginRight: drawerWidth,
     },
     drawer: {
@@ -49,9 +49,9 @@ const styles = (theme: Theme) =>
       marginBlockEnd: '4rem',
     },
     fab: {
-      zIndex: theme.zIndex.drawer - 1,
+      zIndex: theme.zIndex.drawer + 1,
       position: 'fixed',
-      bottom: theme.spacing(2),
+      bottom: theme.spacing(9),
       right: theme.spacing(2),
     },
     toolbar: theme.mixins.toolbar,
@@ -62,8 +62,26 @@ const styles = (theme: Theme) =>
     },
   })
 
+interface DocTemplateState {
+  mobileOpen: boolean
+}
+
 const Template = withStyles(styles)(
-  class extends React.Component<any> {
+  class extends React.Component<any, DocTemplateState> {
+    public state: DocTemplateState = {
+      mobileOpen: false,
+    }
+    public handleMobileToggle = (event: React.MouseEvent) => {
+      this.setState(state => ({
+        mobileOpen: !state.mobileOpen,
+      }))
+    }
+    public handleMobileClose = () => {
+      this.setState({
+        mobileOpen: false,
+      })
+    }
+
     public render() {
       const { data: post, classes, location } = this.props
       const sections = utility.getSectionsFromQuery(post)
@@ -71,13 +89,16 @@ const Template = withStyles(styles)(
         <Layout>
           {/* <OverlayMenu sections={sections} currentPath={location.pathname} /> */}
           <Container className={classes.docContainer} maxWidth="lg">
-            <Fab
-              className={classes.fab}
-              color="primary"
-              aria-label="Overlaying Menu For Mobile"
-            >
-              <MenuRounded />
-            </Fab>
+            <Hidden mdUp implementation="js">
+              <Fab
+                onClick={this.handleMobileToggle}
+                className={classes.fab}
+                color="primary"
+                aria-label="Overlaying Menu For Mobile"
+              >
+                <MenuRounded />
+              </Fab>
+            </Hidden>
             <div className={classes.docBody}>
               <Helmet
                 title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`}
@@ -93,8 +114,14 @@ const Template = withStyles(styles)(
                 currentGuide={post.mdx.frontmatter.path}
               />
             </div>
-            <RightMenu sections={sections} currentPath={location.pathname} />
+            <RightMenu
+              mobileOpen={this.state.mobileOpen}
+              onMobileClose={this.handleMobileClose}
+              sections={sections}
+              currentPath={location.pathname}
+            />
           </Container>
+          <Footer right={drawerWidth} />
         </Layout>
       )
     }
