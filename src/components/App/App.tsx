@@ -6,6 +6,7 @@ import { ThemeProvider } from '@material-ui/styles'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import Route from '../Shared/Route'
 import { withPrefix } from 'gatsby'
+import Footer from '../Layout/Footer'
 
 class App extends React.Component {
   public render() {
@@ -15,6 +16,7 @@ class App extends React.Component {
           <Router>
             <Route path={withPrefix('/')} component={<Main />} />
           </Router>
+          <Footer />
         </Layout>
       </ThemeProvider>
     )

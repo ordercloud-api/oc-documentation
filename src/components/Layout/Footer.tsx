@@ -14,13 +14,23 @@ import { mediumgrey } from '../../theme/ocPalette.constants'
 const styles = (theme: Theme) =>
   createStyles({
     ocFooter: {
-      backgroundColor: mediumgrey[50],
-      border: '2px solid',
+      position: 'relative',
+      [theme.breakpoints.down('sm')]: {
+        width: '100vw !important',
+        right: 'auto !important',
+        paddingBottom: theme.spacing(20),
+      },
+      [theme.breakpoints.up('md')]: {
+        left: theme.spacing(8),
+        width: `calc(100vw - ${theme.spacing(8)}px)`,
+      },
+      backgroundColor: mediumgrey[0],
+      borderTop: '2px solid',
       borderColor: mediumgrey[100],
       flexDirection: 'column',
       alignItems: 'stretch',
       display: 'flex',
-      fontSize: '0.875rem',
+      ...theme.typography.body2,
     },
     Typography: {
       color: mediumgrey[800],
@@ -60,9 +70,12 @@ const styles = (theme: Theme) =>
 
 class Footer extends React.Component<any> {
   public render() {
-    const { siteTitle, classes } = this.props
+    const { siteTitle, classes, right, theme } = this.props
     return (
-      <footer className={classes.ocFooter}>
+      <footer
+        className={classes.ocFooter}
+        style={{ right, width: `calc(100vw - ${theme.spacing(8) + right}px)` }}
+      >
         <Toolbar className={classes.footerContainer}>
           <Grid
             container
@@ -90,4 +103,4 @@ class Footer extends React.Component<any> {
   }
 }
 
-export default withStyles(styles)(Footer)
+export default withStyles(styles, { withTheme: true })(Footer)
