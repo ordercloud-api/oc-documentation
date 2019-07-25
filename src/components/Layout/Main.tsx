@@ -16,6 +16,7 @@ import Jumbotron from '../Shared/Jumbotron'
 import { StaticQuery, graphql } from 'gatsby'
 import utility from '../Shared/utility'
 import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
+import { navigate } from '../Shared/PortalLink'
 
 const styles = (theme: Theme) =>
   createStyles({
