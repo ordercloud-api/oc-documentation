@@ -35,6 +35,7 @@
     "react-gravatar": "^2.6.3",
     "react-helmet": "^5.2.1",
     "react-particles-js": "^2.6.0",
+    "smooth-scroll": "^16.1.0",
     "universal-cookie": "^4.0.2"
   },
   "devDependencies": {
