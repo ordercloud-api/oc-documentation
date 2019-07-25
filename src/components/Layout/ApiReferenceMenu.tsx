@@ -1,23 +1,18 @@
 import React from 'react';
-import { Paper } from '@material-ui/core';
+import { Paper, Collapse, List, ListItem, ListItemText, Typography } from '@material-ui/core';
 
 export default function ApiReferenceMenu(props) {
   const { apiReference } = props;
+  console.log(apiReference);
   return (
     <div>
-      {apiReference && apiReference.Sections ? apiReference.Sections.map(s => {
+      {apiReference && apiReference.Sections ? apiReference.Sections.map((section, index) => {
         return (
-          <div key={s}>
-            <h1>{s}</h1>
+          <div>
             {apiReference.Resources.map(r => {
-              if (r.Section.toLowerCase() === s.replace(/\s/g, '').toLowerCase()) {
+              if (r.Section.toLowerCase() === section.replace(/\s/g, '').toLowerCase()) {
                 return (
-                  <div>
-                    <h2>{r.Name}</h2>
-                    <ul>
-                      {r.Endpoints.map(e => <li>{e.UriTemplate}</li>)}
-                    </ul>
-                  </div>
+                  <Section key={index} section={section} resources={r} />
                 )
               }
             })}
@@ -25,5 +20,24 @@ export default function ApiReferenceMenu(props) {
         )
       }) : null}
     </div>
+  )
+}
+
+function Section(props) {
+  const { section, resources } = props;
+  debugger;
+  return (
+    <List>
+      <ListItem>
+        <ListItemText>
+          <Typography>
+            {section}
+            {resources.map(r => <p>{r}</p>)}
+          </Typography>
+        </ListItemText>
+      </ListItem>
+      <Collapse>
+      </Collapse>
+    </List>
   )
 }
