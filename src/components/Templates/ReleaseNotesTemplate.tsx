@@ -1,6 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import Layout from '../components/Layout/Layout'
+import Layout from '../Layout/Layout'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 
