@@ -6,6 +6,7 @@ import { ThemeProvider } from '@material-ui/styles'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import Route from '../Shared/Route'
 import { withPrefix } from 'gatsby'
+import ReleaseNotesLandingPage from '../../components/ReleaseNotesLandingPage'
 import Footer from '../Layout/Footer'
 
 class App extends React.Component {
@@ -15,6 +16,10 @@ class App extends React.Component {
         <Layout>
           <Router>
             <Route path={withPrefix('/')} component={<Main />} />
+            <Route
+              path={withPrefix('/release-notes')}
+              component={<ReleaseNotesLandingPage />}
+            />
           </Router>
           <Footer />
         </Layout>
