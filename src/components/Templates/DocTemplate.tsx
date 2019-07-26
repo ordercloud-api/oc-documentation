@@ -1,16 +1,16 @@
-import React from 'react'
-import { Helmet } from 'react-helmet'
-import Layout from '../components/Layout/Layout'
-import RightMenu from '../components/Layout/RightMenu'
-import '../styles/doc-template.css'
-import { graphql } from 'gatsby'
-import DocFooter from '../components/Layout/DocFooter'
-import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
+import React from 'react';
+import { Helmet } from 'react-helmet';
+import Layout from '../Layout/Layout';
+import RightMenu from '../Layout/RightMenu';
+import '../../styles/doc-template.css';
+import { graphql } from 'gatsby';
+import DocFooter from '../Layout/DocFooter';
+import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer';
 import {
   groupBy as _groupBy,
   forEach as _forEach,
   flatten as _flatten,
-} from 'lodash'
+} from 'lodash';
 import {
   withStyles,
   createStyles,
@@ -18,8 +18,8 @@ import {
   Typography,
   Grid,
   Container,
-} from '@material-ui/core'
-import utility from '../components/Shared/utility'
+} from '@material-ui/core';
+import utility from '../Shared/utility';
 
 const styles = (theme: Theme) =>
   createStyles({
