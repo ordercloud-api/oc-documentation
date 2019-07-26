@@ -76,7 +76,7 @@ function Resource(props) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
-          {resource.name}
+          {/** TODO: MAP ENDPOINTS HERE */}
         </List>
       </Collapse>
     </List>
