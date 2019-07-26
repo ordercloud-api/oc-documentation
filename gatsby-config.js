@@ -7,6 +7,7 @@ module.exports = {
   pathPrefix: '/documentation',
   plugins: [
     `gatsby-plugin-catch-links`,
+    `gatsby-transformer-json`,
     `gatsby-plugin-material-ui`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sharp`,
@@ -24,6 +25,13 @@ module.exports = {
       options: {
         name: `pages`,
         path: `${__dirname}/src/pages`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `data`,
+        path: `${__dirname}/src`,
       },
     },
     {
