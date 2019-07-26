@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupBy as _groupBy, remove as _remove, map as _map } from 'lodash';
+import { groupBy as _groupBy, remove as _remove, map as _map, find as _find } from 'lodash';
 import { Paper, Collapse, List, ListItem, ListItemText, Typography, makeStyles, Theme, createStyles } from '@material-ui/core';
 
 interface ApiReferenceProps {
@@ -26,8 +26,9 @@ export default function ApiReferenceMenu(props) {
   return (
     <Paper>
       {_map(sections, (section, index) => {
+        const sectionDescription = _find(apiReference, r => r.x_id === index).description;
         return (
-          <Section section={section} sectionTitle={index} />
+          <Section section={section} sectionTitle={index} sectionDescription={sectionDescription} />
         )
       })}
     </Paper>
@@ -35,7 +36,7 @@ export default function ApiReferenceMenu(props) {
 }
 
 function Section(props) {
-  const { section, sectionTitle } = props;
+  const { section, sectionTitle, sectionDescription } = props;
   const classes = useStyles(props);
   const [open, setOpen] = React.useState(false);
 
@@ -53,6 +54,7 @@ function Section(props) {
         </ListItemText>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
+        <p>{sectionDescription}</p>
         {section.map(s => <Resource resource={s} />)}
       </Collapse>
     </List>
@@ -61,6 +63,7 @@ function Section(props) {
 
 function Resource(props) {
   const { resource } = props;
+  console.log(resource)
   const [open, setOpen] = React.useState(false);
 
   function handleClick() {
@@ -72,11 +75,11 @@ function Resource(props) {
       <ListItem button onClick={handleClick}>
         <ListItemText>
           {resource.name}
+          {resource.description ? resource.description : null}
         </ListItemText>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
-          {/** TODO: MAP ENDPOINTS HERE */}
         </List>
       </Collapse>
     </List>
