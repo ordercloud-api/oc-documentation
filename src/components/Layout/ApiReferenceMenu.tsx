@@ -1,6 +1,6 @@
 import React from 'react';
-import { groupBy as _groupBy, remove as _remove } from 'lodash';
-import { Paper, Collapse, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { groupBy as _groupBy, remove as _remove, map as _map } from 'lodash';
+import { Paper, Collapse, List, ListItem, ListItemText, Typography, makeStyles, Theme, createStyles } from '@material-ui/core';
 
 interface ApiReferenceProps {
   name: string;
@@ -9,24 +9,34 @@ interface ApiReferenceProps {
   description: string
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper,
+    },
+  })
+)
+
 export default function ApiReferenceMenu(props) {
   const { apiReference } = props;
-  // const sections: ApiReferenceProps[] = _groupBy(_remove(apiReference, (ref: ApiReferenceProps) => ref.x_section_id != null), 'x_section_id');
-  const sectionIds = apiReference.filter(ref => ref.x_id);
-  console.log('sections', sectionIds);
+  const sections = _groupBy(_remove(apiReference, (ref: ApiReferenceProps) => ref.x_section_id != null), 'x_section_id');
+
   return (
-    <div>
-      {apiReference.map((section, index) => {
+    <Paper>
+      {_map(sections, (section, index) => {
         return (
           <Section section={section} sectionTitle={index} />
         )
       })}
-    </div>
+    </Paper>
   )
 }
 
 function Section(props) {
   const { section, sectionTitle } = props;
+  const classes = useStyles(props);
   const [open, setOpen] = React.useState(false);
 
   function handleClick() {
@@ -34,18 +44,17 @@ function Section(props) {
   }
 
   return (
-    <List>
+    <List className={classes.root}>
       <ListItem button onClick={handleClick}>
         <ListItemText>
           <Typography>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              {section.x_section_id ? sectionTitle : (
-                <Resource resource={section} />
-              )}
-            </Collapse>
+            {sectionTitle}
           </Typography>
         </ListItemText>
       </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        {section.map(s => <Resource resource={s} />)}
+      </Collapse>
     </List>
   )
 }
@@ -62,13 +71,14 @@ function Resource(props) {
     <List>
       <ListItem button onClick={handleClick}>
         <ListItemText>
-          <Typography>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              {resource.name}
-            </Collapse>
-          </Typography>
+          {resource.name}
         </ListItemText>
       </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List>
+          {resource.name}
+        </List>
+      </Collapse>
     </List>
   )
 }
