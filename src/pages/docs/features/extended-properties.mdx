@@ -75,7 +75,7 @@ Content-Type: application/json; charset=UTF-8
 Now let's say Jane Smith receives a promotion. To update her job title we can use `PATCH` to modify the relevant data. Instead of sending the entire user object, we can send the XP key and the object that we want to update, the other XP (gender and age) will persist.
 
 ```http
-PUT https://api.ordercloud.io/buyers/newbuyer/users/userID HTTP/1.1
+PATCH https://api.ordercloud.io/buyers/newbuyer/users/userID HTTP/1.1
 Authentication: Bearer put_access_token_here
 Content-Type: application/json; charset=UTF-8
 
@@ -121,7 +121,7 @@ Content-Type: application/json; charset=UTF-8
 Then, use the response body from the request above (without the xp you wish to remove):
 
 ```http
-UPDATE https://api.ordercloud.io/buyers/newbuyer/users/userID HTTP/1.1
+PUT https://api.ordercloud.io/buyers/newbuyer/users/userID HTTP/1.1
 Authentication: Bearer put_access_token_here
 Content-Type: application/json; charset=UTF-8 
 
@@ -159,7 +159,3 @@ Note how the dot (".") notation is used in the query string to filter on the spe
 ## Conclusion
 
 XP is a very powerful feature to extend the capabilities of your application. It provides the flexibility developers need to meet challenging requirements, giving you the ability to provide a highly customized solutions. Head over to the API Console to try it for yourself!
-
-<!-- TODO: 
-1. Double check each verb in the HTTP request examples
--->

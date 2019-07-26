@@ -18,6 +18,11 @@ import utility from '../Shared/utility'
 import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
 import { navigate } from '../Shared/PortalLink'
 
+if (typeof window !== 'undefined') {
+  // attach smooth scroll to all hrefs
+  require('smooth-scroll')('a[href*="#"]')
+}
+
 const styles = (theme: Theme) =>
   createStyles({
     root: {
@@ -75,12 +80,10 @@ const styles = (theme: Theme) =>
 
 const Main = withStyles(styles)(
   class extends React.Component<any> {
-    public goToPortal = (route: string) => (event: React.MouseEvent) => {
-      navigate(route)
-    }
     public render() {
       const { tableOfContents, classes } = this.props
       const sections = utility.getSectionsFromQuery(tableOfContents)
+
       return (
         <div className={classes.root}>
           <Jumbotron />
@@ -150,7 +153,6 @@ const Main = withStyles(styles)(
               </Grid>
             </Box>
           </Container>
-          <a href="https://localhost:3000/console">silly link</a>
         </div>
       )
     }

@@ -89,11 +89,6 @@ class Header extends React.Component<any, HeaderState> {
         auth: null,
       })
     }
-    // this.setState({
-    //   firstName: 'DJ',
-    //   email: 'dsteinmetz@four51.com',
-    //   auth: true,
-    // })
   }
 
   public handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -135,8 +130,7 @@ class Header extends React.Component<any, HeaderState> {
           <Tooltip placement="right" title="Api Console">
             <IconButton
               color="inherit"
-              //TODO: Re-work this before deployment
-              // to="https://devcenterv2-test.azurewebsites.net/console/console"
+              onClick={this.goToPortal('/console')}
               aria-label="Api Console"
             >
               <ConsoleIcon />
@@ -193,19 +187,13 @@ class Header extends React.Component<any, HeaderState> {
                   Welcome {this.state.firstName}!
                 </MenuItem>
                 <Divider />
-                <MenuItem
-                //TODO: Fix link
-                // onClick={this.goTo('/profile')}
-                >
+                <MenuItem onClick={this.goToPortal('/profile')}>
                   <ListItemIcon className={classes.mr1rem}>
                     <ProfileIcon />
                   </ListItemIcon>
                   Profile
                 </MenuItem>
-                <MenuItem
-                  //TODO: Fix link
-                  onClick={this.goToPortal('/profile')}
-                >
+                <MenuItem onClick={this.goToPortal('/account')}>
                   <ListItemIcon className={classes.mr1rem}>
                     <AccountIcon />
                   </ListItemIcon>
