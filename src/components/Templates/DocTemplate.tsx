@@ -1,30 +1,23 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import Layout from '../components/Layout/Layout'
-import RightMenu, { drawerWidth } from '../components/Layout/RightMenu'
+import Layout from '../Layout/Layout'
+import RightMenu, { drawerWidth } from '../Layout/RightMenu'
 import '../styles/doc-template.css'
 import { graphql } from 'gatsby'
-import DocFooter from '../components/Layout/DocFooter'
+import DocFooter from '../Layout/DocFooter'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
-import {
-  groupBy as _groupBy,
-  forEach as _forEach,
-  flatten as _flatten,
-} from 'lodash'
 import {
   withStyles,
   createStyles,
   Theme,
   Typography,
-  Grid,
   Container,
   Fab,
   Hidden,
 } from '@material-ui/core'
-import utility from '../components/Shared/utility'
+import utility from '../Shared/utility'
 import { MenuRounded } from '@material-ui/icons'
-import OverlayMenu from '../components/Layout/OverlayMenu'
-import Footer from '../components/Layout/Footer'
+import Footer from '../Layout/Footer'
 
 const styles = (theme: Theme) =>
   createStyles({

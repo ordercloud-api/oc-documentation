@@ -108,7 +108,7 @@ class Header extends React.Component<any, HeaderState> {
     this.onInit()
   }
 
-  public componentWillMount() {
+  public componentDidMount() {
     this.onInit()
   }
 
