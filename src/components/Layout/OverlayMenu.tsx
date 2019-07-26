@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
-export const drawerWidth = 451
+const drawerWidth = '100vw'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,10 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
       width: drawerWidth,
-      maxWidth: '100vw',
-      [theme.breakpoints.up('md')]: {
-        maxWidth: 'none',
-      },
     },
     content: {
       flexGrow: 1,
@@ -62,31 +58,21 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 )
-/**
- * TODO: (possible enhancements)
- * 1. Make it sticky @esitarz
- * 2. Make it responsive @esitarz
- * 3. Style it better, need something that distinguishes the headings from the guides a bit more
- * 4. remove underline from guide links
- * 5. Make the scroll less jarring
- * 6. Figure out how to keep sections expanded if user manually expanded (possibly cookies)
- * 7. Fix: expanding a section shouldn't make the width jump around
- */
 
-interface RightMenuProps {
+interface OverlayMenuProps {
   sections: Section[]
   currentPath: string
+  container: Element
   mobileOpen: boolean
   onMobileClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void
 }
 
-export default function RightMenu(props: RightMenuProps) {
-  const { sections, currentPath, mobileOpen, onMobileClose } = props
-  // const { container, mobileOpen, onMobileClose } = props
+export default function OverlayMenu(props: OverlayMenuProps) {
+  const { sections, currentPath } = props
   const classes = useStyles(props)
   const theme = useTheme()
 
-  const drawer = (
+  const menu = (
     <React.Fragment>
       {sections.map(section => (
         <SectionMenu
@@ -99,34 +85,18 @@ export default function RightMenu(props: RightMenuProps) {
   )
 
   return (
-    <nav>
-      <Hidden smDown implementation="css">
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-          anchor="right"
-        >
-          {drawer}
-        </Drawer>
-      </Hidden>
-      <Hidden mdUp implementation="css">
-        <Drawer
-          className={classes.drawer}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={onMobileClose}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-          anchor="right"
-        >
-          {drawer}
-        </Drawer>
-      </Hidden>
-    </nav>
+    <Hidden xsDown implementation="css">
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+        anchor="right"
+      >
+        {menu}
+      </Drawer>
+    </Hidden>
   )
 }
 
