@@ -1,0 +1,12 @@
+---
+apiVersion: 1.0.72
+date: 2018-03-14
+---
+
+> Released to Production on Monday, March 19th, 2018 at 7:30PM Central.
+
+## New Features
+
+Previously, if you filtered a list by an xp, it only cared about items in that list that had that xp. This meant that negative filters, such as `xp.Color=!Blue`, for example, would only return other items _with_ `xp.Color` but where `xp.Color` was not blue. If an item didn't have `xp.Color` at all, it would not be returned in the filtered list.
+
+Now, xp filters don't just look for the specified xp and filter down from there. Instead, a filter of `xp.Color=!Blue` will return all items with `xp.Color` where the color isn't blue, _but also_ any items without `xp.Color` at all.
