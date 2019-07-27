@@ -1,29 +1,34 @@
 const path = require('path')
-
-exports.createPages = ({
-  actions,
-  graphql
-}) => {
-  const {
-    createPage
-  } = actions
-
-  const docTemplate = path.resolve(`src/components/Templates/DocTemplate.tsx`)
-  const apiReferenceDoc = path.resolve(
-    `src/components/Templates/ApiReference.tsx`
+exports.createPages = ({ actions, graphql }) => {
+  const { createPage } = actions
+  const docTemplate = path.resolve('src/components/Templates/DocTemplate.tsx')
+  const releaseNotesTemplate = path.resolve(
+    'src/components/Templates/ReleaseNotes.tsx'
   )
-
   return graphql(`
-    {
-      allMdx(
+    query CreatePagesQuery {
+      docsQuery: allMdx(
         sort: { order: ASC, fields: [frontmatter___priority] }
-        limit: 1000
+        filter: { fileAbsolutePath: { glob: "**/src/pages/docs/**/*.mdx" } }
       ) {
         edges {
           node {
             frontmatter {
-              title
               path
+            }
+          }
+        }
+      }
+      releaseNotesQuery: allMdx(
+        sort: { order: ASC, fields: [frontmatter___date] }
+        filter: {
+          fileAbsolutePath: { glob: "**/src/pages/release-notes/**/*.mdx" }
+        }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              apiVersion
             }
           }
         }
@@ -33,18 +38,25 @@ exports.createPages = ({
     if (result.errors) {
       return Promise.reject(result.errors)
     }
-
-    result.data.allMdx.edges.forEach(edge => {
+    // create docs pages
+    result.data.docsQuery.edges.forEach(edge => {
       const path = edge.node.frontmatter.path
       createPage({
-        path: path,
+        path,
         component: docTemplate,
-        context: {}, // additional data can be passed via context
       })
     })
-    createPage({
-      path: '/api-reference',
-      component: apiReferenceDoc,
+    // create release notes pages
+    result.data.releaseNotesQuery.edges.forEach(edge => {
+      const apiVersion = edge.node.frontmatter.apiVersion
+      const path = `/api-release-notes/v${apiVersion}`
+      createPage({
+        path,
+        component: releaseNotesTemplate,
+        context: {
+          apiVersion,
+        },
+      })
     })
   })
 }

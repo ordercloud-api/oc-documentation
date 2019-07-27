@@ -126,7 +126,7 @@ class DocFooter extends React.Component<any> {
           <Button
             size="small"
             variant="text"
-            href={`${gitHubUrl}${currentGuide}.md`}
+            href={`${gitHubUrl}${currentGuide}.mdx`}
             target="_blank"
             rel="noopener noreferrer"
           >

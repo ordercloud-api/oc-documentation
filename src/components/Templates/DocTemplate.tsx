@@ -99,7 +99,7 @@ const Template = withStyles(styles)(
               <Typography variant="h2" component="h1">
                 {post.mdx.frontmatter.title}
               </Typography>
-              <Typography>
+              <Typography component="span">
                 <MDXRenderer>{post.mdx.body}</MDXRenderer>
               </Typography>
               <DocFooter

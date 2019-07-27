@@ -23,18 +23,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface TemplateComponentProps {
+interface ReleaseNotesComponentProps {
   data: {
     mdx: {
       body: string
       frontmatter: {
-        title: string
+        apiVersion: string
+        date: number
       }
     }
   }
 }
 
-function TemplateComponent(props: TemplateComponentProps) {
+function ReleaseNotesComponent(props: ReleaseNotesComponentProps) {
   const { data } = props
   const classes = useStyles(props)
   return (
@@ -43,13 +44,13 @@ function TemplateComponent(props: TemplateComponentProps) {
         <Grid container className={classes.container} spacing={3}>
           <Grid item xs={9}>
             <Helmet
-              title={`OrderCloud Release Notes - ${data.mdx.frontmatter.title}`}
+              title={`OrderCloud Release Notes - ${data.mdx.frontmatter.apiVersion}`}
             />
             <div className={classes.body}>
               <Typography variant="h2" component="h1">
-                {data.mdx.frontmatter.title}
+                API v{data.mdx.frontmatter.apiVersion} Release Notes
               </Typography>
-              <Typography>
+              <Typography component="span">
                 <MDXRenderer>{data.mdx.body}</MDXRenderer>
               </Typography>
             </div>
@@ -61,14 +62,15 @@ function TemplateComponent(props: TemplateComponentProps) {
 }
 
 export const pageQuery = graphql`
-  query ReleaseNotesTemplateByPath($path: String!) {
-    mdx(frontmatter: { path: { eq: $path } }) {
+  query ReleaseNotesTemplateByPath($apiVersion: String!) {
+    mdx(frontmatter: { apiVersion: { eq: $apiVersion } }) {
       body
       frontmatter {
-        title
+        apiVersion
+        date
       }
     }
   }
 `
 
-export default TemplateComponent
+export default ReleaseNotesComponent

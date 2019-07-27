@@ -87,7 +87,6 @@ const Main = withStyles(styles)(
     public render() {
       const { tableOfContents, classes } = this.props
       const sections = utility.getSectionsFromQuery(tableOfContents)
-
       return (
         <div className={classes.root}>
           <Jumbotron />
@@ -167,7 +166,10 @@ export default () => (
   <StaticQuery
     query={graphql`
       query {
-        allMdx(sort: { order: ASC, fields: [frontmatter___priority] }) {
+        allMdx(
+          sort: { order: ASC, fields: [frontmatter___priority] }
+          filter: { fileAbsolutePath: { glob: "**/src/pages/docs/**/*.mdx" } }
+        ) {
           totalCount
           edges {
             node {

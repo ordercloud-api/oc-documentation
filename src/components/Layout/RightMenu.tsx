@@ -196,7 +196,7 @@ function GuideMenu(props: GuideMenuProps) {
         <List component="div" disablePadding>
           {guide.headings.map(heading => (
             <GuideHeading
-              key={`guide_heading${heading}`}
+              key={`guide_heading${heading.value}`}
               guidePath={guide.frontmatter.path}
               heading={heading.value}
             />

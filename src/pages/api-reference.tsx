@@ -1,8 +1,8 @@
-import React from 'react';
-import Layout from '../Layout/Layout';
-import { withStyles, Theme, createStyles, Container } from '@material-ui/core';
-import ApiReferenceMenu from '../Layout/ApiReferenceMenu';
-import { graphql, StaticQuery } from 'gatsby';
+import React from 'react'
+import Layout from '../components/Layout/Layout'
+import { withStyles, Theme, createStyles, Container } from '@material-ui/core'
+import ApiReferenceMenu from '../components/Layout/ApiReferenceMenu'
+import { graphql, StaticQuery } from 'gatsby'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -15,7 +15,7 @@ const styles = (theme: Theme) =>
 const ApiReference = withStyles(styles)(
   class extends React.Component<any> {
     public render() {
-      const { classes, apiReference } = this.props;
+      const { classes, apiReference } = this.props
       return (
         <Layout>
           <Container maxWidth="lg">
@@ -24,11 +24,8 @@ const ApiReference = withStyles(styles)(
         </Layout>
       )
     }
-
   }
 )
-
-
 
 export default () => (
   <StaticQuery
@@ -48,6 +45,8 @@ export default () => (
         }
       }
     `}
-    render={data => <ApiReference apiReference={data.allSrcJson.edges[0].node.tags} />}
+    render={data => (
+      <ApiReference apiReference={data.allSrcJson.edges[0].node.tags} />
+    )}
   />
 )
