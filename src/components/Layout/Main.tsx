@@ -168,7 +168,7 @@ export default () => (
       query {
         allMdx(
           sort: { order: ASC, fields: [frontmatter___priority] }
-          filter: { fileAbsolutePath: { glob: "**/src/pages/docs/**/*.mdx" } }
+          filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
         ) {
           totalCount
           edges {

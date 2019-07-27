@@ -62,8 +62,8 @@ function ReleaseNotesComponent(props: ReleaseNotesComponentProps) {
 }
 
 export const pageQuery = graphql`
-  query ReleaseNotesTemplateByPath($apiVersion: String!) {
-    mdx(frontmatter: { apiVersion: { eq: $apiVersion } }) {
+  query ReleaseNotesTemplateByPath($nodeID: String!) {
+    mdx(id: { eq: $nodeID }) {
       body
       frontmatter {
         apiVersion

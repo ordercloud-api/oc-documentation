@@ -49,7 +49,7 @@ export default function ReleaseNotesListComponent(
       allMdx(
         sort: { order: DESC, fields: [frontmatter___date] }
         filter: {
-          fileAbsolutePath: { glob: "**/src/pages/release-notes/**/*.mdx" }
+          fileAbsolutePath: { glob: "**/content/release-notes/**/*.mdx" }
         }
       ) {
         edges {

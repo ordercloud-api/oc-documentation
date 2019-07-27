@@ -62,8 +62,8 @@ function BlogComponent(props: BlogComponentProps) {
 }
 
 export const pageQuery = graphql`
-  query BlogByPath($id: String!) {
-    mdx(id: { eq: $id }) {
+  query BlogByPath($nodeID: String!) {
+    mdx(id: { eq: $nodeID }) {
       body
       frontmatter {
         apiVersion

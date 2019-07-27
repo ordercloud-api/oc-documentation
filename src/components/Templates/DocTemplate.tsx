@@ -122,8 +122,8 @@ const Template = withStyles(styles)(
 )
 
 export const pageQuery = graphql`
-  query DocTemplateByPath($path: String!) {
-    mdx(frontmatter: { path: { eq: $path } }) {
+  query DocTemplateByPath($nodeID: String!) {
+    mdx(id: { eq: $nodeID }) {
       body
       frontmatter {
         path

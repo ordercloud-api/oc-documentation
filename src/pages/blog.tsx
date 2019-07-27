@@ -49,7 +49,7 @@ export default function BlogListComponent(props: BlogListProps) {
     query {
       allMdx(
         sort: { order: DESC, fields: [frontmatter___date] }
-        filter: { fileAbsolutePath: { glob: "**/content/**/*.mdx" } }
+        filter: { fileAbsolutePath: { glob: "**/content/blog/**/*.mdx" } }
       ) {
         totalCount
         edges {
