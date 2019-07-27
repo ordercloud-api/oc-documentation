@@ -29,8 +29,11 @@ interface PageData {
         node: {
           id: string
           frontmatter: {
-            apiVersion: string
+            title: string
             date: string
+            tags: string
+            authors: string
+            summary: string
           }
         }
       }
@@ -38,26 +41,26 @@ interface PageData {
   }
 }
 
-interface ReleaseNotesListProps {}
+interface BlogListProps {}
 
-export default function ReleaseNotesListComponent(
-  props: ReleaseNotesListProps
-) {
+export default function BlogListComponent(props: BlogListProps) {
   const classes = useStyles(props)
   const data: PageData = useStaticQuery(graphql`
     query {
       allMdx(
         sort: { order: DESC, fields: [frontmatter___date] }
-        filter: {
-          fileAbsolutePath: { glob: "**/src/pages/release-notes/**/*.mdx" }
-        }
+        filter: { fileAbsolutePath: { glob: "**/content/**/*.mdx" } }
       ) {
+        totalCount
         edges {
           node {
             id
             frontmatter {
-              apiVersion
+              title
               date(formatString: "dddd MMMM Do, YYYY")
+              tags
+              authors
+              summary
             }
           }
         }
@@ -67,26 +70,27 @@ export default function ReleaseNotesListComponent(
   return (
     <Container maxWidth="lg">
       <Grid container className={classes.container} spacing={3}>
-        <Grid item xs={9}>
-          <Helmet title={`OrderCloud Release Notes`} />
-          <div className={classes.body}>
-            <List component="nav">
-              {data.allMdx.edges.map(edge => {
-                const frontmatter = edge.node.frontmatter
-                return (
-                  <ListItem
-                    component={Link}
-                    to={`api-release-notes/v${frontmatter.apiVersion}`}
-                  >
-                    <ListItemText
-                      primary={`API v${frontmatter.apiVersion} released on ${frontmatter.date}`}
-                    />
-                  </ListItem>
-                )
-              })}
-            </List>
-          </div>
-        </Grid>
+        <Helmet title={`OrderCloud Blog`} />
+        <div className={classes.body}>
+          {data.allMdx.edges.map(edge => {
+            return (
+              <div key={edge.node.id}>
+                <h3>
+                  {/* TODO: fix this */}
+                  <Link style={{ boxShadow: `none` }} to="/">
+                    {edge.node.frontmatter.title}
+                  </Link>
+                </h3>
+                <small>{edge.node.frontmatter.date}</small>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: edge.node.frontmatter.summary,
+                  }}
+                />
+              </div>
+            )
+          })}
+        </div>
       </Grid>
     </Container>
   )
