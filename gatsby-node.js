@@ -8,7 +8,6 @@ exports.createPages = ({ actions, graphql }) => {
   return graphql(`
     query CreatePagesQuery {
       docsQuery: allMdx(
-        sort: { order: ASC, fields: [frontmatter___priority] }
         filter: { fileAbsolutePath: { glob: "**/src/pages/docs/**/*.mdx" } }
       ) {
         edges {
@@ -20,7 +19,6 @@ exports.createPages = ({ actions, graphql }) => {
         }
       }
       releaseNotesQuery: allMdx(
-        sort: { order: ASC, fields: [frontmatter___date] }
         filter: {
           fileAbsolutePath: { glob: "**/src/pages/release-notes/**/*.mdx" }
         }
