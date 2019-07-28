@@ -1,5 +1,5 @@
 import React from 'react'
-import { Section, Guide } from '../Shared/models/section.model'
+import { Section, Guide } from '../../models/section.model'
 import { Link } from 'gatsby'
 
 import {
@@ -138,7 +138,7 @@ function SectionMenu(props: SectionMenuProps) {
   const { section, currentPath } = props
   const classes = useStyles(props)
   const hasActiveGuide = section.guides
-    .map(g => g.frontmatter.path)
+    .map(g => g.path)
     .includes(currentPath)
   const [open, setOpen] = React.useState(hasActiveGuide)
 
@@ -173,7 +173,7 @@ interface GuideMenuProps extends StyledComponentProps {
 function GuideMenu(props: GuideMenuProps) {
   const { guide, currentPath } = props
   const classes = useStyles(props)
-  const isActive = guide.frontmatter.path.includes(currentPath)
+  const isActive = guide.path.includes(currentPath)
   const [open, setOpen] = React.useState(isActive)
 
   function handleToggleDrawer() {
@@ -184,7 +184,7 @@ function GuideMenu(props: GuideMenuProps) {
     <List component="div" disablePadding>
       <ListItem>
         <ListItemText>
-          <Link to={guide.frontmatter.path}>{guide.frontmatter.title}</Link>
+          <Link to={guide.path}>{guide.frontmatter.title}</Link>
         </ListItemText>
         {open ? (
           <ExpandLess onClick={handleToggleDrawer} />
@@ -197,7 +197,7 @@ function GuideMenu(props: GuideMenuProps) {
           {guide.headings.map(heading => (
             <GuideHeading
               key={`guide_heading${heading.value}`}
-              guidePath={guide.frontmatter.path}
+              guidePath={guide.path}
               heading={heading.value}
             />
           ))}

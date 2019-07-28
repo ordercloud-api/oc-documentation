@@ -1,7 +1,6 @@
 ---
-path: "/main-concepts/product-visibility"
-title: "Product Visibility"
-section: "Main Concepts"
+title: 'Product Visibility'
+section: 'Main Concepts'
 priority: 2
 hidden: false
 ---
@@ -38,7 +37,7 @@ In 2017 we rolled out a powerful new set of features aimed at simplifying catalo
 
 For this scenario you should use **default price schedules**. Just populate `DefaultPriceScheduleID` on the product model, leave it out of the `ProductAssignments`, and those assigned parties will get the default pricing. `ProductAssignment` still has a `PriceScheduleID`, and it takes precedence over the default, but it is now optional. Giving each product a default price schedule is recommended in the majority of cases.
 
-### Scenario 2: "I want to allow some users to *see* certain products but not *buy* them."
+### Scenario 2: "I want to allow some users to _see_ certain products but not _buy_ them."
 
 This is a case where you would **NOT** use a default price schedule. If other visibility requirements are met but neither `Product.DefaultPriceSchedule` nor any `ProductAssignment.PriceScheduleID` related to the user is populated, the product will be visible to the user but not purchase-able.
 
@@ -72,18 +71,18 @@ All of the following must be true for a Buyer User to see a Product (via me rout
 
 - Product.Active = true
 - Catalog exists where:
-    - Catalog.Active = true
-    - Buyer is assigned via CatalogAssignment
-    - Product is assigned via ProductCatalogAssignment
+  - Catalog.Active = true
+  - Buyer is assigned via CatalogAssignment
+  - Product is assigned via ProductCatalogAssignment
 - One of the following is true:
-    - CatalogAssignment.ViewAllProducts = true, OR
-    - Category exists in Catalog where
-        - Active = true
-        - Product assigned via CategoryProductAssignment
-        - CategoryAssignment exists where
-            - Buyer, User, or Group matches the user
-            - ViewAllProducts = true for first non-null setting up the tree
-    - ProductAssignment exists for Buyer or any Group the user belongs to (PriceScheduleID not required)
+  - CatalogAssignment.ViewAllProducts = true, OR
+  - Category exists in Catalog where
+    - Active = true
+    - Product assigned via CategoryProductAssignment
+    - CategoryAssignment exists where
+      - Buyer, User, or Group matches the user
+      - ViewAllProducts = true for first non-null setting up the tree
+  - ProductAssignment exists for Buyer or any Group the user belongs to (PriceScheduleID not required)
 
 ### Validation Rules
 

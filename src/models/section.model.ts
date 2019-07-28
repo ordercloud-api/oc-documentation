@@ -1,19 +1,20 @@
 export interface Section {
-    title: string;
-    guides: Guide[]
+  title: string
+  guides: Guide[]
 }
 
 export interface Guide {
-    id: string;
-    frontmatter: {
-        path: string;
-        section: string;
-        title: string;
-        hidden?: boolean;
+  id: string
+  path: string
+  fileAbsolutePath: string
+  frontmatter: {
+    section: string
+    title: string
+    hidden?: boolean
+  }
+  headings: [
+    {
+      value: string
     }
-    headings: [
-        { 
-            value: string;
-        }
-    ]
+  ]
 }

@@ -16,7 +16,9 @@ function getSectionsFromDocsQuery(query: DocsQuery): Section[] {
   forEach(sectionsWithGuides, (section, title) => {
     const formattedSection = {
       title,
-      guides: section.map(s => s.node),
+      guides: section.map(s => {
+        return { ...s.node, path: service.resolvePath(s.node.fileAbsolutePath) }
+      }),
     }
     sections = [...sections, formattedSection]
   })
@@ -24,11 +26,14 @@ function getSectionsFromDocsQuery(query: DocsQuery): Section[] {
 }
 
 /**
- * takes in gatsby's fileAbsolutePath and returns
- * a shortened routable path
+ * takes in gatsby's fileAbsolutePath and returns the routeable path
  */
 function resolvePath(fileAbsolutePath: string): string {
-  return fileAbsolutePath.split('/content')[1].replace('.mdx', '')
+  var path = fileAbsolutePath.split('/content')[1].replace('.mdx', '')
+  if (path.startsWith('/docs')) {
+    return path.replace('/docs', '') // served from root
+  }
+  return path
 }
 
 export default service

@@ -18,6 +18,7 @@ import {
 import utility from '../../utility'
 import { MenuRounded } from '@material-ui/icons'
 import Footer from '../Layout/Footer'
+import { DocsQuery } from '../../models/docsQuery'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -55,12 +56,17 @@ const styles = (theme: Theme) =>
     },
   })
 
+interface DocTemplateProps {
+  data: DocsQuery
+  classes: any
+  location: any
+}
 interface DocTemplateState {
   mobileOpen: boolean
 }
 
 const Template = withStyles(styles)(
-  class extends React.Component<any, DocTemplateState> {
+  class extends React.Component<DocTemplateProps, DocTemplateState> {
     public state: DocTemplateState = {
       mobileOpen: false,
     }
@@ -80,7 +86,6 @@ const Template = withStyles(styles)(
       const sections = utility.getSectionsFromDocsQuery(post)
       return (
         <Layout>
-          {/* <OverlayMenu sections={sections} currentPath={location.pathname} /> */}
           <Container className={classes.docContainer} maxWidth="lg">
             <Hidden mdUp implementation="js">
               <Fab
@@ -104,7 +109,7 @@ const Template = withStyles(styles)(
               </Typography>
               <DocFooter
                 contents={sections}
-                currentGuide={post.mdx.frontmatter.path}
+                currentGuide={utility.resolvePath(post.mdx.fileAbsolutePath)}
               />
             </div>
             <RightMenu
@@ -125,8 +130,8 @@ export const pageQuery = graphql`
   query DocTemplateByPath($nodeID: String!) {
     mdx(id: { eq: $nodeID }) {
       body
+      fileAbsolutePath
       frontmatter {
-        path
         title
       }
     }
@@ -135,13 +140,13 @@ export const pageQuery = graphql`
       edges {
         node {
           id
+          fileAbsolutePath
           headings {
             value
           }
           frontmatter {
             section
             title
-            path
           }
         }
       }

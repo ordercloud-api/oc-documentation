@@ -68,7 +68,7 @@ class DocFooter extends React.Component<any> {
       'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs'
     const flatContents = _flatten(contents.map(c => c.guides))
     const guideIndex = flatContents.findIndex(
-      section => section.frontmatter.path === currentGuide
+      section => section.path === currentGuide
     )
 
     const directionalButton = direction => {
@@ -84,9 +84,7 @@ class DocFooter extends React.Component<any> {
           {direction === 'Previous' ? (
             <KeyboardArrowLeft className={classes.extendedIcon} />
           ) : null}
-          <Link to={flatContents[newGuideIndex].frontmatter.path}>
-            {direction} Guide
-          </Link>
+          <Link to={flatContents[newGuideIndex].path}>{direction} Guide</Link>
           {direction === 'Next' ? <KeyboardArrowRight /> : null}
         </Button>
       ) : null

@@ -1,7 +1,6 @@
 ---
-path: "/main-concepts/authentication"
 title: Authentication
-section: "Main Concepts"
+section: 'Main Concepts'
 priority: 2
 hidden: false
 ---
@@ -12,7 +11,7 @@ OrderCloud's authentication system is built on top of an open authorization stan
 
 ## Understanding Access Tokens
 
-Access tokens are what gives you *access* to parts of the API and must be appended to every request. Encrypted in the token are the identity of the user as well as the roles that the user has access to. Once validated, the ordercloud API has enough information from this token to determine which endpoints and data a user can read and/or write.
+Access tokens are what gives you _access_ to parts of the API and must be appended to every request. Encrypted in the token are the identity of the user as well as the roles that the user has access to. Once validated, the ordercloud API has enough information from this token to determine which endpoints and data a user can read and/or write.
 
 ## API Client
 
@@ -26,12 +25,12 @@ In general, an API Client is another way defining access to your organization.
 
 This is the most common workflow you'll see. A user is providing their username/password and is logging in to an application.
 
-| Parameter  | Definition                    |
-|------------|-------------------------------|
-| client_id  | the api client's id           |
-| username   | the user's username           |
-| password   | the user's password           |
-| grant_type | value must be `password`      |
+| Parameter  | Definition               |
+| ---------- | ------------------------ |
+| client_id  | the api client's id      |
+| username   | the user's username      |
+| password   | the user's password      |
+| grant_type | value must be `password` |
 
 ```http
 POST https://auth.ordercloud.io/oauth/token HTTP/1.1
@@ -46,11 +45,11 @@ This workflow is best suited for where you need a way for your integration to ge
 
 To use this workflow you'll need to set the ClientSecret on the API Client in the [Console](TODO:link-to-console)
 
-| Parameter     | Definition                                    |
-|---------------|-----------------------------------------------|
-| client_id     | the api client's id                           |
-| client_secret | the api client secret defined in the console  |
-| grant_type    | value must be `client_credentials`            |
+| Parameter     | Definition                                   |
+| ------------- | -------------------------------------------- |
+| client_id     | the api client's id                          |
+| client_secret | the api client secret defined in the console |
+| grant_type    | value must be `client_credentials`           |
 
 ```http
 POST https://auth.ordercloud.io/oauth/token HTTP/1.1
@@ -66,7 +65,7 @@ You might want to enable visitors to browse a catalog of products and/or checkou
 Before you can make a request to get a token via this workflow you must ensure that your API client has a template user defined by setting the user in the [Console](TODO:-add-link-to-console). Without a template user the API has no context for determining data the anonymous user has access to, like product and pricing information.
 
 | Parameter  | Definition                         |
-|------------|------------------------------------|
+| ---------- | ---------------------------------- |
 | client_id  | the api client's id                |
 | grant_type | value must be `client_credentials` |
 
@@ -81,10 +80,10 @@ client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=client_credentials
 
 Access tokens will expire after some pre-determined time (set on the API Client in the console) after which you will need to get another access token in order to continue interacting with the API. Without a refresh token a user might have to re-enter their username and password to get a new token however if you have enabled refresh tokens you will receive a refresh token on your initial authentication request which you can save and then use to get another access token when your initial access token expires.
 
->Refresh tokens are disabled by default. To enable refresh tokens you'll need to set the expiration time on refresh tokens to be greater than zero. This expiration time is defined on the API client and can be set in the console.
+> Refresh tokens are disabled by default. To enable refresh tokens you'll need to set the expiration time on refresh tokens to be greater than zero. This expiration time is defined on the API client and can be set in the console.
 
 | Parameter     | Definition                                                    |
-|---------------|---------------------------------------------------------------|
+| ------------- | ------------------------------------------------------------- |
 | client_id     | the ID of the api client                                      |
 | refresh_token | the refresh_token property from initial access token response |
 | grant_type    | value must be `refresh_token`                                 |
@@ -103,7 +102,7 @@ This final workflow is the same as the Password Grant Type except that it has an
 To use this workflow you'll need to set the ClientSecret on the API Client in the [Console](TODO:-link-to-console)
 
 | Parameter     | Definition                                   |
-|---------------|----------------------------------------------|
+| ------------- | -------------------------------------------- |
 | client_id     | the api client's id                          |
 | username      | the user's username                          |
 | password      | the user's password                          |
@@ -119,7 +118,7 @@ client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&username=xxxxxxxx&password=xxxxxx
 
 ## 6 Single Sign On Workflow
 
-OrderCloud enables single sign on via OpenID Connect which is yet another standard built on top of OAuth2. 
+OrderCloud enables single sign on via OpenID Connect which is yet another standard built on top of OAuth2.
 
 At a high level OrderCloud allows your users to log into the OrderCloud API by logging into any identity provider you trust such as Facebook, Google, or even an ERP system you own. It prevents your users the hassle of having to manage one more set of credentials.
 

@@ -133,14 +133,14 @@ const Main = withStyles(styles)(
                                 className={classes.paperList}
                               >
                                 {section.guides
-                                  .filter(c => !c.frontmatter.hidden)
-                                  .map(s => {
+                                  .filter(g => !g.frontmatter.hidden)
+                                  .map(g => {
                                     return (
                                       <ListLink
-                                        key={s.id}
+                                        key={g.id}
                                         guideProps={{
-                                          path: s.frontmatter.path,
-                                          title: s.frontmatter.title,
+                                          path: g.path,
+                                          title: g.frontmatter.title,
                                         }}
                                       />
                                     )
@@ -174,10 +174,10 @@ export default () => (
           edges {
             node {
               id
+              fileAbsolutePath
               frontmatter {
                 section
                 title
-                path
                 hidden
               }
             }
