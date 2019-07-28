@@ -15,7 +15,7 @@ import {
   Fab,
   Hidden,
 } from '@material-ui/core'
-import utility from '../Shared/utility'
+import utility from '../../utility'
 import { MenuRounded } from '@material-ui/icons'
 import Footer from '../Layout/Footer'
 
@@ -77,7 +77,7 @@ const Template = withStyles(styles)(
 
     public render() {
       const { data: post, classes, location } = this.props
-      const sections = utility.getSectionsFromQuery(post)
+      const sections = utility.getSectionsFromDocsQuery(post)
       return (
         <Layout>
           {/* <OverlayMenu sections={sections} currentPath={location.pathname} /> */}

@@ -28,7 +28,10 @@ interface BlogComponentProps {
     mdx: {
       body: string
       frontmatter: {
-        apiVersion: string
+        title: string
+        tags: string
+        authors: string
+        summary: string
         date: number
       }
     }
@@ -48,7 +51,7 @@ function BlogComponent(props: BlogComponentProps) {
             />
             <div className={classes.body}>
               <Typography variant="h2" component="h1">
-                API v{data.mdx.frontmatter.apiVersion} Release Notes
+                {data.mdx.frontmatter.title}
               </Typography>
               <Typography component="span">
                 <MDXRenderer>{data.mdx.body}</MDXRenderer>
@@ -66,7 +69,10 @@ export const pageQuery = graphql`
     mdx(id: { eq: $nodeID }) {
       body
       frontmatter {
-        apiVersion
+        title
+        tags
+        authors
+        summary
         date
       }
     }

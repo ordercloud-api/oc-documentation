@@ -14,7 +14,7 @@ import { groupBy as _groupBy, forEach as _forEach } from 'lodash'
 import ListLink from '../Shared/ListLink'
 import Jumbotron from '../Shared/Jumbotron'
 import { StaticQuery, graphql } from 'gatsby'
-import utility from '../Shared/utility'
+import utility from '../../utility'
 import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
 import { navigate } from '../Shared/PortalLink'
 
@@ -86,7 +86,7 @@ const Main = withStyles(styles)(
   class extends React.Component<any> {
     public render() {
       const { tableOfContents, classes } = this.props
-      const sections = utility.getSectionsFromQuery(tableOfContents)
+      const sections = utility.getSectionsFromDocsQuery(tableOfContents)
       return (
         <div className={classes.root}>
           <Jumbotron />

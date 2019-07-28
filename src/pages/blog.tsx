@@ -3,14 +3,13 @@ import {
   Theme,
   createStyles,
   makeStyles,
-  List,
-  ListItem,
-  ListItemText,
   Container,
   Grid,
 } from '@material-ui/core/'
 import { graphql, useStaticQuery, Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
+import utility from '../utility'
+import Layout from '../components/Layout/Layout'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,6 +27,7 @@ interface PageData {
       {
         node: {
           id: string
+          fileAbsolutePath: string
           frontmatter: {
             title: string
             date: string
@@ -55,6 +55,7 @@ export default function BlogListComponent(props: BlogListProps) {
         edges {
           node {
             id
+            fileAbsolutePath
             frontmatter {
               title
               date(formatString: "dddd MMMM Do, YYYY")
@@ -68,30 +69,34 @@ export default function BlogListComponent(props: BlogListProps) {
     }
   `)
   return (
-    <Container maxWidth="lg">
-      <Grid container className={classes.container} spacing={3}>
-        <Helmet title={`OrderCloud Blog`} />
-        <div className={classes.body}>
-          {data.allMdx.edges.map(edge => {
-            return (
-              <div key={edge.node.id}>
-                <h3>
-                  {/* TODO: fix this */}
-                  <Link style={{ boxShadow: `none` }} to="/">
-                    {edge.node.frontmatter.title}
-                  </Link>
-                </h3>
-                <small>{edge.node.frontmatter.date}</small>
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: edge.node.frontmatter.summary,
-                  }}
-                />
-              </div>
-            )
-          })}
-        </div>
-      </Grid>
-    </Container>
+    <Layout>
+      <Container maxWidth="lg">
+        <Grid container className={classes.container} spacing={3}>
+          <Helmet title={`OrderCloud Blog`} />
+          <div className={classes.body}>
+            {data.allMdx.edges.map(edge => {
+              return (
+                <div key={edge.node.id}>
+                  <h3>
+                    <Link
+                      style={{ boxShadow: `none` }}
+                      to={utility.resolvePath(edge.node.fileAbsolutePath)}
+                    >
+                      {edge.node.frontmatter.title}
+                    </Link>
+                  </h3>
+                  <small>{edge.node.frontmatter.date}</small>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: edge.node.frontmatter.summary,
+                    }}
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </Grid>
+      </Container>
+    </Layout>
   )
 }

@@ -11,6 +11,8 @@ import {
 } from '@material-ui/core/'
 import { graphql, useStaticQuery, Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
+import utility from '../utility'
+import Layout from '../components/Layout/Layout'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,6 +29,7 @@ interface PageData {
     edges: [
       {
         node: {
+          fileAbsolutePath: string
           id: string
           frontmatter: {
             apiVersion: string
@@ -55,6 +58,7 @@ export default function ReleaseNotesListComponent(
         edges {
           node {
             id
+            fileAbsolutePath
             frontmatter {
               apiVersion
               date(formatString: "dddd MMMM Do, YYYY")
@@ -65,29 +69,31 @@ export default function ReleaseNotesListComponent(
     }
   `)
   return (
-    <Container maxWidth="lg">
-      <Grid container className={classes.container} spacing={3}>
-        <Grid item xs={9}>
-          <Helmet title={`OrderCloud Release Notes`} />
-          <div className={classes.body}>
-            <List component="nav">
-              {data.allMdx.edges.map(edge => {
-                const frontmatter = edge.node.frontmatter
-                return (
-                  <ListItem
-                    component={Link}
-                    to={`api-release-notes/v${frontmatter.apiVersion}`}
-                  >
-                    <ListItemText
-                      primary={`API v${frontmatter.apiVersion} released on ${frontmatter.date}`}
-                    />
-                  </ListItem>
-                )
-              })}
-            </List>
-          </div>
+    <Layout>
+      <Container maxWidth="lg">
+        <Grid container className={classes.container} spacing={3}>
+          <Grid item xs={9}>
+            <Helmet title={`OrderCloud Release Notes`} />
+            <div className={classes.body}>
+              <List component="nav">
+                {data.allMdx.edges.map(edge => {
+                  const frontmatter = edge.node.frontmatter
+                  return (
+                    <ListItem
+                      component={Link}
+                      to={utility.resolvePath(edge.node.fileAbsolutePath)}
+                    >
+                      <ListItemText
+                        primary={`API v${frontmatter.apiVersion} released on ${frontmatter.date}`}
+                      />
+                    </ListItem>
+                  )
+                })}
+              </List>
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </Layout>
   )
 }
