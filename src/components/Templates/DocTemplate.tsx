@@ -16,9 +16,10 @@ import {
   Hidden,
   Box,
 } from '@material-ui/core'
-import utility from '../Shared/utility'
+import utility from '../../utility'
 import { MenuRounded } from '@material-ui/icons'
 import Footer from '../Layout/Footer'
+import { DocsQuery } from '../../models/docsQuery'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -86,12 +87,17 @@ const styles = (theme: Theme) =>
     },
   })
 
+interface DocTemplateProps {
+  data: DocsQuery
+  classes: any
+  location: any
+}
 interface DocTemplateState {
   mobileOpen: boolean
 }
 
 const Template = withStyles(styles)(
-  class extends React.Component<any, DocTemplateState> {
+  class extends React.Component<DocTemplateProps, DocTemplateState> {
     public state: DocTemplateState = {
       mobileOpen: false,
     }
@@ -108,7 +114,7 @@ const Template = withStyles(styles)(
 
     public render() {
       const { data: post, classes, location } = this.props
-      const sections = utility.getSectionsFromQuery(post)
+      const sections = utility.getSectionsFromDocsQuery(post)
       return (
         <Box className={classes.boxRoot}>
           <Layout>
@@ -136,7 +142,7 @@ const Template = withStyles(styles)(
                 </Typography>
                 <DocFooter
                   contents={sections}
-                  currentGuide={post.mdx.frontmatter.path}
+                  currentGuide={utility.resolvePath(post.mdx.fileAbsolutePath)}
                 />
               </div>
               <RightMenu
@@ -155,11 +161,11 @@ const Template = withStyles(styles)(
 )
 
 export const pageQuery = graphql`
-  query DocTemplateByPath($path: String!) {
-    mdx(frontmatter: { path: { eq: $path } }) {
+  query DocTemplateByPath($nodeID: String!) {
+    mdx(id: { eq: $nodeID }) {
       body
+      fileAbsolutePath
       frontmatter {
-        path
         title
       }
     }
@@ -168,13 +174,13 @@ export const pageQuery = graphql`
       edges {
         node {
           id
+          fileAbsolutePath
           headings {
             value
           }
           frontmatter {
             section
             title
-            path
           }
         }
       }
