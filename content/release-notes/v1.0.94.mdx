@@ -1,0 +1,11 @@
+---
+apiVersion: 1.0.94
+date: 2019-03-07
+---
+
+Planned to be Released to Production on Thursday, March 7th, 2019.
+
+- BUGFIX: With Premium Search, if price is updated, change was not reflected immediately in `me/products`.
+- BUGFIX: With Premium Search, if product inventory (and nothing else) is updated, change was not reflected immediately in `me/products`.
+- When product inventory is enabled but `QuantityAvailable` is unset, it is returned as 0 rather than `null`.
+- General performance enhancements.

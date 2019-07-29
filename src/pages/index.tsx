@@ -1,8 +1,9 @@
 import React from 'react'
+import Layout from '../components/Layout/Layout'
+import Main from '../components/Layout/Main'
 
-// import SEO from '../components/seo';
-import App from '../components/App/App'
-
-const IndexPage = () => <App />
-
-export default IndexPage
+export default () => (
+  <Layout>
+    <Main />
+  </Layout>
+)
