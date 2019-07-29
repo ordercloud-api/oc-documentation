@@ -68,7 +68,7 @@ class DocFooter extends React.Component<any> {
       'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs'
     const flatContents = _flatten(contents.map(c => c.guides))
     const guideIndex = flatContents.findIndex(
-      section => section.frontmatter.path === currentGuide
+      section => section.path === currentGuide
     )
 
     const directionalButton = direction => {
@@ -84,9 +84,7 @@ class DocFooter extends React.Component<any> {
           {direction === 'Previous' ? (
             <KeyboardArrowLeft className={classes.extendedIcon} />
           ) : null}
-          <Link to={flatContents[newGuideIndex].frontmatter.path}>
-            {direction} Guide
-          </Link>
+          <Link to={flatContents[newGuideIndex].path}>{direction} Guide</Link>
           {direction === 'Next' ? <KeyboardArrowRight /> : null}
         </Button>
       ) : null
@@ -94,60 +92,60 @@ class DocFooter extends React.Component<any> {
 
     return (
       //TODO: Link to Slack, syntax on ordercloud tag
-      <Grid
-        className={classes.gridContainer}
-        container
-        spacing={3}
-        justify="space-between"
-        alignItems="stretch"
-      >
-        <Grid className={classes.gridItem} item xs={2}>
-          {directionalButton('Previous')}
-        </Grid>
-        <Grid item xs={8}>
-          <Paper className={classes.paperMain}>
-            <div className={classes.groupHelpful}>
-              <IconButton
-                className={classes.groupHelpfulBtn}
-                aria-label="Helpful"
-              >
-                <ThumbUp fontSize="small" />
-              </IconButton>
-              <Typography variant="body2">Was this guide helpful?</Typography>
-              <IconButton
-                className={classes.groupHelpfulBtn}
-                aria-label="Not Helpful"
-              >
-                <ThumbDown fontSize="small" />
-              </IconButton>
-            </div>
-            <Typography className={classes.typographyMain} align="center">
-              If you have any questions, please ask our Developer Community on
-              Slack, or post your question on{' '}
-              <a
-                href="https:stackoverflow.com/questions/tagged/ordercloud"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Stack Overflow
-              </a>{' '}
-              using the tag: <strong>ordercloud</strong>.
-            </Typography>
-            <Button
-              size="small"
-              variant="text"
-              href={`${gitHubUrl}${currentGuide}.md`}
-              target="_blank"
-              rel="noopener noreferrer"
+      <React.Fragment>
+        <Paper className={classes.paperMain}>
+          <div className={classes.groupHelpful}>
+            <IconButton
+              className={classes.groupHelpfulBtn}
+              aria-label="Helpful"
             >
-              Contribute to this doc
-            </Button>
-          </Paper>
+              <ThumbUp fontSize="small" />
+            </IconButton>
+            <Typography variant="body2">Was this guide helpful?</Typography>
+            <IconButton
+              className={classes.groupHelpfulBtn}
+              aria-label="Not Helpful"
+            >
+              <ThumbDown fontSize="small" />
+            </IconButton>
+          </div>
+          <Typography className={classes.typographyMain} align="center">
+            If you have any questions, please ask our Developer Community on
+            Slack, or post your question on{' '}
+            <a
+              href="https:stackoverflow.com/questions/tagged/ordercloud"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Stack Overflow
+            </a>{' '}
+            using the tag: <strong>ordercloud</strong>.
+          </Typography>
+          <Button
+            size="small"
+            variant="text"
+            href={`${gitHubUrl}${currentGuide}.mdx`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Contribute to this doc
+          </Button>
+        </Paper>
+        <Grid
+          className={classes.gridContainer}
+          container
+          spacing={3}
+          justify="space-between"
+          alignItems="stretch"
+        >
+          <Grid className={classes.gridItem} item xs={6}>
+            {directionalButton('Previous')}
+          </Grid>
+          <Grid className={classes.gridItem} item xs={6}>
+            {directionalButton('Next')}
+          </Grid>
         </Grid>
-        <Grid className={classes.gridItem} item xs={2}>
-          {directionalButton('Next')}
-        </Grid>
-      </Grid>
+      </React.Fragment>
     )
   }
 }

@@ -1,0 +1,52 @@
+---
+title: 'Orders'
+section: 'Main Concepts'
+priority: 2
+hidden: false
+---
+
+The central concept within OrderCloud is not surprisingly the order. This is the object where buyers, sellers, products, payments, and almost everything come together to form a business transaction.
+
+## Direction
+
+A unique and central feature of the Order resource is that order "direction. The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, seller, supplier. What changes however is the order _direction_. An order is generally thought to flow like this:
+
+Buyer => Seller
+and _optionally_ (remember suppliers are optional)
+Buyer => Supplier => Seller
+
+In a supplier-less organization, this relationship is simple. A buyer creates an order that goes **to** the seller to fulfill. From the perspective of the buyer user that order is "outgoing" and from the perspective of the seller user this order is "incoming". To the buyer user the notion of incoming orders doesn't exist, in the say way that a seller does not have any outgoing orders. They're at the edges of this flow.
+
+If we introduce a supplier to the mix then the relationship is essentially the same for the buyer and seller however the supplier's visibility is a bit more complex. They can see orders coming to them _from the buyer_ by using the "incoming" order direction, and can see orders going to the seller by using the "outgoing" order direction. Both "incoming" _and_ "outgoing" orders mean something to the supplier.
+
+## Statuses
+
+Throughout a workflow an order undergoes various status changes:
+
+- Unsubmitted: Created but has not yet been submitted
+- Open: Submitted but not yet fulfilled
+- AwaitingApproval: Submitted but on hold awaiting approval
+- Declined: Submitted but has been declined
+- Completed: Submitted and all the line items on the order have been shipped
+- Canceled: Order can no longer be submitted
+
+We've made it easy for you by tracking these changes as well as the time the status changes. A status is often time changed by the API automatically under certain conditions (e.g. all the quantities on all the lines are shipped so the platform changes the order status to 'Complete')
+
+## Interactions with other resources
+
+As we mentioned, almost every resource in OrderCloud interacts with the order and it is these relationships and actions between the resources and the order that really give meaning to an order.
+
+Let's highlight some of the most common resources that interact with the order. This is a non-exhaustive list that is meant to give you quick insight into the power of OrderCloud. For more information we recommend diving into the feature documentation or even perusing other features that aren't specifically mentioned here but that also interact with the order.
+
+| OrderCloud Resource | Problem it solves                                                             |
+| ------------------- | ----------------------------------------------------------------------------- |
+| PriceSchedules      | Define rules for how a product can be ordered (quantities for example)        |
+| Buyer Addresses     | Only allow users to select from a list of approved billing/shipping addresses |
+| Promotions          | Deduct some amount from an order if a user's order meets certain requirements |
+| Payments            | Allow a user to pay for an order with a payment method of their choosing      |
+| Approvals           | If an order meets some criteria, put the order on hold for approval.          |
+| Shipments           | Break an order up into shipments                                              |
+
+## Conclusion
+
+![TODO:need-conclusion]

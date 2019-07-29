@@ -1,5 +1,5 @@
 import React from 'react'
-import { Section, Guide } from '../Shared/models/section.model'
+import { Section, Guide } from '../../models/section.model'
 import { Link } from 'gatsby'
 
 import {
@@ -13,19 +13,49 @@ import {
   makeStyles,
   Typography,
   Divider,
-  Paper,
+  Drawer,
+  Hidden,
+  useTheme,
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
+
+export const drawerWidth = 451
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
+      display: 'flex',
+      flexDirection: 'column',
     },
-    nested: {
-      paddingLeft: theme.spacing(4),
+    drawer: {
+      [theme.breakpoints.up('md')]: {
+        width: drawerWidth,
+        flexShrink: 0,
+      },
+    },
+    appBar: {
+      marginLeft: drawerWidth,
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+      },
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up('md')]: {
+        display: 'none',
+      },
+    },
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+      width: drawerWidth,
+      maxWidth: '100vw',
+      [theme.breakpoints.up('md')]: {
+        maxWidth: 'none',
+      },
+    },
+    content: {
+      flexGrow: 1,
+      padding: theme.spacing(3),
     },
     sectionTitle: {
       textTransform: 'uppercase',
@@ -34,8 +64,8 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 /**
  * TODO: (possible enhancements)
- * 1. Make it sticky
- * 2. Make it responsive
+ * 1. Make it sticky @esitarz
+ * 2. Make it responsive @esitarz
  * 3. Style it better, need something that distinguishes the headings from the guides a bit more
  * 4. remove underline from guide links
  * 5. Make the scroll less jarring
@@ -46,22 +76,57 @@ const useStyles = makeStyles((theme: Theme) =>
 interface RightMenuProps {
   sections: Section[]
   currentPath: string
+  mobileOpen: boolean
+  onMobileClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void
 }
+
 export default function RightMenu(props: RightMenuProps) {
-  const { sections, currentPath } = props
+  const { sections, currentPath, mobileOpen, onMobileClose } = props
+  // const { container, mobileOpen, onMobileClose } = props
   const classes = useStyles(props)
+  const theme = useTheme()
+
+  const drawer = (
+    <React.Fragment>
+      {sections.map(section => (
+        <SectionMenu
+          key={section.title}
+          section={section}
+          currentPath={currentPath}
+        />
+      ))}
+    </React.Fragment>
+  )
+
   return (
-    <Paper>
-      {sections.map(section => {
-        return (
-          <SectionMenu
-            key={section.title}
-            section={section}
-            currentPath={currentPath}
-          />
-        )
-      })}
-    </Paper>
+    <nav>
+      <Hidden smDown implementation="css">
+        <Drawer
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          anchor="right"
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+      <Hidden mdUp implementation="css">
+        <Drawer
+          className={classes.drawer}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={onMobileClose}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          anchor="right"
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+    </nav>
   )
 }
 
@@ -73,7 +138,7 @@ function SectionMenu(props: SectionMenuProps) {
   const { section, currentPath } = props
   const classes = useStyles(props)
   const hasActiveGuide = section.guides
-    .map(g => g.frontmatter.path)
+    .map(g => g.path)
     .includes(currentPath)
   const [open, setOpen] = React.useState(hasActiveGuide)
 
@@ -108,7 +173,7 @@ interface GuideMenuProps extends StyledComponentProps {
 function GuideMenu(props: GuideMenuProps) {
   const { guide, currentPath } = props
   const classes = useStyles(props)
-  const isActive = guide.frontmatter.path.includes(currentPath)
+  const isActive = guide.path.includes(currentPath)
   const [open, setOpen] = React.useState(isActive)
 
   function handleToggleDrawer() {
@@ -119,7 +184,7 @@ function GuideMenu(props: GuideMenuProps) {
     <List component="div" disablePadding>
       <ListItem>
         <ListItemText>
-          <Link to={guide.frontmatter.path}>{guide.frontmatter.title}</Link>
+          <Link to={guide.path}>{guide.frontmatter.title}</Link>
         </ListItemText>
         {open ? (
           <ExpandLess onClick={handleToggleDrawer} />
@@ -131,8 +196,8 @@ function GuideMenu(props: GuideMenuProps) {
         <List component="div" disablePadding>
           {guide.headings.map(heading => (
             <GuideHeading
-              key={`guide_heading${heading}`}
-              guidePath={guide.frontmatter.path}
+              key={`guide_heading${heading.value}`}
+              guidePath={guide.path}
               heading={heading.value}
             />
           ))}
@@ -166,9 +231,7 @@ function GuideHeading(props: GuideHeadingProps) {
     <ListItem
       key={guidePath}
       button
-      className={classes.nested}
-      component={Link}
-      to={guideSectionLink}
+      component={props => <Link {...props} to={guideSectionLink}></Link>}
     >
       <ListItemText primary={heading} />
     </ListItem>

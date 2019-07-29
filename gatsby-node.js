@@ -1,25 +1,20 @@
 const path = require('path')
-
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
-  const docTemplate = path.resolve(`src/components/Templates/DocTemplate.tsx`)
-  const apiReferenceDoc = path.resolve(
-    `src/components/Templates/ApiReference.tsx`
+  const docTemplate = path.resolve('src/components/Templates/DocTemplate.tsx')
+  const blogTemplate = path.resolve('src/components/Templates/BlogTemplate.tsx')
+  const releaseNotesTemplate = path.resolve(
+    'src/components/Templates/ReleaseNotes.tsx'
   )
 
   return graphql(`
-    {
-      allMdx(
-        sort: { order: ASC, fields: [frontmatter___priority] }
-        limit: 1000
-      ) {
+    query CreatePagesQuery {
+      allMdx {
         edges {
           node {
-            frontmatter {
-              title
-              path
-            }
+            id
+            fileAbsolutePath
           }
         }
       }
@@ -28,18 +23,29 @@ exports.createPages = ({ actions, graphql }) => {
     if (result.errors) {
       return Promise.reject(result.errors)
     }
-
     result.data.allMdx.edges.forEach(edge => {
-      const path = edge.node.frontmatter.path
+      let path = edge.node.fileAbsolutePath
+        .split('/content')[1]
+        .replace('.mdx', '')
+
+      let component
+      if (path.startsWith('/docs')) {
+        path = path.replace('/docs', '') // served from root
+        component = docTemplate
+      } else if (path.startsWith('/blog')) {
+        component = blogTemplate
+      } else if (path.startsWith('/release-notes')) {
+        component = releaseNotesTemplate
+      } else {
+        throw new Error(`Can't resolve path ${edge.node.fileAbsolutePath}`)
+      }
       createPage({
-        path: path,
-        component: docTemplate,
-        context: {}, // additional data can be passed via context
+        path,
+        component,
+        context: {
+          nodeID: edge.node.id,
+        },
       })
-    })
-    createPage({
-      path: '/api-reference',
-      component: apiReferenceDoc,
     })
   })
 }

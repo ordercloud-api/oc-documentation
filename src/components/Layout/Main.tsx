@@ -14,23 +14,32 @@ import { groupBy as _groupBy, forEach as _forEach } from 'lodash'
 import ListLink from '../Shared/ListLink'
 import Jumbotron from '../Shared/Jumbotron'
 import { StaticQuery, graphql } from 'gatsby'
-import utility from '../Shared/utility'
+import utility from '../../utility'
 import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
+import { navigate } from '../Shared/PortalLink'
+
+if (typeof window !== 'undefined') {
+  // attach smooth scroll to all hrefs
+  require('smooth-scroll')('a[href*="#"]')
+}
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      marginLeft: theme.spacing(9),
-      flexGrow: 1,
-      overflow: 'scroll',
-      flex: '1 1 auto',
+      // overflowX: 'hidden',
+      // overflowY: 'auto',
+      [theme.breakpoints.up('md')]: {
+        marginLeft: theme.spacing(9),
+      },
+      // flexGrow: 1,
+      // flex: '1 1 auto',
+      // height: '100vh',
       backgroundColor: mediumgrey[50],
-      height: '100vh',
     },
-    cardContainer: {
-      display: 'flex',
-      flex: '1 1 auto',
-    },
+    // cardContainer: {
+    //   display: 'flex',
+    //   flex: '1 1 auto',
+    // },
     paperRoot: {
       zIndex: 1,
     },
@@ -39,6 +48,7 @@ const styles = (theme: Theme) =>
       minHeight: '35vh',
       flexFlow: 'column nowrap',
       alignItems: 'center',
+      maxWidth: '100vw',
     },
     paperTitleHeading: {
       color: darkgrey[900],
@@ -76,7 +86,7 @@ const Main = withStyles(styles)(
   class extends React.Component<any> {
     public render() {
       const { tableOfContents, classes } = this.props
-      const sections = utility.getSectionsFromQuery(tableOfContents)
+      const sections = utility.getSectionsFromDocsQuery(tableOfContents)
       return (
         <div className={classes.root}>
           <Jumbotron />
@@ -123,14 +133,14 @@ const Main = withStyles(styles)(
                                 className={classes.paperList}
                               >
                                 {section.guides
-                                  .filter(c => !c.frontmatter.hidden)
-                                  .map(s => {
+                                  .filter(g => !g.frontmatter.hidden)
+                                  .map(g => {
                                     return (
                                       <ListLink
-                                        key={s.id}
+                                        key={g.id}
                                         guideProps={{
-                                          path: s.frontmatter.path,
-                                          title: s.frontmatter.title,
+                                          path: g.path,
+                                          title: g.frontmatter.title,
                                         }}
                                       />
                                     )
@@ -156,15 +166,18 @@ export default () => (
   <StaticQuery
     query={graphql`
       query {
-        allMdx(sort: { order: ASC, fields: [frontmatter___priority] }) {
+        allMdx(
+          sort: { order: ASC, fields: [frontmatter___priority] }
+          filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
+        ) {
           totalCount
           edges {
             node {
               id
+              fileAbsolutePath
               frontmatter {
                 section
                 title
-                path
                 hidden
               }
             }
