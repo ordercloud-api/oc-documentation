@@ -1,6 +1,7 @@
 import React from 'react';
 import { groupBy as _groupBy, remove as _remove, map as _map, find as _find } from 'lodash';
 import { Paper, Collapse, List, ListItem, ListItemText, Typography, makeStyles, Theme, createStyles } from '@material-ui/core';
+import OpenApi from '../../openapi.service';
 
 interface ApiReferenceProps {
   name: string;
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export default function ApiReferenceMenu(props) {
-  const { apiReference } = props;
+  const { apiReference, resourceChange } = props;
   const sections = _groupBy(_remove(apiReference, (ref: ApiReferenceProps) => ref.x_section_id != null), 'x_section_id');
 
   return (
@@ -28,7 +29,7 @@ export default function ApiReferenceMenu(props) {
       {_map(sections, (section, index) => {
         const sectionDescription = _find(apiReference, r => r.x_id === index).description;
         return (
-          <Section section={section} sectionTitle={index} sectionDescription={sectionDescription} />
+          <Section section={section} sectionTitle={index} sectionDescription={sectionDescription} resourceChange={resourceChange} />
         )
       })}
     </Paper>
@@ -36,11 +37,12 @@ export default function ApiReferenceMenu(props) {
 }
 
 function Section(props) {
-  const { section, sectionTitle, sectionDescription } = props;
+  const { section, sectionTitle, sectionDescription, resourceChange } = props;
   const classes = useStyles(props);
   const [open, setOpen] = React.useState(false);
 
-  function handleClick() {
+  function handleClick(event) {
+    event.stopPropagation();
     setOpen(!open)
   }
 
@@ -55,18 +57,19 @@ function Section(props) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <p>{sectionDescription}</p>
-        {section.map(s => <Resource resource={s} />)}
+        {section.map(s => <Resource resource={s} resourceChange={resourceChange} />)}
       </Collapse>
     </List>
   )
 }
 
 function Resource(props) {
-  const { resource } = props;
-  console.log(resource)
+  const { resource, resourceChange } = props;
+  const operations = OpenApi.operationsByResource[resource.name];
   const [open, setOpen] = React.useState(false);
 
-  function handleClick() {
+  function handleClick(event) {
+    event.stopPropagation();
     setOpen(!open)
   }
 
@@ -80,6 +83,16 @@ function Resource(props) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
+          {operations && operations.length ? operations.map(o => {
+            console.log('o', o)
+            return (
+              <ListItem>
+                <a onClick={resourceChange(o)}>
+                  <ListItemText primary={o.summary} />
+                </a>
+              </ListItem>
+            )
+          }) : null}
         </List>
       </Collapse>
     </List>

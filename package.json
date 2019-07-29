@@ -29,6 +29,7 @@
     "gatsby-transformer-json": "^2.2.2",
     "gatsby-transformer-remark": "^2.5.0",
     "gatsby-transformer-sharp": "^2.2.0",
+    "lunr": "^2.3.6",
     "prismjs": "^1.16.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
@@ -37,6 +38,7 @@
     "react-helmet": "^5.2.1",
     "react-particles-js": "^2.6.0",
     "smooth-scroll": "^16.1.0",
+    "swagger-parser": "6.0.5",
     "universal-cookie": "^4.0.2"
   },
   "devDependencies": {
