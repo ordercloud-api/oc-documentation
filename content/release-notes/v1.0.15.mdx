@@ -1,0 +1,11 @@
+---
+apiVersion: 1.0.15
+date: 2016-04-15
+---
+
+Released to Prod on Friday, April 15th, 2016 at 8 PM CST.
+
+## Changelog
+
+- We've fixed a bug where, if you [searched a list](https://devcenter.ordercloud.io/docs#XP) on XP, you sometimes got duplicate results.
+- We've fixed a bug where, if you are an Admin User, you couldn't update the line items on an order for a Buyer User. This is an uncommon scenario, as generally an Admin user would impersonate a Buyer User to make an order on behalf of the Buyer user, but some integrations use an Admin User directly.

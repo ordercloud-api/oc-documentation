@@ -1,6 +1,6 @@
 import { Link } from 'gatsby'
 import React from 'react'
-import { Theme, createStyles, withStyles } from '@material-ui/core'
+import { Theme, createStyles, withStyles, Hidden } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
@@ -22,6 +22,8 @@ import AccountIcon from '@material-ui/icons/Lock'
 import ConsoleIcon from '@material-ui/icons/Code'
 import DocumentationIcon from '@material-ui/icons/BookmarksTwoTone'
 import Cookies from 'universal-cookie'
+import { MenuOutlined, Apps } from '@material-ui/icons'
+import { navigate } from '../Shared/PortalLink'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -88,11 +90,6 @@ class Header extends React.Component<any, HeaderState> {
         auth: null,
       })
     }
-    // this.setState({
-    //   firstName: 'DJ',
-    //   email: 'dsteinmetz@four51.com',
-    //   auth: true,
-    // })
   }
 
   public handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -111,8 +108,12 @@ class Header extends React.Component<any, HeaderState> {
     this.onInit()
   }
 
-  public componentWillMount() {
+  public componentDidMount() {
     this.onInit()
+  }
+
+  public goToPortal = (route: string) => (event: React.MouseEvent) => {
+    navigate(route)
   }
 
   public render() {
@@ -122,37 +123,35 @@ class Header extends React.Component<any, HeaderState> {
     return (
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.verticalNav}>
-          <img
-            className={classes.logo}
-            src="/logo-white.svg"
-            alt="OrderCloud.io"
-          />
-          <Tooltip placement="right" title="Api Console">
-            <IconButton
-              color="inherit"
-              //TODO: Re-work this before deployment
-              // to="https://devcenterv2-test.azurewebsites.net/console/console"
-              aria-label="Api Console"
-            >
-              <ConsoleIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip placement="right" title="Organization Settings">
-            <IconButton color="inherit" aria-label="Organization Settings">
-              <SettingsIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip placement="right" title="Contributor Access">
-            <IconButton color="inherit" aria-label="Contributor Access">
-              <ContributorsIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip placement="right" title="Documentation">
-            <IconButton color="inherit" aria-label="Documentation">
-              <DocumentationIcon />
-            </IconButton>
-          </Tooltip>
-
+          <Link to="/">
+            <img className={classes.logo} src="/logo-white.svg" alt="OC" />
+          </Link>
+          <Hidden smDown>
+            <Tooltip placement="right" title="Api Console">
+              <IconButton
+                color="inherit"
+                onClick={this.goToPortal('/console')}
+                aria-label="Api Console"
+              >
+                <ConsoleIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="right" title="Organization Settings">
+              <IconButton color="inherit" aria-label="Organization Settings">
+                <SettingsIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="right" title="Contributor Access">
+              <IconButton color="inherit" aria-label="Contributor Access">
+                <ContributorsIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="right" title="Documentation">
+              <IconButton color="inherit" aria-label="Documentation">
+                <DocumentationIcon />
+              </IconButton>
+            </Tooltip>
+          </Hidden>
           <div className={classes.grow} />
           {auth && (
             <div>
@@ -188,19 +187,13 @@ class Header extends React.Component<any, HeaderState> {
                   Welcome {this.state.firstName}!
                 </MenuItem>
                 <Divider />
-                <MenuItem
-                //TODO: Fix link
-                // onClick={this.goTo('/profile')}
-                >
+                <MenuItem onClick={this.goToPortal('/profile')}>
                   <ListItemIcon className={classes.mr1rem}>
                     <ProfileIcon />
                   </ListItemIcon>
                   Profile
                 </MenuItem>
-                <MenuItem
-                //TODO: Fix link
-                // onClick={this.goTo('/profile/account')}
-                >
+                <MenuItem onClick={this.goToPortal('/account')}>
                   <ListItemIcon className={classes.mr1rem}>
                     <AccountIcon />
                   </ListItemIcon>
@@ -224,6 +217,8 @@ class Header extends React.Component<any, HeaderState> {
     )
   }
 }
+
+const drawerWidth = '25vw'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -250,14 +245,19 @@ const styles = (theme: Theme) =>
       backgroundColor: theme.palette.primary.main,
       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
       zIndex: theme.zIndex.appBar + 2,
-      height: '100%',
-      width: theme.spacing(9),
-      left: 0,
-      flexDirection: 'column',
+      [theme.breakpoints.up('md')]: {
+        height: '100%',
+        width: theme.spacing(9),
+        left: 0,
+        flexDirection: 'column',
+      },
     },
     verticalNav: {
-      flexDirection: 'column',
-      height: '100%',
+      justifyContent: 'space-between',
+      [theme.breakpoints.up('md')]: {
+        flexDirection: 'column',
+        height: '100%',
+      },
     },
   })
 
