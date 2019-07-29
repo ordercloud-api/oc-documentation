@@ -145,7 +145,12 @@ class Header extends React.Component<any, HeaderState> {
               </IconButton>
             </Tooltip>
             <Tooltip placement="right" title="Documentation">
-              <IconButton color="inherit" aria-label="Documentation">
+              <IconButton
+                component={Link}
+                to="/"
+                color="inherit"
+                aria-label="Documentation"
+              >
                 <DocumentationIcon />
               </IconButton>
             </Tooltip>

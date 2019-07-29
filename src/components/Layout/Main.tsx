@@ -26,8 +26,10 @@ if (typeof window !== 'undefined') {
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      // overflowX: 'hidden',
-      // overflowY: 'auto',
+      overflowX: 'hidden',
+      overflowY: 'auto',
+      height: '100vh',
+      marginBottom: theme.spacing[56],
       [theme.breakpoints.up('md')]: {
         marginLeft: theme.spacing(9),
       },
