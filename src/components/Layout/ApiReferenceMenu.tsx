@@ -29,7 +29,11 @@ export default function ApiReferenceMenu(props) {
       {_map(sections, (section, index) => {
         const sectionDescription = _find(apiReference, r => r.x_id === index).description;
         return (
-          <Section section={section} sectionTitle={index} sectionDescription={sectionDescription} resourceChange={resourceChange} />
+          <Section key={index}
+            section={section}
+            sectionTitle={index}
+            sectionDescription={sectionDescription}
+            resourceChange={resourceChange} />
         )
       })}
     </Paper>
@@ -41,8 +45,7 @@ function Section(props) {
   const classes = useStyles(props);
   const [open, setOpen] = React.useState(false);
 
-  function handleClick(event) {
-    event.stopPropagation();
+  function handleClick() {
     setOpen(!open)
   }
 
@@ -57,7 +60,7 @@ function Section(props) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <p>{sectionDescription}</p>
-        {section.map(s => <Resource resource={s} resourceChange={resourceChange} />)}
+        {section.map((s, index) => <Resource key={index} resource={s} resourceChange={resourceChange} />)}
       </Collapse>
     </List>
   )
@@ -68,8 +71,7 @@ function Resource(props) {
   const operations = OpenApi.operationsByResource[resource.name];
   const [open, setOpen] = React.useState(false);
 
-  function handleClick(event) {
-    event.stopPropagation();
+  function handleClick() {
     setOpen(!open)
   }
 
@@ -83,13 +85,10 @@ function Resource(props) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
-          {operations && operations.length ? operations.map(o => {
-            console.log('o', o)
+          {operations && operations.length ? operations.map((o, index) => {
             return (
-              <ListItem>
-                <a onClick={resourceChange(o)}>
-                  <ListItemText primary={o.summary} />
-                </a>
+              <ListItem key={index} onClick={() => resourceChange(o)}>
+                <ListItemText primary={o.summary} />
               </ListItem>
             )
           }) : null}
