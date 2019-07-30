@@ -1,14 +1,16 @@
 import React from 'react'
-import Layout from '../components/Layout/Layout'
-import { Initialize } from '../openapi.service';
+import Layout from '../Layout/Layout'
+import { Initialize } from '../../openapi.service';
 import { withStyles, Theme, createStyles, Container } from '@material-ui/core'
-import ApiReferenceMenu from '../components/Layout/ApiReferenceMenu'
+import ApiReferenceMenu from '../Layout/ApiReferenceMenu'
 import { graphql, StaticQuery } from 'gatsby'
-import OpenApi from '../openapi.service';
+import OpenApi from '../../openapi.service';
 
 const styles = (theme: Theme) =>
   createStyles({
     docContainer: {
+      display: 'flex',
+      position: 'relative',
       marginBlockStart: '2rem',
       marginBlockEnd: '4rem',
     },
@@ -44,7 +46,9 @@ const ApiReference = withStyles(styles)(
       const { classes, apiReference } = this.props;
       return (
         <Layout>
-          <Container maxWidth="lg">
+          <Container maxWidth="lg" className={classes.docContainer}>
+            {/** TODO: need to display request body / parameters */}
+            {this.state.operation && this.state.operation ? <p>{this.state.operation.path}</p> : null}
             <ApiReferenceMenu apiReference={apiReference} resourceChange={this.handleResourceChange} />
           </Container>
         </Layout>
