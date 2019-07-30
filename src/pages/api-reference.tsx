@@ -29,27 +29,23 @@ interface Operation {
 const ApiReference = withStyles(styles)(
   class extends React.Component<any> {
     public state = {
-      requestBody: null,
-      parameters: null
+      operation: null
     }
 
     public async componentDidMount() {
       await Initialize();
     }
 
-    protected handleResourceChange = (operation: Operation) => {
-      console.log('operation', operation);
-
-      // this.setState({ requestBody: operation.requestBody });
+    public handleResourceChange = (operation: Operation) => {
+      this.setState({ operation });
     }
 
     public render() {
-      const { classes, apiReference } = this.props
+      const { classes, apiReference } = this.props;
       return (
         <Layout>
           <Container maxWidth="lg">
             <ApiReferenceMenu apiReference={apiReference} resourceChange={this.handleResourceChange} />
-            {this.state && this.state.requestBody ? <p>{this.state.requestBody}</p> : null}
           </Container>
         </Layout>
       )

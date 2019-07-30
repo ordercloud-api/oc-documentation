@@ -1,5 +1,5 @@
 import React from 'react';
-import { groupBy as _groupBy, remove as _remove, map as _map, find as _find } from 'lodash';
+import { groupBy as _groupBy, map as _map, find as _find } from 'lodash';
 import { Paper, Collapse, List, ListItem, ListItemText, Typography, makeStyles, Theme, createStyles } from '@material-ui/core';
 import OpenApi from '../../openapi.service';
 
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function ApiReferenceMenu(props) {
   const { apiReference, resourceChange } = props;
-  const sections = _groupBy(_remove(apiReference, (ref: ApiReferenceProps) => ref.x_section_id != null), 'x_section_id');
+  const sections = _groupBy(apiReference.filter(apiRef => apiRef.x_section_id != null), 'x_section_id');
 
   return (
     <Paper>
@@ -59,7 +59,6 @@ function Section(props) {
         </ListItemText>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <p>{sectionDescription}</p>
         {section.map((s, index) => <Resource key={index} resource={s} resourceChange={resourceChange} />)}
       </Collapse>
     </List>
@@ -80,7 +79,6 @@ function Resource(props) {
       <ListItem button onClick={handleClick}>
         <ListItemText>
           {resource.name}
-          {resource.description ? resource.description : null}
         </ListItemText>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
