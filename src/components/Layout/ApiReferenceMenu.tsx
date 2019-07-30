@@ -1,6 +1,7 @@
 import React from 'react';
-import { groupBy as _groupBy, remove as _remove, map as _map } from 'lodash';
+import { groupBy as _groupBy, map as _map, find as _find } from 'lodash';
 import { Paper, Collapse, List, ListItem, ListItemText, Typography, makeStyles, Theme, createStyles } from '@material-ui/core';
+import OpenApi from '../../openapi.service';
 
 interface ApiReferenceProps {
   name: string;
@@ -20,14 +21,19 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export default function ApiReferenceMenu(props) {
-  const { apiReference } = props;
-  const sections = _groupBy(_remove(apiReference, (ref: ApiReferenceProps) => ref.x_section_id != null), 'x_section_id');
+  const { apiReference, resourceChange } = props;
+  const sections = _groupBy(apiReference.filter(apiRef => apiRef.x_section_id != null), 'x_section_id');
 
   return (
     <Paper>
       {_map(sections, (section, index) => {
+        const sectionDescription = _find(apiReference, r => r.x_id === index).description;
         return (
-          <Section section={section} sectionTitle={index} />
+          <Section key={index}
+            section={section}
+            sectionTitle={index}
+            sectionDescription={sectionDescription}
+            resourceChange={resourceChange} />
         )
       })}
     </Paper>
@@ -35,7 +41,7 @@ export default function ApiReferenceMenu(props) {
 }
 
 function Section(props) {
-  const { section, sectionTitle } = props;
+  const { section, sectionTitle, sectionDescription, resourceChange } = props;
   const classes = useStyles(props);
   const [open, setOpen] = React.useState(false);
 
@@ -53,14 +59,15 @@ function Section(props) {
         </ListItemText>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        {section.map(s => <Resource resource={s} />)}
+        {section.map((s, index) => <Resource key={index} resource={s} resourceChange={resourceChange} />)}
       </Collapse>
     </List>
   )
 }
 
 function Resource(props) {
-  const { resource } = props;
+  const { resource, resourceChange } = props;
+  const operations = OpenApi.operationsByResource[resource.name];
   const [open, setOpen] = React.useState(false);
 
   function handleClick() {
@@ -76,7 +83,13 @@ function Resource(props) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
-          {/** TODO: MAP ENDPOINTS HERE */}
+          {operations && operations.length ? operations.map((o, index) => {
+            return (
+              <ListItem key={index} onClick={() => resourceChange(o)}>
+                <ListItemText primary={o.summary} />
+              </ListItem>
+            )
+          }) : null}
         </List>
       </Collapse>
     </List>
