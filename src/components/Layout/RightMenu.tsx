@@ -221,7 +221,6 @@ function SectionMenu(props: SectionMenuProps) {
           />
         ))}
       </Collapse>
-      {/* <Divider /> */}
     </List>
   )
 }
