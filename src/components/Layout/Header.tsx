@@ -123,7 +123,9 @@ class Header extends React.Component<any, HeaderState> {
     return (
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.verticalNav}>
-          <img className={classes.logo} src="/logo-white.svg" alt="OC" />
+          <Link to="/">
+            <img className={classes.logo} src="/logo-white.svg" alt="OC" />
+          </Link>
           <Hidden smDown>
             <Tooltip placement="right" title="Api Console">
               <IconButton
@@ -145,7 +147,12 @@ class Header extends React.Component<any, HeaderState> {
               </IconButton>
             </Tooltip>
             <Tooltip placement="right" title="Documentation">
-              <IconButton color="inherit" aria-label="Documentation">
+              <IconButton
+                component={Link}
+                to="/"
+                color="inherit"
+                aria-label="Documentation"
+              >
                 <DocumentationIcon />
               </IconButton>
             </Tooltip>

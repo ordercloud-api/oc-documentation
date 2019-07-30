@@ -1,0 +1,14 @@
+---
+apiVersion: 1.0.92
+date: 2019-02-01
+---
+
+Released to Production February 1st, 2019.
+
+Release consisted of a bug fix for Search 2.0 customers. We discovered that filter values using Search 2.0 were inadvertently case-sensitive. This has now been changed.
+
+`me/products?Description|Name=*vol*` will now return products with VOL, Vol, or any other case permutation in the Product Description or Product Name.
+
+As this is a Search 2.0 related item, you will only see a different if your application is using Search 2.0. Search 2.0 is only enabled on the `me/products` endpoint as well.
+
+Filter _names_ continue to be case-sensitive, as they are properties of the product. Using `me/products?description|name=*vol*` will return nothing, as those are not properties.

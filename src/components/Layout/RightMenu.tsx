@@ -1,5 +1,5 @@
 import React from 'react'
-import { Section, Guide } from '../Shared/models/section.model'
+import { Section, Guide } from '../../models/section.model'
 import { Link } from 'gatsby'
 
 import {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
     },
     drawer: {
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up('lg')]: {
         width: drawerWidth,
         flexShrink: 0,
       },
@@ -49,8 +49,11 @@ const useStyles = makeStyles((theme: Theme) =>
     drawerPaper: {
       width: drawerWidth,
       maxWidth: '100vw',
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up('lg')]: {
         maxWidth: 'none',
+      },
+      [theme.breakpoints.down('md')]: {
+        width: `calc(${drawerWidth}px - ${theme.spacing(20)}px)`,
       },
     },
     content: {
@@ -59,6 +62,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     sectionTitle: {
       textTransform: 'uppercase',
+      letterSpacing: theme.spacing(0.2),
+      fontWeight: 600,
+      color: theme.palette.grey[400],
     },
   })
 )
@@ -68,9 +74,9 @@ const useStyles = makeStyles((theme: Theme) =>
  * 2. Make it responsive @esitarz
  * 3. Style it better, need something that distinguishes the headings from the guides a bit more
  * 4. remove underline from guide links
- * 5. Make the scroll less jarring
+ * 5. Make the scroll less jarring @cramirez
  * 6. Figure out how to keep sections expanded if user manually expanded (possibly cookies)
- * 7. Fix: expanding a section shouldn't make the width jump around
+ * 7. Fix: expanding a section shouldn't make the width jump around @esitarz
  */
 
 interface RightMenuProps {
@@ -138,7 +144,7 @@ function SectionMenu(props: SectionMenuProps) {
   const { section, currentPath } = props
   const classes = useStyles(props)
   const hasActiveGuide = section.guides
-    .map(g => g.frontmatter.path)
+    .map(g => g.path)
     .includes(currentPath)
   const [open, setOpen] = React.useState(hasActiveGuide)
 
@@ -147,7 +153,7 @@ function SectionMenu(props: SectionMenuProps) {
   }
 
   return (
-    <List className={classes.root}>
+    <List dense={true} className={classes.root}>
       <ListItem button onClick={handleClick}>
         <ListItemText>
           <Typography className={classes.sectionTitle}>
@@ -173,7 +179,7 @@ interface GuideMenuProps extends StyledComponentProps {
 function GuideMenu(props: GuideMenuProps) {
   const { guide, currentPath } = props
   const classes = useStyles(props)
-  const isActive = guide.frontmatter.path.includes(currentPath)
+  const isActive = guide.path.includes(currentPath)
   const [open, setOpen] = React.useState(isActive)
 
   function handleToggleDrawer() {
@@ -181,10 +187,10 @@ function GuideMenu(props: GuideMenuProps) {
   }
 
   return (
-    <List component="div" disablePadding>
-      <ListItem>
+    <List dense={true} component="div" disablePadding>
+      <ListItem button>
         <ListItemText>
-          <Link to={guide.frontmatter.path}>{guide.frontmatter.title}</Link>
+          <Link to={guide.path}>{guide.frontmatter.title}</Link>
         </ListItemText>
         {open ? (
           <ExpandLess onClick={handleToggleDrawer} />
@@ -193,11 +199,11 @@ function GuideMenu(props: GuideMenuProps) {
         )}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
+        <List dense={true} component="div" disablePadding>
           {guide.headings.map(heading => (
             <GuideHeading
-              key={`guide_heading${heading}`}
-              guidePath={guide.frontmatter.path}
+              key={`guide_heading${heading.value}`}
+              guidePath={guide.path}
               heading={heading.value}
             />
           ))}
