@@ -2,6 +2,22 @@ import React from 'react'
 import { Section, Guide } from '../../models/section.model'
 import { Link } from 'gatsby'
 
+const svgIcon = (
+  <svg
+    aria-hidden="true"
+    focusable="false"
+    height="16"
+    version="1.1"
+    viewBox="0 0 16 16"
+    width="16"
+  >
+    <path
+      fill-rule="evenodd"
+      d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"
+    ></path>
+  </svg>
+)
+
 import {
   List,
   ListItemText,
@@ -64,7 +80,18 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: 'uppercase',
       letterSpacing: theme.spacing(0.2),
       fontWeight: 600,
-      color: theme.palette.grey[400],
+      color: theme.palette.grey[700],
+    },
+    active: {
+      backgroundColor: theme.palette.grey[200],
+    },
+    guideAnchorLinks: {
+      paddingLeft: theme.spacing(5.5),
+    },
+    guideAnchorLinkIcon: {
+      display: 'flex',
+      alignItems: 'center',
+      marginRight: theme.spacing(0.5),
     },
   })
 )
@@ -86,19 +113,38 @@ interface RightMenuProps {
   onMobileClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void
 }
 
+const findActiveSection = (sections: Section[], path: string) => {
+  return sections.findIndex(s => {
+    return (
+      s.guides.filter(g => {
+        return g.path === path || g.path + '/' === path
+      }).length > 0
+    )
+  })
+}
+
 export default function RightMenu(props: RightMenuProps) {
   const { sections, currentPath, mobileOpen, onMobileClose } = props
   // const { container, mobileOpen, onMobileClose } = props
   const classes = useStyles(props)
   const theme = useTheme()
+  const [activeIndex, setActiveIndex] = React.useState(
+    findActiveSection(sections, currentPath)
+  )
+  const handleSetActiveIndex = (i: number) => {
+    setActiveIndex(activeIndex === i ? -1 : i)
+  }
 
   const drawer = (
     <React.Fragment>
-      {sections.map(section => (
+      {sections.map((section, index) => (
         <SectionMenu
           key={section.title}
           section={section}
           currentPath={currentPath}
+          activeIndex={activeIndex}
+          onClick={handleSetActiveIndex}
+          index={index}
         />
       ))}
     </React.Fragment>
@@ -139,35 +185,42 @@ export default function RightMenu(props: RightMenuProps) {
 interface SectionMenuProps {
   section: Section
   currentPath: string
+  activeIndex: number
+  onClick: (i: number) => void
+  index: number
 }
 function SectionMenu(props: SectionMenuProps) {
-  const { section, currentPath } = props
+  const { section, currentPath, activeIndex, onClick, index } = props
   const classes = useStyles(props)
-  const hasActiveGuide = section.guides
-    .map(g => g.path)
-    .includes(currentPath)
-  const [open, setOpen] = React.useState(hasActiveGuide)
 
   function handleClick() {
-    setOpen(!open)
+    onClick(index)
   }
 
   return (
-    <List dense={true} className={classes.root}>
-      <ListItem button onClick={handleClick}>
+    <List dense={false} className={classes.root} disablePadding>
+      <ListItem
+        button
+        onClick={handleClick}
+        className={activeIndex === index ? classes.active : ''}
+      >
         <ListItemText>
           <Typography className={classes.sectionTitle}>
             {section.title}
           </Typography>
         </ListItemText>
-        {open ? <ExpandLess /> : <ExpandMore />}
+        {activeIndex === index ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        {section.guides.map(guide => (
-          <GuideMenu key={guide.id} guide={guide} currentPath={currentPath} />
+      <Collapse in={activeIndex === index} timeout="auto" unmountOnExit>
+        {section.guides.map((guide, index) => (
+          <GuideMenu
+            key={guide.id}
+            guide={guide}
+            currentPath={currentPath}
+            index={index}
+          />
         ))}
       </Collapse>
-      <Divider />
     </List>
   )
 }
@@ -175,9 +228,10 @@ function SectionMenu(props: SectionMenuProps) {
 interface GuideMenuProps extends StyledComponentProps {
   guide: Guide
   currentPath: string
+  index: number
 }
 function GuideMenu(props: GuideMenuProps) {
-  const { guide, currentPath } = props
+  const { guide, currentPath, index } = props
   const classes = useStyles(props)
   const isActive = guide.path.includes(currentPath)
   const [open, setOpen] = React.useState(isActive)
@@ -188,10 +242,8 @@ function GuideMenu(props: GuideMenuProps) {
 
   return (
     <List dense={true} component="div" disablePadding>
-      <ListItem button>
-        <ListItemText>
-          <Link to={guide.path}>{guide.frontmatter.title}</Link>
-        </ListItemText>
+      <ListItem component={Link} to={guide.path} button>
+        <ListItemText>{guide.frontmatter.title}</ListItemText>
         {open ? (
           <ExpandLess onClick={handleToggleDrawer} />
         ) : (
@@ -235,10 +287,12 @@ function GuideHeading(props: GuideHeadingProps) {
 
   return (
     <ListItem
+      className={classes.guideAnchorLinks}
       key={guidePath}
       button
       component={props => <Link {...props} to={guideSectionLink}></Link>}
     >
+      <span className={classes.guideAnchorLinkIcon}>{svgIcon}</span>
       <ListItemText primary={heading} />
     </ListItem>
   )
