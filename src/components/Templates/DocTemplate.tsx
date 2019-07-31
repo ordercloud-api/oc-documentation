@@ -169,7 +169,10 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMdx(sort: { order: ASC, fields: [frontmatter___priority] }) {
+    allMdx(
+      sort: { order: ASC, fields: [frontmatter___priority] }
+      filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
+    ) {
       totalCount
       edges {
         node {
