@@ -147,8 +147,7 @@ export default function RightMenu(props: RightMenuProps) {
     setActiveIndex(activeIndex === i ? -1 : i)
   }
 
-  const onScroll = (event: any) => {
-    var headings = document.getElementsByTagName('h2')
+  const onScroll = (event: Event, headings: NodeListOf<HTMLElement>) => {
     let smallest, elementId
     Array.from(headings).forEach(h => {
       let diff = window.scrollY - h.offsetTop
@@ -162,19 +161,32 @@ export default function RightMenu(props: RightMenuProps) {
   }
 
   useEffect(() => {
+    // smooth scroll to section link on page load
     if (window.location.hash && !activeHeading) {
-      let top = document.getElementById(window.location.hash.substr(1))
-        .offsetTop
-      window.scrollTo({
-        top: top,
-        behavior: `smooth`,
-      })
+      window.setTimeout(() => {
+        // kind of hacky but sommetimes especially on a long page the dom
+        // won't fully load and offset is off, this waits 400ms for dom to load fully
+        let top = document.getElementById(window.location.hash.substr(1))
+          .offsetTop
+        window.scrollTo({
+          top: top,
+          behavior: `smooth`,
+        })
+      }, 400)
     }
-    window.addEventListener('scroll', onScroll)
+  }, [])
+
+  useEffect(() => {
+    // set active section on scroll
+    const headings = document.querySelectorAll(
+      'h1,h2,h3,h4,h5,h6'
+    ) as NodeListOf<HTMLElement>
+    const onScrollWithHeadings = event => onScroll(event, headings)
+    window.addEventListener('scroll', onScrollWithHeadings)
     return () => {
-      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('scroll', onScrollWithHeadings)
     }
-  })
+  }, [])
 
   const drawer = (
     <React.Fragment>
