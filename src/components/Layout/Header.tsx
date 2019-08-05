@@ -15,14 +15,17 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Divider from '@material-ui/core/Divider'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 
-import ContributorsIcon from '@material-ui/icons/People'
-import SettingsIcon from '@material-ui/icons/Settings'
-import ProfileIcon from '@material-ui/icons/AccountCircle'
-import AccountIcon from '@material-ui/icons/Lock'
-import ConsoleIcon from '@material-ui/icons/Code'
-import DocumentationIcon from '@material-ui/icons/BookmarksTwoTone'
 import Cookies from 'universal-cookie'
-import { MenuOutlined, Apps } from '@material-ui/icons'
+import {
+  SettingsTwoTone,
+  PeopleTwoTone,
+  LockTwoTone,
+  CodeTwoTone,
+  BookmarksTwoTone,
+  SpeakerNotesTwoTone,
+  LocalLibraryTwoTone,
+  Apps,
+} from '@material-ui/icons'
 import { navigate } from '../Shared/PortalLink'
 
 function isTokenExpired(token: string): boolean {
@@ -133,17 +136,17 @@ class Header extends React.Component<any, HeaderState> {
                 onClick={this.goToPortal('/console')}
                 aria-label="Api Console"
               >
-                <ConsoleIcon />
+                <CodeTwoTone />
               </IconButton>
             </Tooltip>
             <Tooltip placement="right" title="Organization Settings">
               <IconButton color="inherit" aria-label="Organization Settings">
-                <SettingsIcon />
+                <SettingsTwoTone />
               </IconButton>
             </Tooltip>
             <Tooltip placement="right" title="Contributor Access">
               <IconButton color="inherit" aria-label="Contributor Access">
-                <ContributorsIcon />
+                <PeopleTwoTone />
               </IconButton>
             </Tooltip>
             <Tooltip placement="right" title="Documentation">
@@ -153,7 +156,27 @@ class Header extends React.Component<any, HeaderState> {
                 color="inherit"
                 aria-label="Documentation"
               >
-                <DocumentationIcon />
+                <LocalLibraryTwoTone />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="right" title="Blogs">
+              <IconButton
+                component={Link}
+                to="/"
+                color="inherit"
+                aria-label="Blogs"
+              >
+                <BookmarksTwoTone />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="right" title="Release Notes">
+              <IconButton
+                component={Link}
+                to="/"
+                color="inherit"
+                aria-label="Release Notes"
+              >
+                <SpeakerNotesTwoTone />
               </IconButton>
             </Tooltip>
           </Hidden>
@@ -194,19 +217,19 @@ class Header extends React.Component<any, HeaderState> {
                 <Divider />
                 <MenuItem onClick={this.goToPortal('/profile')}>
                   <ListItemIcon className={classes.mr1rem}>
-                    <ProfileIcon />
+                    <PeopleTwoTone />
                   </ListItemIcon>
                   Profile
                 </MenuItem>
                 <MenuItem onClick={this.goToPortal('/account')}>
                   <ListItemIcon className={classes.mr1rem}>
-                    <AccountIcon />
+                    <LockTwoTone />
                   </ListItemIcon>
                   Account
                 </MenuItem>
                 <MenuItem component={Link} to="/profile/console-settings">
                   <ListItemIcon className={classes.mr1rem}>
-                    <ConsoleIcon />
+                    <CodeTwoTone />
                   </ListItemIcon>
                   Console Settings
                 </MenuItem>

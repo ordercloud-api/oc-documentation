@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Section, Guide } from '../../models/section.model'
 import { Link } from 'gatsby'
 
@@ -28,7 +28,6 @@ import {
   Collapse,
   makeStyles,
   Typography,
-  Divider,
   Drawer,
   Hidden,
   useTheme,
@@ -85,6 +84,18 @@ const useStyles = makeStyles((theme: Theme) =>
     active: {
       backgroundColor: theme.palette.grey[200],
     },
+    activeHeading: {
+      backgroundColor: theme.palette.grey[200],
+      '&::before': {
+        content: `''`,
+        fontFamily: `'FontAwesome'`,
+        position: `absolute`,
+        top: `-3px`,
+        left: `3%`,
+        color: `${theme.palette.primary.light}`,
+        fontSize: `22px`,
+      },
+    },
     guideAnchorLinks: {
       paddingLeft: theme.spacing(5.5),
     },
@@ -128,12 +139,42 @@ export default function RightMenu(props: RightMenuProps) {
   // const { container, mobileOpen, onMobileClose } = props
   const classes = useStyles(props)
   const theme = useTheme()
+  const [activeHeading, setActiveHeading] = React.useState('')
   const [activeIndex, setActiveIndex] = React.useState(
     findActiveSection(sections, currentPath)
   )
   const handleSetActiveIndex = (i: number) => {
     setActiveIndex(activeIndex === i ? -1 : i)
   }
+
+  const onScroll = (event: any) => {
+    var headings = document.getElementsByTagName('h2')
+    let smallest, elementId
+    Array.from(headings).forEach(h => {
+      let diff = window.scrollY - h.offsetTop
+      if (diff < 0) diff = -diff
+      if (!smallest || (smallest && diff < smallest)) {
+        smallest = diff
+        elementId = h.id
+      }
+    })
+    setActiveHeading(elementId)
+  }
+
+  useEffect(() => {
+    if (window.location.hash && !activeHeading) {
+      let top = document.getElementById(window.location.hash.substr(1))
+        .offsetTop
+      window.scrollTo({
+        top: top,
+        behavior: `smooth`,
+      })
+    }
+    window.addEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+    }
+  })
 
   const drawer = (
     <React.Fragment>
@@ -142,6 +183,7 @@ export default function RightMenu(props: RightMenuProps) {
           key={section.title}
           section={section}
           currentPath={currentPath}
+          activeHeading={activeHeading}
           activeIndex={activeIndex}
           onClick={handleSetActiveIndex}
           index={index}
@@ -185,12 +227,20 @@ export default function RightMenu(props: RightMenuProps) {
 interface SectionMenuProps {
   section: Section
   currentPath: string
+  activeHeading: string
   activeIndex: number
   onClick: (i: number) => void
   index: number
 }
 function SectionMenu(props: SectionMenuProps) {
-  const { section, currentPath, activeIndex, onClick, index } = props
+  const {
+    section,
+    currentPath,
+    activeHeading,
+    activeIndex,
+    onClick,
+    index,
+  } = props
   const classes = useStyles(props)
 
   function handleClick() {
@@ -217,6 +267,7 @@ function SectionMenu(props: SectionMenuProps) {
             key={guide.id}
             guide={guide}
             currentPath={currentPath}
+            activeHeading={activeHeading}
             index={index}
           />
         ))}
@@ -228,10 +279,11 @@ function SectionMenu(props: SectionMenuProps) {
 interface GuideMenuProps extends StyledComponentProps {
   guide: Guide
   currentPath: string
+  activeHeading: string
   index: number
 }
 function GuideMenu(props: GuideMenuProps) {
-  const { guide, currentPath, index } = props
+  const { guide, currentPath, activeHeading, index } = props
   const classes = useStyles(props)
   const isActive = guide.path.includes(currentPath)
   const [open, setOpen] = React.useState(isActive)
@@ -239,6 +291,20 @@ function GuideMenu(props: GuideMenuProps) {
   function handleToggleDrawer() {
     setOpen(!open)
   }
+  useEffect(() => {
+    if (!activeHeading) {
+      let headingUrlParam = window.location.hash.substring(1)
+      guide.headings.forEach(h => {
+        let formattedHeading = h.value
+          .toLowerCase()
+          .replace(/ /g, '-')
+          .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '')
+        if (formattedHeading === headingUrlParam) {
+          setOpen(true)
+        }
+      })
+    }
+  }, [guide, activeHeading, setOpen])
 
   return (
     <List dense={true} component="div" disablePadding>
@@ -257,6 +323,7 @@ function GuideMenu(props: GuideMenuProps) {
               key={`guide_heading${heading.value}`}
               guidePath={guide.path}
               heading={heading.value}
+              activeHeading={activeHeading}
             />
           ))}
         </List>
@@ -268,26 +335,26 @@ function GuideMenu(props: GuideMenuProps) {
 interface GuideHeadingProps {
   guidePath: string
   heading: string
+  activeHeading: string
 }
 function GuideHeading(props: GuideHeadingProps) {
-  const { heading, guidePath } = props
+  const { heading, activeHeading, guidePath } = props
   const classes = useStyles(props)
-  const guideSectionLink = buildGuideSectionLink(guidePath, heading)
-
+  const headingLink = heading
+    .toLowerCase()
+    .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '') // remove punctuation
+    .replace(/  +/g, ' ') // replace multiple whitespaces by just one
+    .replace(/ /g, '-') // replace spaces with hypens
+  const guideSectionLink = buildGuideSectionLink(guidePath, headingLink)
   function buildGuideSectionLink(guidePath: string, heading: string): string {
-    const guideSectionPath =
-      '#' +
-      heading
-        .toLowerCase()
-        .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '') // remove punctuation
-        .replace(/  +/g, ' ') // replace multiple whitespaces by just one
-        .replace(/ /g, '-') // replace spaces with hypens
+    const guideSectionPath = '#' + heading
     return guidePath + guideSectionPath
   }
-
   return (
     <ListItem
-      className={classes.guideAnchorLinks}
+      className={`${classes.guideAnchorLinks} ${
+        activeHeading === headingLink ? classes.activeHeading : ''
+      }`}
       key={guidePath}
       button
       component={props => <Link {...props} to={guideSectionLink}></Link>}
