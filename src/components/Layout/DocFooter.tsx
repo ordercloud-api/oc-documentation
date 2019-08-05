@@ -65,7 +65,7 @@ class DocFooter extends React.Component<any> {
   public render() {
     const { contents, currentGuide, classes } = this.props
     const gitHubUrl =
-      'https://github.com/ordercloud-api/oc-documentation/tree/development/src/pages/docs'
+      'https://github.com/ordercloud-api/oc-documentation/tree/development/content/docs'
     const flatContents = _flatten(contents.map(c => c.guides))
     const guideIndex = flatContents.findIndex(
       section => section.path === currentGuide
