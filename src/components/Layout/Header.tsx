@@ -155,22 +155,22 @@ class Header extends React.Component<any, HeaderState> {
                 <LocalLibraryTwoTone />
               </IconButton>
             </Tooltip>
-            <Tooltip placement="right" title="Blogs">
+            <Tooltip placement="right" title="Blog">
               <IconButton
                 component={Link}
-                to="/"
+                to="/blog"
                 color="inherit"
-                aria-label="Blogs"
+                aria-label="Blog"
               >
                 <BookmarksTwoTone />
               </IconButton>
             </Tooltip>
-            <Tooltip placement="right" title="Release Notes">
+            <Tooltip placement="right" title="API Release Notes">
               <IconButton
                 component={Link}
-                to="/"
+                to="/api-release-notes"
                 color="inherit"
-                aria-label="Release Notes"
+                aria-label="API Release Notes"
               >
                 <SpeakerNotesTwoTone />
               </IconButton>
