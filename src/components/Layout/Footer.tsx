@@ -5,12 +5,12 @@ import {
   createStyles,
   withStyles,
   Typography,
-  SvgIcon,
   Grid,
   Box,
 } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
 import { mediumgrey } from '../../theme/ocPalette.constants'
+import whiteLogo from '../../assets/images/logo-white.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -100,7 +100,7 @@ class Footer extends React.Component<any> {
                 alignItems="center"
                 justifyContent="flex-start"
               >
-                <img className={classes.logo} src="/logo-white.svg" alt="OC" />
+                <img className={classes.logo} src={whiteLogo} alt="OC" />
                 <Typography variant="h4">OrderCloud</Typography>
               </Box>
               <Typography variant="body2" className={classes.Typography}>
