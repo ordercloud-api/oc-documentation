@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Section, Guide } from '../../models/section.model'
 import { Link } from 'gatsby'
+import { seafoam } from '../../theme/ocPalette.constants'
 
 const svgIcon = (
   <svg
@@ -87,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) =>
         position: `absolute`,
         top: `-3px`,
         left: `3%`,
-        color: `${theme.palette.primary.light}`,
+        color: seafoam[500],
         fontSize: `22px`,
       },
     },
