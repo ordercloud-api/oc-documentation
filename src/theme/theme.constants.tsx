@@ -1,5 +1,12 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { ioblue, aliengreen, mediumgrey } from './ocPalette.constants'
+import {
+  ioblue,
+  aliengreen,
+  flame,
+  seafoam,
+  sherpablue,
+  blackpearl,
+} from './ocPalette.constants'
 
 const RobotoMono = {
   fontFamily: 'Roboto Mono',
@@ -42,10 +49,10 @@ export default createMuiTheme({
   },
   palette: {
     primary: {
-      main: ioblue[500],
+      main: blackpearl[400],
     },
     secondary: {
-      main: aliengreen[300],
+      main: seafoam[800],
       contrastText: '#FFF',
     },
   },
