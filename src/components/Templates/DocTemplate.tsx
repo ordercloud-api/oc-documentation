@@ -1,7 +1,7 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../Layout/Layout'
-import RightMenu, { drawerWidth } from '../Layout/RightMenu'
+import RightMenu, { drawerWidthSpacingLg } from '../Layout/RightMenu'
 import '../../styles/doc-template.css'
 import { graphql } from 'gatsby'
 import DocFooter from '../Layout/DocFooter'
@@ -31,15 +31,15 @@ const styles = (theme: Theme) =>
     },
     appBar: {
       backgroundColor: 'blue',
-      width: `calc(100vw - ${drawerWidth}px)`,
-      marginRight: drawerWidth,
+      width: `calc(100vw - ${theme.spacing(drawerWidthSpacingLg)}px)`,
+      marginRight: theme.spacing(drawerWidthSpacingLg),
     },
     drawer: {
-      width: drawerWidth,
+      width: theme.spacing(drawerWidthSpacingLg),
       flexShrink: 0,
     },
     drawerPaper: {
-      width: drawerWidth,
+      width: theme.spacing(drawerWidthSpacingLg),
     },
     docContainer: {
       position: 'relative',
@@ -67,7 +67,9 @@ const styles = (theme: Theme) =>
       },
       [theme.breakpoints.up('md')]: {
         marginLeft: theme.spacing(10),
-        marginRight: `calc(${drawerWidth}px - ${theme.spacing(20)}px)`,
+        marginRight: `calc(${theme.spacing(
+          drawerWidthSpacingLg
+        )}px - ${theme.spacing(20)}px)`,
       },
       [theme.breakpoints.up('lg')]: {
         maxWidth: '700px',
@@ -91,12 +93,13 @@ interface DocTemplateProps {
   data: DocsQuery
   classes: any
   location: any
+  theme: Theme
 }
 interface DocTemplateState {
   mobileOpen: boolean
 }
 
-const Template = withStyles(styles)(
+const Template = withStyles(styles, { withTheme: true })(
   class extends React.Component<DocTemplateProps, DocTemplateState> {
     public state: DocTemplateState = {
       mobileOpen: false,
@@ -113,7 +116,7 @@ const Template = withStyles(styles)(
     }
 
     public render() {
-      const { data: post, classes, location } = this.props
+      const { data: post, classes, location, theme } = this.props
       const sections = utility.getSectionsFromDocsQuery(post)
       return (
         <Box className={classes.boxRoot}>
@@ -152,7 +155,10 @@ const Template = withStyles(styles)(
                 currentPath={location.pathname}
               />
             </Container>
-            <Footer sections={sections} right={drawerWidth} />
+            <Footer
+              sections={sections}
+              right={theme.spacing(drawerWidthSpacingLg)}
+            />
           </Layout>
         </Box>
       )
