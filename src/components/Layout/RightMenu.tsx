@@ -293,26 +293,12 @@ interface GuideMenuProps extends StyledComponentProps {
 function GuideMenu(props: GuideMenuProps) {
   const { guide, currentPath, activeHeading, index } = props
   const classes = useStyles(props)
-  const isActive = guide.path.includes(currentPath)
+  const isActive = currentPath.includes(guide.path)
   const [open, setOpen] = React.useState(isActive)
 
   function handleToggleDrawer() {
     setOpen(!open)
   }
-  useEffect(() => {
-    if (!activeHeading) {
-      let headingUrlParam = window.location.hash.substring(1)
-      guide.headings.forEach(h => {
-        let formattedHeading = h.value
-          .toLowerCase()
-          .replace(/ /g, '-')
-          .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '')
-        if (formattedHeading === headingUrlParam) {
-          setOpen(true)
-        }
-      })
-    }
-  }, [guide, activeHeading, setOpen])
 
   return (
     <List dense={true} component="div" disablePadding>
@@ -331,7 +317,7 @@ function GuideMenu(props: GuideMenuProps) {
               key={`guide_heading${heading.value}`}
               guidePath={guide.path}
               heading={heading.value}
-              activeHeading={activeHeading}
+              activeHeading={activeHeading || guide.headings[0].value}
             />
           ))}
         </List>
@@ -348,12 +334,14 @@ interface GuideHeadingProps {
 function GuideHeading(props: GuideHeadingProps) {
   const { heading, activeHeading, guidePath } = props
   const classes = useStyles(props)
-  const headingLink = heading
-    .toLowerCase()
-    .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '') // remove punctuation
-    .replace(/  +/g, ' ') // replace multiple whitespaces by just one
-    .replace(/ /g, '-') // replace spaces with hypens
-  const guideSectionLink = buildGuideSectionLink(guidePath, headingLink)
+  const slugify = (path: string) =>
+    path
+      .toLowerCase()
+      .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '') // remove punctuation
+      .replace(/  +/g, ' ') // replace multiple whitespaces by just one
+      .replace(/ /g, '-') // replace spaces with hypens
+
+  const guideSectionLink = buildGuideSectionLink(guidePath, slugify(heading))
   function buildGuideSectionLink(guidePath: string, heading: string): string {
     const guideSectionPath = '#' + heading
     return guidePath + guideSectionPath
@@ -361,7 +349,7 @@ function GuideHeading(props: GuideHeadingProps) {
   return (
     <ListItem
       className={`${classes.guideAnchorLinks} ${
-        activeHeading === headingLink ? classes.activeHeading : ''
+        slugify(activeHeading) === slugify(heading) ? classes.activeHeading : ''
       }`}
       key={guidePath}
       button
