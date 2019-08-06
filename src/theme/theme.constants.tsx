@@ -116,6 +116,21 @@ export default createMuiTheme({
         '"Segoe UI Symbol"',
       ].join(','),
     },
+    h6: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
     fontFamily: [
       '"CoreSans"',
       '-apple-system',
