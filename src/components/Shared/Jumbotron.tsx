@@ -8,10 +8,11 @@ import {
   Button,
   Hidden,
   SvgIcon,
+  Container,
 } from '@material-ui/core'
 import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
-import ocLogo from '../../assets/images/oc-orange.svg'
+import ocLogo from '../../assets/images/four51-white.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -30,7 +31,11 @@ const styles = (theme: Theme) =>
     },
     logo: {
       maxWidth: '40rem',
+      width: theme.spacing(40),
       marginBottom: theme.spacing(2),
+      '& path': {
+        fill: 'white',
+      },
     },
     hidden: {
       position: 'absolute',
@@ -51,15 +56,13 @@ const styles = (theme: Theme) =>
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
       color: 'white',
       zIndex: 1,
     },
     jumbotronLinkGroup: {
       display: 'flex',
-      maxWidth: '75vw',
-      marginTop: theme.spacing(5),
+      // maxWidth: '75vw',
+      marginTop: theme.spacing(3),
     },
     jumbotronLinkGroupLink: {
       '&:first-of-type': {
@@ -67,7 +70,7 @@ const styles = (theme: Theme) =>
       },
     },
     jumbotronHeading: {
-      fontWeight: 600,
+      fontWeight: 300,
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
         margin: '0 auto',
@@ -103,47 +106,47 @@ class Jumbotron extends React.Component<any> {
             }}
           />
         </Hidden>
-        <Paper className={classes.jumbotronContainer}>
-          <img
-            className={classes.logo}
-            src={ocLogo}
-            alt="OrderCloud by Four51"
-          />
-          <Typography
-            className={classes.jumbotronHeading}
-            variant="h5"
-            component="h1"
-          >
-            Welcome to the Documentation for OrderCloud by Four51
-          </Typography>
-          <div className={classes.jumbotronLinkGroup}>
-            <Link
-              to="/getting-started/intro-to-ordercloud"
-              className={classes.buttonLink}
+        <Container maxWidth="xl">
+          <Paper className={classes.jumbotronContainer}>
+            <img
+              className={classes.logo}
+              src={ocLogo}
+              alt="OrderCloud by Four51"
+            />
+            <Typography
+              className={classes.jumbotronHeading}
+              variant="h4"
+              component="h1"
             >
-              <Button
-                size="large"
-                variant="contained"
-                className={classes.jumbotronLinkGroupLink}
+              Welcome to the Documentation for OrderCloud by Four51
+            </Typography>
+            <div className={classes.jumbotronLinkGroup}>
+              <Link
+                to="/getting-started/intro-to-ordercloud"
+                className={classes.buttonLink}
               >
-                Intro to OrderCloud
-              </Button>
-            </Link>
-            <Link
-              to="/getting-started/quick-start-guide"
-              className={classes.buttonLink}
-            >
-              <Button
-                size="large"
-                color="secondary"
-                variant="outlined"
-                className={classes.jumbotronLinkGroupLink}
+                <Button
+                  variant="contained"
+                  className={classes.jumbotronLinkGroupLink}
+                >
+                  Intro to OrderCloud
+                </Button>
+              </Link>
+              <Link
+                to="/getting-started/quick-start-guide"
+                className={classes.buttonLink}
               >
-                Quick Start Guide
-              </Button>
-            </Link>
-          </div>
-        </Paper>
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  className={classes.jumbotronLinkGroupLink}
+                >
+                  Quick Start Guide
+                </Button>
+              </Link>
+            </div>
+          </Paper>
+        </Container>
       </div>
     )
   }
