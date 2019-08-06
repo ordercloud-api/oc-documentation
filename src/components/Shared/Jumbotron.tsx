@@ -7,9 +7,11 @@ import {
   Paper,
   Button,
   Hidden,
+  SvgIcon,
 } from '@material-ui/core'
 import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
+import ocLogo from '../../assets/images/oc-orange.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -25,6 +27,10 @@ const styles = (theme: Theme) =>
       overflowY: 'hidden',
       overflowX: 'hidden',
       backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
+    },
+    logo: {
+      maxWidth: '40rem',
+      marginBottom: theme.spacing(2),
     },
     hidden: {
       position: 'absolute',
@@ -98,12 +104,17 @@ class Jumbotron extends React.Component<any> {
           />
         </Hidden>
         <Paper className={classes.jumbotronContainer}>
+          <img
+            className={classes.logo}
+            src={ocLogo}
+            alt="OrderCloud by Four51"
+          />
           <Typography
             className={classes.jumbotronHeading}
-            variant="h2"
+            variant="h5"
             component="h1"
           >
-            OrderCloud Documentation
+            Welcome to the Documentation for OrderCloud by Four51
           </Typography>
           <div className={classes.jumbotronLinkGroup}>
             <Link
