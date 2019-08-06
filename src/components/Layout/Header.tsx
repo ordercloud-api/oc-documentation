@@ -127,7 +127,7 @@ class Header extends React.Component<any, HeaderState> {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.verticalNav}>
           <Link to="/">
-            <img className={classes.logo} src="/logo-white.svg" alt="OC" />
+            <img className={classes.logo} src="/F51-logo.svg" alt="OC" />
           </Link>
           <Hidden smDown>
             <Tooltip placement="right" title="Api Console">
