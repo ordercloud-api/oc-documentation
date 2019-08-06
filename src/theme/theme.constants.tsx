@@ -1,8 +1,33 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { flame, seafoam, sherpablue, blackpearl } from './ocPalette.constants'
 
+const Geometria = {
+  fontFamily: [
+    '"Geometria"',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(','),
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 600,
+  src: `
+    local('Geometria'),
+    url('../assets/fonts/Geometria/Geometria-Bold.ttf' format('truetype'))
+  `,
+  unicodeRange:
+    'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
+}
+
 const CoreSans = {
-  fontFamily: 'Roboto Mono',
+  fontFamily: 'Core Sans',
   fontStyle: 'normal',
   fontDisplay: 'swap',
   fontWeight: 400,
@@ -16,8 +41,83 @@ const CoreSans = {
 
 export default createMuiTheme({
   typography: {
+    h1: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h2: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h3: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h4: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h5: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
     fontFamily: [
-      'CoreSans',
+      '"CoreSans"',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',
@@ -41,10 +141,10 @@ export default createMuiTheme({
   },
   palette: {
     primary: {
-      main: sherpablue[400],
+      main: blackpearl[400],
     },
     secondary: {
-      main: seafoam[800],
+      main: flame[400],
       contrastText: '#FFF',
     },
   },
