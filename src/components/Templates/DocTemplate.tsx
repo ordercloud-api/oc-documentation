@@ -1,7 +1,10 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../Layout/Layout'
-import RightMenu, { drawerWidthSpacingLg } from '../Layout/RightMenu'
+import RightMenu, {
+  drawerWidthSpacing,
+  drawerWidthSpacingLg,
+} from '../Layout/RightMenu'
 import '../../styles/doc-template.css'
 import { graphql } from 'gatsby'
 import DocFooter from '../Layout/DocFooter'
@@ -23,56 +26,32 @@ import { DocsQuery } from '../../models/docsQuery'
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: {
-      display: 'flex',
-    },
-    boxRoot: {
+    docBody: {
       backgroundColor: 'white',
-    },
-    appBar: {
-      backgroundColor: 'blue',
-      width: `calc(100vw - ${theme.spacing(drawerWidthSpacingLg)}px)`,
-      marginRight: theme.spacing(drawerWidthSpacingLg),
-    },
-    drawer: {
-      width: theme.spacing(drawerWidthSpacingLg),
-      flexShrink: 0,
-    },
-    drawerPaper: {
-      width: theme.spacing(drawerWidthSpacingLg),
-    },
-    docContainer: {
-      position: 'relative',
-      marginBlockStart: '2rem',
-      zIndex: 1,
-      [theme.breakpoints.down('sm')]: {
-        marginBlockStart: '5rem',
-      },
+      marginLeft: theme.spacing(9),
+      marginRight: theme.spacing(9),
+      marginTop: theme.spacing(10),
       [theme.breakpoints.up('md')]: {
-        marginBlockEnd: '33rem',
+        marginTop: 0,
+        marginBottom: theme.spacing(56),
+        marginRight: theme.spacing(drawerWidthSpacing),
       },
       [theme.breakpoints.up('lg')]: {
-        marginBlockEnd: '30rem',
+        marginRight: theme.spacing(drawerWidthSpacingLg),
+      },
+    },
+    docBodyPadding: {
+      padding: theme.spacing(0),
+      [theme.breakpoints.up('md')]: {
+        padding: theme.spacing(5),
+      },
+      [theme.breakpoints.up('lg')]: {
+        paddingLeft: theme.spacing(15),
+        paddingRight: theme.spacing(15),
       },
       [theme.breakpoints.up('xl')]: {
-        marginBlockEnd: '28.1rem',
-      },
-    },
-    docBody: {
-      maxWidth: '100%',
-      [theme.breakpoints.up('xs')]: {},
-      [theme.breakpoints.down('sm')]: {
-        marginRight: 'auto !important',
-        maxWidth: '100%',
-      },
-      [theme.breakpoints.up('md')]: {
-        marginLeft: theme.spacing(10),
-        marginRight: `calc(${theme.spacing(
-          drawerWidthSpacingLg
-        )}px - ${theme.spacing(20)}px)`,
-      },
-      [theme.breakpoints.up('lg')]: {
-        maxWidth: '700px',
+        paddingLeft: theme.spacing(35),
+        paddingRight: theme.spacing(35),
       },
     },
     fab: {
@@ -119,48 +98,46 @@ const Template = withStyles(styles, { withTheme: true })(
       const { data: post, classes, location, theme } = this.props
       const sections = utility.getSectionsFromDocsQuery(post)
       return (
-        <Box className={classes.boxRoot}>
-          <Layout>
-            {/* <OverlayMenu sections={sections} currentPath={location.pathname} /> */}
-            <Container className={classes.docContainer}>
-              <Hidden mdUp implementation="js">
-                <Fab
-                  onClick={this.handleMobileToggle}
-                  className={classes.fab}
-                  color="primary"
-                  aria-label="Overlaying Menu For Mobile"
-                >
-                  <MenuRounded />
-                </Fab>
-              </Hidden>
-              <div className={classes.docBody}>
-                <Helmet
-                  title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
-                />
-                <Typography variant="h2" component="h1">
-                  {post.mdx.frontmatter.title}
-                </Typography>
-                <Typography>
-                  <MDXRenderer>{post.mdx.body}</MDXRenderer>
-                </Typography>
-                <DocFooter
-                  contents={sections}
-                  currentGuide={utility.resolvePath(post.mdx.fileAbsolutePath)}
-                />
-              </div>
-              <RightMenu
-                mobileOpen={this.state.mobileOpen}
-                onMobileClose={this.handleMobileClose}
-                sections={sections}
-                currentPath={location.pathname}
+        <Layout>
+          {/* <OverlayMenu sections={sections} currentPath={location.pathname} /> */}
+          <Hidden mdUp implementation="js">
+            <Fab
+              onClick={this.handleMobileToggle}
+              className={classes.fab}
+              color="primary"
+              aria-label="Overlaying Menu For Mobile"
+            >
+              <MenuRounded />
+            </Fab>
+          </Hidden>
+          <div className={classes.docBody}>
+            <Box className={classes.docBodyPadding}>
+              <Helmet
+                title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
               />
-            </Container>
-            <Footer
-              sections={sections}
-              right={theme.spacing(drawerWidthSpacingLg)}
-            />
-          </Layout>
-        </Box>
+              <Typography variant="h2" component="h1">
+                {post.mdx.frontmatter.title}
+              </Typography>
+              <Typography>
+                <MDXRenderer>{post.mdx.body}</MDXRenderer>
+              </Typography>
+              <DocFooter
+                contents={sections}
+                currentGuide={utility.resolvePath(post.mdx.fileAbsolutePath)}
+              />
+            </Box>
+          </div>
+          <RightMenu
+            mobileOpen={this.state.mobileOpen}
+            onMobileClose={this.handleMobileClose}
+            sections={sections}
+            currentPath={location.pathname}
+          />
+          <Footer
+            sections={sections}
+            right={theme.spacing(drawerWidthSpacingLg)}
+          />
+        </Layout>
       )
     }
   }
