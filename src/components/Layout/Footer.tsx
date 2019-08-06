@@ -10,14 +10,17 @@ import {
   Box,
 } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
-import { mediumgrey } from '../../theme/ocPalette.constants'
+import { mediumgrey, blackpearl } from '../../theme/ocPalette.constants'
+import { drawerWidthSpacingLg, drawerWidthSpacing } from './RightMenu'
+import ocOrange from '../../../src/assets/images/oc-orange.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
     ocFooter: {
       position: 'fixed',
       bottom: 0,
-      width: '100%',
+      left: 0,
+      right: 0,
       zIndex: -1,
       [theme.breakpoints.down('sm')]: {
         paddingBottom: theme.spacing(20),
@@ -26,14 +29,13 @@ const styles = (theme: Theme) =>
       },
       [theme.breakpoints.up('md')]: {
         height: theme.spacing(56),
-        paddingLeft: theme.spacing(12),
-        paddingRight: theme.spacing(56),
-        maxWidth: '67%',
+        paddingLeft: theme.spacing(9),
+        paddingRight: theme.spacing(drawerWidthSpacing),
       },
       [theme.breakpoints.up('lg')]: {
-        maxWidth: '57%',
+        paddingRight: theme.spacing(drawerWidthSpacingLg),
       },
-      backgroundColor: theme.palette.grey[900],
+      backgroundColor: blackpearl[700],
       borderTop: '2px solid',
       borderColor: mediumgrey[100],
       ...theme.typography.body2,
@@ -42,7 +44,7 @@ const styles = (theme: Theme) =>
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
       marginRight: theme.spacing(2),
-      width: theme.spacing(8),
+      width: theme.spacing(30),
     },
     Typography: {
       color: mediumgrey[400],
@@ -53,10 +55,6 @@ const styles = (theme: Theme) =>
       letterSpacing: theme.spacing(0.2),
       fontWeight: 600,
       color: theme.palette.grey[600],
-    },
-    footerContainer: {
-      paddingTop: theme.spacing(4),
-      color: theme.palette.grey[50],
     },
     footerLogo: {
       maxWidth: 50,
@@ -87,12 +85,12 @@ class Footer extends React.Component<any> {
     const { siteTitle, classes, right, theme, sections } = this.props
     return (
       <footer className={classes.ocFooter}>
-        <Toolbar className={classes.footerContainer}>
+        <Box paddingX={5} paddingY={3}>
           <Grid
             container
             spacing={3}
             justify="space-between"
-            alignItems="center"
+            alignItems="flex-start"
           >
             <Grid item xs={12}>
               <Box
@@ -100,8 +98,8 @@ class Footer extends React.Component<any> {
                 alignItems="center"
                 justifyContent="flex-start"
               >
-                <img className={classes.logo} src="/logo-white.svg" alt="OC" />
-                <Typography variant="h4">OrderCloud</Typography>
+                <img className={classes.logo} src={ocOrange} alt="OC" />
+                {/* <Typography variant="h4">OrderCloud</Typography> */}
               </Box>
               <Typography variant="body2" className={classes.Typography}>
                 © {currentYear} OrderCloud All rights reserved.
@@ -161,7 +159,7 @@ class Footer extends React.Component<any> {
               </Box>
             </Grid>
           </Grid>
-        </Toolbar>
+        </Box>
       </footer>
     )
   }
