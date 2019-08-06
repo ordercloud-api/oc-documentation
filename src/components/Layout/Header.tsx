@@ -3,9 +3,6 @@ import React from 'react'
 import { Theme, createStyles, withStyles, Hidden } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import SvgIcon from '@material-ui/core/SvgIcon'
 import Gravatar from 'react-gravatar'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
@@ -14,15 +11,18 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Divider from '@material-ui/core/Divider'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ocLogo from '../../assets/images/f51-logo.svg'
 
-import ContributorsIcon from '@material-ui/icons/People'
-import SettingsIcon from '@material-ui/icons/Settings'
-import ProfileIcon from '@material-ui/icons/AccountCircle'
-import AccountIcon from '@material-ui/icons/Lock'
-import ConsoleIcon from '@material-ui/icons/Code'
-import DocumentationIcon from '@material-ui/icons/BookmarksTwoTone'
 import Cookies from 'universal-cookie'
-import { MenuOutlined, Apps } from '@material-ui/icons'
+import {
+  SettingsTwoTone,
+  PeopleTwoTone,
+  LockTwoTone,
+  CodeTwoTone,
+  BookmarksTwoTone,
+  SpeakerNotesTwoTone,
+  LocalLibraryTwoTone,
+} from '@material-ui/icons'
 import { navigate } from '../Shared/PortalLink'
 
 function isTokenExpired(token: string): boolean {
@@ -50,7 +50,6 @@ function parseJwt(token: string) {
       })
       .join('')
   )
-
   return JSON.parse(jsonPayload)
 }
 
@@ -124,7 +123,7 @@ class Header extends React.Component<any, HeaderState> {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.verticalNav}>
           <Link to="/">
-            <img className={classes.logo} src="/logo-white.svg" alt="OC" />
+            <img className={classes.logo} src={ocLogo} alt="OC" />
           </Link>
           <Hidden smDown>
             <Tooltip placement="right" title="Api Console">
@@ -133,17 +132,17 @@ class Header extends React.Component<any, HeaderState> {
                 onClick={this.goToPortal('/console')}
                 aria-label="Api Console"
               >
-                <ConsoleIcon />
+                <CodeTwoTone />
               </IconButton>
             </Tooltip>
             <Tooltip placement="right" title="Organization Settings">
               <IconButton color="inherit" aria-label="Organization Settings">
-                <SettingsIcon />
+                <SettingsTwoTone />
               </IconButton>
             </Tooltip>
             <Tooltip placement="right" title="Contributor Access">
               <IconButton color="inherit" aria-label="Contributor Access">
-                <ContributorsIcon />
+                <PeopleTwoTone />
               </IconButton>
             </Tooltip>
             <Tooltip placement="right" title="Documentation">
@@ -153,7 +152,27 @@ class Header extends React.Component<any, HeaderState> {
                 color="inherit"
                 aria-label="Documentation"
               >
-                <DocumentationIcon />
+                <LocalLibraryTwoTone />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="right" title="Blog">
+              <IconButton
+                component={Link}
+                to="/blog"
+                color="inherit"
+                aria-label="Blog"
+              >
+                <BookmarksTwoTone />
+              </IconButton>
+            </Tooltip>
+            <Tooltip placement="right" title="API Release Notes">
+              <IconButton
+                component={Link}
+                to="/api-release-notes"
+                color="inherit"
+                aria-label="API Release Notes"
+              >
+                <SpeakerNotesTwoTone />
               </IconButton>
             </Tooltip>
           </Hidden>
@@ -194,19 +213,19 @@ class Header extends React.Component<any, HeaderState> {
                 <Divider />
                 <MenuItem onClick={this.goToPortal('/profile')}>
                   <ListItemIcon className={classes.mr1rem}>
-                    <ProfileIcon />
+                    <PeopleTwoTone />
                   </ListItemIcon>
                   Profile
                 </MenuItem>
                 <MenuItem onClick={this.goToPortal('/account')}>
                   <ListItemIcon className={classes.mr1rem}>
-                    <AccountIcon />
+                    <LockTwoTone />
                   </ListItemIcon>
                   Account
                 </MenuItem>
                 <MenuItem component={Link} to="/profile/console-settings">
                   <ListItemIcon className={classes.mr1rem}>
-                    <ConsoleIcon />
+                    <CodeTwoTone />
                   </ListItemIcon>
                   Console Settings
                 </MenuItem>

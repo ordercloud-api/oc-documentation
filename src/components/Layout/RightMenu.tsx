@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Section, Guide } from '../../models/section.model'
 import { Link } from 'gatsby'
+import { seafoam } from '../../theme/ocPalette.constants'
 
 const svgIcon = (
   <svg
@@ -28,14 +29,14 @@ import {
   Collapse,
   makeStyles,
   Typography,
-  Divider,
   Drawer,
   Hidden,
   useTheme,
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
-export const drawerWidth = 451
+export const drawerWidthSpacingLg = 56
+export const drawerWidthSpacing = drawerWidthSpacingLg - 20
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,14 +46,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawer: {
       [theme.breakpoints.up('lg')]: {
-        width: drawerWidth,
+        width: theme.spacing(drawerWidthSpacingLg),
         flexShrink: 0,
-      },
-    },
-    appBar: {
-      marginLeft: drawerWidth,
-      [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
       },
     },
     menuButton: {
@@ -63,13 +58,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
-      width: drawerWidth,
+      width: theme.spacing(drawerWidthSpacingLg),
       maxWidth: '100vw',
       [theme.breakpoints.up('lg')]: {
         maxWidth: 'none',
       },
       [theme.breakpoints.down('md')]: {
-        width: `calc(${drawerWidth}px - ${theme.spacing(20)}px)`,
+        width: theme.spacing(drawerWidthSpacing),
       },
     },
     content: {
@@ -84,6 +79,18 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     active: {
       backgroundColor: theme.palette.grey[200],
+    },
+    activeHeading: {
+      backgroundColor: theme.palette.grey[200],
+      '&::before': {
+        content: `''`,
+        fontFamily: `'FontAwesome'`,
+        position: `absolute`,
+        top: `-3px`,
+        left: `3%`,
+        color: seafoam[500],
+        fontSize: `22px`,
+      },
     },
     guideAnchorLinks: {
       paddingLeft: theme.spacing(5.5),
@@ -128,12 +135,54 @@ export default function RightMenu(props: RightMenuProps) {
   // const { container, mobileOpen, onMobileClose } = props
   const classes = useStyles(props)
   const theme = useTheme()
+  const [activeHeading, setActiveHeading] = React.useState('')
   const [activeIndex, setActiveIndex] = React.useState(
     findActiveSection(sections, currentPath)
   )
   const handleSetActiveIndex = (i: number) => {
     setActiveIndex(activeIndex === i ? -1 : i)
   }
+
+  const onScroll = (event: Event, headings: NodeListOf<HTMLElement>) => {
+    let smallest, elementId
+    Array.from(headings).forEach(h => {
+      let diff = window.scrollY - h.offsetTop
+      if (diff < 0) diff = -diff
+      if (!smallest || (smallest && diff < smallest)) {
+        smallest = diff
+        elementId = h.id
+      }
+    })
+    setActiveHeading(elementId)
+  }
+
+  useEffect(() => {
+    // smooth scroll to section link on page load
+    if (window.location.hash && !activeHeading) {
+      window.setTimeout(() => {
+        // kind of hacky but sommetimes especially on a long page the dom
+        // won't fully load and offset is off, this waits 400ms for dom to load fully
+        let top = document.getElementById(window.location.hash.substr(1))
+          .offsetTop
+        window.scrollTo({
+          top: top,
+          behavior: `smooth`,
+        })
+      }, 400)
+    }
+  }, [])
+
+  useEffect(() => {
+    // set active section on scroll
+    const headings = document.querySelectorAll(
+      'h1,h2,h3,h4,h5,h6'
+    ) as NodeListOf<HTMLElement>
+    const onScrollWithHeadings = event => onScroll(event, headings)
+    window.addEventListener('scroll', onScrollWithHeadings)
+    return () => {
+      window.removeEventListener('scroll', onScrollWithHeadings)
+    }
+  }, [])
 
   const drawer = (
     <React.Fragment>
@@ -142,6 +191,7 @@ export default function RightMenu(props: RightMenuProps) {
           key={section.title}
           section={section}
           currentPath={currentPath}
+          activeHeading={activeHeading}
           activeIndex={activeIndex}
           onClick={handleSetActiveIndex}
           index={index}
@@ -185,12 +235,20 @@ export default function RightMenu(props: RightMenuProps) {
 interface SectionMenuProps {
   section: Section
   currentPath: string
+  activeHeading: string
   activeIndex: number
   onClick: (i: number) => void
   index: number
 }
 function SectionMenu(props: SectionMenuProps) {
-  const { section, currentPath, activeIndex, onClick, index } = props
+  const {
+    section,
+    currentPath,
+    activeHeading,
+    activeIndex,
+    onClick,
+    index,
+  } = props
   const classes = useStyles(props)
 
   function handleClick() {
@@ -217,6 +275,7 @@ function SectionMenu(props: SectionMenuProps) {
             key={guide.id}
             guide={guide}
             currentPath={currentPath}
+            activeHeading={activeHeading}
             index={index}
           />
         ))}
@@ -228,10 +287,11 @@ function SectionMenu(props: SectionMenuProps) {
 interface GuideMenuProps extends StyledComponentProps {
   guide: Guide
   currentPath: string
+  activeHeading: string
   index: number
 }
 function GuideMenu(props: GuideMenuProps) {
-  const { guide, currentPath, index } = props
+  const { guide, currentPath, activeHeading, index } = props
   const classes = useStyles(props)
   const isActive = guide.path.includes(currentPath)
   const [open, setOpen] = React.useState(isActive)
@@ -239,6 +299,20 @@ function GuideMenu(props: GuideMenuProps) {
   function handleToggleDrawer() {
     setOpen(!open)
   }
+  useEffect(() => {
+    if (!activeHeading) {
+      let headingUrlParam = window.location.hash.substring(1)
+      guide.headings.forEach(h => {
+        let formattedHeading = h.value
+          .toLowerCase()
+          .replace(/ /g, '-')
+          .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '')
+        if (formattedHeading === headingUrlParam) {
+          setOpen(true)
+        }
+      })
+    }
+  }, [guide, activeHeading, setOpen])
 
   return (
     <List dense={true} component="div" disablePadding>
@@ -257,6 +331,7 @@ function GuideMenu(props: GuideMenuProps) {
               key={`guide_heading${heading.value}`}
               guidePath={guide.path}
               heading={heading.value}
+              activeHeading={activeHeading}
             />
           ))}
         </List>
@@ -268,26 +343,26 @@ function GuideMenu(props: GuideMenuProps) {
 interface GuideHeadingProps {
   guidePath: string
   heading: string
+  activeHeading: string
 }
 function GuideHeading(props: GuideHeadingProps) {
-  const { heading, guidePath } = props
+  const { heading, activeHeading, guidePath } = props
   const classes = useStyles(props)
-  const guideSectionLink = buildGuideSectionLink(guidePath, heading)
-
+  const headingLink = heading
+    .toLowerCase()
+    .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '') // remove punctuation
+    .replace(/  +/g, ' ') // replace multiple whitespaces by just one
+    .replace(/ /g, '-') // replace spaces with hypens
+  const guideSectionLink = buildGuideSectionLink(guidePath, headingLink)
   function buildGuideSectionLink(guidePath: string, heading: string): string {
-    const guideSectionPath =
-      '#' +
-      heading
-        .toLowerCase()
-        .replace(/[!@#$%^&*()=_+|;':",.<>?'’]/g, '') // remove punctuation
-        .replace(/  +/g, ' ') // replace multiple whitespaces by just one
-        .replace(/ /g, '-') // replace spaces with hypens
+    const guideSectionPath = '#' + heading
     return guidePath + guideSectionPath
   }
-
   return (
     <ListItem
-      className={classes.guideAnchorLinks}
+      className={`${classes.guideAnchorLinks} ${
+        activeHeading === headingLink ? classes.activeHeading : ''
+      }`}
       key={guidePath}
       button
       component={props => <Link {...props} to={guideSectionLink}></Link>}
