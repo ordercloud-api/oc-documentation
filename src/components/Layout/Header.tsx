@@ -11,7 +11,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Divider from '@material-ui/core/Divider'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
-import whiteLogo from '../../assets/images/logo-white.svg'
+import ocLogo from '../../assets/images/f51-logo.svg'
 
 import Cookies from 'universal-cookie'
 import {
@@ -123,7 +123,7 @@ class Header extends React.Component<any, HeaderState> {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.verticalNav}>
           <Link to="/">
-            <img className={classes.logo} src={whiteLogo} alt="OC" />
+            <img className={classes.logo} src={ocLogo} alt="OC" />
           </Link>
           <Hidden smDown>
             <Tooltip placement="right" title="Api Console">

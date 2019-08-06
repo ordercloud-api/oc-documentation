@@ -15,7 +15,12 @@ import ListLink from '../Shared/ListLink'
 import Jumbotron from '../Shared/Jumbotron'
 import { StaticQuery, graphql } from 'gatsby'
 import utility from '../../utility'
-import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
+import {
+  mediumgrey,
+  darkgrey,
+  blackpearl,
+} from '../../theme/ocPalette.constants'
+import Footer from '../Layout/Footer'
 import { navigate } from '../Shared/PortalLink'
 
 if (typeof window !== 'undefined') {
@@ -28,8 +33,8 @@ const styles = (theme: Theme) =>
     root: {
       overflowX: 'hidden',
       overflowY: 'auto',
-      height: '100vh',
-      marginBottom: theme.spacing[56],
+      minHeight: '100vh',
+      marginBottom: theme.spacing(55),
       [theme.breakpoints.up('md')]: {
         marginLeft: theme.spacing(9),
       },
@@ -82,6 +87,10 @@ const styles = (theme: Theme) =>
         gridTemplateColumns: '1fr',
       },
     },
+    footerBackground: {
+      backgroundColor: blackpearl[700],
+      height: `100% `,
+    },
   })
 
 const Main = withStyles(styles)(
@@ -110,7 +119,7 @@ const Main = withStyles(styles)(
                     >
                       {section.guides.filter(c => !c.frontmatter.hidden)
                         .length > 0 ? (
-                        <Paper elevation={2}>
+                        <Paper elevation={10}>
                           <Box p={2} zIndex={1}>
                             <div className={classes.paperCard}>
                               <Typography
@@ -158,6 +167,8 @@ const Main = withStyles(styles)(
               </Grid>
             </Box>
           </Container>
+          <div className={classes.footerBackground}></div>
+          <Footer sections={sections} right={0} />
         </div>
       )
     }

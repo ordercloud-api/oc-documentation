@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Section, Guide } from '../../models/section.model'
 import { Link } from 'gatsby'
+import { seafoam } from '../../theme/ocPalette.constants'
 
 const svgIcon = (
   <svg
@@ -34,7 +35,8 @@ import {
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
-export const drawerWidth = 451
+export const drawerWidthSpacingLg = 56
+export const drawerWidthSpacing = drawerWidthSpacingLg - 20
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,14 +46,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawer: {
       [theme.breakpoints.up('lg')]: {
-        width: drawerWidth,
+        width: theme.spacing(drawerWidthSpacingLg),
         flexShrink: 0,
-      },
-    },
-    appBar: {
-      marginLeft: drawerWidth,
-      [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
       },
     },
     menuButton: {
@@ -62,13 +58,13 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
-      width: drawerWidth,
+      width: theme.spacing(drawerWidthSpacingLg),
       maxWidth: '100vw',
       [theme.breakpoints.up('lg')]: {
         maxWidth: 'none',
       },
       [theme.breakpoints.down('md')]: {
-        width: `calc(${drawerWidth}px - ${theme.spacing(20)}px)`,
+        width: theme.spacing(drawerWidthSpacing),
       },
     },
     content: {
@@ -92,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) =>
         position: `absolute`,
         top: `-3px`,
         left: `3%`,
-        color: `${theme.palette.primary.light}`,
+        color: seafoam[500],
         fontSize: `22px`,
       },
     },
