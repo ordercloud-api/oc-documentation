@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Section, Guide } from '../../models/section.model'
-import { Link } from 'gatsby'
+import { Link, withPrefix } from 'gatsby'
 import { seafoam } from '../../theme/ocPalette.constants'
 
 const svgIcon = (
@@ -124,7 +124,7 @@ const findActiveSection = (sections: Section[], path: string) => {
   return sections.findIndex(s => {
     return (
       s.guides.filter(g => {
-        return g.path === path || g.path + '/' === path
+        return withPrefix(g.path) === path || withPrefix(g.path) + '/' === path
       }).length > 0
     )
   })
