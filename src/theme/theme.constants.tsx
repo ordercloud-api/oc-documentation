@@ -1,12 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import {
-  ioblue,
-  aliengreen,
-  flame,
-  seafoam,
-  sherpablue,
-  blackpearl,
-} from './ocPalette.constants'
+import { flame, seafoam, sherpablue, blackpearl } from './ocPalette.constants'
 
 const CoreSans = {
   fontFamily: 'Roboto Mono',
@@ -41,14 +34,14 @@ export default createMuiTheme({
     MuiCssBaseline: {
       '@global': {
         a: {
-          color: ioblue[500],
+          color: flame[500],
         },
       },
     },
   },
   palette: {
     primary: {
-      main: blackpearl[400],
+      main: sherpablue[400],
     },
     secondary: {
       main: seafoam[800],
