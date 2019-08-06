@@ -1,6 +1,5 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import {
-  Link,
   createStyles,
   Theme,
   withStyles,
@@ -9,7 +8,7 @@ import {
   Button,
   Hidden,
 } from '@material-ui/core'
-import { Link as LinkyDinky } from 'gatsby'
+import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
 
 const styles = (theme: Theme) =>
@@ -37,6 +36,9 @@ const styles = (theme: Theme) =>
       backgroundColor: 'transparent',
       width: '100vw',
       height: '100vh',
+    },
+    buttonLink: {
+      textDecoration: 'none',
     },
     jumbotronContainer: {
       backgroundColor: 'transparent',
@@ -104,23 +106,31 @@ class Jumbotron extends React.Component<any> {
             OrderCloud Documentation
           </Typography>
           <div className={classes.jumbotronLinkGroup}>
-            <Button
-              size="large"
-              href="/herp"
-              variant="contained"
-              className={classes.jumbotronLinkGroupLink}
+            <Link
+              to="/getting-started/intro-to-ordercloud"
+              className={classes.buttonLink}
             >
-              Herp!
-            </Button>
-            <Button
-              size="large"
-              color="secondary"
-              href="/derp"
-              variant="outlined"
-              className={classes.jumbotronLinkGroupLink}
+              <Button
+                size="large"
+                variant="contained"
+                className={classes.jumbotronLinkGroupLink}
+              >
+                Intro to OrderCloud
+              </Button>
+            </Link>
+            <Link
+              to="/getting-started/quick-start-guide"
+              className={classes.buttonLink}
             >
-              Derp?
-            </Button>
+              <Button
+                size="large"
+                color="secondary"
+                variant="outlined"
+                className={classes.jumbotronLinkGroupLink}
+              >
+                Quick Start Guide
+              </Button>
+            </Link>
           </div>
         </Paper>
       </div>
