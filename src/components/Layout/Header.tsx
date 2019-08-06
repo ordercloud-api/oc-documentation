@@ -3,9 +3,6 @@ import React from 'react'
 import { Theme, createStyles, withStyles, Hidden } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import SvgIcon from '@material-ui/core/SvgIcon'
 import Gravatar from 'react-gravatar'
 import Avatar from '@material-ui/core/Avatar'
 import IconButton from '@material-ui/core/IconButton'
@@ -14,6 +11,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Divider from '@material-ui/core/Divider'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
+import whiteLogo from '../../assets/images/logo-white.svg'
 
 import Cookies from 'universal-cookie'
 import {
@@ -24,7 +22,6 @@ import {
   BookmarksTwoTone,
   SpeakerNotesTwoTone,
   LocalLibraryTwoTone,
-  Apps,
 } from '@material-ui/icons'
 import { navigate } from '../Shared/PortalLink'
 
@@ -53,7 +50,6 @@ function parseJwt(token: string) {
       })
       .join('')
   )
-
   return JSON.parse(jsonPayload)
 }
 
@@ -127,7 +123,7 @@ class Header extends React.Component<any, HeaderState> {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.verticalNav}>
           <Link to="/">
-            <img className={classes.logo} src="/F51-logo.svg" alt="OC" />
+            <img className={classes.logo} src={whiteLogo} alt="OC" />
           </Link>
           <Hidden smDown>
             <Tooltip placement="right" title="Api Console">
@@ -159,22 +155,22 @@ class Header extends React.Component<any, HeaderState> {
                 <LocalLibraryTwoTone />
               </IconButton>
             </Tooltip>
-            <Tooltip placement="right" title="Blogs">
+            <Tooltip placement="right" title="Blog">
               <IconButton
                 component={Link}
-                to="/"
+                to="/blog"
                 color="inherit"
-                aria-label="Blogs"
+                aria-label="Blog"
               >
                 <BookmarksTwoTone />
               </IconButton>
             </Tooltip>
-            <Tooltip placement="right" title="Release Notes">
+            <Tooltip placement="right" title="API Release Notes">
               <IconButton
                 component={Link}
-                to="/"
+                to="/api-release-notes"
                 color="inherit"
-                aria-label="Release Notes"
+                aria-label="API Release Notes"
               >
                 <SpeakerNotesTwoTone />
               </IconButton>

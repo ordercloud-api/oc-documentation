@@ -5,7 +5,6 @@ import {
   createStyles,
   withStyles,
   Typography,
-  SvgIcon,
   Grid,
   Box,
 } from '@material-ui/core'
