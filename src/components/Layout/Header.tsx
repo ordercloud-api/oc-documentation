@@ -11,7 +11,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Divider from '@material-ui/core/Divider'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ocLogo from '../../assets/images/f51-logo.svg'
+import ocLogo from '../../assets/images/four51-badge.svg'
 
 import Cookies from 'universal-cookie'
 import {
@@ -259,8 +259,9 @@ const styles = (theme: Theme) =>
       marginRight: theme.spacing(2),
     },
     logo: {
-      margin: theme.spacing(2),
-      width: theme.spacing(5),
+      padding: theme.spacing(2),
+      width: theme.spacing(6),
+      height: 'auto',
     },
     grow: {
       flexGrow: 1,
