@@ -28,11 +28,8 @@ const styles = (theme: Theme) =>
   createStyles({
     docBody: {
       backgroundColor: 'white',
-      marginLeft: theme.spacing(9),
       marginRight: theme.spacing(9),
-      marginTop: theme.spacing(10),
       [theme.breakpoints.up('md')]: {
-        marginTop: 0,
         marginBottom: theme.spacing(56),
         marginRight: theme.spacing(drawerWidthSpacing),
       },

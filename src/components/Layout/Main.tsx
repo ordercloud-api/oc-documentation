@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
       overflowY: 'auto',
       minHeight: '100vh',
       marginBottom: theme.spacing(55),
-      [theme.breakpoints.up('md')]: {
-        marginLeft: theme.spacing(9),
-      },
       backgroundColor: mediumgrey[50],
     },
     paperRoot: {
