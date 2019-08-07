@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme: Theme) =>
       overflowX: 'hidden',
       overflowY: 'auto',
       minHeight: '100vh',
-      marginBottom: theme.spacing(55),
       [theme.breakpoints.up('md')]: {
+        marginBottom: theme.spacing(55),
         marginLeft: theme.spacing(9),
       },
       backgroundColor: mediumgrey[50],
