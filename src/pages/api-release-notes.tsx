@@ -9,6 +9,7 @@ import {
   Typography,
   Card,
   CardContent,
+  Button,
 } from '@material-ui/core/'
 import { graphql, useStaticQuery, Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
@@ -25,9 +26,6 @@ const useStyles = makeStyles((theme: Theme) =>
     link: {
       textDecoration: 'none',
     },
-    releaseDate: {
-      float: 'right',
-    },
     header: {
       marginBottom: theme.spacing(0),
       [theme.breakpoints.up('lg')]: {
@@ -38,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1),
     },
     subtitle: {
-      color: mediumgrey[300],
+      color: mediumgrey[400],
     },
     container: {},
     body: {
@@ -47,6 +45,23 @@ const useStyles = makeStyles((theme: Theme) =>
         paddingTop: theme.spacing(5),
         paddingLeft: theme.spacing(7),
       },
+    },
+    cardRightContainer: {
+      float: 'right',
+    },
+    releaseDate: {
+      verticalAlign: 'bottom',
+      display: 'inline',
+      color: mediumgrey[400],
+    },
+    viewDetailsBtn: {
+      marginLeft: theme.spacing(2),
+    },
+    cardText: {},
+    cardBody: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
     },
   })
 )
@@ -98,7 +113,7 @@ export default function ReleaseNotesListComponent(
   `)
   return (
     <Layout>
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Grid container className={classes.container} spacing={3}>
           <Grid item xs={9}>
             <Helmet title={`OrderCloud Release Notes`} />
@@ -119,12 +134,9 @@ export default function ReleaseNotesListComponent(
                 {data.allMdx.edges.map(edge => {
                   const frontmatter = edge.node.frontmatter
                   return (
-                    <Link
-                      to={utility.resolvePath(edge.node.fileAbsolutePath)}
-                      className={classes.link}
-                    >
-                      <Card className={classes.card}>
-                        <CardContent>
+                    <Card className={classes.card}>
+                      <CardContent className={classes.cardBody}>
+                        <div className={classes.cardText}>
                           <Typography variant="h6">
                             {`API v${frontmatter.apiVersion}`}
                           </Typography>
@@ -134,9 +146,22 @@ export default function ReleaseNotesListComponent(
                           >
                             {`released on ${frontmatter.date}`}
                           </Typography>
-                        </CardContent>
-                      </Card>
-                    </Link>
+                        </div>
+                        <Link
+                          to={utility.resolvePath(edge.node.fileAbsolutePath)}
+                          className={classes.link}
+                        >
+                          <Button
+                            variant="contained"
+                            size="small"
+                            color="secondary"
+                            className={classes.viewDetailsBtn}
+                          >
+                            View Details
+                          </Button>
+                        </Link>
+                      </CardContent>
+                    </Card>
                   )
                 })}
               </List>
