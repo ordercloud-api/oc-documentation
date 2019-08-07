@@ -9,6 +9,7 @@ import {
   Box,
 } from '@material-ui/core'
 import Toolbar from '@material-ui/core/Toolbar'
+import { OpenInNewOutlined } from '@material-ui/icons'
 import { mediumgrey, blackpearl } from '../../theme/ocPalette.constants'
 import { drawerWidthSpacingLg, drawerWidthSpacing } from './RightMenu'
 import ocOrange from '../../../src/assets/images/oc-orange.svg'
@@ -68,6 +69,8 @@ const styles = (theme: Theme) =>
       },
     },
     footerLinks: {
+      display: 'flex',
+      alignItems: 'center',
       margin: `${theme.spacing(0.5)}px 0px`,
       fontWeight: 300,
       color: theme.palette.grey[200],
@@ -135,12 +138,36 @@ class Footer extends React.Component<any> {
                 >
                   Channels
                 </Typography>
-                <Link className={classes.footerLinks} to="/">
+                <a
+                  className={classes.footerLinks}
+                  href="https://developer.ordercloud.io/community"
+                  target="_blank"
+                >
                   Slack Community
-                </Link>
-                <Link className={classes.footerLinks} to="/">
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <a
+                  className={classes.footerLinks}
+                  href="https://stackoverflow.com/questions/tagged/ordercloud"
+                  target="_blank"
+                >
                   Stack Overflow
-                </Link>
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <a
+                  className={classes.footerLinks}
+                  href="https://twitter.com/OrderCloudIO"
+                  target="_blank"
+                >
+                  Twitter
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
                 <Link className={classes.footerLinks} to="/blog">
                   Blog
                 </Link>
