@@ -31,8 +31,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       minHeight: '100vh',
-      marginBottom: theme.spacing(55),
       backgroundColor: mediumgrey[50],
+      [theme.breakpoints.up('md')]: {
+        marginBottom: theme.spacing(55),
+      },
     },
     paperRoot: {
       zIndex: 1,
@@ -80,6 +82,11 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     cardWrapper: {
+      overflowX: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
+        margin: '0',
+      },
       [theme.breakpoints.up('sm')]: {
         marginTop: '-7rem',
       },
@@ -134,67 +141,64 @@ const MainComponent: React.FunctionComponent = props => {
     <div className={classes.root}>
       <Jumbotron />
       <Container maxWidth="xl">
-        <Box className={classes.cardWrapper}>
-          <Grid container spacing={5}>
-            {sections.map((section, index) =>
-              section.title === 'Getting Started' ? (
-                <Grid item sm={12} key={index}></Grid>
-              ) : (
-                <Grid
-                  item
-                  sm={12}
-                  md={6}
-                  lg={4}
-                  key={index}
-                  className={classes.paperRoot}
-                >
-                  {section.guides.filter(c => !c.frontmatter.hidden).length >
-                  0 ? (
-                    <Paper elevation={10}>
-                      <Box p={2} zIndex={1}>
-                        <div className={classes.paperCard}>
-                          <Typography
-                            className={classes.paperTitleHeading}
-                            variant="h5"
-                            component="h2"
-                          >
-                            {section.title}
-                          </Typography>
-
-                          <Typography
-                            className={classes.paperTitleSubheading}
-                            variant="body2"
-                          >
-                            {getSectionSubtitle(section.title)}
-                          </Typography>
-                          <List
-                            disablePadding={true}
-                            dense={true}
-                            className={classes.paperList}
-                          >
-                            {section.guides
-                              .filter(g => !g.frontmatter.hidden)
-                              .map(g => {
-                                return (
-                                  <ListLink
-                                    key={g.id}
-                                    guideProps={{
-                                      path: g.path,
-                                      title: g.frontmatter.title,
-                                    }}
-                                  />
-                                )
-                              })}
-                          </List>
-                        </div>
-                      </Box>
-                    </Paper>
-                  ) : null}
-                </Grid>
-              )
-            )}
-          </Grid>
-        </Box>
+        <Grid container className={classes.cardWrapper} spacing={5}>
+          {sections.map((section, index) =>
+            section.title === 'Getting Started' ? (
+              <Grid item sm={12} key={index}></Grid>
+            ) : (
+              <Grid
+                item
+                sm={12}
+                md={6}
+                lg={4}
+                key={index}
+                className={classes.paperRoot}
+              >
+                {section.guides.filter(c => !c.frontmatter.hidden).length >
+                0 ? (
+                  <Paper elevation={10}>
+                    <Box p={2} zIndex={1}>
+                      <div className={classes.paperCard}>
+                        <Typography
+                          className={classes.paperTitleHeading}
+                          variant="h5"
+                          component="h2"
+                        >
+                          {section.title}
+                        </Typography>
+                        <Typography
+                          className={classes.paperTitleSubheading}
+                          variant="body2"
+                        >
+                          {getSectionSubtitle(section.title)}
+                        </Typography>
+                        <List
+                          disablePadding={true}
+                          dense={true}
+                          className={classes.paperList}
+                        >
+                          {section.guides
+                            .filter(g => !g.frontmatter.hidden)
+                            .map(g => {
+                              return (
+                                <ListLink
+                                  key={g.id}
+                                  guideProps={{
+                                    path: g.path,
+                                    title: g.frontmatter.title,
+                                  }}
+                                />
+                              )
+                            })}
+                        </List>
+                      </div>
+                    </Box>
+                  </Paper>
+                ) : null}
+              </Grid>
+            )
+          )}
+        </Grid>
       </Container>
       <Footer sections={sections} right={0} />
     </div>
