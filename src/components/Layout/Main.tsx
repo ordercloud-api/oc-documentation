@@ -30,24 +30,31 @@ if (typeof window !== 'undefined') {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      overflowX: 'hidden',
-      overflowY: 'auto',
       minHeight: '100vh',
-      marginBottom: theme.spacing(55),
+      marginBottom: theme.spacing(0),
+      [theme.breakpoints.down('sm')]: {
+        overflowX: 'hidden',
+        overflowY: 'auto',
+      },
       [theme.breakpoints.up('md')]: {
         marginLeft: theme.spacing(9),
+        marginBottom: theme.spacing(55),
       },
       backgroundColor: mediumgrey[50],
     },
     paperRoot: {
       zIndex: 1,
+      minHeight: '100%',
+      height: '100%',
     },
     paperCard: {
       position: 'relative',
-      minHeight: '35vh',
       flexFlow: 'column nowrap',
       alignItems: 'center',
       maxWidth: '100vw',
+      [theme.breakpoints.up('md')]: {
+        minHeight: '40vh',
+      },
     },
     paperTitleHeading: {
       color: darkgrey[900],
@@ -57,6 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paperTitleSubheading: {
       color: mediumgrey[300],
       paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
       marginBottom: theme.spacing(2),
     },
     paperBody: {
@@ -79,9 +87,13 @@ const useStyles = makeStyles((theme: Theme) =>
         gridTemplateColumns: '1fr',
       },
     },
-    footerBackground: {
-      backgroundColor: blackpearl[700],
-      height: `100% `,
+    cardWrapper: {
+      [theme.breakpoints.up('sm')]: {
+        marginTop: '-7rem',
+      },
+      [theme.breakpoints.up('md')]: {
+        marginTop: '-5rem',
+      },
     },
   })
 )
@@ -130,15 +142,14 @@ const MainComponent: React.FunctionComponent = props => {
     <div className={classes.root}>
       <Jumbotron />
       <Container maxWidth="xl">
-        <Box marginTop={-15}>
+        <Box className={classes.cardWrapper}>
           <Grid container spacing={5}>
             {sections.map((section, index) =>
               section.title === 'Getting Started' ? (
-                <Grid item xs={12} sm={12} key={index}></Grid>
+                <Grid item sm={12} key={index}></Grid>
               ) : (
                 <Grid
                   item
-                  xs={12}
                   sm={12}
                   md={6}
                   lg={4}
@@ -193,7 +204,6 @@ const MainComponent: React.FunctionComponent = props => {
           </Grid>
         </Box>
       </Container>
-      <div className={classes.footerBackground}></div>
       <Footer sections={sections} right={0} />
     </div>
   )

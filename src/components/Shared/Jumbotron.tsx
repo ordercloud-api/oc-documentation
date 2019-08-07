@@ -28,6 +28,10 @@ const styles = (theme: Theme) =>
       overflowY: 'hidden',
       overflowX: 'hidden',
       backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
+      marginTop: theme.spacing(10),
+      [theme.breakpoints.up('md')]: {
+        marginTop: 0,
+      },
     },
     logo: {
       maxWidth: '40rem',
@@ -118,7 +122,7 @@ class Jumbotron extends React.Component<any> {
               variant="h4"
               component="h1"
             >
-              Welcome to the Documentation for OrderCloud by Four51
+              Welcome to Documentation for OrderCloud by Four51
             </Typography>
             <div className={classes.jumbotronLinkGroup}>
               <Link
