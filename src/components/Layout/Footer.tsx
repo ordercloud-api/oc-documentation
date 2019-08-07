@@ -34,7 +34,7 @@ const styles = (theme: Theme) =>
       [theme.breakpoints.up('lg')]: {
         paddingRight: theme.spacing(drawerWidthSpacingLg),
       },
-      backgroundColor: blackpearl[700],
+      backgroundColor: blackpearl[500],
       borderTop: '2px solid',
       borderColor: mediumgrey[100],
       ...theme.typography.body2,
@@ -107,7 +107,11 @@ class Footer extends React.Component<any> {
             <Grid item xs={6} md={4}>
               {sections && (
                 <Box marginY={2} display="flex" flexDirection="column">
-                  <Typography className={classes.sectionTitle} variant="body1">
+                  <Typography
+                    className={classes.sectionTitle}
+                    component="h6"
+                    variant="h6"
+                  >
                     Docs
                   </Typography>
                   {sections.map(section => (
@@ -124,7 +128,11 @@ class Footer extends React.Component<any> {
             </Grid>
             <Grid item xs={6} md={4}>
               <Box display="flex" flexDirection="column" marginY={2}>
-                <Typography className={classes.sectionTitle} variant="body1">
+                <Typography
+                  className={classes.sectionTitle}
+                  component="h6"
+                  variant="h6"
+                >
                   Channels
                 </Typography>
                 <Link className={classes.footerLinks} to="/">
@@ -140,7 +148,11 @@ class Footer extends React.Component<any> {
             </Grid>
             <Grid item xs={6} md={4}>
               <Box display="flex" flexDirection="column" marginY={2}>
-                <Typography className={classes.sectionTitle} variant="body1">
+                <Typography
+                  className={classes.sectionTitle}
+                  component="h6"
+                  variant="h6"
+                >
                   More
                 </Typography>
                 <Link className={classes.footerLinks} to="/api-release-notes">
