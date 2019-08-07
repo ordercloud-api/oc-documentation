@@ -94,6 +94,8 @@ class DocFooter extends React.Component<any> {
       //TODO: Link to Slack, syntax on ordercloud tag
       <React.Fragment>
         <Paper className={classes.paperMain}>
+          {/* 
+          TODO: Useful but not required for MVP add back in for phase 2 https://github.com/ordercloud-api/oc-documentation/issues/58
           <div className={classes.groupHelpful}>
             <IconButton
               className={classes.groupHelpfulBtn}
@@ -108,7 +110,7 @@ class DocFooter extends React.Component<any> {
             >
               <ThumbDown fontSize="small" />
             </IconButton>
-          </div>
+          </div> */}
           <Typography className={classes.typographyMain} align="center">
             If you have any questions, please ask our Developer Community on
             Slack, or post your question on{' '}
