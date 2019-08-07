@@ -54,6 +54,7 @@
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
+    "ngrok": "^3.2.4",
     "prettier": "^1.18.2",
     "typescript": "^3.5.3"
   },
@@ -63,10 +64,11 @@
   "license": "MIT",
   "scripts": {
     "start": "gatsby develop --open",
-    "build": "gatsby build --prefix-paths",
+    "build": "gatsby clean && gatsby build --prefix-paths",
     "format": "prettier --write src/**/*.{js,jsx}",
     "serve": "gatsby serve --prefix-paths",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\"",
+    "ngrok": "ngrok http 8000"
   },
   "repository": {
     "type": "git",
