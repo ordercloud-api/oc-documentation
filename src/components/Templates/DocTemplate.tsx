@@ -28,8 +28,9 @@ const styles = (theme: Theme) =>
   createStyles({
     docBody: {
       backgroundColor: 'white',
-      marginRight: theme.spacing(9),
+      marginTop: theme.spacing(10),
       [theme.breakpoints.up('md')]: {
+        marginTop: 0,
         marginBottom: theme.spacing(56),
         marginRight: theme.spacing(drawerWidthSpacing),
       },
@@ -38,7 +39,9 @@ const styles = (theme: Theme) =>
       },
     },
     docBodyPadding: {
-      padding: theme.spacing(0),
+      maxWidth: '100%',
+      flexWrap: 'wrap',
+      padding: theme.spacing(2),
       [theme.breakpoints.up('md')]: {
         padding: theme.spacing(5),
       },
@@ -62,6 +65,9 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       backgroundColor: theme.palette.background.default,
       padding: theme.spacing(3),
+    },
+    postTitle: {
+      // fontSize: '2.3rem',
     },
   })
 
@@ -112,7 +118,11 @@ const Template = withStyles(styles, { withTheme: true })(
               <Helmet
                 title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
               />
-              <Typography variant="h2" component="h1">
+              <Typography
+                className={classes.postTitle}
+                variant="h4"
+                component="h1"
+              >
                 {post.mdx.frontmatter.title}
               </Typography>
               <Typography>

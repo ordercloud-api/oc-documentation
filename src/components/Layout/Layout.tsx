@@ -9,9 +9,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageWrapper: {
       backgroundColor: 'white',
-      marginLeft: theme.spacing(9), // vertical nav width spacing
       marginTop: theme.spacing(10), // spacing from top of page on mobile (due to horiz menu)
       [theme.breakpoints.up('md')]: {
+        marginLeft: theme.spacing(9), // vertical nav width spacing
         marginTop: 0, // no horizontal nav to worry about
       },
     },
