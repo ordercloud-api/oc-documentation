@@ -28,10 +28,6 @@ const styles = (theme: Theme) =>
       overflowY: 'hidden',
       overflowX: 'hidden',
       backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
-      marginTop: theme.spacing(10),
-      [theme.breakpoints.up('md')]: {
-        marginTop: 0,
-      },
     },
     logo: {
       maxWidth: '40rem',
