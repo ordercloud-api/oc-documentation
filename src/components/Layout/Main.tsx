@@ -75,11 +75,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     paperList: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      '@media (max-width:768px)': {
-        gridTemplateColumns: '1fr',
-      },
+      columns: 2,
     },
     cardWrapper: {
       overflowX: 'hidden',
