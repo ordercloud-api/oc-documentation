@@ -11,7 +11,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Divider from '@material-ui/core/Divider'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ocLogo from '../../assets/images/four51-badge.svg'
+import ocLogo from '../../assets/images/four51-badge--orange.svg'
 
 import Cookies from 'universal-cookie'
 import {
