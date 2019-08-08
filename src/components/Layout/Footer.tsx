@@ -12,7 +12,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import { OpenInNewOutlined } from '@material-ui/icons'
 import { mediumgrey, blackpearl } from '../../theme/ocPalette.constants'
 import { drawerWidthSpacingLg, drawerWidthSpacing } from './RightMenu'
-import ocOrange from '../../../src/assets/images/oc-orange.svg'
+import ocOrange from '../../../src/assets/images/four51-logo--orange.svg'
 
 const styles = (theme: Theme) =>
   createStyles({

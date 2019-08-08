@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
-import ocLogo from '../../assets/images/four51-white.svg'
+import ocLogo from '../../assets/images/four51-logo--white.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -58,6 +58,9 @@ const styles = (theme: Theme) =>
       flexDirection: 'column',
       color: 'white',
       zIndex: 1,
+      [theme.breakpoints.down('md')]: {
+        padding: 20,
+      },
     },
     jumbotronLinkGroup: {
       display: 'flex',
