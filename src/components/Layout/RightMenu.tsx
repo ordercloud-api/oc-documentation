@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { Section, Guide } from '../../models/section.model'
 import { Link, withPrefix } from 'gatsby'
-import { seafoam } from '../../theme/ocPalette.constants'
 
 const svgIcon = (
   <svg
@@ -82,15 +81,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     activeHeading: {
       backgroundColor: theme.palette.grey[200],
-      '&::before': {
-        content: `''`,
-        fontFamily: `'FontAwesome'`,
-        position: `absolute`,
-        top: `-3px`,
-        left: `3%`,
-        color: seafoam[500],
-        fontSize: `22px`,
-      },
     },
     guideAnchorLinks: {
       paddingLeft: theme.spacing(5.5),
