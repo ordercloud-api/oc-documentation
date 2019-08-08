@@ -1,7 +1,7 @@
 ---
-title: 'Product Visibility'
+title: '7. Product Visibility'
 section: 'Main Concepts'
-priority: 2
+priority: 7
 hidden: false
 ---
 
@@ -19,11 +19,11 @@ Let's outline the basic steps you'll need to make a product visible to a user in
 
 Step four is really where all the magic happens. It introduces a unique three point assignment between the product, priceschedule, and usergroup. This defines what the price on the product will be for the users in that usergroup.
 
-[TODO:link-to-image]
+<!-- [TODO:link-to-image] -->
 
 It might be intuitive to see price as a property of a product but by decoupling any price related things (price schedule) from the product we can represent the same product at different prices to different users. Let's say we want that same product to be have a different price for a different user. No problem!
 
-[TODO:image-with-sameproduct-two-prices]
+<!-- [TODO:image-with-sameproduct-two-prices] -->
 
 Hopefully you can begin seeing the power and flexibility we gain by using assignments. By the way, unique pricing is really just skimming the surface of what we can do with price schedules. A price schedule can do things like set min or max quantity, restrict quantity to set intervals, and even track inventory!
 
@@ -87,7 +87,3 @@ All of the following must be true for a Buyer User to see a Product (via me rout
 ### Validation Rules
 
 In order to create a ProductAssignment, the Buyer and Product must be assigned to a common Catalog (via CatalogAssignment and CatalogProductAssignment).
-
-## Conclusion
-
-![TODO:need-conclusion]
