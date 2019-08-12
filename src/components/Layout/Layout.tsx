@@ -13,6 +13,7 @@ import {
   Table,
   TableRow,
   TableCell,
+  CssBaseline,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
 import MobileNav from './MobileNav'
@@ -65,6 +66,7 @@ export default props => {
   return (
     <React.Fragment>
       <ThemeProvider theme={ORDERCLOUD_THEME}>
+        <CssBaseline />
         <Header siteTitle="OrderCloud Documentation" />
         <div className={classes.pageWrapper}>
           <MDXProvider
