@@ -1,6 +1,6 @@
 ---
-title: "What is OrderCloud?"
-section: "Getting Started"
+title: 'Intro to OrderCloud'
+section: 'Getting Started'
 priority: 1
 hidden: false
 ---
@@ -31,7 +31,7 @@ In B2B, buyer organizations matter more than in B2C. The seller typically establ
 
 OrderCloud.io provides rich support for modeling a typical B2B buyer organization. Products can be created once and made available for purchase to any number of buyers, but details such as pricing, inventory, specs, and other configuration details can be customized per buyer according to their specific contract.
 
-### Organizational Structure, Roles, and Visibility
+### Organization Hierarchy, Roles, and Visibility
 
 People within the buyer organization may play different roles in the purchasing process and see different things. If one user places an order over a certain amount, it may require approval from their manager. Another user in a branch office may only see that office’s address in their shipping options. Still another may have the ability to administer users, addresses, or even products.
 
@@ -49,11 +49,11 @@ Products in the B2B world often come with more detailed specs, configuration opt
 
 OrderCloud.io provides the ability to accurately model:
 
-*   Different pricing for different buyer organizations (or different groups or users within the same organization)
-*   Buyer-specific variants of the same product
-*   Quantity based discounts
-*   Markups/markdowns tied to product buying options, or combinations of options that drive the user to unique SKUs
-*   Rules-driven promotions
+- Different pricing for different buyer organizations (or different groups or users within the same organization)
+- Buyer-specific variants of the same product
+- Quantity based discounts
+- Markups/markdowns tied to product buying options, or combinations of options that drive the user to unique SKUs
+- Rules-driven promotions
 
 ### Complex Ordering Processes
 
@@ -78,18 +78,27 @@ As a RESTful API, OrderCloud.io lends itself equally well to back-end integratio
 The OrderCloud.io API has some standard conventions that permeate the entire platform. You can expect these features to behave the same no matter which resource you're working with.
 
 <section id="feature-rich" style="display: inline-flex">
-    <div style="max-width: 30%;">
-        <h2>SSL</h2>
-        <p>API access is only allowed via HTTPS; connections on port 80 are refused entirely.</p>
-    </div>
-    <div style="max-width: 30%;">
-        <h2>JSON Everywhere</h2>
-        <p>UTF-8 encoded JSON is the only supported data format for both request and response payloads.</p>
-    </div>
-    <div style="max-width: 30%;">
-        <h2>OAuth 2.0</h2>
-        <p>OrderCloud.io API authentication is based on the OAuth 2 specification and supports multiple workflows.</p>
-    </div>
+  <div style="max-width: 30%;">
+    <h2>SSL</h2>
+    <p>
+      API access is only allowed via HTTPS; connections on port 80 are refused
+      entirely.
+    </p>
+  </div>
+  <div style="max-width: 30%;">
+    <h2>JSON Everywhere</h2>
+    <p>
+      UTF-8 encoded JSON is the only supported data format for both request and
+      response payloads.
+    </p>
+  </div>
+  <div style="max-width: 30%;">
+    <h2>OAuth 2.0</h2>
+    <p>
+      OrderCloud.io API authentication is based on the OAuth 2 specification and
+      supports multiple workflows.
+    </p>
+  </div>
 </section>
 
 ### Writable IDs

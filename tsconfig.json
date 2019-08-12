@@ -12,5 +12,5 @@
         "lib": ["dom", "dom.iterable", "es2017", "esnext"],
         "noEmit": true
     },
-    "include": ["./src/"]
+    "include": ["./src/", "custom.d.ts"]
 }

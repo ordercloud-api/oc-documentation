@@ -1,7 +1,6 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import {
   Theme,
-  withStyles,
   createStyles,
   Paper,
   Grid,
@@ -9,55 +8,57 @@ import {
   Container,
   List,
   Box,
+  makeStyles,
 } from '@material-ui/core/'
 import { groupBy as _groupBy, forEach as _forEach } from 'lodash'
 import ListLink from '../Shared/ListLink'
 import Jumbotron from '../Shared/Jumbotron'
-import { StaticQuery, graphql } from 'gatsby'
+import { graphql, useStaticQuery } from 'gatsby'
 import utility from '../../utility'
-import { mediumgrey, darkgrey } from '../../theme/ocPalette.constants'
-import { navigate } from '../Shared/PortalLink'
+import {
+  mediumgrey,
+  darkgrey,
+  blackpearl,
+} from '../../theme/ocPalette.constants'
+import Footer from '../Layout/Footer'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
   require('smooth-scroll')('a[href*="#"]')
 }
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      // overflowX: 'hidden',
-      // overflowY: 'auto',
-      [theme.breakpoints.up('md')]: {
-        marginLeft: theme.spacing(9),
-      },
-      // flexGrow: 1,
-      // flex: '1 1 auto',
-      // height: '100vh',
+      minHeight: '100vh',
       backgroundColor: mediumgrey[50],
+      [theme.breakpoints.up('md')]: {
+        marginBottom: theme.spacing(55),
+      },
     },
-    // cardContainer: {
-    //   display: 'flex',
-    //   flex: '1 1 auto',
-    // },
     paperRoot: {
       zIndex: 1,
+      minHeight: '100%',
+      height: '100%',
     },
     paperCard: {
       position: 'relative',
-      minHeight: '35vh',
       flexFlow: 'column nowrap',
       alignItems: 'center',
       maxWidth: '100vw',
+      [theme.breakpoints.up('md')]: {
+        minHeight: '40vh',
+      },
     },
     paperTitleHeading: {
       color: darkgrey[900],
       paddingLeft: theme.spacing(2),
       textAlign: 'left',
     },
-    paperTitleSubeading: {
+    paperTitleSubheading: {
       color: mediumgrey[300],
       paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
       marginBottom: theme.spacing(2),
     },
     paperBody: {
@@ -74,117 +75,130 @@ const styles = (theme: Theme) =>
       },
     },
     paperList: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      '@media (max-width:768px)': {
-        gridTemplateColumns: '1fr',
+      columns: 2,
+    },
+    cardWrapper: {
+      overflowX: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
+        margin: '0',
+      },
+      [theme.breakpoints.up('sm')]: {
+        marginTop: '-7rem',
+      },
+      [theme.breakpoints.up('md')]: {
+        marginTop: '-5rem',
       },
     },
   })
-
-const Main = withStyles(styles)(
-  class extends React.Component<any> {
-    public render() {
-      const { tableOfContents, classes } = this.props
-      const sections = utility.getSectionsFromDocsQuery(tableOfContents)
-      return (
-        <div className={classes.root}>
-          <Jumbotron />
-          <Container maxWidth="xl">
-            <Box marginTop={-15}>
-              <Grid container spacing={5} className={classes.cardContainer}>
-                {sections.map((section, index) =>
-                  section.title === 'Getting Started' ? (
-                    <Grid item xs={12} sm={12} key={index}></Grid>
-                  ) : (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={12}
-                      md={6}
-                      lg={4}
-                      key={index}
-                      className={classes.paperRoot}
-                    >
-                      {section.guides.filter(c => !c.frontmatter.hidden)
-                        .length > 0 ? (
-                        <Paper elevation={2}>
-                          <Box p={2} zIndex={1}>
-                            <div className={classes.paperCard}>
-                              <Typography
-                                className={classes.paperTitleHeading}
-                                variant="h5"
-                                component="h2"
-                              >
-                                {section.title}
-                              </Typography>
-                              {/* TODO: ALEXA CAN YOU MAKE THIS??? <Typography>{section.subtitle}</Typography> */}
-                              <Typography
-                                className={classes.paperTitleSubeading}
-                                variant="body2"
-                              >
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Duis vel libero sed arcu
-                                convallis tempus.
-                              </Typography>
-                              <List
-                                disablePadding={true}
-                                dense={true}
-                                className={classes.paperList}
-                              >
-                                {section.guides
-                                  .filter(g => !g.frontmatter.hidden)
-                                  .map(g => {
-                                    return (
-                                      <ListLink
-                                        key={g.id}
-                                        guideProps={{
-                                          path: g.path,
-                                          title: g.frontmatter.title,
-                                        }}
-                                      />
-                                    )
-                                  })}
-                              </List>
-                            </div>
-                          </Box>
-                        </Paper>
-                      ) : null}
-                    </Grid>
-                  )
-                )}
-              </Grid>
-            </Box>
-          </Container>
-        </div>
-      )
-    }
-  }
 )
 
-export default () => (
-  <StaticQuery
-    query={graphql`
-      query {
-        allMdx(
-          sort: { order: ASC, fields: [frontmatter___priority] }
-          filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
-        ) {
-          totalCount
-          edges {
-            node {
-              id
-              fileAbsolutePath
-              frontmatter {
-                section
-                title
-                hidden
-              }
+const MainComponent: React.FunctionComponent = props => {
+  const classes = useStyles(props)
+  const data = useStaticQuery(graphql`
+    query {
+      allMdx(
+        sort: { order: ASC, fields: [frontmatter___priority] }
+        filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
+      ) {
+        totalCount
+        edges {
+          node {
+            id
+            fileAbsolutePath
+            frontmatter {
+              section
+              title
+              hidden
             }
           }
         }
       }
-    `}
-    render={data => <Main tableOfContents={data} />}
-  />
-)
+    }
+  `)
+  const sections = utility.getSectionsFromDocsQuery(data)
+  const getSectionSubtitle = title => {
+    switch (title) {
+      case 'Getting Started':
+        // self-explanatory
+        return ``
+      case 'Main Concepts':
+        return `Establish a firm foundation by learning fundamental OrderCloud concepts`
+      case 'Features':
+        return `Explore at a high-level some of the features you can use to solve your complex B2B scenarios`
+      case 'Guides':
+        return `Hands-on guides for some of the most common scenarios you'll encounter in the OrderCloud API`
+      default:
+        return ''
+    }
+  }
+
+  return (
+    <div className={classes.root}>
+      <Jumbotron />
+      <Container maxWidth="xl">
+        <Grid container className={classes.cardWrapper} spacing={5}>
+          {sections.map((section, index) =>
+            section.title === 'Getting Started' ? (
+              <Grid item sm={12} key={index}></Grid>
+            ) : (
+              <Grid
+                item
+                sm={12}
+                md={6}
+                lg={4}
+                key={index}
+                className={classes.paperRoot}
+              >
+                {section.guides.filter(c => !c.frontmatter.hidden).length >
+                0 ? (
+                  <Paper elevation={10}>
+                    <Box p={2} zIndex={1}>
+                      <div className={classes.paperCard}>
+                        <Typography
+                          className={classes.paperTitleHeading}
+                          variant="h5"
+                          component="h2"
+                        >
+                          {section.title}
+                        </Typography>
+                        <Typography
+                          className={classes.paperTitleSubheading}
+                          variant="body2"
+                        >
+                          {getSectionSubtitle(section.title)}
+                        </Typography>
+                        <List
+                          disablePadding={true}
+                          dense={true}
+                          className={classes.paperList}
+                        >
+                          {section.guides
+                            .filter(g => !g.frontmatter.hidden)
+                            .map(g => {
+                              return (
+                                <ListLink
+                                  key={g.id}
+                                  guideProps={{
+                                    path: g.path,
+                                    title: g.frontmatter.title,
+                                  }}
+                                />
+                              )
+                            })}
+                        </List>
+                      </div>
+                    </Box>
+                  </Paper>
+                ) : null}
+              </Grid>
+            )
+          )}
+        </Grid>
+      </Container>
+      <Footer sections={sections} right={0} />
+    </div>
+  )
+}
+
+export default MainComponent

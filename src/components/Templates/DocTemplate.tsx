@@ -1,7 +1,10 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../Layout/Layout'
-import RightMenu, { drawerWidth } from '../Layout/RightMenu'
+import RightMenu, {
+  drawerWidthSpacing,
+  drawerWidthSpacingLg,
+} from '../Layout/RightMenu'
 import '../../styles/doc-template.css'
 import { graphql } from 'gatsby'
 import DocFooter from '../Layout/DocFooter'
@@ -14,6 +17,7 @@ import {
   Container,
   Fab,
   Hidden,
+  Box,
 } from '@material-ui/core'
 import utility from '../../utility'
 import { MenuRounded } from '@material-ui/icons'
@@ -22,25 +26,33 @@ import { DocsQuery } from '../../models/docsQuery'
 
 const styles = (theme: Theme) =>
   createStyles({
-    root: {
-      display: 'flex',
+    docBody: {
+      backgroundColor: 'white',
+      marginTop: theme.spacing(10),
+      [theme.breakpoints.up('md')]: {
+        marginTop: 0,
+        marginBottom: theme.spacing(56),
+        marginRight: theme.spacing(drawerWidthSpacing),
+      },
+      [theme.breakpoints.up('lg')]: {
+        marginRight: theme.spacing(drawerWidthSpacingLg),
+      },
     },
-    appBar: {
-      width: `calc(100vw - ${drawerWidth}px)`,
-      marginRight: drawerWidth,
-    },
-    drawer: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    docContainer: {
-      display: 'flex',
-      position: 'relative',
-      marginBlockStart: '2rem',
-      marginBlockEnd: '4rem',
+    docBodyPadding: {
+      maxWidth: '100%',
+      flexWrap: 'wrap',
+      padding: theme.spacing(2),
+      [theme.breakpoints.up('md')]: {
+        padding: theme.spacing(5),
+      },
+      [theme.breakpoints.up('lg')]: {
+        paddingLeft: theme.spacing(15),
+        paddingRight: theme.spacing(15),
+      },
+      [theme.breakpoints.up('xl')]: {
+        paddingLeft: theme.spacing(35),
+        paddingRight: theme.spacing(35),
+      },
     },
     fab: {
       zIndex: theme.zIndex.drawer + 1,
@@ -54,18 +66,22 @@ const styles = (theme: Theme) =>
       backgroundColor: theme.palette.background.default,
       padding: theme.spacing(3),
     },
+    postTitle: {
+      // fontSize: '2.3rem',
+    },
   })
 
 interface DocTemplateProps {
   data: DocsQuery
   classes: any
   location: any
+  theme: Theme
 }
 interface DocTemplateState {
   mobileOpen: boolean
 }
 
-const Template = withStyles(styles)(
+const Template = withStyles(styles, { withTheme: true })(
   class extends React.Component<DocTemplateProps, DocTemplateState> {
     public state: DocTemplateState = {
       mobileOpen: false,
@@ -82,44 +98,52 @@ const Template = withStyles(styles)(
     }
 
     public render() {
-      const { data: post, classes, location } = this.props
+      const { data: post, classes, location, theme } = this.props
       const sections = utility.getSectionsFromDocsQuery(post)
       return (
         <Layout>
-          <Container className={classes.docContainer} maxWidth="lg">
-            <Hidden mdUp implementation="js">
-              <Fab
-                onClick={this.handleMobileToggle}
-                className={classes.fab}
-                color="primary"
-                aria-label="Overlaying Menu For Mobile"
-              >
-                <MenuRounded />
-              </Fab>
-            </Hidden>
-            <div className={classes.docBody}>
+          {/* <OverlayMenu sections={sections} currentPath={location.pathname} /> */}
+          <Hidden mdUp implementation="js">
+            <Fab
+              onClick={this.handleMobileToggle}
+              className={classes.fab}
+              color="primary"
+              aria-label="Overlaying Menu For Mobile"
+            >
+              <MenuRounded />
+            </Fab>
+          </Hidden>
+          <div className={classes.docBody}>
+            <Box className={classes.docBodyPadding}>
               <Helmet
-                title={`OrderCloud Documentation - ${post.mdx.frontmatter.title}`}
+                title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
               />
-              <Typography variant="h2" component="h1">
+              <Typography
+                className={classes.postTitle}
+                variant="h4"
+                component="h1"
+              >
                 {post.mdx.frontmatter.title}
               </Typography>
-              <Typography component="span">
+              <Typography>
                 <MDXRenderer>{post.mdx.body}</MDXRenderer>
               </Typography>
               <DocFooter
                 contents={sections}
                 currentGuide={utility.resolvePath(post.mdx.fileAbsolutePath)}
               />
-            </div>
-            <RightMenu
-              mobileOpen={this.state.mobileOpen}
-              onMobileClose={this.handleMobileClose}
-              sections={sections}
-              currentPath={location.pathname}
-            />
-          </Container>
-          <Footer right={drawerWidth} />
+            </Box>
+          </div>
+          <RightMenu
+            mobileOpen={this.state.mobileOpen}
+            onMobileClose={this.handleMobileClose}
+            sections={sections}
+            currentPath={location.pathname}
+          />
+          <Footer
+            sections={sections}
+            right={theme.spacing(drawerWidthSpacingLg)}
+          />
         </Layout>
       )
     }
@@ -135,7 +159,10 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMdx(sort: { order: ASC, fields: [frontmatter___priority] }) {
+    allMdx(
+      sort: { order: ASC, fields: [frontmatter___priority] }
+      filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
+    ) {
       totalCount
       edges {
         node {

@@ -1,6 +1,5 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import {
-  Link,
   createStyles,
   Theme,
   withStyles,
@@ -8,9 +7,12 @@ import {
   Paper,
   Button,
   Hidden,
+  SvgIcon,
+  Container,
 } from '@material-ui/core'
-import { Link as LinkyDinky } from 'gatsby'
+import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
+import ocLogo from '../../assets/images/four51-logo--white.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -27,6 +29,14 @@ const styles = (theme: Theme) =>
       overflowX: 'hidden',
       backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
     },
+    logo: {
+      maxWidth: '40rem',
+      width: theme.spacing(40),
+      marginBottom: theme.spacing(2),
+      '& path': {
+        fill: 'white',
+      },
+    },
     hidden: {
       position: 'absolute',
       width: '100vw',
@@ -38,20 +48,24 @@ const styles = (theme: Theme) =>
       width: '100vw',
       height: '100vh',
     },
+    buttonLink: {
+      textDecoration: 'none',
+    },
     jumbotronContainer: {
       backgroundColor: 'transparent',
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
       color: 'white',
       zIndex: 1,
+      [theme.breakpoints.down('md')]: {
+        padding: 20,
+      },
     },
     jumbotronLinkGroup: {
       display: 'flex',
-      maxWidth: '75vw',
-      marginTop: theme.spacing(5),
+      // maxWidth: '75vw',
+      marginTop: theme.spacing(3),
     },
     jumbotronLinkGroupLink: {
       '&:first-of-type': {
@@ -59,7 +73,7 @@ const styles = (theme: Theme) =>
       },
     },
     jumbotronHeading: {
-      fontWeight: 600,
+      fontWeight: 300,
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
         margin: '0 auto',
@@ -95,34 +109,47 @@ class Jumbotron extends React.Component<any> {
             }}
           />
         </Hidden>
-        <Paper className={classes.jumbotronContainer}>
-          <Typography
-            className={classes.jumbotronHeading}
-            variant="h2"
-            component="h1"
-          >
-            OrderCloud Documentation
-          </Typography>
-          <div className={classes.jumbotronLinkGroup}>
-            <Button
-              size="large"
-              href="/herp"
-              variant="contained"
-              className={classes.jumbotronLinkGroupLink}
+        <Container maxWidth="xl">
+          <Paper className={classes.jumbotronContainer}>
+            <img
+              className={classes.logo}
+              src={ocLogo}
+              alt="OrderCloud by Four51"
+            />
+            <Typography
+              className={classes.jumbotronHeading}
+              variant="h4"
+              component="h1"
             >
-              Herp!
-            </Button>
-            <Button
-              size="large"
-              color="secondary"
-              href="/derp"
-              variant="outlined"
-              className={classes.jumbotronLinkGroupLink}
-            >
-              Derp?
-            </Button>
-          </div>
-        </Paper>
+              Welcome to Documentation for OrderCloud by Four51
+            </Typography>
+            <div className={classes.jumbotronLinkGroup}>
+              <Link
+                to="/getting-started/intro-to-ordercloud"
+                className={classes.buttonLink}
+              >
+                <Button
+                  variant="contained"
+                  className={classes.jumbotronLinkGroupLink}
+                >
+                  Intro to OrderCloud
+                </Button>
+              </Link>
+              <Link
+                to="/getting-started/quick-start-guide"
+                className={classes.buttonLink}
+              >
+                <Button
+                  color="secondary"
+                  variant="contained"
+                  className={classes.jumbotronLinkGroupLink}
+                >
+                  Quick Start Guide
+                </Button>
+              </Link>
+            </div>
+          </Paper>
+        </Container>
       </div>
     )
   }

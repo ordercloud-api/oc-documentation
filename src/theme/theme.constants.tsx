@@ -1,15 +1,39 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { ioblue, aliengreen, mediumgrey } from './ocPalette.constants'
+import { flame, seafoam, sherpablue, blackpearl } from './ocPalette.constants'
 
-const RobotoMono = {
-  fontFamily: 'Roboto Mono',
+const Geometria = {
+  fontFamily: [
+    '"Geometria"',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(','),
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 600,
+  src: `
+    local('Geometria'),
+    url('../assets/fonts/Geometria/Geometria-Bold.ttf' format('truetype'))
+  `,
+  unicodeRange:
+    'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
+}
+
+const CoreSans = {
+  fontFamily: 'Core Sans',
   fontStyle: 'normal',
   fontDisplay: 'swap',
   fontWeight: 400,
   src: `
-    local('RobotoMono'),
-    local('Raleway-Mono'),
-    url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,700&display=swap' format('woff2')
+    local('CoreSans'),
+    url('../assets/fonts/CORESANSD35REGULAR.OTF' format('opentype'))
   `,
   unicodeRange:
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
@@ -17,8 +41,98 @@ const RobotoMono = {
 
 export default createMuiTheme({
   typography: {
+    h1: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h2: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h3: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h4: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h5: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
+    h6: {
+      fontFamily: [
+        '"Geometria"',
+        '-apple-system',
+        'BlinkMacSystemFont',
+        '"Segoe UI"',
+        'Roboto',
+        '"Helvetica Neue"',
+        'Arial',
+        'sans-serif',
+        '"Apple Color Emoji"',
+        '"Segoe UI Emoji"',
+        '"Segoe UI Symbol"',
+      ].join(','),
+    },
     fontFamily: [
-      'Roboto Mono',
+      '"CoreSans"',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',
@@ -35,17 +149,17 @@ export default createMuiTheme({
     MuiCssBaseline: {
       '@global': {
         a: {
-          color: ioblue[500],
+          color: flame[500],
         },
       },
     },
   },
   palette: {
     primary: {
-      main: ioblue[500],
+      main: blackpearl[400],
     },
     secondary: {
-      main: aliengreen[300],
+      main: flame[400],
       contrastText: '#FFF',
     },
   },
