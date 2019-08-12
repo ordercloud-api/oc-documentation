@@ -1,15 +1,15 @@
 ---
-title: 'Orders'
+title: '8. Orders'
 section: 'Main Concepts'
-priority: 2
+priority: 8
 hidden: false
 ---
 
 The central concept within OrderCloud is not surprisingly the order. This is the object where buyers, sellers, products, payments, and almost everything come together to form a business transaction.
 
-## Direction
+## Order Direction
 
-A unique and central feature of the Order resource is that order "direction. The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, seller, supplier. What changes however is the order _direction_. An order is generally thought to flow like this:
+A unique and central feature of the Order resource is that order "direction". The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, seller, supplier. What changes however is the order _direction_. An order is generally thought to flow like this:
 
 Buyer => Seller
 and _optionally_ (remember suppliers are optional)
@@ -46,7 +46,3 @@ Let's highlight some of the most common resources that interact with the order. 
 | Payments            | Allow a user to pay for an order with a payment method of their choosing      |
 | Approvals           | If an order meets some criteria, put the order on hold for approval.          |
 | Shipments           | Break an order up into shipments                                              |
-
-## Conclusion
-
-![TODO:need-conclusion]
