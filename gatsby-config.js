@@ -50,15 +50,7 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/assets/images/oc-favicon.png`,
-      },
-    },
-    {
-      resolve: `gatsby-plugin-web-font-loader`,
-      options: {
-        google: {
-          families: ['Roboto Mono'],
-        },
+        icon: `src/assets/images/four51-badge--orange.svg`,
       },
     },
     {
