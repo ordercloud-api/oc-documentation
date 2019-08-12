@@ -151,13 +151,7 @@ class Header extends React.Component<any, HeaderState> {
               <ListItemIcon>
                 <SettingsTwoTone className={classes.icon} />
               </ListItemIcon>
-              <ListItemText primary="Organization Settings" />
-            </ListItem>
-            <ListItem button className={classes.menuItem}>
-              <ListItemIcon>
-                <PeopleTwoTone className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText primary="Contributor Access" />
+              <ListItemText primary="My Organizations" />
             </ListItem>
             <ListItem
               button
