@@ -86,7 +86,7 @@ function Resource(props) {
           {operations && operations.length ? operations.map((o, index) => {
             return (
               <ListItem key={index} onClick={() => resourceChange(o)}>
-                <ListItemText primary={o.summary} />
+                <ListItemText primary={o.summary.replace(/\./g, ' ')} />
               </ListItem>
             )
           }) : null}

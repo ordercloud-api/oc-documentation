@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import Prism from 'prismjs';
+import { forIn as _forIn } from 'lodash';
 
 function Parameters(props) {
   const { parameters } = props;
@@ -26,6 +27,19 @@ function Parameters(props) {
   )
 }
 
+function Responses(props) {
+  const { response } = props;
+  return (
+    <pre><code className="language-http">{JSON.stringify(response.content['application/json'].schema.example, null, 2)}</code></pre>
+  )
+}
+
+function CodeBlock(code, lang) {
+  return (
+    <pre><code className={`language-${lang}`}>{code}</code></pre>
+  )
+}
+
 class ApiReferenceSelection extends React.Component<any> {
   public async componentDidMount() {
     // Use setTimeout to push onto callback queue so it runs after the DOM is updated
@@ -34,26 +48,22 @@ class ApiReferenceSelection extends React.Component<any> {
 
   public render() {
     const { method } = this.props;
-    /** 
-     * parameters []
-     * path
-     * responses {}
-     * security [{}]
-     * summary
-     * tags []
-     * verb
-     * */
-    const path = <pre><code className="language-http">{method.path}</code></pre>
-    const requestBody = <pre><code className="language-json">{JSON.stringify(method.requestBody.content['application/json'].schema.allOf[0].example, null, 2)}</code></pre>
+
+    const path = <pre><code className="language-http">{method.verb.toUpperCase()} {method.path}</code></pre>
+    const requestBody = method.requestBody ? CodeBlock(JSON.stringify(method.requestBody.content['application/json'].schema.allOf[0].example, null, 2), 'http') : null;
+    const roles = method.security[0] && method.security[0].OAuth2 ?
+      CodeBlock(method.security[0].OAuth2.map(role => <span>{role}&nbsp;</span>), 'http')
+      : null;
+    const responseCodes = Object.keys(method.responses);
 
     return (
       <div>
-        <p>{method.summary}</p>
-        <p>{method.verb} {path}</p>
-        {method.requestBody ? requestBody : null}
+        <h1>{method.summary.replace(/\./g, ' ')}</h1>
+        <p>{path}</p>
+        {requestBody}
         {method.parameters ? <Parameters parameters={method.parameters} /> : null}
-        {method.security[0] && method.security[0].OAuth2 ? method.security[0].OAuth2.map(role => <p>{role}</p>) : null}
-
+        {roles}
+        {responseCodes.map(code => <Responses response={method.responses[code]} />)}
       </div>
     )
   }
