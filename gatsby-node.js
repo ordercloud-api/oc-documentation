@@ -7,6 +7,9 @@ exports.createPages = ({ actions, graphql }) => {
   const releaseNotesTemplate = path.resolve(
     'src/components/Templates/ReleaseNotes.tsx'
   )
+  const apiReferenceDoc = path.resolve(
+    `src/components/Templates/ApiReference.tsx`
+  )
 
   return graphql(`
     query CreatePagesQuery {
@@ -46,6 +49,11 @@ exports.createPages = ({ actions, graphql }) => {
           nodeID: edge.node.id,
         },
       })
+    })
+
+    createPage({
+      path: '/api-reference',
+      component: apiReferenceDoc,
     })
   })
 }
