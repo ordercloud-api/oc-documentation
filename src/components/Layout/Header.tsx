@@ -21,7 +21,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Divider from '@material-ui/core/Divider'
-import ocLogo from '../../assets/images/four51-logo--full-color.svg'
+import ocLogo from '../../assets/images/four51-logo--full-color--header.svg'
 
 import Cookies from 'universal-cookie'
 import {
