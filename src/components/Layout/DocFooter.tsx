@@ -59,6 +59,10 @@ const styles = (theme: Theme) =>
     typographyMain: {
       marginBlockEnd: '1rem;',
     },
+    extendedIcon: {
+      color: theme.palette.secondary.main,
+      fontSize: theme.typography.h1.fontSize,
+    },
   })
 
 class DocFooter extends React.Component<any> {
@@ -71,6 +75,11 @@ class DocFooter extends React.Component<any> {
       section => section.path === currentGuide
     )
 
+    const buildDirectionLink = to =>
+      React.forwardRef((props: any, ref: any) => (
+        <Link to={to} {...props} innerRef={ref} />
+      ))
+
     const directionalButton = direction => {
       const newGuideIndex =
         direction === 'Previous' ? guideIndex - 1 : guideIndex + 1
@@ -79,13 +88,33 @@ class DocFooter extends React.Component<any> {
           className={classes.btnNavigation}
           size="small"
           color="primary"
+          component={buildDirectionLink(flatContents[newGuideIndex].path)}
           aria-label="Guide Navigation Button"
         >
-          {direction === 'Previous' ? (
+          {direction === 'Previous' && (
             <KeyboardArrowLeft className={classes.extendedIcon} />
-          ) : null}
-          <Link to={flatContents[newGuideIndex].path}>{direction} Guide</Link>
-          {direction === 'Next' ? <KeyboardArrowRight /> : null}
+          )}
+
+          <div>
+            <Typography
+              variant="caption"
+              display="block"
+              align={direction === 'Previous' ? 'left' : 'right'}
+            >{`${
+              direction === 'Previous' ? 'Prev' : direction
+            } Guide`}</Typography>
+            <Typography
+              variant="inherit"
+              display="block"
+              align={direction === 'Previous' ? 'left' : 'right'}
+            >
+              {flatContents[newGuideIndex].frontmatter.title}
+            </Typography>
+          </div>
+
+          {direction === 'Next' && (
+            <KeyboardArrowRight className={classes.extendedIcon} />
+          )}
         </Button>
       ) : null
     }
