@@ -32,6 +32,7 @@ import {
   BookmarksTwoTone,
   SpeakerNotesTwoTone,
   LocalLibraryTwoTone,
+  Code,
 } from '@material-ui/icons'
 import { navigate } from '../Shared/PortalLink'
 import { drawerWidthSpacing } from './RightMenu'
@@ -56,7 +57,7 @@ function parseJwt(token: string) {
   var jsonPayload = decodeURIComponent(
     atob(base64)
       .split('')
-      .map(function(c) {
+      .map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
       })
       .join('')
@@ -191,6 +192,17 @@ class Header extends React.Component<any, HeaderState> {
                 <SpeakerNotesTwoTone className={classes.icon} />
               </ListItemIcon>
               <ListItemText primary="API Release Notes" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.menuItem}
+              component={Link}
+              to="/api-reference"
+            >
+              <ListItemIcon>
+                <Code className={classes.icon} />
+              </ListItemIcon>
+              <ListItemText primary="API Reference" />
             </ListItem>
           </List>
           <div className={classes.grow} />

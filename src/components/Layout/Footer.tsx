@@ -126,6 +126,12 @@ class Footer extends React.Component<any> {
                       {section.title}
                     </Link>
                   ))}
+                  <Link
+                      className={classes.footerLinks}
+                      to="/api-reference"
+                    >
+                    API Reference
+                  </Link>
                 </Box>
               )}
             </Grid>
