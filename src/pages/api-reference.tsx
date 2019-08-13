@@ -37,15 +37,24 @@ const ApiReference = withStyles(styles)(
 
     public async componentDidMount() {
       await Initialize();
+      this.mapResources();
     }
 
     public handleResourceChange = (operation: Operation) => {
-      console.log(operation);
       this.setState({ operation });
+
+    }
+
+    public mapResources() {
+      this.props.apiReference.filter(apiRef => apiRef.x_section_id != null).forEach(ref => {
+        const testing = OpenApi.operationsByResource[ref.name];
+        console.log(testing);
+      });
     }
 
     public render() {
       const { classes, apiReference } = this.props;
+
       return (
         <Layout>
           <Container maxWidth="lg" className={classes.docContainer}>
