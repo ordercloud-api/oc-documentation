@@ -19,6 +19,8 @@ import {
   Typography,
   IconButton,
   Grid,
+  Box,
+  Divider,
 } from '@material-ui/core'
 import { Link } from 'gatsby'
 import { mediumgrey } from '../../theme/ocPalette.constants'
@@ -49,13 +51,6 @@ const styles = (theme: Theme) =>
       justifyContent: 'center',
       width: '100%',
     },
-    paperMain: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      padding: '1rem',
-      backgroundColor: mediumgrey[50],
-    },
     typographyMain: {
       marginBlockEnd: '1rem;',
     },
@@ -63,13 +58,24 @@ const styles = (theme: Theme) =>
       color: theme.palette.secondary.main,
       fontSize: theme.typography.h1.fontSize,
     },
+    boxMain: {
+      padding: theme.spacing(3),
+      textAlign: 'center',
+    },
+    questionsHeader: {
+      margin: theme.spacing(2, 0),
+    },
+    questionsText: {
+      marginBottom: theme.spacing(3),
+    },
+    questionsBtn: {
+      margin: theme.spacing(0, 0.5),
+    },
   })
 
 class DocFooter extends React.Component<any> {
   public render() {
-    const { contents, currentGuide, classes } = this.props
-    const gitHubUrl =
-      'https://github.com/ordercloud-api/oc-documentation/tree/development/content/docs'
+    const { contents, currentGuide, classes, theme } = this.props
     const flatContents = _flatten(contents.map(c => c.guides))
     const guideIndex = flatContents.findIndex(
       section => section.path === currentGuide
@@ -122,7 +128,22 @@ class DocFooter extends React.Component<any> {
     return (
       //TODO: Link to Slack, syntax on ordercloud tag
       <React.Fragment>
-        <Paper className={classes.paperMain}>
+        <Grid
+          className={classes.gridContainer}
+          container
+          spacing={3}
+          justify="space-between"
+          alignItems="stretch"
+        >
+          <Grid className={classes.gridItem} item xs={6}>
+            {directionalButton('Previous')}
+          </Grid>
+          <Grid className={classes.gridItem} item xs={6}>
+            {directionalButton('Next')}
+          </Grid>
+        </Grid>
+        <Divider></Divider>
+        <Box className={classes.boxMain}>
           {/* 
           TODO: Useful but not required for MVP add back in for phase 2 https://github.com/ordercloud-api/oc-documentation/issues/58
           <div className={classes.groupHelpful}>
@@ -140,45 +161,33 @@ class DocFooter extends React.Component<any> {
               <ThumbDown fontSize="small" />
             </IconButton>
           </div> */}
-          <Typography className={classes.typographyMain} align="center">
-            If you have any questions, please ask our Developer Community on
-            Slack, or post your question on{' '}
-            <a
-              href="https:stackoverflow.com/questions/tagged/ordercloud"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Stack Overflow
-            </a>{' '}
-            using the tag: <strong>ordercloud</strong>.
+          <Typography variant="h4" className={classes.questionsHeader}>
+            Questions?
           </Typography>
-          <Button
-            size="small"
-            variant="text"
-            href={`${gitHubUrl}${currentGuide}.mdx`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Contribute to this doc
+          <Typography variant="body1" className={classes.questionsText}>
+            If you have any questions, please ask our Developer Community on
+            Slack, or post your question on Stack Overflow using the tag "
+            <strong>ordercloud</strong>".
+          </Typography>
+
+          <Button variant="outlined" className={classes.questionsBtn}>
+            Join Our Community
           </Button>
-        </Paper>
-        <Grid
-          className={classes.gridContainer}
-          container
-          spacing={3}
-          justify="space-between"
-          alignItems="stretch"
-        >
-          <Grid className={classes.gridItem} item xs={6}>
-            {directionalButton('Previous')}
-          </Grid>
-          <Grid className={classes.gridItem} item xs={6}>
-            {directionalButton('Next')}
-          </Grid>
-        </Grid>
+
+          <Button
+            variant="outlined"
+            href="https://stackoverflow.com/questions/tagged/ordercloud"
+            target="_blank"
+            rel="noreferrer"
+            className={classes.questionsBtn}
+            color="secondary"
+          >
+            Ask on Stack Overflow
+          </Button>
+        </Box>
       </React.Fragment>
     )
   }
 }
 
-export default withStyles(styles)(DocFooter)
+export default withStyles(styles, { withTheme: true })(DocFooter)
