@@ -5,6 +5,7 @@ import { withStyles, Theme, createStyles, Container } from '@material-ui/core'
 import ApiReferenceMenu from '../components/Layout/ApiReferenceMenu'
 import { graphql, StaticQuery } from 'gatsby'
 import OpenApi from '../openapi.service';
+import { flatten as _flatten } from 'lodash';
 import ApiReferenceSelection from '../components/Layout/ApiReferenceSelection';
 
 const styles = (theme: Theme) =>
@@ -59,8 +60,8 @@ const ApiReference = withStyles(styles)(
       return (
         <Layout>
           <Container maxWidth="lg" className={classes.docContainer}>
-            {this.state.operation && this.state.operation ? <ApiReferenceSelection method={this.state.operation} /> : null}
-            {/* {this.state.resources.length ? this.state.resources.map(r => <ApiReferenceSelection method={r} />) : null} */}
+            {/* {this.state.operation && this.state.operation ? <ApiReferenceSelection method={this.state.operation} /> : null} */}
+            {this.state.resources.length ? this.state.resources.map(r => <ApiReferenceSelection method={r} />) : null}
             <ApiReferenceMenu apiReference={apiReference} resourceChange={this.handleResourceChange} />
           </Container>
         </Layout>
