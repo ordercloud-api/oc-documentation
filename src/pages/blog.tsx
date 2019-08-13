@@ -14,14 +14,17 @@ import {
   IconButton,
   Icon,
   Tooltip,
+  CardActionArea,
+  Divider,
 } from '@material-ui/core/'
 import { Share } from '@material-ui/icons'
 import { graphql, useStaticQuery, Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
 import utility from '../utility'
 import Layout from '../components/Layout/Layout'
-import placeholderImg from '../assets/images/placeholder__blog.jpg'
+import placeholderImg from '../assets/images/blog/placeholder.jpg'
 import { mediumgrey, seafoam } from '../theme/ocPalette.constants'
+import Jumbotron from '../components/Shared/Jumbotron'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,14 +41,19 @@ const useStyles = makeStyles((theme: Theme) =>
       color: mediumgrey[400],
     },
     cardBase: {
+      display: 'flex',
+      flexFlow: 'column nowrap',
       transition: '0.3s',
-      maxWidth: 304,
       margin: 'auto',
+      height: '100%',
       boxShadow: '0 0 20px 0 rgba(0,0,0,0.12)',
       '&:hover': {
         transform: 'translateY(-3px)',
         boxShadow: '0 4px 20px 0 rgba(0,0,0,0.12)',
       },
+    },
+    cardActionArea: {
+      flex: '1 1 auto',
     },
     cardImg: {
       paddingTop: '56.25%',
@@ -171,40 +179,50 @@ export default function BlogListComponent(props: BlogListProps) {
         </div>
         <Grid container spacing={3}>
           {data.allMdx.edges.map(edge => {
+            console.log(edge)
             return (
-              <Grid item xs={3}>
+              <Grid item sm={6} md={4} lg={3} key={edge.node.id}>
                 <Card className={classes.cardBase}>
-                  <CardMedia className={classes.cardImg} image={placeholderImg}>
-                    <Typography className={classes.cardRibbon} variant="body2">
-                      Blog Category
-                    </Typography>
-                    <Avatar
-                      className={classes.cardAuthor}
-                      src={
-                        'https://images.unsplash.com/photo-1541364983171-a8ba01e95cfc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80'
-                      }
-                    />
-                  </CardMedia>
-                  <CardContent className={classes.MuiCardContentRoot}>
-                    <Link to={utility.resolvePath(edge.node.fileAbsolutePath)}>
-                      <Typography className={classes.cardTitle} variant="h6">
+                  <CardActionArea
+                    className={classes.cardActionArea}
+                    href={utility.resolvePath(edge.node.fileAbsolutePath)}
+                  >
+                    <CardMedia
+                      className={classes.cardImg}
+                      image={placeholderImg}
+                    >
+                      <Avatar
+                        className={classes.cardAuthor}
+                        src={
+                          'https://images.unsplash.com/photo-1541364983171-a8ba01e95cfc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80'
+                        }
+                      />
+                    </CardMedia>
+                    <CardContent className={classes.MuiCardContentRoot}>
+                      {/* <Link to={utility.resolvePath(edge.node.fileAbsolutePath)}> */}
+                      <Typography
+                        className={classes.cardTitle}
+                        gutterBottom
+                        variant="h5"
+                      >
                         {edge.node.frontmatter.title}
                       </Typography>
-                    </Link>
-                    <Typography
-                      variant="body2"
-                      dangerouslySetInnerHTML={{
-                        __html: edge.node.frontmatter.summary,
-                      }}
-                    />
-                  </CardContent>
+                      {/* </Link> */}
+                      <Typography
+                        variant="body2"
+                        dangerouslySetInnerHTML={{
+                          __html: edge.node.frontmatter.summary,
+                        }}
+                      />
+                    </CardContent>
+                  </CardActionArea>
                   <CardActions className={classes.MuiCardActionsRoot}>
                     <Typography variant={'caption'}>
                       {edge.node.frontmatter.date}
                     </Typography>
                     <div>
-                      <Tooltip title="Share" placement="left">
-                        <IconButton>
+                      <Tooltip title="Share" placement="top">
+                        <IconButton edge="end">
                           <Share />
                         </IconButton>
                       </Tooltip>
