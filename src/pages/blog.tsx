@@ -21,9 +21,22 @@ import { Helmet } from 'react-helmet'
 import utility from '../utility'
 import Layout from '../components/Layout/Layout'
 import placeholderImg from '../assets/images/placeholder__blog.jpg'
+import { mediumgrey, seafoam } from '../theme/ocPalette.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    header: {
+      marginBottom: theme.spacing(0),
+      [theme.breakpoints.up('lg')]: {
+        marginBottom: theme.spacing(3),
+      },
+    },
+    title: {
+      marginBottom: theme.spacing(1),
+    },
+    subtitle: {
+      color: mediumgrey[400],
+    },
     cardBase: {
       transition: '0.3s',
       maxWidth: 304,
@@ -51,12 +64,14 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       top: theme.spacing(2),
       left: theme.spacing(2),
-      backgroundColor: theme.palette.primary.main,
-      color: '#ffffff !important',
-      padding: '2px 8px',
+      backgroundColor: seafoam[800],
+      color: seafoam[100],
+      fontSize: '.8em',
+      padding: '2px 8px 4px 8px',
       boxShadow: '0 2px 12px 2px rgba(0,0,0,0.5)',
       borderTopLeftRadius: 2,
       borderBottomLeftRadius: 2,
+      margin: 0,
     },
     cardAuthor: {
       position: 'absolute',
@@ -82,7 +97,9 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(3),
     },
     MuiCardActionsRoot: {
-      padding: `0 ${theme.spacing(3)} ${theme.spacing(3)}`,
+      padding: `0 ${theme.spacing(3)}px ${theme.spacing(1)}px ${theme.spacing(
+        3
+      )}px`,
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -142,15 +159,25 @@ export default function BlogListComponent(props: BlogListProps) {
     <Layout>
       <Container maxWidth="lg">
         <Helmet title={`OrderCloud Blog`} />
-        <Grid container className={classes.container} spacing={3}>
+        <div className={classes.header}>
+          <Typography variant="h2" component="h1" className={classes.title}>
+            Blog
+          </Typography>
+          <Typography variant="subtitle1" className={classes.subtitle}>
+            Cometh all ye and listen! For thine is the scripture of the almighty
+            Todd. The everlasting word that shall bring salvation of ordercloud
+            to thee.
+          </Typography>
+        </div>
+        <Grid container spacing={3}>
           {data.allMdx.edges.map(edge => {
             return (
               <Grid item xs={3}>
                 <Card className={classes.cardBase}>
                   <CardMedia className={classes.cardImg} image={placeholderImg}>
-                    <div className={classes.cardRibbon}>
-                      <Typography variant="body2">Ribbon Boye</Typography>
-                    </div>
+                    <Typography className={classes.cardRibbon} variant="body2">
+                      Blog Category
+                    </Typography>
                     <Avatar
                       className={classes.cardAuthor}
                       src={
