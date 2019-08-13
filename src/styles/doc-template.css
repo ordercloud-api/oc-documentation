@@ -8,3 +8,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.MuiTypography-root .MuiButtonBase-root {
+  opacity:0;
+}
+
+.MuiTypography-root:hover .MuiButtonBase-root {
+  opacity:1;
+}

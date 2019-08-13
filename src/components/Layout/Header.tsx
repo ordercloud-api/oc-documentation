@@ -21,7 +21,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Divider from '@material-ui/core/Divider'
-import ocLogo from '../../assets/images/four51-logo--full-color.svg'
+import ocLogo from '../../assets/images/four51-logo--full-color--header.svg'
 
 import Cookies from 'universal-cookie'
 import {
@@ -132,7 +132,7 @@ class Header extends React.Component<any, HeaderState> {
     const open = Boolean(anchorEl)
     return (
       <div className={classes.root}>
-        <Link to="/">
+        <Link to="/" className={classes.logoContainer}>
           <img className={classes.logo} src={ocLogo} alt="OC" />
         </Link>
         <Hidden smDown>
@@ -151,13 +151,7 @@ class Header extends React.Component<any, HeaderState> {
               <ListItemIcon>
                 <SettingsTwoTone className={classes.icon} />
               </ListItemIcon>
-              <ListItemText primary="Organization Settings" />
-            </ListItem>
-            <ListItem button className={classes.menuItem}>
-              <ListItemIcon>
-                <PeopleTwoTone className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText primary="Contributor Access" />
+              <ListItemText primary="My Organizations" />
             </ListItem>
             <ListItem
               button
@@ -296,6 +290,9 @@ const styles = (theme: Theme) =>
     },
     menuItem: {
       width: theme.spacing(32),
+    },
+    logoContainer: {
+      boxSizing: 'content-box',
     },
     logo: {
       paddingTop: theme.spacing(2),
