@@ -118,16 +118,10 @@ const Template = withStyles(styles, { withTheme: true })(
               <Helmet
                 title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
               />
-              <Typography
-                className={classes.postTitle}
-                variant="h4"
-                component="h1"
-              >
+              <Typography className={classes.postTitle} variant="h1">
                 {post.mdx.frontmatter.title}
               </Typography>
-              <Typography>
-                <MDXRenderer>{post.mdx.body}</MDXRenderer>
-              </Typography>
+              <MDXRenderer>{post.mdx.body}</MDXRenderer>
               <DocFooter
                 contents={sections}
                 currentGuide={utility.resolvePath(post.mdx.fileAbsolutePath)}

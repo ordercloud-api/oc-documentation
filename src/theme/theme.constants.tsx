@@ -42,6 +42,7 @@ const CoreSans = {
 export default createMuiTheme({
   typography: {
     h1: {
+      fontSize: '3.5rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -57,6 +58,8 @@ export default createMuiTheme({
       ].join(','),
     },
     h2: {
+      fontWeight: 'normal',
+      fontSize: '2rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -72,6 +75,7 @@ export default createMuiTheme({
       ].join(','),
     },
     h3: {
+      fontSize: '1.5rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -87,6 +91,7 @@ export default createMuiTheme({
       ].join(','),
     },
     h4: {
+      fontSize: '1.25rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -102,6 +107,7 @@ export default createMuiTheme({
       ].join(','),
     },
     h5: {
+      fontSize: '1.15rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -117,6 +123,7 @@ export default createMuiTheme({
       ].join(','),
     },
     h6: {
+      fontSize: '1rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -151,6 +158,29 @@ export default createMuiTheme({
         a: {
           color: flame[500],
         },
+      },
+    },
+    MuiTable: {
+      root: {
+        marginBottom: '2rem',
+      },
+    },
+    MuiTypography: {
+      root: {
+        marginBottom: '0.5rem',
+      },
+      body1: {
+        marginBottom: '1rem',
+      },
+      h1: {
+        paddingTop: '2rem',
+        marginBottom: '2rem',
+      },
+      h2: {
+        paddingTop: '1.75rem',
+      },
+      h3: {
+        paddingTop: '1.5rem',
       },
     },
   },

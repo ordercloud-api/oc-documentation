@@ -157,14 +157,13 @@ const MainComponent: React.FunctionComponent = props => {
                       <div className={classes.paperCard}>
                         <Typography
                           className={classes.paperTitleHeading}
-                          variant="h5"
-                          component="h2"
+                          variant="h2"
                         >
                           {section.title}
                         </Typography>
                         <Typography
                           className={classes.paperTitleSubheading}
-                          variant="body2"
+                          variant="body1"
                         >
                           {getSectionSubtitle(section.title)}
                         </Typography>
