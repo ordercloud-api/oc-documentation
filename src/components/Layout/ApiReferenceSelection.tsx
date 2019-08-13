@@ -67,8 +67,13 @@ function Parameters(props) {
 }
 
 function Responses(props) {
-  const { response } = props;
-  const responseBody = JSON.stringify(response.content['application/json'].schema.example, null, 2);
+  const { response, m } = props;
+  // if (!response.content) {
+  //   debugger;
+  //   console.log(m);
+  // }
+  const responseBody = response.content ? JSON.stringify(response.content['application/json'].schema.example, null, 2) : null;
+
   return <CodeBlock code={responseBody} lang="http" />
 }
 
@@ -112,7 +117,7 @@ class ApiReferenceSelection extends React.Component<any> {
         {<Section title="Request Body" body={requestBody} language="http" />}
         {method.parameters ? <Parameters parameters={method.parameters} /> : null}
         <h2>Responses</h2>
-        {responseCodes.map(code => <Responses response={method.responses[code]} />)}
+        {responseCodes.length ? responseCodes.map(code => <Responses m={method} response={method.responses[code]} />) : null}
         {/* {method.security[0] && method.security[0].OAuth2 ?
           <Roles roles={method.security[0].OAuth2} />
           : null} */}

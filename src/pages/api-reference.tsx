@@ -32,7 +32,8 @@ interface Operation {
 const ApiReference = withStyles(styles)(
   class extends React.Component<any> {
     public state = {
-      operation: null
+      operation: null,
+      resources: [],
     }
 
     public async componentDidMount() {
@@ -45,10 +46,10 @@ const ApiReference = withStyles(styles)(
 
     }
 
-    public mapResources() {
+    public mapResources = () => {
       this.props.apiReference.filter(apiRef => apiRef.x_section_id != null).forEach(ref => {
         const testing = OpenApi.operationsByResource[ref.name];
-        console.log(testing);
+        this.setState({ resources: _flatten([...this.state.resources, testing]) });
       });
     }
 
@@ -59,6 +60,7 @@ const ApiReference = withStyles(styles)(
         <Layout>
           <Container maxWidth="lg" className={classes.docContainer}>
             {this.state.operation && this.state.operation ? <ApiReferenceSelection method={this.state.operation} /> : null}
+            {/* {this.state.resources.length ? this.state.resources.map(r => <ApiReferenceSelection method={r} />) : null} */}
             <ApiReferenceMenu apiReference={apiReference} resourceChange={this.handleResourceChange} />
           </Container>
         </Layout>
