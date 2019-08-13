@@ -1,4 +1,6 @@
 const path = require('path')
+const openApiService = require('./openapi.service.tsx')
+
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
@@ -7,8 +9,9 @@ exports.createPages = ({ actions, graphql }) => {
   const releaseNotesTemplate = path.resolve(
     'src/components/Templates/ReleaseNotes.tsx'
   )
+  const apiReferenceTemplate = path.resolve('src/pages/api-reference.tsx')
 
-  return graphql(`
+  const staticDocs = graphql(`
     query CreatePagesQuery {
       allMdx {
         edges {
@@ -48,4 +51,22 @@ exports.createPages = ({ actions, graphql }) => {
       })
     })
   })
+
+  const apiRef = new Promise((resolve, reject) => {
+    resolve(openApiService.Initialize())
+  })(async () => {
+    await apiRef
+  })()
+    .then(result => {
+      createPage({
+        path: '/api-reference',
+        component: apiReferenceTemplate,
+        context: {
+          OcApi: result,
+        },
+      })
+    })
+    .catch(e => console.log('error initializing open API service'))
+
+  return Promise.all([staticDocs, apiRef])
 }

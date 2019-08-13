@@ -32,6 +32,11 @@ interface Operation {
 
 const ApiReference = withStyles(styles)(
   class extends React.Component<any> {
+    constructor(props) {
+      super(props);
+      // Initialize();
+    }
+
     public state = {
       operation: null,
       resources: [],
