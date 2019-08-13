@@ -179,9 +179,11 @@ export default createMuiTheme({
       },
       h2: {
         paddingTop: '1.75rem',
+        marginBottom: '0.5rem',
       },
       h3: {
         paddingTop: '1.5rem',
+        marginBottom: '0.5rem',
       },
     },
   },

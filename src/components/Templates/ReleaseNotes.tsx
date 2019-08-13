@@ -50,9 +50,7 @@ function ReleaseNotesComponent(props: ReleaseNotesComponentProps) {
               <Typography variant="h2" component="h1">
                 API v{data.mdx.frontmatter.apiVersion} Release Notes
               </Typography>
-              <Typography component="span">
-                <MDXRenderer>{data.mdx.body}</MDXRenderer>
-              </Typography>
+              <MDXRenderer>{data.mdx.body}</MDXRenderer>
             </div>
           </Grid>
         </Grid>
