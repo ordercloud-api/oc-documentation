@@ -61,6 +61,11 @@ declare let window: OrderCloudWindow;
 export const Initialize = async () => {
   if (!window.oc) {
     const parsedSpec = await SwaggerParser.dereference(SwaggerSpec);
+
+    const resources = parsedSpec.tags
+      .filter(tag => tag['x-section-id'])
+      .concat(GetSubsectionsToAdd());
+
     const operations = flatten(
       values(
         mapValues(parsedSpec.paths, (ops, path) => {
@@ -68,17 +73,13 @@ export const Initialize = async () => {
             mapValues(ops, (o, verb) => {
               const tags =
                 o.tags[0] === 'Me' ? [GetSubSectionName(path)] : o.tags;
-              return { ...o, verb, path, tags };
+              const resource = resources.filter(r => r.name === tags[0])[0];
+              return { ...o, verb, path, tags, resource };
             })
           );
         })
       )
     );
-
-    const resources = parsedSpec.tags
-      .filter(tag => tag['x-section-id'])
-      .concat(GetSubsectionsToAdd());
-
     window.oc = {
       openapi: parsedSpec,
       sections: parsedSpec.tags.filter(tag => tag['x-id']),
