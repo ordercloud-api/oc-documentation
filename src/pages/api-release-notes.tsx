@@ -61,11 +61,14 @@ const useStyles = makeStyles((theme: Theme) =>
     viewDetailsBtn: {
       marginLeft: theme.spacing(2),
     },
-    cardText: {},
     cardBody: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
+      '&:last-child': {
+        // DESIGN: where does this originate from? why do we need to override this in the first place?
+        paddingBottom: theme.spacing(2),
+      },
     },
   })
 )
