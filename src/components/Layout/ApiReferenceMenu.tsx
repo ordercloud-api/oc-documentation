@@ -2,6 +2,7 @@ import React from 'react';
 import { groupBy as _groupBy, map as _map, find as _find } from 'lodash';
 import { Paper, Collapse, List, ListItem, ListItemText, Typography, makeStyles, Theme, createStyles } from '@material-ui/core';
 import OpenApi from '../../openapi.service';
+import { Section as SectionModel, Guide } from '../../models/section.model'
 
 interface ApiReferenceProps {
   name: string;
@@ -20,19 +21,34 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+const findActiveSection = (sections: any, path: string) => {
+  return sections.findIndex(s => {
+    return (
+      s.guides.filter(g => {
+        return g.path === path || g.path + '/' === path
+      }).length > 0
+    )
+  })
+}
+
 export default function ApiReferenceMenu(props) {
-  const { apiReference, resourceChange } = props;
-  const sections = _groupBy(apiReference.filter(apiRef => apiRef.x_section_id != null), 'x_section_id');
+  const { allSections, sectionResources, resourceOperations, currentPath, operationChange, resourceChange } = props;
+
+  // const sections = _groupBy(apiReference.filter(apiRef => apiRef.x_section_id != null), 'x_section_id');
+  // const [activeIndex, setActiveIndex] = React.useState(
+  //   findActiveSection(sections, currentPath)
+  // )
 
   return (
     <Paper>
-      {_map(sections, (section, index) => {
-        const sectionDescription = _find(apiReference, r => r.x_id === index).description;
+      {_map(allSections, (section, index) => {
         return (
           <Section key={index}
             section={section}
-            sectionTitle={index}
-            sectionDescription={sectionDescription}
+            resources={sectionResources}
+            resourceOperations={resourceOperations}
+            sectionTitle={section.name}
+            operationChange={operationChange}
             resourceChange={resourceChange} />
         )
       })}
@@ -41,7 +57,7 @@ export default function ApiReferenceMenu(props) {
 }
 
 function Section(props) {
-  const { section, sectionTitle, sectionDescription, resourceChange } = props;
+  const { section, resources, resourceOperations, sectionTitle, resourceChange, operationChange } = props;
   const classes = useStyles(props);
   const [open, setOpen] = React.useState(false);
 
@@ -54,38 +70,40 @@ function Section(props) {
       <ListItem button onClick={handleClick}>
         <ListItemText>
           <Typography>
-            {sectionTitle}
+            1. {sectionTitle}
           </Typography>
         </ListItemText>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        {section.map((s, index) => <Resource key={index} resource={s} resourceChange={resourceChange} />)}
+        {resources.map((resource, index) => <Resource key={index} resource={resource} resourceOperations={resourceOperations} operationChange={operationChange} resourceChange={resourceChange} />)}
       </Collapse>
     </List>
   )
 }
 
 function Resource(props) {
-  const { resource, resourceChange } = props;
-  const operations = OpenApi.operationsByResource[resource.name];
+  const { resource, resourceOperations, operationChange, resourceChange } = props;
   const [open, setOpen] = React.useState(false);
 
   function handleClick() {
     setOpen(!open)
+    if (!open) {
+      resourceChange(resource.name);
+    }
   }
 
   return (
     <List>
       <ListItem button onClick={handleClick}>
         <ListItemText>
-          {resource.name}
+          2. {resource.name}
         </ListItemText>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
-          {operations && operations.length ? operations.map((o, index) => {
+          {resourceOperations && resourceOperations.length ? resourceOperations.map((o, index) => {
             return (
-              <ListItem key={index} onClick={() => resourceChange(o)}>
+              <ListItem key={index} onClick={() => operationChange(o)}>
                 <ListItemText primary={o.summary.replace(/\./g, ' ')} />
               </ListItem>
             )
