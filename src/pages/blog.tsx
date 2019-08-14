@@ -105,9 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(3),
     },
     MuiCardActionsRoot: {
-      padding: `0 ${theme.spacing(3)}px ${theme.spacing(1)}px ${theme.spacing(
-        3
-      )}px`,
+      padding: `0 ${theme.spacing(3)}px`,
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
