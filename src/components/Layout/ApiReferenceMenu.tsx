@@ -32,7 +32,7 @@ const findActiveSection = (sections: any, path: string) => {
 }
 
 export default function ApiReferenceMenu(props) {
-  const { allSections, sectionResources, resourceOperations, currentPath, operationChange, resourceChange } = props;
+  const { allSections, sectionResources, resourceOperations, currentPath, sectionChange, resourceChange, operationChange } = props;
 
   // const sections = _groupBy(apiReference.filter(apiRef => apiRef.x_section_id != null), 'x_section_id');
   // const [activeIndex, setActiveIndex] = React.useState(
@@ -47,9 +47,9 @@ export default function ApiReferenceMenu(props) {
             section={section}
             resources={sectionResources}
             resourceOperations={resourceOperations}
-            sectionTitle={section.name}
-            operationChange={operationChange}
-            resourceChange={resourceChange} />
+            sectionChange={sectionChange}
+            resourceChange={resourceChange}
+            operationChange={operationChange} />
         )
       })}
     </Paper>
@@ -57,12 +57,15 @@ export default function ApiReferenceMenu(props) {
 }
 
 function Section(props) {
-  const { section, resources, resourceOperations, sectionTitle, resourceChange, operationChange } = props;
+  const { section, resources, resourceOperations, sectionChange, resourceChange, operationChange } = props;
   const classes = useStyles(props);
   const [open, setOpen] = React.useState(false);
 
   function handleClick() {
     setOpen(!open)
+    if (!open) {
+      sectionChange(section);
+    }
   }
 
   return (
@@ -70,7 +73,7 @@ function Section(props) {
       <ListItem button onClick={handleClick}>
         <ListItemText>
           <Typography>
-            1. {sectionTitle}
+            1. {section.name}
           </Typography>
         </ListItemText>
       </ListItem>

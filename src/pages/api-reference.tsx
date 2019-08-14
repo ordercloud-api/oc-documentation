@@ -87,10 +87,20 @@ const ApiReference = withStyles(styles)(
     }
 
     public handleResourceChange = (resourceName: string) => {
-      debugger;
       const operations = OpenApi.operationsByResource[resourceName];
       this.setState({ listOperations: operations });
       // set the path as the first operation's path
+    }
+
+    public handleSectionChange = (section) => {
+      const listResources = this.props.apiReference.filter(ref => {
+        return ref.x_section_id === section.x_id
+      });
+      this.setState({
+        listResources,
+        listOperations: OpenApi.operationsByResource[listResources[0].name],
+        selectedOperation: OpenApi.operationsByResource[listResources[0].name][0]
+      });
     }
 
     public render() {
@@ -103,8 +113,9 @@ const ApiReference = withStyles(styles)(
             <ApiReferenceMenu allSections={this.state.listSections}
               sectionResources={this.state.listResources}
               resourceOperations={this.state.listOperations}
-              operationChange={this.handleOperationChange}
+              sectionChange={this.handleSectionChange}
               resourceChange={this.handleResourceChange}
+              operationChange={this.handleOperationChange}
               currentPath={this.state.currentPath} />
           </Container>
         </Layout>
