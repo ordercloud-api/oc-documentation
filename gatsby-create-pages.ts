@@ -2,7 +2,7 @@ import { resolve } from 'path'
 import openApiService from './src/openapi.service'
 import { GatsbyCreatePages } from './src/models/gatsby.models'
 
-const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
+export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
   const docTemplate = resolve('src/components/Templates/DocTemplate.tsx')
@@ -10,7 +10,9 @@ const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
   const releaseNotesTemplate = resolve(
     'src/components/Templates/ReleaseNotes.tsx'
   )
-  const apiReferenceTemplate = resolve('src/pages/api-reference.tsx')
+  const apiReferenceTemplate = resolve(
+    'src/components/Templates/ApiReferenceTemplate.tsx'
+  )
 
   const staticDocs = graphql(`
     query CreatePagesQuery {
@@ -53,20 +55,18 @@ const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
     })
   })
 
-  // const apiRef = openApiService
-  //   .initialize()
-  //   .then(result => {
-  //     debugger
-  //     console.log('RESULTS', result)
-  //     return createPage({
-  //       path: '/api-reference',
-  //       component: apiReferenceTemplate,
-  //       context: {
-  //         OcApi: result,
-  //       },
-  //     })
-  //   })
-  //   .catch(e => console.log('error initializing open API service'))
+  const apiRef = openApiService
+    .initialize()
+    .then(result => {
+      return createPage({
+        path: '/api-reference',
+        component: apiReferenceTemplate,
+        context: {
+          OcApi: result,
+        },
+      })
+    })
+    .catch(e => console.log('error initializing open API service'))
 
-  return Promise.all([staticDocs])
+  return Promise.all([staticDocs, apiRef])
 }
