@@ -1,3 +1,149 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+const docsQuery = `{
+  allMdx(sort: {order: ASC, fields: [frontmatter___priority]}, filter: {fileAbsolutePath: {glob: "**/content/docs/**/*.mdx"}}) {
+    nodes {
+      id
+      fileAbsolutePath
+      frontmatter {
+        section
+        title
+        hidden
+        summary
+        authors
+      }
+      rawBody
+    }
+  }
+}
+`
+const blogQuery = `{
+  allMdx(sort: {order: ASC, fields: [frontmatter___priority]}, filter: {fileAbsolutePath: {glob: "**/content/blog/*.mdx"}}) {
+    nodes {
+      id
+      fileAbsolutePath
+      timeToRead
+      frontmatter {
+        title
+        authors
+        date
+        tags
+      }
+      rawBody
+    }
+  }
+}`
+const queries = [
+  {
+    query: docsQuery,
+    // 1. Break each post into an array of searchable text
+    // 2. return a flattened array of all
+    transformer: ({ data }) => {
+      let paragraphs = []
+      data.allMdx.nodes.map(doc => {
+        let chunk = doc.rawBody
+          // replace anything starting and ending with `---` with nothing (remove frontmatter from .mdx files)
+          .replace(/---([\S\s]*?)---/g, '')
+          // remove heading markup
+          .replace(/#([\S\s]*?)#/g, '')
+          // remove html tags, anything between < >
+          .replace(/<([\S\s]*?)>/g, '')
+          // remove table markup
+          .replace(/\|([\S\s]*?)\|/g, '')
+          // remove any comments ex: ![TODO: ...]
+          .replace(/!\[([\S\s]*?)\]/g, '')
+          // remove any markup links
+          .replace(/\[([\S\s]*?)\)/g, '')
+          // remove anything in a code block, between triple back tics
+          .replace(/```([\S\s]*?)```/g, '')
+          // remove the back tics in in-line code expamples
+          .replace(/`/g, '')
+          // remove any bolding asterisks
+          .replace(/\*\*/g, '')
+          // remove any single #
+          .replace(/#/g, '')
+          // remove links in parens
+          .replace(/\(\.\.([\S\s]*?)\)/g, '')
+          // remove gatsby import
+          .replace(/import { Link } from 'gatsby'/g, '')
+          // trim off excess white spaces
+          .trim()
+          // replace paragraph breaks with a space
+          .replace(/(\r\n|\n|\r)/gm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+          .split('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+        chunk = chunk.filter(c => c != '')
+        console.log(chunk)
+        chunk.map(c => {
+          paragraphs.push({
+            id: doc.id,
+            category: 'Docs',
+            title: doc.frontmatter.title,
+            fileAbsolutePath: doc.fileAbsolutePath,
+            excerpt: c,
+          })
+        })
+      })
+      return paragraphs
+    },
+  },
+  {
+    query: blogQuery,
+    // 1. Break each post into an array of searchable text
+    // 2. return a flattened array of all
+    transformer: ({ data }) => {
+      let paragraphs = []
+      data.allMdx.nodes.map(post => {
+        let chunk = post.rawBody
+          // replace anything starting and ending with `---` with nothing (remove frontmatter from .mdx files)
+          .replace(/---([\S\s]*?)---/g, '')
+          // remove heading markup
+          .replace(/#([\S\s]*?)#/g, '')
+          // remove html tags, anything between < >
+          .replace(/<([\S\s]*?)>/g, '')
+          // remove table markup
+          .replace(/\|([\S\s]*?)\|/g, '')
+          // remove any comments ex: ![TODO: ...]
+          .replace(/!\[([\S\s]*?)\]/g, '')
+          // remove any markup links
+          .replace(/\[([\S\s]*?)\)/g, '')
+          // remove anything in a code block, between triple back tics
+          .replace(/```([\S\s]*?)```/g, '')
+          // remove the back tics in in-line code expamples
+          .replace(/`/g, '')
+          // remove any bolding asterisks
+          .replace(/\*\*/g, '')
+          // remove any single #
+          .replace(/#/g, '')
+          // remove links in parens
+          .replace(/\(\.\.([\S\s]*?)\)/g, '')
+          // remove gatsby import
+          .replace(/import { Link } from 'gatsby'/g, '')
+          // trim off excess white spaces
+          .trim()
+          // replace paragraph breaks with a space
+          .replace(/(\r\n|\n|\r)/gm, '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+          .split('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+        chunk = chunk.filter(c => c != '')
+        console.log(chunk)
+        chunk.map(c => {
+          paragraphs.push({
+            id: post.id,
+            category: 'Blog',
+            title: post.frontmatter.title,
+            authors: post.frontmatter.authors,
+            timeToRead: post.timeToRead,
+            date: post.frontmatter.date,
+            tags: post.frontmatter.tags,
+            fileAbsolutePath: post.fileAbsolutePath,
+            excerpt: c,
+          })
+        })
+      })
+      return paragraphs
+    },
+  },
+]
 module.exports = {
   siteMetadata: {
     title: `OrderCloud Documentation`,
@@ -13,6 +159,16 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-typescript`,
     `gatsby-transformer-sharp`,
+    {
+      resolve: `gatsby-plugin-algolia`,
+      options: {
+        appId: process.env.GATSBY_ALGOLIA_APP_ID,
+        apiKey: process.env.GATSBY_ALGOLIA_API_KEY,
+        indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
+        queries,
+        chunkSize: 10000, // default: 1000
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
