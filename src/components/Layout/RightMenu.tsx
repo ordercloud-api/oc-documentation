@@ -66,8 +66,14 @@ const useStyles = makeStyles((theme: Theme) =>
     activeHeading: {
       backgroundColor: theme.palette.grey[200],
     },
-    guideAnchorLinks: {
-      paddingLeft: theme.spacing(5.5),
+    guideAnchorLinks: (props: any) => {
+      let offset = props.depth - 1
+      if (offset > 1) {
+        offset = offset * 0.75
+      }
+      return {
+        paddingLeft: theme.spacing(offset * 5.5),
+      }
     },
     guideAnchorLinkIcon: {
       display: 'flex',
@@ -298,7 +304,7 @@ function GuideMenu(props: GuideMenuProps) {
             <GuideHeading
               key={`guide_heading${heading.value}`}
               guidePath={guide.path}
-              heading={heading.value}
+              heading={heading}
               activeHeading={activeHeading || guide.headings[0].value}
             />
           ))}
@@ -310,12 +316,15 @@ function GuideMenu(props: GuideMenuProps) {
 
 interface GuideHeadingProps {
   guidePath: string
-  heading: string
+  heading: {
+    value: string
+    depth: number
+  }
   activeHeading: string
 }
 function GuideHeading(props: GuideHeadingProps) {
   const { heading, activeHeading, guidePath } = props
-  const classes = useStyles(props)
+  const classes = useStyles({ depth: heading.depth })
   const slugify = (path: string) =>
     path
       .toLowerCase()
@@ -323,7 +332,10 @@ function GuideHeading(props: GuideHeadingProps) {
       .replace(/  +/g, ' ') // replace multiple whitespaces by just one
       .replace(/ /g, '-') // replace spaces with hypens
 
-  const guideSectionLink = buildGuideSectionLink(guidePath, slugify(heading))
+  const guideSectionLink = buildGuideSectionLink(
+    guidePath,
+    slugify(heading.value)
+  )
   function buildGuideSectionLink(guidePath: string, heading: string): string {
     const guideSectionPath = '#' + heading
     return guidePath + guideSectionPath
@@ -331,13 +343,15 @@ function GuideHeading(props: GuideHeadingProps) {
   return (
     <ListItem
       className={`${classes.guideAnchorLinks} ${
-        slugify(activeHeading) === slugify(heading) ? classes.activeHeading : ''
+        slugify(activeHeading) === slugify(heading.value)
+          ? classes.activeHeading
+          : ''
       }`}
       key={guidePath}
       button
       component={buildLink(guideSectionLink)}
     >
-      <ListItemText primary={heading} />
+      <ListItemText primary={heading.value} />
     </ListItem>
   )
 }

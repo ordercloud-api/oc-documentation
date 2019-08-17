@@ -1,7 +1,14 @@
 {
   "default": true,
-  "MD007": { "indent": 4 },
-  "MD013": { "line_length": 1000 },
-  "MD033": { "allowed_elements": [] },
-  "MD040": false
+  "MD007": {
+    "indent": 4
+  },
+  "MD013": {
+    "line_length": 1000
+  },
+  "MD033": {
+    "allowed_elements": []
+  },
+  "MD040": false,
+  "MD041": false
 }

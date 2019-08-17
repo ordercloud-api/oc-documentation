@@ -49,6 +49,13 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
 
 const LayoutLink: React.FunctionComponent = (props: any) => {
   const classes = layoutLinkStyles({})
+  if (!props.href) {
+    console.error(
+      'LayoutLink error - no href was provided. You can find it in the template by searching for [BAD LINK] in your browser.',
+      props
+    )
+    return <Typography variant="button">[BAD LINK] {props.children}</Typography>
+  }
   if (props.className === 'anchor') {
     return (
       <div className={classes.root}>
@@ -58,7 +65,7 @@ const LayoutLink: React.FunctionComponent = (props: any) => {
       </div>
     )
   }
-  return <Link {...props} to={props.href} />
+  return <Link to={props.href} children={props.children} />
 }
 
 export default props => {
