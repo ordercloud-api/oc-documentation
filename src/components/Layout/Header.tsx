@@ -1,40 +1,42 @@
-import { Link } from 'gatsby'
-import React from 'react'
 import {
-  Theme,
   createStyles,
-  withStyles,
   Hidden,
-  Typography,
-  Box,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Theme,
+  withStyles,
 } from '@material-ui/core'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Gravatar from 'react-gravatar'
 import Avatar from '@material-ui/core/Avatar'
+import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import Divider from '@material-ui/core/Divider'
-import ocLogo from '../../assets/images/four51-logo--full-color--header.svg'
-
-import Cookies from 'universal-cookie'
 import {
-  SettingsTwoTone,
-  PeopleTwoTone,
-  LockTwoTone,
-  CodeTwoTone,
   BookmarksTwoTone,
-  SpeakerNotesTwoTone,
+  CodeTwoTone,
   LocalLibraryTwoTone,
+  LockTwoTone,
+  PeopleTwoTone,
+  SettingsTwoTone,
+  SpeakerNotesTwoTone,
 } from '@material-ui/icons'
+import algoliasearch from 'algoliasearch/lite'
+import { Link } from 'gatsby'
+import React from 'react'
+import Gravatar from 'react-gravatar'
+import { InstantSearch, connectHits } from 'react-instantsearch-dom'
+import Cookies from 'universal-cookie'
+import ocLogo from '../../assets/images/four51-logo--full-color--header.svg'
 import { navigate } from '../Shared/PortalLink'
-import { drawerWidthSpacing } from './RightMenu'
+import OrderCloudSearch from './OrderCloudSearch'
+import OrderCloudSearchHits from './SearchHits'
+
+const searchClient = algoliasearch(
+  process.env.GATSBY_ALGOLIA_APP_ID,
+  process.env.GATSBY_ALGOLIA_API_KEY
+)
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -70,6 +72,7 @@ interface HeaderState {
   username: string
   firstName: string
   email: string
+  showResults: boolean
 }
 class Header extends React.Component<any, HeaderState> {
   state = {
@@ -78,6 +81,7 @@ class Header extends React.Component<any, HeaderState> {
     username: '',
     firstName: '',
     email: '',
+    showResults: false,
   }
 
   private readonly cookies = new Cookies()
@@ -128,7 +132,7 @@ class Header extends React.Component<any, HeaderState> {
 
   public render() {
     const { classes } = this.props
-    const { anchorEl, auth } = this.state
+    const { anchorEl, auth, showResults } = this.state
     const open = Boolean(anchorEl)
     return (
       <div className={classes.root}>
@@ -136,6 +140,16 @@ class Header extends React.Component<any, HeaderState> {
           <img className={classes.logo} src={ocLogo} alt="OC" />
         </Link>
         <Hidden smDown>
+          <InstantSearch searchClient={searchClient} indexName="ordercloud">
+            <OrderCloudSearch
+              onChange={event => {
+                this.setState({
+                  showResults: event.currentTarget.value.length > 0,
+                })
+              }}
+            />
+            {showResults && <OrderCloudSearchHits />}
+          </InstantSearch>
           <List component="nav" aria-label="ordercloud documentation menu">
             <ListItem
               button
@@ -266,7 +280,6 @@ const styles = (theme: Theme) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       backgroundColor: theme.palette.primary.main,
-      color: theme.palette.background.paper,
       width: '100%',
       maxWidth: '100vw',
       zIndex: 2,
@@ -279,17 +292,22 @@ const styles = (theme: Theme) =>
         boxShadow: `0px 0px 0px transparent`,
         transition: `max-width 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`,
         transitionDelay: '400ms',
+        '&:focus-within': {
+          boxShadow: `0px 0px 15px ${theme.palette.primary.dark}`,
+          maxWidth: theme.spacing(40),
+        },
         '&:hover': {
           boxShadow: `0px 0px 15px ${theme.palette.primary.dark}`,
-          maxWidth: theme.spacing(32),
+          maxWidth: theme.spacing(40),
         },
       },
     },
     icon: {
-      color: theme.palette.background.paper,
+      color: theme.palette.common.white,
     },
     menuItem: {
-      width: theme.spacing(32),
+      color: theme.palette.common.white,
+      width: theme.spacing(40),
     },
     logoContainer: {
       boxSizing: 'content-box',
@@ -306,6 +324,14 @@ const styles = (theme: Theme) =>
     },
     menuItem__profile: {
       padding: '10px',
+    },
+    search: {
+      alignItems: 'flex-start',
+    },
+    'ais-Hits': {
+      maxHeight: theme.spacing(25),
+      overflowY: 'scroll',
+      overflowX: 'auto',
     },
   })
 

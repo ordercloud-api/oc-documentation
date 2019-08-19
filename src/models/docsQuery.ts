@@ -16,6 +16,7 @@ export interface DocsQuery {
           headings: [
             {
               value: string
+              depth: number
             }
           ]
           frontmatter: {

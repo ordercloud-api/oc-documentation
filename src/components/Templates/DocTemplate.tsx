@@ -189,6 +189,7 @@ export const pageQuery = graphql`
           fileAbsolutePath
           headings {
             value
+            depth
           }
           frontmatter {
             section

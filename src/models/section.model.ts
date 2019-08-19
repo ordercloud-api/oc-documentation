@@ -14,6 +14,7 @@ export interface Guide {
   }
   headings: [
     {
+      depth: number
       value: string
     }
   ]
