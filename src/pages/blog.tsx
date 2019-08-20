@@ -24,7 +24,6 @@ import utility from '../utility'
 import Layout from '../components/Layout/Layout'
 import placeholderImg from '../assets/images/blog/placeholder.jpg'
 import { mediumgrey, seafoam } from '../theme/ocPalette.constants'
-import Jumbotron from '../components/Shared/Jumbotron'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -170,9 +169,8 @@ export default function BlogListComponent(props: BlogListProps) {
             Blog
           </Typography>
           <Typography variant="subtitle1" className={classes.subtitle}>
-            Cometh all ye and listen! For thine is the scripture of the almighty
-            Todd. The everlasting word that shall bring salvation of ordercloud
-            to thee.
+            Learn the platform like never before with these big thought blogs
+            written by some of the best orderclouders in the world.
           </Typography>
         </div>
         <Grid container spacing={3}>
@@ -197,7 +195,6 @@ export default function BlogListComponent(props: BlogListProps) {
                       />
                     </CardMedia>
                     <CardContent className={classes.MuiCardContentRoot}>
-                      {/* <Link to={utility.resolvePath(edge.node.fileAbsolutePath)}> */}
                       <Typography
                         className={classes.cardTitle}
                         gutterBottom
@@ -205,7 +202,6 @@ export default function BlogListComponent(props: BlogListProps) {
                       >
                         {edge.node.frontmatter.title}
                       </Typography>
-                      {/* </Link> */}
                       <Typography
                         variant="body2"
                         dangerouslySetInnerHTML={{
