@@ -86,7 +86,7 @@ class Jumbotron extends React.Component<any> {
     const { classes } = this.props
     return (
       <div className={classes.jumbotron}>
-        <Hidden mdDown implementation="js">
+        {/* <Hidden mdDown implementation="js">
           <Particles
             className={classes.jumbotronParticle}
             params={{
@@ -108,7 +108,7 @@ class Jumbotron extends React.Component<any> {
               },
             }}
           />
-        </Hidden>
+        </Hidden> */}
         <Container maxWidth="xl">
           <Paper className={classes.jumbotronContainer}>
             <img

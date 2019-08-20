@@ -158,6 +158,10 @@ export default createMuiTheme({
         a: {
           color: flame[500],
         },
+        mark: {
+          color: 'white',
+          backgroundColor: flame[400],
+        },
       },
     },
     MuiTable: {

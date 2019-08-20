@@ -10,6 +10,7 @@ import { graphql, useStaticQuery, Link } from 'gatsby'
 import { Helmet } from 'react-helmet'
 import utility from '../utility'
 import Layout from '../components/Layout/Layout'
+import DocSearch from '../components/Shared/DocSearch'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -72,6 +73,7 @@ export default function BlogListComponent(props: BlogListProps) {
     <Layout>
       <Container maxWidth="lg">
         <Grid container className={classes.container} spacing={3}>
+          <DocSearch darkMode={false} />
           <Helmet title={`OrderCloud Blog`} />
           <div className={classes.body}>
             {data.allMdx.edges.map(edge => {
