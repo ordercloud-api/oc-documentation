@@ -12,13 +12,11 @@ import {
   CardContent,
   Avatar,
   IconButton,
-  Icon,
   Tooltip,
   CardActionArea,
-  Divider,
 } from '@material-ui/core/'
 import { Share } from '@material-ui/icons'
-import { graphql, useStaticQuery, Link } from 'gatsby'
+import { graphql, useStaticQuery } from 'gatsby'
 import { Helmet } from 'react-helmet'
 import utility from '../utility'
 import Layout from '../components/Layout/Layout'
