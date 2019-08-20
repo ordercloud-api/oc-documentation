@@ -12,6 +12,7 @@ import {
   Theme,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+import DocSearch from '../Shared/DocSearch'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,6 +47,7 @@ function BlogComponent(props: BlogComponentProps) {
       <Container maxWidth="lg">
         <Grid container className={classes.container} spacing={3}>
           <Grid item xs={9}>
+            <DocSearch darkMode={false} />
             <Helmet title={`${data.mdx.frontmatter.title} - OrderCloud Blog`} />
             <div className={classes.body}>
               <Typography variant="h2" component="h1">

@@ -17,6 +17,7 @@ import { Helmet } from 'react-helmet'
 import utility from '../utility'
 import Layout from '../components/Layout/Layout'
 import { mediumgrey } from '../theme/ocPalette.constants'
+import DocSearch from '../components/Shared/DocSearch'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -122,6 +123,7 @@ export default function ReleaseNotesListComponent(
     <Layout>
       <Helmet title={`OrderCloud Release Notes`} />
       <Container maxWidth="lg" className={classes.body}>
+        <DocSearch darkMode={false} />
         <div className={classes.header}>
           <Typography variant="h2" component="h1" className={classes.title}>
             Release Notes

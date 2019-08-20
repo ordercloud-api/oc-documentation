@@ -21,6 +21,7 @@ import {
   blackpearl,
 } from '../../theme/ocPalette.constants'
 import Footer from '../Layout/Footer'
+import DocSearch from '../Shared/DocSearch'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -135,13 +136,13 @@ const MainComponent: React.FunctionComponent = props => {
 
   return (
     <div className={classes.root}>
+      <DocSearch darkMode={false} />
       <Jumbotron />
       <Container maxWidth="xl">
         <Grid container className={classes.cardWrapper} spacing={5}>
-          {sections.map((section, index) =>
-            section.title === 'Getting Started' ? (
-              <Grid item sm={12} key={index}></Grid>
-            ) : (
+          {sections
+            .filter(section => section.title !== 'Getting Started')
+            .map((section, index) => (
               <Grid
                 item
                 sm={12}
@@ -191,8 +192,7 @@ const MainComponent: React.FunctionComponent = props => {
                   </Paper>
                 ) : null}
               </Grid>
-            )
-          )}
+            ))}
         </Grid>
       </Container>
       <Footer sections={sections} right={0} />

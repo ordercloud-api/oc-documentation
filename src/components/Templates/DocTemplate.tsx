@@ -24,6 +24,7 @@ import utility from '../../utility'
 import { MenuRounded, Edit } from '@material-ui/icons'
 import Footer from '../Layout/Footer'
 import { DocsQuery } from '../../models/docsQuery'
+import DocSearch from '../Shared/DocSearch'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -116,7 +117,9 @@ const Template = withStyles(styles, { withTheme: true })(
               <MenuRounded />
             </Fab>
           </Hidden>
+
           <div className={classes.docBody}>
+            <DocSearch darkMode={false} />
             <Box className={classes.docBodyPadding}>
               <Helmet
                 title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
@@ -129,7 +132,7 @@ const Template = withStyles(styles, { withTheme: true })(
                 <Typography className={classes.postTitle} variant="h1">
                   {post.mdx.frontmatter.title}
                 </Typography>
-                <Button
+                {/* <Button
                   size="small"
                   style={{ alignSelf: 'center' }}
                   variant="outlined"
@@ -144,7 +147,7 @@ const Template = withStyles(styles, { withTheme: true })(
                     style={{ marginRight: theme.spacing(1) }}
                   ></Edit>
                   Edit Doc
-                </Button>
+                </Button> */}
               </Box>
               <MDXRenderer>{post.mdx.body}</MDXRenderer>
               <DocFooter
