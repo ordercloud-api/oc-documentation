@@ -1,32 +1,36 @@
+import {
+  Box,
+  createStyles,
+  Fab,
+  Hidden,
+  Theme,
+  Typography,
+  withStyles,
+} from '@material-ui/core'
+import { MenuRounded } from '@material-ui/icons'
+import { graphql } from 'gatsby'
+import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React from 'react'
 import { Helmet } from 'react-helmet'
+import { DocsQuery } from '../../models/docsQuery'
+import '../../styles/doc-template.css'
+import utility from '../../utility'
+import DocFooter from '../Layout/DocFooter'
+import Footer from '../Layout/Footer'
 import Layout from '../Layout/Layout'
 import RightMenu, {
   drawerWidthSpacing,
   drawerWidthSpacingLg,
 } from '../Layout/RightMenu'
-import '../../styles/doc-template.css'
-import { graphql } from 'gatsby'
-import DocFooter from '../Layout/DocFooter'
-import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
-import {
-  withStyles,
-  createStyles,
-  Theme,
-  Typography,
-  Container,
-  Fab,
-  Hidden,
-  Box,
-  Button,
-} from '@material-ui/core'
-import utility from '../../utility'
-import { MenuRounded, Edit } from '@material-ui/icons'
-import Footer from '../Layout/Footer'
-import { DocsQuery } from '../../models/docsQuery'
+import DocSearch from '../Shared/DocSearch'
 
 const styles = (theme: Theme) =>
   createStyles({
+    searchBox: {
+      position: 'absolute',
+      right: theme.spacing(3),
+      top: theme.spacing(3),
+    },
     docBody: {
       backgroundColor: 'white',
       marginTop: theme.spacing(10),
@@ -42,9 +46,9 @@ const styles = (theme: Theme) =>
     docBodyPadding: {
       maxWidth: '100%',
       flexWrap: 'wrap',
-      padding: theme.spacing(2),
+      padding: theme.spacing(0, 2, 2),
       [theme.breakpoints.up('md')]: {
-        padding: theme.spacing(5),
+        padding: theme.spacing(0, 5, 5),
       },
       [theme.breakpoints.up('lg')]: {
         paddingLeft: theme.spacing(15),
@@ -66,9 +70,6 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       backgroundColor: theme.palette.background.default,
       padding: theme.spacing(3),
-    },
-    postTitle: {
-      // fontSize: '2.3rem',
     },
   })
 
@@ -105,7 +106,9 @@ const Template = withStyles(styles, { withTheme: true })(
       const sections = utility.getSectionsFromDocsQuery(post)
       return (
         <Layout>
-          {/* <OverlayMenu sections={sections} currentPath={location.pathname} /> */}
+          <Helmet
+            title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
+          />
           <Hidden mdUp implementation="js">
             <Fab
               onClick={this.handleMobileToggle}
@@ -116,20 +119,22 @@ const Template = withStyles(styles, { withTheme: true })(
               <MenuRounded />
             </Fab>
           </Hidden>
+
           <div className={classes.docBody}>
+            <DocSearch
+              darkMode={false}
+              classes={{ searchBox: classes.searchBox }}
+            />
             <Box className={classes.docBodyPadding}>
-              <Helmet
-                title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
-              />
               <Box
                 display="flex"
                 justifyContent="space-between"
                 align-items="center"
               >
-                <Typography className={classes.postTitle} variant="h1">
+                <Typography variant="h1">
                   {post.mdx.frontmatter.title}
                 </Typography>
-                <Button
+                {/* <Button
                   size="small"
                   style={{ alignSelf: 'center' }}
                   variant="outlined"
@@ -144,7 +149,7 @@ const Template = withStyles(styles, { withTheme: true })(
                     style={{ marginRight: theme.spacing(1) }}
                   ></Edit>
                   Edit Doc
-                </Button>
+                </Button> */}
               </Box>
               <MDXRenderer>{post.mdx.body}</MDXRenderer>
               <DocFooter
