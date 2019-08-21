@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, withStyles, createStyles } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableHead, TableRow, withStyles, createStyles, Container } from '@material-ui/core';
 import Prism from 'prismjs';
 import { forIn as _forIn } from 'lodash';
 
@@ -63,15 +63,12 @@ function Parameters(props) {
         </TableBody>
       </Table>
     </div>
+
   )
 }
 
 function Responses(props) {
-  const { response, m } = props;
-  // if (!response.content) {
-  //   debugger;
-  //   console.log(m);
-  // }
+  const { response } = props;
   const responseBody = response.content ? JSON.stringify(response.content['application/json'].schema.example, null, 2) : null;
 
   return <CodeBlock code={responseBody} lang="http" />
@@ -111,18 +108,15 @@ class ApiReferenceSelection extends React.Component<any> {
     const requestBody = method.requestBody ? JSON.stringify(method.requestBody.content['application/json'].schema.allOf[0].example, null, 2) : null;
 
     return (
-      <div>
+      <Container maxWidth="lg">
         <h1>{method.summary.replace(/\./g, ' ')}</h1>
         {path}
         {<Section title="Request Body" body={requestBody} language="http" />}
         {method.parameters ? <Parameters parameters={method.parameters} /> : null}
         <h2>Responses</h2>
-        {responseCodes.length ? responseCodes.map(code => <Responses m={method} response={method.responses[code]} />) : null}
-        {/* {method.security[0] && method.security[0].OAuth2 ?
-          <Roles roles={method.security[0].OAuth2} />
-          : null} */}
+        {responseCodes.length ? responseCodes.map(code => <Responses response={method.responses[code]} />) : null}
         {roles.length ? <Section title="Roles" body={roles} language="markup" /> : null}
-      </div>
+      </Container>
     )
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { map as _map, findIndex as _findIndex } from 'lodash';
-import { Paper, Collapse, List, ListItem, ListItemText, makeStyles, Theme, createStyles, Container, Drawer } from '@material-ui/core';
+import { Collapse, List, ListItem, ListItemText, makeStyles, Theme, createStyles, Drawer } from '@material-ui/core';
 import OpenApi from '../../openapi.service';
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
@@ -17,7 +17,6 @@ export const drawerWidthSpacing = drawerWidthSpacingLg - 20
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      // position: 'fixed',
       width: '100%',
       maxWidth: 360,
       backgroundColor: theme.palette.background.paper,
@@ -28,6 +27,15 @@ const useStyles = makeStyles((theme: Theme) =>
         flexShrink: 0,
       },
     },
+    operation: (props: any) => {
+      let offset = props.depth - 1
+      if (offset > 1) {
+        offset = offset * 0.75
+      }
+      return {
+        paddingLeft: theme.spacing(offset * 5.5),
+      }
+    }
   })
 )
 
@@ -35,7 +43,7 @@ export default function ApiReferenceMenu(props) {
   const { ocApi, sectionChange, resourceChange, operationChange, activeIndex } = props;
   const classes = useStyles(props);
   return (
-    <Drawer variant="permanent" className={classes.drawer}>
+    <Drawer variant="permanent" className={classes.drawer} anchor="right">
       {_map(ocApi.sections, (section, index) => {
         return (
           <Section key={index}
@@ -90,6 +98,8 @@ function Section(props) {
 
 function Resource(props) {
   const { resource, operationChange, resourceChange } = props;
+  const classes = useStyles(props);
+
   const [open, setOpen] = React.useState(false);
 
   const operations = OpenApi.operationsByResource ? OpenApi.operationsByResource[resource.name] : null;
@@ -103,7 +113,7 @@ function Resource(props) {
 
   return (
     <List>
-      <ListItem button onClick={handleClick}>
+      <ListItem button onClick={handleClick} className={classes.operation}>
         <ListItemText>{resource.name}</ListItemText>
         {open ? (
           <ExpandLess onClick={handleClick} />
