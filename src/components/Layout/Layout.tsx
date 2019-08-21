@@ -84,7 +84,7 @@ export default props => {
               h4: props => <Typography {...props} variant="h4" />,
               h5: props => <Typography {...props} variant="h5" />,
               h6: props => <Typography {...props} variant="h6" />,
-              p: props => <Typography {...props} variant="body1" />,
+              p: props => <Typography {...props} paragraph variant="body1" />,
               ol: props => (
                 <Typography {...props} component="ol" variant="body1" />
               ),

@@ -1,20 +1,24 @@
+import {
+  Container,
+  createStyles,
+  Grid,
+  makeStyles,
+  Theme,
+  Typography,
+} from '@material-ui/core'
+import { graphql } from 'gatsby'
+import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../Layout/Layout'
-import { graphql } from 'gatsby'
-import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
-
-import {
-  createStyles,
-  Typography,
-  Grid,
-  Container,
-  Theme,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
+import DocSearch from '../Shared/DocSearch'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    searchBox: {
+      width: '100%',
+      marginTop: theme.spacing(3),
+    },
     container: {
       marginBlockStart: '2rem',
       marginBlockEnd: '4rem',
@@ -43,16 +47,21 @@ function BlogComponent(props: BlogComponentProps) {
   const classes = useStyles(props)
   return (
     <Layout>
+      <Helmet title={`${data.mdx.frontmatter.title} - OrderCloud Blog`} />
       <Container maxWidth="lg">
-        <Grid container className={classes.container} spacing={3}>
-          <Grid item xs={9}>
-            <Helmet title={`${data.mdx.frontmatter.title} - OrderCloud Blog`} />
-            <div className={classes.body}>
-              <Typography variant="h2" component="h1">
-                {data.mdx.frontmatter.title}
-              </Typography>
-              <MDXRenderer>{data.mdx.body}</MDXRenderer>
-            </div>
+        <Grid container spacing={3}>
+          <Grid item md={9}>
+            <Typography variant="h1">{data.mdx.frontmatter.title}</Typography>
+            <MDXRenderer>{data.mdx.body}</MDXRenderer>
+          </Grid>
+          <Grid item md={3}>
+            <DocSearch
+              darkMode={false}
+              classes={{ searchBox: classes.searchBox }}
+            />
+            <Typography variant="h5">Related Articles</Typography>
+            <Typography variant="h5">Recent Articles</Typography>
+            <Typography variant="h5">Social Share</Typography>
           </Grid>
         </Grid>
       </Container>
