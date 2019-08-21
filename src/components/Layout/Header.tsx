@@ -22,21 +22,13 @@ import {
   SettingsTwoTone,
   SpeakerNotesTwoTone,
 } from '@material-ui/icons'
-import algoliasearch from 'algoliasearch/lite'
 import { Link } from 'gatsby'
 import React from 'react'
 import Gravatar from 'react-gravatar'
-import { InstantSearch, connectHits } from 'react-instantsearch-dom'
 import Cookies from 'universal-cookie'
 import ocLogo from '../../assets/images/four51-logo--full-color--header.svg'
 import { navigate } from '../Shared/PortalLink'
-import OrderCloudSearch from './OrderCloudSearch'
-import OrderCloudSearchHits from './SearchHits'
-
-const searchClient = algoliasearch(
-  process.env.GATSBY_ALGOLIA_APP_ID,
-  process.env.GATSBY_ALGOLIA_API_KEY
-)
+import DocSearch from '../Shared/DocSearch'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -140,16 +132,6 @@ class Header extends React.Component<any, HeaderState> {
           <img className={classes.logo} src={ocLogo} alt="OC" />
         </Link>
         <Hidden smDown>
-          <InstantSearch searchClient={searchClient} indexName="ordercloud">
-            <OrderCloudSearch
-              onChange={event => {
-                this.setState({
-                  showResults: event.currentTarget.value.length > 0,
-                })
-              }}
-            />
-            {showResults && <OrderCloudSearchHits />}
-          </InstantSearch>
           <List component="nav" aria-label="ordercloud documentation menu">
             <ListItem
               button

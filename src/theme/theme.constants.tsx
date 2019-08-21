@@ -39,6 +39,11 @@ const CoreSans = {
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
 }
 
+const defaultTheme = createMuiTheme()
+
+const primaryColor = blackpearl
+const secondaryColor = seafoam
+
 export default createMuiTheme({
   typography: {
     h1: {
@@ -156,7 +161,16 @@ export default createMuiTheme({
     MuiCssBaseline: {
       '@global': {
         a: {
-          color: flame[500],
+          color: secondaryColor[900],
+        },
+        mark: {
+          padding: defaultTheme.spacing(0, 0.25),
+          borderRadius: defaultTheme.shape.borderRadius,
+          backgroundColor: secondaryColor[100],
+          fontWeight: defaultTheme.typography.fontWeightMedium,
+          color: defaultTheme.palette.getContrastText(
+            defaultTheme.palette.background.paper
+          ),
         },
       },
     },
@@ -189,10 +203,10 @@ export default createMuiTheme({
   },
   palette: {
     primary: {
-      main: blackpearl[400],
+      main: primaryColor[400],
     },
     secondary: {
-      main: flame[400],
+      main: secondaryColor[900],
       contrastText: '#FFF',
     },
   },
