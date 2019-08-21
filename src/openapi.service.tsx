@@ -63,10 +63,10 @@ const result: OpenApiResult = {
 
 export const Initialize = async () => {
   if (!result.oc) {
+    const parsedSpec = await SwaggerParser.dereference(SwaggerSpec);
     const resources = parsedSpec.tags
       .filter(tag => tag['x-section-id'])
       .concat(GetSubsectionsToAdd());
-    const parsedSpec = await SwaggerParser.dereference(SwaggerSpec);
     const operations = flatten(
       values(
         mapValues(parsedSpec.paths, (ops, path) => {

@@ -32,20 +32,23 @@ const findActiveSection = (sections: any, path: string) => {
 }
 
 export default function ApiReferenceMenu(props) {
-  const { allSections, sectionResources, resourceOperations, currentPath, activeSection, sectionChange, resourceChange, operationChange } = props;
+  const { ocApi, sectionResources, resourceOperations, currentPath, activeSection, sectionChange, resourceChange, operationChange } = props;
 
   // const [activeIndex, setActiveIndex] = React.useState(
   //   findActiveSection(allSections, currentPath)
   // )
 
+  // if there is an active resource then map over operations
+
   return (
     <Paper>
-      {_map(allSections, (section, index) => {
+      {_map(ocApi.sections, (section, index) => {
         return (
           <Section key={index}
             section={section}
-            resources={sectionResources}
-            resourceOperations={resourceOperations}
+            ocApi={ocApi}
+            // resources={matchingResources}
+            // resourceOperations={resourceOperations}
             sectionChange={sectionChange}
             resourceChange={resourceChange}
             operationChange={operationChange}
@@ -57,10 +60,13 @@ export default function ApiReferenceMenu(props) {
 }
 
 function Section(props) {
-  const { section, resources, resourceOperations, sectionChange, resourceChange, operationChange, activeSection } = props;
+  const { section, ocApi, sectionChange, resourceChange, operationChange, activeSection } = props;
   const classes = useStyles(props);
-  const isActive = section.x_id === activeSection.x_id;
-  const [open, setOpen] = React.useState(isActive);
+  // const isActive = section['x-id'] === activeSection.x_id;
+  const [open, setOpen] = React.useState(false);
+
+  const resources = ocApi.resources.filter(r => r['x-section-id'] == section['x-id']);
+  console.log('here');
 
   function handleClick() {
     setOpen(!open)
@@ -78,16 +84,20 @@ function Section(props) {
           </Typography>
         </ListItemText>
       </ListItem>
-      <Collapse in={isActive} timeout="auto" unmountOnExit>
-        {resources.map((resource, index) => <Resource key={index} resource={resource} resourceOperations={resourceOperations} operationChange={operationChange} resourceChange={resourceChange} />)}
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        {resources.map((resource, index) => <Resource key={index} resource={resource} ocApi={ocApi} operationChange={operationChange} resourceChange={resourceChange} />)}
       </Collapse>
     </List>
   )
 }
 
 function Resource(props) {
-  const { resource, resourceOperations, operationChange, resourceChange } = props;
+  const { resource, ocApi, resourceOperations, operationChange, resourceChange } = props;
   const [open, setOpen] = React.useState(false);
+
+  console.log('here');
+  const operations = OpenApi.operationsByResource[resource.name];
+  console.log('operations', operations);
 
   function handleClick() {
     setOpen(!open)

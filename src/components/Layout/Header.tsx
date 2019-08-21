@@ -206,9 +206,6 @@ class Header extends React.Component<any, HeaderState> {
               component={Link}
               to="/api-reference"
             >
-              <ListItemIcon>
-                <Code className={classes.icon} />
-              </ListItemIcon>
               <ListItemText primary="API Reference" />
             </ListItem>
           </List>
