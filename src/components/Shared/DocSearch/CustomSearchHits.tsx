@@ -24,22 +24,24 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       zIndex: 1,
     },
-    caret: {
+    caret: (props: any) => ({
+      display: props.noPopper ? 'none' : undefined,
       position: 'absolute',
       zIndex: 3,
       color: theme.palette.background.paper,
       right: theme.spacing(3),
       fontSize: '4rem',
       top: -theme.spacing(2.6),
-    },
-    caretBackground: {
+    }),
+    caretBackground: (props: any) => ({
+      display: props.noPopper ? 'none' : undefined,
       position: 'absolute',
       zIndex: 3,
       color: theme.palette.grey[300],
       right: theme.spacing(3),
       fontSize: '4rem',
       top: -theme.spacing(2.8),
-    },
+    }),
     inner: {
       transformOrigin: 'top right',
     },
@@ -53,7 +55,6 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 500,
       height: 500,
       overflow: 'hidden',
-      borderRadius: theme.shape.borderRadius,
       '&:hover $searchResultsScrollbar > div': {
         opacity: 1,
       },
@@ -135,71 +136,80 @@ const OrderCloudSearchHits = ({
   anchorEl,
   container,
   darkMode,
+  noPopper,
+  classes,
 }) => {
-  const classes = useStyles({ darkMode })
+  const classesSelf = useStyles({ darkMode, noPopper })
   const sections = groupBy(hits, 'section')
+  const inner = (
+    <Grow in={open}>
+      <div className={`${classesSelf.inner} ${classes.searchHits}`}>
+        <ArrowDropUp className={classesSelf.caretBackground} />
+        <ArrowDropUp className={classesSelf.caret} />
+        <Paper
+          className={`${classesSelf.paper} ${classes.searchHitsPaper}`}
+          elevation={5}
+        >
+          <Scrollbars
+            style={{ width: '100%', height: '100%' }}
+            renderTrackHorizontal={props => (
+              <div
+                {...props}
+                style={{ display: 'none' }}
+                className="track-horizontal"
+              />
+            )}
+            renderTrackVertical={props => (
+              <div {...props} className={classesSelf.searchResultsScrollbar} />
+            )}
+            renderView={props => (
+              <div
+                {...props}
+                className={classesSelf.searchResultsScrollbarView}
+              />
+            )}
+          >
+            <div>
+              {map(sections, (items, section) => {
+                return (
+                  Boolean(items.length) && (
+                    <React.Fragment>
+                      <ListSubheader
+                        component="div"
+                        className={classesSelf.subheader}
+                      >
+                        {section === 'undefined' ? 'OrderCloud Blog' : section}
+                      </ListSubheader>
+                      {items.map(hit => {
+                        return HitItem(hit, classesSelf)
+                      })}
+                    </React.Fragment>
+                  )
+                )
+              })}
+            </div>
+            {Boolean(hits.length) && <Divider />}
+            <DocSearchFooter darkMode={darkMode} />
+          </Scrollbars>
+        </Paper>
+      </div>
+    </Grow>
+  )
   return (
-    anchorEl && (
+    anchorEl &&
+    (noPopper ? (
+      inner
+    ) : (
       <Popper
         open={true}
         anchorEl={anchorEl}
         placement="bottom-end"
-        className={classes.root}
+        className={classesSelf.root}
         container={container}
       >
-        <Grow in={open}>
-          <div className={classes.inner}>
-            <ArrowDropUp className={classes.caretBackground} />
-            <ArrowDropUp className={classes.caret} />
-            <Paper className={classes.paper} elevation={5}>
-              <Scrollbars
-                style={{ width: '100%', height: '100%' }}
-                renderTrackHorizontal={props => (
-                  <div
-                    {...props}
-                    style={{ display: 'none' }}
-                    className="track-horizontal"
-                  />
-                )}
-                renderTrackVertical={props => (
-                  <div {...props} className={classes.searchResultsScrollbar} />
-                )}
-                renderView={props => (
-                  <div
-                    {...props}
-                    className={classes.searchResultsScrollbarView}
-                  />
-                )}
-              >
-                <div>
-                  {map(sections, (items, section) => {
-                    return (
-                      Boolean(items.length) && (
-                        <React.Fragment>
-                          <ListSubheader
-                            component="div"
-                            className={classes.subheader}
-                          >
-                            {section === 'undefined'
-                              ? 'OrderCloud Blog'
-                              : section}
-                          </ListSubheader>
-                          {items.map(hit => {
-                            return HitItem(hit, classes)
-                          })}
-                        </React.Fragment>
-                      )
-                    )
-                  })}
-                </div>
-                {Boolean(hits.length) && <Divider />}
-                <DocSearchFooter darkMode={darkMode} />
-              </Scrollbars>
-            </Paper>
-          </div>
-        </Grow>
+        {inner}
       </Popper>
-    )
+    ))
   )
 }
 

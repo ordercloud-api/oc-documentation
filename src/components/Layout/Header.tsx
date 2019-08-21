@@ -131,6 +131,19 @@ class Header extends React.Component<any, HeaderState> {
         <Link to="/" className={classes.logoContainer}>
           <img className={classes.logo} src={ocLogo} alt="OC" />
         </Link>
+
+        <Hidden mdUp>
+          <DocSearch
+            noPopper
+            darkMode={true}
+            classes={{
+              searchBox: classes.searchBox,
+              searchBoxInput: classes.searchBoxInput,
+              searchHits: classes.searchHits,
+              searchHitsPaper: classes.searchHitsPaper,
+            }}
+          />
+        </Hidden>
         <Hidden smDown>
           <List component="nav" aria-label="ordercloud documentation menu">
             <ListItem
@@ -283,6 +296,26 @@ const styles = (theme: Theme) =>
           maxWidth: theme.spacing(40),
         },
       },
+    },
+    searchBox: {
+      position: 'relative',
+    },
+    searchBoxInput: {
+      // width: 100,
+    },
+    searchHits: {
+      position: 'fixed',
+      left: 0,
+      right: 0,
+      top: theme.spacing(7.5),
+      bottom: theme.spacing(8),
+      '& > div': {
+        width: '100%',
+        height: '100%',
+      },
+    },
+    searchHitsPaper: {
+      borderRadius: 0,
     },
     icon: {
       color: theme.palette.common.white,

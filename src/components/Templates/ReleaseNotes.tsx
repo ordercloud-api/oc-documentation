@@ -5,6 +5,7 @@ import {
   makeStyles,
   Theme,
   Typography,
+  Hidden,
 } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
@@ -54,10 +55,12 @@ function ReleaseNotesComponent(props: ReleaseNotesComponentProps) {
             </div>
           </Grid>
           <Grid item md={3}>
-            <DocSearch
-              darkMode={false}
-              classes={{ searchBox: classes.searchBox }}
-            />
+            <Hidden smDown>
+              <DocSearch
+                darkMode={false}
+                classes={{ searchBox: classes.searchBox }}
+              />
+            </Hidden>
             <Typography variant="h5">Other Release Notes</Typography>
           </Grid>
         </Grid>

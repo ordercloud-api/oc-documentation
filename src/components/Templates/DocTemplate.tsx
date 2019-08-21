@@ -121,10 +121,12 @@ const Template = withStyles(styles, { withTheme: true })(
           </Hidden>
 
           <div className={classes.docBody}>
-            <DocSearch
-              darkMode={false}
-              classes={{ searchBox: classes.searchBox }}
-            />
+            <Hidden smDown>
+              <DocSearch
+                darkMode={false}
+                classes={{ searchBox: classes.searchBox }}
+              />
+            </Hidden>
             <Box className={classes.docBodyPadding}>
               <Box
                 display="flex"

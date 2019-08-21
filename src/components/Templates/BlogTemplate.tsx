@@ -5,6 +5,7 @@ import {
   makeStyles,
   Theme,
   Typography,
+  Hidden,
 } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
@@ -55,10 +56,12 @@ function BlogComponent(props: BlogComponentProps) {
             <MDXRenderer>{data.mdx.body}</MDXRenderer>
           </Grid>
           <Grid item md={3}>
-            <DocSearch
-              darkMode={false}
-              classes={{ searchBox: classes.searchBox }}
-            />
+            <Hidden smDown>
+              <DocSearch
+                darkMode={false}
+                classes={{ searchBox: classes.searchBox }}
+              />
+            </Hidden>
             <Typography variant="h5">Related Articles</Typography>
             <Typography variant="h5">Recent Articles</Typography>
             <Typography variant="h5">Social Share</Typography>

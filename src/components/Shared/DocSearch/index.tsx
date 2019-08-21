@@ -12,9 +12,12 @@ const searchClient = algoliasearch(
 
 interface DocSearchProps {
   darkMode?: boolean
+  noPopper?: boolean
   classes?: {
     searchBox?: string
+    searchBoxInput?: string
     searchHits?: string
+    searchHitsPaper?: string
   }
 }
 
@@ -41,7 +44,13 @@ const DocSearch: React.FunctionComponent<DocSearchProps> = props => {
           indexName={process.env.GATSBY_ALGOLIA_INDEX_NAME}
         >
           <CustomSearchBox
-            className={props.classes && props.classes.searchBox}
+            noPopper={props.noPopper || false}
+            classes={
+              props.classes && {
+                searchRoot: props.classes.searchBox,
+                searchInput: props.classes.searchBoxInput,
+              }
+            }
             expanded={showHits}
             darkMode={props.darkMode || false}
             onClick={handleSearchClick}
@@ -50,7 +59,13 @@ const DocSearch: React.FunctionComponent<DocSearchProps> = props => {
           />
           {containerRef && (
             <CustomSearchHits
-              className={props.classes && props.classes.searchHits}
+              noPopper={props.noPopper || false}
+              classes={
+                props.classes && {
+                  searchHits: props.classes.searchHits,
+                  searchHitsPaper: props.classes.searchHitsPaper,
+                }
+              }
               darkMode={props.darkMode || false}
               open={showHits}
               anchorEl={anchorEl}
