@@ -127,7 +127,7 @@ export class OpenApi {
   get operationsByResource(): {
     [resource: string]: any
   } {
-    return result.oc.operationsByResource
+    return result.oc && result.oc.operationsByResource
   }
 
   public initialize = Initialize
