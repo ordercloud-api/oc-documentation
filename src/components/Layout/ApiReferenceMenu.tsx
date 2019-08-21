@@ -32,11 +32,10 @@ const findActiveSection = (sections: any, path: string) => {
 }
 
 export default function ApiReferenceMenu(props) {
-  const { allSections, sectionResources, resourceOperations, currentPath, sectionChange, resourceChange, operationChange } = props;
+  const { allSections, sectionResources, resourceOperations, currentPath, activeSection, sectionChange, resourceChange, operationChange } = props;
 
-  // const sections = _groupBy(apiReference.filter(apiRef => apiRef.x_section_id != null), 'x_section_id');
   // const [activeIndex, setActiveIndex] = React.useState(
-  //   findActiveSection(sections, currentPath)
+  //   findActiveSection(allSections, currentPath)
   // )
 
   return (
@@ -49,7 +48,8 @@ export default function ApiReferenceMenu(props) {
             resourceOperations={resourceOperations}
             sectionChange={sectionChange}
             resourceChange={resourceChange}
-            operationChange={operationChange} />
+            operationChange={operationChange}
+            activeSection={activeSection} />
         )
       })}
     </Paper>
@@ -57,9 +57,10 @@ export default function ApiReferenceMenu(props) {
 }
 
 function Section(props) {
-  const { section, resources, resourceOperations, sectionChange, resourceChange, operationChange } = props;
+  const { section, resources, resourceOperations, sectionChange, resourceChange, operationChange, activeSection } = props;
   const classes = useStyles(props);
-  const [open, setOpen] = React.useState(false);
+  const isActive = section.x_id === activeSection.x_id;
+  const [open, setOpen] = React.useState(isActive);
 
   function handleClick() {
     setOpen(!open)
@@ -77,7 +78,7 @@ function Section(props) {
           </Typography>
         </ListItemText>
       </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse in={isActive} timeout="auto" unmountOnExit>
         {resources.map((resource, index) => <Resource key={index} resource={resource} resourceOperations={resourceOperations} operationChange={operationChange} resourceChange={resourceChange} />)}
       </Collapse>
     </List>

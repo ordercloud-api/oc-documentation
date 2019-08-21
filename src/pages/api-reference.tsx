@@ -42,54 +42,47 @@ const ApiReference = withStyles(styles)(
       listSections: [],
       listResources: [],
       listOperations: [],
-      currentPath: null
+      currentPath: null,
+      activeSection: null
     }
 
     public async componentDidMount() {
       await Initialize();
-      this.testingFunction();
-      // this.mapResources();
+      this.buildReferenceMenu();
     }
 
-    public testingFunction = () => {
-      let allOperations = [];
+    public buildReferenceMenu = () => {
+      // let allOperations = [];
       let listSections = [];
       this.props.apiReference.forEach(ref => {
         if (ref.x_id != null) {
           listSections = [...listSections, ref];
-        } else {
-          allOperations = _flatten([...allOperations, OpenApi.operationsByResource[ref.name]]);
         }
+        // else {
+        //   allOperations = _flatten([...allOperations, OpenApi.operationsByResource[ref.name]]);
+        // }
       });
       const listResources = this.props.apiReference.filter(ref => {
         return ref.x_section_id === listSections[0].x_id
       });
-      const listOperations = OpenApi.operationsByResource[listResources[0].name];
+      // const listOperations = OpenApi.operationsByResource[listResources[0].name];
       this.setState({
-        listSections,
-        listResources,
-        listOperations,
-        selectedOperation: listOperations[0],
-        currentPath: listOperations[0].path
+        listSections, // all
+        activeSection: listSections[0],
+        listResources, // resources of a single section
+        // listOperations, // operations of a single resource
+        // selectedOperation: listOperations[0],
+        // currentPath: listOperations[0].path
       });
-      console.log(this.state);
     }
 
     public handleOperationChange = (operation: Operation) => {
-      // this.setState({ selectedOperation: operation });
-      /**
-       * since all operations on a particular resource, e.g. Supplier Users will
-       * be listed initially, this function should handle 'dropping into' a single
-       * operation
-       */
-      // set the specific path
-      console.log('hello! broken AF rn');
+      this.setState({ selectedOperation: operation });
     }
 
     public handleResourceChange = (resourceName: string) => {
       const operations = OpenApi.operationsByResource[resourceName];
       this.setState({ listOperations: operations });
-      // set the path as the first operation's path
     }
 
     public handleSectionChange = (section) => {
@@ -97,26 +90,25 @@ const ApiReference = withStyles(styles)(
         return ref.x_section_id === section.x_id
       });
       this.setState({
+        activeSection: section,
         listResources,
-        listOperations: OpenApi.operationsByResource[listResources[0].name],
-        selectedOperation: OpenApi.operationsByResource[listResources[0].name][0]
       });
     }
 
     public render() {
-      const { classes, apiReference } = this.props;
+      const { classes } = this.props;
       return (
         <Layout>
           <Container maxWidth="lg" className={classes.docContainer}>
-            {/* {this.state.listOperations.length ? this.state.listOperations.map(r => <ApiReferenceSelection className={classes.operationsList} method={r} />) : null} */}
-            {this.state.listOperations.length ? this.state.listOperations.map(r => <p>{r.summary}</p>) : null}
+            {this.state.listOperations.length ? this.state.listOperations.map(r => <ApiReferenceSelection className={classes.operationsList} method={r} />) : null}
             <ApiReferenceMenu allSections={this.state.listSections}
               sectionResources={this.state.listResources}
               resourceOperations={this.state.listOperations}
               sectionChange={this.handleSectionChange}
               resourceChange={this.handleResourceChange}
               operationChange={this.handleOperationChange}
-              currentPath={this.state.currentPath} />
+              currentPath={this.state.currentPath}
+              activeSection={this.state.activeSection} />
           </Container>
         </Layout>
       )
