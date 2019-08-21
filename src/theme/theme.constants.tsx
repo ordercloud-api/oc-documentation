@@ -166,8 +166,12 @@ export default createMuiTheme({
       },
     },
     MuiTypography: {
+      root: {
+        // marginBottom: '0.5rem',
+        // @bob, this ^^^^ and this ⌄⌄⌄⌄ is not a good idea.
+      },
       body1: {
-        marginBottom: '1rem',
+        // marginBottom: '1rem',
       },
       h1: {
         paddingTop: '2rem',
