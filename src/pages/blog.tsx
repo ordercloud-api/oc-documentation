@@ -18,7 +18,6 @@ import { Share } from '@material-ui/icons'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import placeholderImg from '../assets/images/blog/placeholder.jpg'
 import Layout from '../components/Layout/Layout'
 import DocSearch from '../components/Shared/DocSearch'
 import { mediumgrey, seafoam } from '../theme/ocPalette.constants'
@@ -137,6 +136,8 @@ interface PageData {
   }
 }
 
+const placeholderImg = '/images/blog/placeholder.jpg'
+
 interface BlogListProps {}
 
 export default function BlogListComponent(props: BlogListProps) {
@@ -184,6 +185,7 @@ export default function BlogListComponent(props: BlogListProps) {
         </div>
         <Grid container spacing={3}>
           {data.allMdx.edges.map(edge => {
+            console.log(edge)
             return (
               <Grid item sm={6} md={4} lg={3} key={edge.node.id}>
                 <Card className={classes.cardBase}>
