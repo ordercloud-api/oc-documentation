@@ -8,6 +8,7 @@ import {
   makeStyles,
   Theme,
   Typography,
+  Hidden,
 } from '@material-ui/core/'
 import { graphql, Link, useStaticQuery } from 'gatsby'
 import React from 'react'
@@ -127,10 +128,12 @@ export default function ReleaseNotesListComponent(
     <Layout>
       <Helmet title={`OrderCloud Release Notes`} />
       <Container maxWidth="lg">
-        <DocSearch
-          darkMode={false}
-          classes={{ searchBox: classes.searchBox }}
-        />
+        <Hidden smDown>
+          <DocSearch
+            darkMode={false}
+            classes={{ searchBox: classes.searchBox }}
+          />
+        </Hidden>
         <div className={classes.header}>
           <Typography variant="h1" className={classes.title}>
             Release Notes

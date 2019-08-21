@@ -8,6 +8,7 @@ import {
   Paper,
   Theme,
   Typography,
+  Hidden,
 } from '@material-ui/core/'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
@@ -136,7 +137,12 @@ const MainComponent: React.FunctionComponent = props => {
 
   return (
     <div className={classes.root}>
-      <DocSearch darkMode={false} classes={{ searchBox: classes.searchBox }} />
+      <Hidden smDown>
+        <DocSearch
+          darkMode={false}
+          classes={{ searchBox: classes.searchBox }}
+        />
+      </Hidden>
       <Jumbotron />
       <Container maxWidth="xl">
         <Grid container className={classes.cardWrapper} spacing={5}>

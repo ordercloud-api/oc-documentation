@@ -47,9 +47,10 @@ const OrderCloudSearchBox = ({
   onClose,
   darkMode,
   expanded,
-  className,
+  classes,
+  noPopper,
 }) => {
-  const classes = useStyles({ darkMode, expanded })
+  const classesSelf = useStyles({ darkMode, expanded })
   const inputRef = useRef<HTMLInputElement | undefined>()
 
   const handleInputChange = (
@@ -78,20 +79,29 @@ const OrderCloudSearchBox = ({
       value={currentRefinement}
       onChange={handleInputChange}
       onClick={handleInputClick}
-      classes={{ input: classes.input, root: `${classes.root} ${className}` }}
+      classes={{
+        input: `${classesSelf.input} ${classes.searchInput}`,
+        root: `${classesSelf.root} ${classes.searchRoot}`,
+      }}
       placeholder="Search OrderCloud…"
       inputProps={{ 'aria-label': 'search' }}
       inputRef={inputRef}
       startAdornment={
-        <InputAdornment position="start" classes={{ root: classes.adornment }}>
+        <InputAdornment
+          position="start"
+          classes={{ root: classesSelf.adornment }}
+        >
           <IconButton color="inherit" size="small" edge="start">
             <SearchIcon color="inherit" />
           </IconButton>
         </InputAdornment>
       }
       endAdornment={
-        <InputAdornment position="end" classes={{ root: classes.adornment }}>
-          <Grow in={Boolean(currentRefinement.length)}>
+        (Boolean(currentRefinement.length) || (noPopper && expanded)) && (
+          <InputAdornment
+            position="end"
+            classes={{ root: classesSelf.adornment }}
+          >
             <IconButton
               color="inherit"
               size="small"
@@ -100,8 +110,8 @@ const OrderCloudSearchBox = ({
             >
               <Close color="inherit" />
             </IconButton>
-          </Grow>
-        </InputAdornment>
+          </InputAdornment>
+        )
       }
     />
   )

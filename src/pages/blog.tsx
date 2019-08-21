@@ -13,6 +13,7 @@ import {
   Theme,
   Tooltip,
   Typography,
+  Hidden,
 } from '@material-ui/core/'
 import { Share } from '@material-ui/icons'
 import { graphql, useStaticQuery } from 'gatsby'
@@ -169,10 +170,12 @@ export default function BlogListComponent(props: BlogListProps) {
     <Layout>
       <Helmet title={`OrderCloud Blog`} />
       <Container maxWidth="lg">
-        <DocSearch
-          darkMode={false}
-          classes={{ searchBox: classes.searchBox }}
-        />
+        <Hidden smDown>
+          <DocSearch
+            darkMode={false}
+            classes={{ searchBox: classes.searchBox }}
+          />
+        </Hidden>
         <div className={classes.header}>
           <Typography variant="h1" className={classes.title}>
             OrderCloud Blog
