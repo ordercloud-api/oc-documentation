@@ -46,16 +46,12 @@ function BlogComponent(props: BlogComponentProps) {
       <Container maxWidth="lg">
         <Grid container className={classes.container} spacing={3}>
           <Grid item xs={9}>
-            <Helmet
-              title={`OrderCloud Release Notes - ${data.mdx.frontmatter.apiVersion}`}
-            />
+            <Helmet title={`${data.mdx.frontmatter.title} - OrderCloud Blog`} />
             <div className={classes.body}>
               <Typography variant="h2" component="h1">
                 {data.mdx.frontmatter.title}
               </Typography>
-              <Typography component="span">
-                <MDXRenderer>{data.mdx.body}</MDXRenderer>
-              </Typography>
+              <MDXRenderer>{data.mdx.body}</MDXRenderer>
             </div>
           </Grid>
         </Grid>

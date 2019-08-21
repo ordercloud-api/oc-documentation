@@ -18,9 +18,10 @@ import {
   Fab,
   Hidden,
   Box,
+  Button,
 } from '@material-ui/core'
 import utility from '../../utility'
-import { MenuRounded } from '@material-ui/icons'
+import { MenuRounded, Edit } from '@material-ui/icons'
 import Footer from '../Layout/Footer'
 import { DocsQuery } from '../../models/docsQuery'
 
@@ -98,6 +99,8 @@ const Template = withStyles(styles, { withTheme: true })(
     }
 
     public render() {
+      const gitHubUrl =
+        'https://github.com/ordercloud-api/oc-documentation/tree/development/content/docs'
       const { data: post, classes, location, theme } = this.props
       const sections = utility.getSectionsFromDocsQuery(post)
       return (
@@ -118,16 +121,32 @@ const Template = withStyles(styles, { withTheme: true })(
               <Helmet
                 title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
               />
-              <Typography
-                className={classes.postTitle}
-                variant="h4"
-                component="h1"
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                align-items="center"
               >
-                {post.mdx.frontmatter.title}
-              </Typography>
-              <Typography>
-                <MDXRenderer>{post.mdx.body}</MDXRenderer>
-              </Typography>
+                <Typography className={classes.postTitle} variant="h1">
+                  {post.mdx.frontmatter.title}
+                </Typography>
+                <Button
+                  size="small"
+                  style={{ alignSelf: 'center' }}
+                  variant="outlined"
+                  href={`${gitHubUrl}${utility.resolvePath(
+                    post.mdx.fileAbsolutePath
+                  )}.mdx`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Edit
+                    fontSize="inherit"
+                    style={{ marginRight: theme.spacing(1) }}
+                  ></Edit>
+                  Edit Doc
+                </Button>
+              </Box>
+              <MDXRenderer>{post.mdx.body}</MDXRenderer>
               <DocFooter
                 contents={sections}
                 currentGuide={utility.resolvePath(post.mdx.fileAbsolutePath)}
@@ -170,6 +189,7 @@ export const pageQuery = graphql`
           fileAbsolutePath
           headings {
             value
+            depth
           }
           frontmatter {
             section
