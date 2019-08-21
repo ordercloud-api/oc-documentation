@@ -1,26 +1,29 @@
-import React from 'react'
 import {
-  Theme,
-  createStyles,
-  makeStyles,
-  List,
-  Container,
-  Grid,
-  Typography,
+  Button,
   Card,
   CardContent,
-  Button,
-  Box,
+  Container,
+  createStyles,
+  List,
+  makeStyles,
+  Theme,
+  Typography,
 } from '@material-ui/core/'
-import { graphql, useStaticQuery, Link } from 'gatsby'
+import { graphql, Link, useStaticQuery } from 'gatsby'
+import React from 'react'
 import { Helmet } from 'react-helmet'
-import utility from '../utility'
 import Layout from '../components/Layout/Layout'
-import { mediumgrey } from '../theme/ocPalette.constants'
 import DocSearch from '../components/Shared/DocSearch'
+import { mediumgrey } from '../theme/ocPalette.constants'
+import utility from '../utility'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    searchBox: {
+      position: 'absolute',
+      right: 0,
+      top: theme.spacing(3),
+    },
     body: {
       paddingTop: theme.spacing(11),
       [theme.breakpoints.up('md')]: {
@@ -51,6 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: mediumgrey[400],
     },
     container: {},
+    cardText: {},
     cardRightContainer: {
       float: 'right',
     },
@@ -122,10 +126,13 @@ export default function ReleaseNotesListComponent(
   return (
     <Layout>
       <Helmet title={`OrderCloud Release Notes`} />
-      <Container maxWidth="lg" className={classes.body}>
-        <DocSearch darkMode={false} />
+      <Container maxWidth="lg">
+        <DocSearch
+          darkMode={false}
+          classes={{ searchBox: classes.searchBox }}
+        />
         <div className={classes.header}>
-          <Typography variant="h2" component="h1" className={classes.title}>
+          <Typography variant="h1" className={classes.title}>
             Release Notes
           </Typography>
           <Typography variant="subtitle1" className={classes.subtitle}>

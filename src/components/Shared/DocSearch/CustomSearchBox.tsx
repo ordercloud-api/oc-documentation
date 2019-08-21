@@ -1,24 +1,21 @@
-import React, { useRef, useState } from 'react'
 import {
+  Grow,
+  IconButton,
+  InputAdornment,
   InputBase,
   Theme,
-  InputAdornment,
-  IconButton,
-  Grow,
 } from '@material-ui/core'
-import { fade, makeStyles, createStyles } from '@material-ui/core/styles'
-import SearchIcon from '@material-ui/icons/Search'
-import { connectSearchBox } from 'react-instantsearch-dom'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
 import { Close } from '@material-ui/icons'
+import SearchIcon from '@material-ui/icons/Search'
+import React, { useRef } from 'react'
+import { connectSearchBox } from 'react-instantsearch-dom'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: (props: any) => ({
       zIndex: 1,
       borderRadius: theme.shape.borderRadius,
-      position: 'absolute',
-      right: theme.spacing(4),
-      top: theme.spacing(3),
       padding: theme.spacing(0, 1.5),
       backgroundColor: props.darkMode
         ? theme.palette.primary.main
@@ -50,6 +47,7 @@ const OrderCloudSearchBox = ({
   onClose,
   darkMode,
   expanded,
+  className,
 }) => {
   const classes = useStyles({ darkMode, expanded })
   const inputRef = useRef<HTMLInputElement | undefined>()
@@ -80,7 +78,7 @@ const OrderCloudSearchBox = ({
       value={currentRefinement}
       onChange={handleInputChange}
       onClick={handleInputClick}
-      classes={{ input: classes.input, root: classes.root }}
+      classes={{ input: classes.input, root: `${classes.root} ${className}` }}
       placeholder="Search OrderCloud…"
       inputProps={{ 'aria-label': 'search' }}
       inputRef={inputRef}

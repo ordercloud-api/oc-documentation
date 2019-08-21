@@ -1,30 +1,36 @@
-import React from 'react'
 import {
-  Theme,
-  createStyles,
-  makeStyles,
-  Container,
-  Grid,
-  Typography,
+  Avatar,
   Card,
-  CardMedia,
+  CardActionArea,
   CardActions,
   CardContent,
-  Avatar,
+  CardMedia,
+  Container,
+  createStyles,
+  Grid,
   IconButton,
+  makeStyles,
+  Theme,
   Tooltip,
-  CardActionArea,
+  Typography,
 } from '@material-ui/core/'
 import { Share } from '@material-ui/icons'
 import { graphql, useStaticQuery } from 'gatsby'
+import React from 'react'
 import { Helmet } from 'react-helmet'
-import utility from '../utility'
-import Layout from '../components/Layout/Layout'
 import placeholderImg from '../assets/images/blog/placeholder.jpg'
+import Layout from '../components/Layout/Layout'
+import DocSearch from '../components/Shared/DocSearch'
 import { mediumgrey, seafoam } from '../theme/ocPalette.constants'
+import utility from '../utility'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    searchBox: {
+      position: 'absolute',
+      right: 0,
+      top: theme.spacing(3),
+    },
     header: {
       marginBottom: theme.spacing(0),
       [theme.breakpoints.up('lg')]: {
@@ -160,20 +166,24 @@ export default function BlogListComponent(props: BlogListProps) {
   `)
   return (
     <Layout>
+      <Helmet title={`OrderCloud Blog`} />
       <Container maxWidth="lg">
-        <Helmet title={`OrderCloud Blog`} />
+        <DocSearch
+          darkMode={false}
+          classes={{ searchBox: classes.searchBox }}
+        />
         <div className={classes.header}>
-          <Typography variant="h2" component="h1" className={classes.title}>
-            Blog
+          <Typography variant="h1" className={classes.title}>
+            OrderCloud Blog
           </Typography>
           <Typography variant="subtitle1" className={classes.subtitle}>
             Learn the platform like never before with these big thought blogs
+            <br />
             written by some of the best orderclouders in the world.
           </Typography>
         </div>
         <Grid container spacing={3}>
           {data.allMdx.edges.map(edge => {
-            console.log(edge)
             return (
               <Grid item sm={6} md={4} lg={3} key={edge.node.id}>
                 <Card className={classes.cardBase}>

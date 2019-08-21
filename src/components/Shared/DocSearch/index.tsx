@@ -1,9 +1,9 @@
+import { ClickAwayListener } from '@material-ui/core'
 import algoliasearch from 'algoliasearch/lite'
 import React from 'react'
 import { InstantSearch } from 'react-instantsearch-dom'
 import CustomSearchBox from './CustomSearchBox'
 import CustomSearchHits from './CustomSearchHits'
-import { ClickAwayListener } from '@material-ui/core'
 
 const searchClient = algoliasearch(
   process.env.GATSBY_ALGOLIA_APP_ID,
@@ -12,6 +12,10 @@ const searchClient = algoliasearch(
 
 interface DocSearchProps {
   darkMode?: boolean
+  classes?: {
+    searchBox?: string
+    searchHits?: string
+  }
 }
 
 const DocSearch: React.FunctionComponent<DocSearchProps> = props => {
@@ -37,6 +41,7 @@ const DocSearch: React.FunctionComponent<DocSearchProps> = props => {
           indexName={process.env.GATSBY_ALGOLIA_INDEX_NAME}
         >
           <CustomSearchBox
+            className={props.classes && props.classes.searchBox}
             expanded={showHits}
             darkMode={props.darkMode || false}
             onClick={handleSearchClick}
@@ -45,6 +50,7 @@ const DocSearch: React.FunctionComponent<DocSearchProps> = props => {
           />
           {containerRef && (
             <CustomSearchHits
+              className={props.classes && props.classes.searchHits}
               darkMode={props.darkMode || false}
               open={showHits}
               anchorEl={anchorEl}

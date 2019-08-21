@@ -1,26 +1,25 @@
+import {
+  Container,
+  createStyles,
+  Grid,
+  makeStyles,
+  Theme,
+  Typography,
+} from '@material-ui/core'
+import { graphql } from 'gatsby'
+import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../Layout/Layout'
-import { graphql } from 'gatsby'
-import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
-
-import {
-  createStyles,
-  Typography,
-  Grid,
-  Container,
-  Theme,
-} from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
 import DocSearch from '../Shared/DocSearch'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    container: {
-      marginBlockStart: '2rem',
-      marginBlockEnd: '4rem',
-    },
     body: {},
+    searchBox: {
+      width: '100%',
+      marginTop: theme.spacing(3),
+    },
   })
 )
 
@@ -41,19 +40,25 @@ function ReleaseNotesComponent(props: ReleaseNotesComponentProps) {
   const classes = useStyles(props)
   return (
     <Layout>
+      <Helmet
+        title={`OrderCloud Release Notes - ${data.mdx.frontmatter.apiVersion}`}
+      />
       <Container maxWidth="lg">
-        <Grid container className={classes.container} spacing={3}>
-          <Grid item xs={9}>
-            <DocSearch darkMode={false} />
-            <Helmet
-              title={`OrderCloud Release Notes - ${data.mdx.frontmatter.apiVersion}`}
-            />
+        <Grid container spacing={3}>
+          <Grid item md={9}>
             <div className={classes.body}>
-              <Typography variant="h2" component="h1">
+              <Typography variant="h1">
                 API v{data.mdx.frontmatter.apiVersion} Release Notes
               </Typography>
               <MDXRenderer>{data.mdx.body}</MDXRenderer>
             </div>
+          </Grid>
+          <Grid item md={3}>
+            <DocSearch
+              darkMode={false}
+              classes={{ searchBox: classes.searchBox }}
+            />
+            <Typography variant="h5">Other Release Notes</Typography>
           </Grid>
         </Grid>
       </Container>

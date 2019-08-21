@@ -1,27 +1,22 @@
-import React from 'react'
 import {
-  Theme,
-  createStyles,
-  Paper,
-  Grid,
-  Typography,
-  Container,
-  List,
   Box,
+  Container,
+  createStyles,
+  Grid,
+  List,
   makeStyles,
+  Paper,
+  Theme,
+  Typography,
 } from '@material-ui/core/'
-import { groupBy as _groupBy, forEach as _forEach } from 'lodash'
-import ListLink from '../Shared/ListLink'
-import Jumbotron from '../Shared/Jumbotron'
 import { graphql, useStaticQuery } from 'gatsby'
+import React from 'react'
+import { darkgrey, mediumgrey } from '../../theme/ocPalette.constants'
 import utility from '../../utility'
-import {
-  mediumgrey,
-  darkgrey,
-  blackpearl,
-} from '../../theme/ocPalette.constants'
 import Footer from '../Layout/Footer'
 import DocSearch from '../Shared/DocSearch'
+import Jumbotron from '../Shared/Jumbotron'
+import ListLink from '../Shared/ListLink'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -30,6 +25,11 @@ if (typeof window !== 'undefined') {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    searchBox: {
+      position: 'absolute',
+      right: theme.spacing(4),
+      top: theme.spacing(3),
+    },
     root: {
       minHeight: '100vh',
       backgroundColor: mediumgrey[50],
@@ -136,7 +136,7 @@ const MainComponent: React.FunctionComponent = props => {
 
   return (
     <div className={classes.root}>
-      <DocSearch darkMode={false} />
+      <DocSearch darkMode={false} classes={{ searchBox: classes.searchBox }} />
       <Jumbotron />
       <Container maxWidth="xl">
         <Grid container className={classes.cardWrapper} spacing={5}>
