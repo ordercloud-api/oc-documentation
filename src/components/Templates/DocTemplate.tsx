@@ -46,9 +46,9 @@ const styles = (theme: Theme) =>
     docBodyPadding: {
       maxWidth: '100%',
       flexWrap: 'wrap',
-      padding: theme.spacing(2),
+      padding: theme.spacing(0, 2, 2),
       [theme.breakpoints.up('md')]: {
-        padding: theme.spacing(5),
+        padding: theme.spacing(0, 5, 5),
       },
       [theme.breakpoints.up('lg')]: {
         paddingLeft: theme.spacing(15),
@@ -70,9 +70,6 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       backgroundColor: theme.palette.background.default,
       padding: theme.spacing(3),
-    },
-    postTitle: {
-      // fontSize: '2.3rem',
     },
   })
 
@@ -109,7 +106,9 @@ const Template = withStyles(styles, { withTheme: true })(
       const sections = utility.getSectionsFromDocsQuery(post)
       return (
         <Layout>
-          {/* <OverlayMenu sections={sections} currentPath={location.pathname} /> */}
+          <Helmet
+            title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
+          />
           <Hidden mdUp implementation="js">
             <Fab
               onClick={this.handleMobileToggle}
@@ -127,15 +126,12 @@ const Template = withStyles(styles, { withTheme: true })(
               classes={{ searchBox: classes.searchBox }}
             />
             <Box className={classes.docBodyPadding}>
-              <Helmet
-                title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
-              />
               <Box
                 display="flex"
                 justifyContent="space-between"
                 align-items="center"
               >
-                <Typography className={classes.postTitle} variant="h1">
+                <Typography variant="h1">
                   {post.mdx.frontmatter.title}
                 </Typography>
                 {/* <Button
