@@ -1,7 +1,8 @@
 import React from 'react';
-import { groupBy as _groupBy, map as _map, find as _find } from 'lodash';
-import { Paper, Collapse, List, ListItem, ListItemText, Typography, makeStyles, Theme, createStyles } from '@material-ui/core';
+import { map as _map, findIndex as _findIndex } from 'lodash';
+import { Collapse, List, ListItem, ListItemText, makeStyles, Theme, createStyles, Drawer } from '@material-ui/core';
 import OpenApi from '../../openapi.service';
+import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
 interface ApiReferenceProps {
   name: string;
@@ -10,6 +11,9 @@ interface ApiReferenceProps {
   description: string
 }
 
+export const drawerWidthSpacingLg = 56
+export const drawerWidthSpacing = drawerWidthSpacingLg - 20
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -17,76 +21,112 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: 360,
       backgroundColor: theme.palette.background.paper,
     },
+    drawer: {
+      [theme.breakpoints.up('lg')]: {
+        width: theme.spacing(drawerWidthSpacingLg),
+        flexShrink: 0,
+      },
+    },
+    operation: (props: any) => {
+      let offset = props.depth - 1
+      if (offset > 1) {
+        offset = offset * 0.75
+      }
+      return {
+        paddingLeft: theme.spacing(offset * 5.5),
+      }
+    }
   })
 )
 
 export default function ApiReferenceMenu(props) {
-  const { apiReference, resourceChange } = props;
-  const sections = _groupBy(apiReference.filter(apiRef => apiRef.x_section_id != null), 'x_section_id');
-
+  const { ocApi, sectionChange, resourceChange, operationChange, activeIndex } = props;
+  const classes = useStyles(props);
   return (
-    <Paper>
-      {_map(sections, (section, index) => {
-        const sectionDescription = _find(apiReference, r => r.x_id === index).description;
+    <Drawer variant="permanent" className={classes.drawer} anchor="right">
+      {_map(ocApi.sections, (section, index) => {
         return (
           <Section key={index}
             section={section}
-            sectionTitle={index}
-            sectionDescription={sectionDescription}
-            resourceChange={resourceChange} />
+            ocApi={ocApi}
+            sectionChange={sectionChange}
+            resourceChange={resourceChange}
+            operationChange={operationChange}
+            activeIndex={activeIndex} />
         )
       })}
-    </Paper>
+    </Drawer>
+
   )
 }
 
 function Section(props) {
-  const { section, sectionTitle, sectionDescription, resourceChange } = props;
+  const { section, ocApi, sectionChange, activeIndex, resourceChange, operationChange } = props;
+
   const classes = useStyles(props);
-  const [open, setOpen] = React.useState(false);
+  const sectionIndex = _findIndex(ocApi.sections, (sect) => sect['x-id'] === section['x-id']);
+  const isActive = sectionIndex === activeIndex;
+  const [open, setOpen] = React.useState(isActive);
+
+  const resources = ocApi.resources.filter(r => r['x-section-id'] == section['x-id']);
 
   function handleClick() {
     setOpen(!open)
+    if (!open) {
+      sectionChange(section);
+    }
   }
 
   return (
     <List className={classes.root}>
       <ListItem button onClick={handleClick}>
         <ListItemText>
-          <Typography>
-            {sectionTitle}
-          </Typography>
+          {section.name}
         </ListItemText>
+        {open ? (
+          <ExpandLess onClick={handleClick} />
+        ) : (
+            <ExpandMore onClick={handleClick} />
+          )}
       </ListItem>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-        {section.map((s, index) => <Resource key={index} resource={s} resourceChange={resourceChange} />)}
+      <Collapse in={isActive} timeout="auto" unmountOnExit>
+        {resources.map((resource, index) => <Resource key={index} resource={resource} operationChange={operationChange} resourceChange={resourceChange} />)}
       </Collapse>
     </List>
   )
 }
 
 function Resource(props) {
-  const { resource, resourceChange } = props;
-  const operations = OpenApi.operationsByResource[resource.name];
+  const { resource, operationChange, resourceChange } = props;
+  const classes = useStyles(props);
+
   const [open, setOpen] = React.useState(false);
+
+  const operations = OpenApi.operationsByResource ? OpenApi.operationsByResource[resource.name] : null;
 
   function handleClick() {
     setOpen(!open)
+    if (!open) {
+      resourceChange(resource.name);
+    }
   }
 
   return (
     <List>
-      <ListItem button onClick={handleClick}>
-        <ListItemText>
-          {resource.name}
-        </ListItemText>
+      <ListItem button onClick={handleClick} className={classes.operation}>
+        <ListItemText>{resource.name}</ListItemText>
+        {open ? (
+          <ExpandLess onClick={handleClick} />
+        ) : (
+            <ExpandMore onClick={handleClick} />
+          )}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List>
           {operations && operations.length ? operations.map((o, index) => {
             return (
-              <ListItem key={index} onClick={() => resourceChange(o)}>
-                <ListItemText primary={o.summary} />
+              <ListItem key={index} onClick={() => operationChange(o)}>
+                <ListItemText primary={o.summary.replace(/\./g, ' ')} />
               </ListItem>
             )
           }) : null}

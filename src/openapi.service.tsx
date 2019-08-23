@@ -1,66 +1,72 @@
-import SwaggerParser from 'swagger-parser';
-import SwaggerSpec from './openapi.json';
-import { groupBy, keyBy, mapValues, values, flatten } from 'lodash';
-import { initializeIndex } from './lunr.helper';
-import lunr from 'lunr';
+import SwaggerParser from 'swagger-parser'
+import SwaggerSpec from './openapi.json'
+import { groupBy, keyBy, mapValues, values, flatten } from 'lodash'
+import { initializeIndex } from './lunr.helper'
+import lunr from 'lunr'
+import { OutlinedInput } from '@material-ui/core'
 
 export interface Tag {
-  name: string;
-  description: string;
+  name: string
+  description: string
 }
 
 export interface ApiSection extends Tag {
-  'x-id': string;
+  'x-id': string
 }
 
 export interface ApiResource extends Tag {
-  'x-section-id': string;
+  'x-section-id': string
 }
 
 export interface ServerShape {
-  description: string;
-  url: string;
+  description: string
+  url: string
 }
 
 export interface OpenApiShape {
-  info: any;
+  info: any
   components: {
-    securitySchemes: any;
-    schemas: any;
-  };
-  openapi: string;
+    securitySchemes: any
+    schemas: any
+  }
+  openapi: string
   paths: {
     [path: string]: {
-      [operation: string]: any;
-    };
-  };
-  servers: ServerShape[];
-  tags: (ApiSection | ApiResource)[];
+      [operation: string]: any
+    }
+  }
+  servers: ServerShape[]
+  tags: (ApiSection | ApiResource)[]
 }
 
 export interface OrderCloudProps {
-  openapi: OpenApiShape;
-  sections: ApiSection[];
-  resources: ApiResource[];
-  index: lunr.Index;
-  operations: any[];
+  openapi: OpenApiShape
+  sections: ApiSection[]
+  resources: ApiResource[]
+  index: lunr.Index
+  operations: any[]
   operationsById: {
-    [operationId: string]: any;
-  };
+    [operationId: string]: any
+  }
   operationsByResource: {
-    [resource: string]: any[];
-  };
+    [resource: string]: any[]
+  }
 }
 
-export interface OrderCloudWindow extends Window {
-  oc: OrderCloudProps;
+interface OpenApiResult {
+  oc?: OrderCloudProps
 }
 
-declare let window: OrderCloudWindow;
+const result: OpenApiResult = {
+  oc: null,
+}
 
 export const Initialize = async () => {
-  if (!window.oc) {
+  if (!result.oc) {
     const parsedSpec = await SwaggerParser.dereference(SwaggerSpec);
+    const resources = parsedSpec.tags
+      .filter(tag => tag['x-section-id'])
+      .concat(GetSubsectionsToAdd());
     const operations = flatten(
       values(
         mapValues(parsedSpec.paths, (ops, path) => {
@@ -68,18 +74,17 @@ export const Initialize = async () => {
             mapValues(ops, (o, verb) => {
               const tags =
                 o.tags[0] === 'Me' ? [GetSubSectionName(path)] : o.tags;
-              return { ...o, verb, path, tags };
+              const resource = resources.filter(r => r.name === tags[0])[0];
+              return { ...o, verb, path, tags, resource };
+
             })
-          );
+          )
         })
       )
-    );
+    )
 
-    const resources = parsedSpec.tags
-      .filter(tag => tag['x-section-id'])
-      .concat(GetSubsectionsToAdd());
 
-    window.oc = {
+    return (result.oc = {
       openapi: parsedSpec,
       sections: parsedSpec.tags.filter(tag => tag['x-id']),
       resources,
@@ -87,71 +92,71 @@ export const Initialize = async () => {
       index: initializeIndex(operations, resources),
       operationsById: keyBy(operations, 'operationId'),
       operationsByResource: groupBy(operations, o => {
-        return o.tags[0];
+        return o.tags[0]
       }),
-    };
+    })
   }
-};
+}
 
 export class OpenApi {
   get spec(): OpenApiShape {
-    return window.oc.openapi;
+    return result.oc.openapi
   }
   get sections(): ApiSection[] {
-    return window.oc.sections;
+    return result.oc.sections
   }
 
   get resources(): ApiResource[] {
-    return window.oc.resources;
+    return result.oc.resources
   }
 
   get operations(): any[] {
-    return window.oc.operations;
+    return result.oc.operations
   }
 
   get index(): lunr.Index {
-    return window.oc.index;
+    return result.oc.index
   }
 
   get operationsById(): {
-    [operationId: string]: any;
+    [operationId: string]: any
   } {
-    return window.oc.operationsById;
+    return result.oc.operationsById
   }
 
   get operationsByResource(): {
-    [resource: string]: any;
+    [resource: string]: any
   } {
-    return window.oc.operationsByResource;
+    return result.oc && result.oc.operationsByResource
   }
 
-  public initialize = Initialize;
+  public initialize = Initialize
 
   public findResource(operationId: string): ApiResource | undefined {
-    const operation = window.oc.operationsById[operationId];
-    const resourceName = operation.tags[0];
-    return window.oc.resources.find(resource => resource.name === resourceName);
+    const operation = result.oc.operationsById[operationId]
+    const resourceName = operation.tags[0]
+    return result.oc.resources.find(resource => resource.name === resourceName)
   }
 
   public findOperation(operationId: string): any | undefined {
-    const operation = window.oc.operationsById[operationId];
+    const operation = result.oc.operationsById[operationId]
     if (operation.parameters && operation.parameters.length) {
       operation.parameters.map(param => {
         switch (param.schema.type) {
           case 'string':
-            param.value = '';
-            break;
+            param.value = ''
+            break
           case 'integer':
-            param.value = param.required ? 0 : undefined;
-            break;
+            param.value = param.required ? 0 : undefined
+            break
           case 'boolean':
-            param.value = false;
+            param.value = false
           default:
-            break;
+            break
         }
-      });
+      })
     }
-    return operation;
+    return operation
   }
 }
 
@@ -164,13 +169,13 @@ export class OpenApi {
 
 // This method is used to attach the correct subsection to routes.
 const GetSubSectionName = (path: string) => {
-  var sec = MeSubSections.find(sec => sec.paths.includes(path));
-  return sec ? sec.name : null;
-};
+  var sec = MeSubSections.find(sec => sec.paths.includes(path))
+  return sec ? sec.name : null
+}
 
 const GetSubsectionsToAdd = () => {
-  return MeSubSections.filter(sec => sec.name !== 'Me'); // There is already a Me subsection
-};
+  return MeSubSections.filter(sec => sec.name !== 'Me') // There is already a Me subsection
+}
 
 const MeSubSections = [
   {
@@ -242,6 +247,6 @@ const MeSubSections = [
     'x-section-id': 'MeAndMyStuff',
     paths: ['/me/catalogs', '/me/catalogs/{catalogID}'],
   },
-];
+]
 
-export default new OpenApi();
+export default new OpenApi()
