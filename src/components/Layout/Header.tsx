@@ -14,13 +14,14 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import {
-  BookmarksTwoTone,
   CodeTwoTone,
-  LocalLibraryTwoTone,
   LockTwoTone,
   PeopleTwoTone,
   SettingsTwoTone,
-  SpeakerNotesTwoTone,
+  DescriptionTwoTone,
+  RateReviewTwoTone,
+  NewReleasesTwoTone,
+  DvrTwoTone,
 } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import React from 'react'
@@ -50,7 +51,7 @@ function parseJwt(token: string) {
   var jsonPayload = decodeURIComponent(
     atob(base64)
       .split('')
-      .map(function (c) {
+      .map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
       })
       .join('')
@@ -155,8 +156,9 @@ class Header extends React.Component<any, HeaderState> {
               component={Link}
               to="/"
             >
+              {/* <LibraryBooksTwoTone className={classes.icon} /> */}
               <ListItemIcon>
-                <LocalLibraryTwoTone className={classes.icon} />
+                <DescriptionTwoTone className={classes.icon} />
               </ListItemIcon>
               <ListItemText primary="Documentation" />
             </ListItem>
@@ -167,7 +169,7 @@ class Header extends React.Component<any, HeaderState> {
               to="/blog"
             >
               <ListItemIcon>
-                <BookmarksTwoTone className={classes.icon} />
+                <RateReviewTwoTone className={classes.icon} />
               </ListItemIcon>
               <ListItemText primary="Blog" />
             </ListItem>
@@ -178,7 +180,7 @@ class Header extends React.Component<any, HeaderState> {
               to="/api-release-notes"
             >
               <ListItemIcon>
-                <SpeakerNotesTwoTone className={classes.icon} />
+                <NewReleasesTwoTone className={classes.icon} />
               </ListItemIcon>
               <ListItemText primary="API Release Notes" />
             </ListItem>
@@ -188,6 +190,9 @@ class Header extends React.Component<any, HeaderState> {
               component={Link}
               to="/api-reference"
             >
+              <ListItemIcon>
+                <DvrTwoTone className={classes.icon} />
+              </ListItemIcon>
               <ListItemText primary="API Reference" />
             </ListItem>
           </List>
