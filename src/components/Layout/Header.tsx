@@ -14,6 +14,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import {
+  BookTwoTone,
   BookmarksTwoTone,
   CodeTwoTone,
   LocalLibraryTwoTone,
@@ -50,7 +51,7 @@ function parseJwt(token: string) {
   var jsonPayload = decodeURIComponent(
     atob(base64)
       .split('')
-      .map(function (c) {
+      .map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
       })
       .join('')
@@ -177,6 +178,17 @@ class Header extends React.Component<any, HeaderState> {
               button
               className={classes.menuItem}
               component={Link}
+              to="/api-reference"
+            >
+              <ListItemIcon>
+                <BookTwoTone className={classes.icon} />
+              </ListItemIcon>
+              <ListItemText primary="API Reference" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.menuItem}
+              component={Link}
               to="/blog"
             >
               <ListItemIcon>
@@ -193,15 +205,7 @@ class Header extends React.Component<any, HeaderState> {
               <ListItemIcon>
                 <SpeakerNotesTwoTone className={classes.icon} />
               </ListItemIcon>
-              <ListItemText primary="API Release Notes" />
-            </ListItem>
-            <ListItem
-              button
-              className={classes.menuItem}
-              component={Link}
-              to="/api-reference"
-            >
-              <ListItemText primary="API Reference" />
+              <ListItemText primary="Release Notes" />
             </ListItem>
           </List>
           <div className={classes.grow} />
