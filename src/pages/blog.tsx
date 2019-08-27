@@ -185,7 +185,6 @@ export default function BlogListComponent(props: BlogListProps) {
         </div>
         <Grid container spacing={3}>
           {data.allMdx.edges.map(edge => {
-            console.log(edge)
             return (
               <Grid item sm={6} md={4} lg={3} key={edge.node.id}>
                 <Card className={classes.cardBase}>

@@ -156,7 +156,6 @@ class Header extends React.Component<any, HeaderState> {
               component={Link}
               to="/"
             >
-              {/* <LibraryBooksTwoTone className={classes.icon} /> */}
               <ListItemIcon>
                 <DescriptionTwoTone className={classes.icon} />
               </ListItemIcon>
