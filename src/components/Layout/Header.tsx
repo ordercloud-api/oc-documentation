@@ -1,35 +1,27 @@
 import {
+  AppBar,
+  Button,
   createStyles,
+  Drawer,
   Hidden,
   List,
   ListItem,
-  ListItemIcon,
-  ListItemText,
+  Tab,
+  Tabs,
   Theme,
+  Toolbar,
   withStyles,
+  withWidth,
 } from '@material-ui/core'
-import Avatar from '@material-ui/core/Avatar'
-import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import {
-  BookTwoTone,
-  BookmarksTwoTone,
-  CodeTwoTone,
-  LocalLibraryTwoTone,
-  LockTwoTone,
-  PeopleTwoTone,
-  SettingsTwoTone,
-  SpeakerNotesTwoTone,
-} from '@material-ui/icons'
+import { Menu as MenuIcon } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import React from 'react'
-import Gravatar from 'react-gravatar'
 import Cookies from 'universal-cookie'
-import ocLogo from '../../assets/images/four51-logo--full-color--header.svg'
-import { navigate } from '../Shared/PortalLink'
+import ocLogo from '../../assets/images/four51-badge--flame.svg'
+import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
+import { navigate } from '../Shared/PortalLink'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -59,9 +51,16 @@ function parseJwt(token: string) {
   return JSON.parse(jsonPayload)
 }
 
+const buildChipLink = (to: string) => {
+  return React.forwardRef((props: any, ref: any) => {
+    return <Link {...props} to={to} ref={ref} />
+  })
+}
+
 interface HeaderState {
   auth: boolean
   anchorEl?: HTMLElement
+  mobileOpen: boolean
   username: string
   firstName: string
   email: string
@@ -71,6 +70,7 @@ class Header extends React.Component<any, HeaderState> {
   state = {
     auth: false,
     anchorEl: null,
+    mobileOpen: false,
     username: '',
     firstName: '',
     email: '',
@@ -123,154 +123,119 @@ class Header extends React.Component<any, HeaderState> {
     navigate(route)
   }
 
-  public render() {
-    const { classes } = this.props
-    const { anchorEl, auth, showResults } = this.state
-    const open = Boolean(anchorEl)
-    return (
-      <div className={classes.root}>
-        <Link to="/" className={classes.logoContainer}>
-          <img className={classes.logo} src={ocLogo} alt="OC" />
-        </Link>
+  public toggleNav = (mobileOpen: boolean) => () => {
+    this.setState({ mobileOpen })
+  }
 
-        <Hidden mdUp>
-          <DocSearch
-            noPopper
-            darkMode={true}
-            classes={{
-              searchBox: classes.searchBox,
-              searchBoxInput: classes.searchBoxInput,
-              searchHits: classes.searchHits,
-              searchHitsPaper: classes.searchHitsPaper,
-            }}
-          />
-        </Hidden>
-        <Hidden smDown>
-          <List component="nav" aria-label="ordercloud documentation menu">
-            <ListItem
-              button
-              className={classes.menuItem}
-              onClick={this.goToPortal('/console')}
-            >
-              <ListItemIcon>
-                <CodeTwoTone className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText primary="API Console" />
-            </ListItem>
-            <ListItem button className={classes.menuItem}>
-              <ListItemIcon>
-                <SettingsTwoTone className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText primary="My Organizations" />
-            </ListItem>
-            <ListItem
-              button
-              className={classes.menuItem}
-              component={Link}
-              to="/"
-            >
-              <ListItemIcon>
-                <LocalLibraryTwoTone className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText primary="Documentation" />
-            </ListItem>
-            <ListItem
-              button
-              className={classes.menuItem}
-              component={Link}
-              to="/api-reference"
-            >
-              <ListItemIcon>
-                <BookTwoTone className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText primary="API Reference" />
-            </ListItem>
-            <ListItem
-              button
-              className={classes.menuItem}
-              component={Link}
-              to="/blog"
-            >
-              <ListItemIcon>
-                <BookmarksTwoTone className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText primary="Blog" />
-            </ListItem>
-            <ListItem
-              button
-              className={classes.menuItem}
-              component={Link}
-              to="/api-release-notes"
-            >
-              <ListItemIcon>
-                <SpeakerNotesTwoTone className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText primary="Release Notes" />
-            </ListItem>
+  public render() {
+    const { classes, location, width } = this.props
+    const { anchorEl, auth, showResults } = this.state
+    const isMobile = width !== 'md' && width !== 'lg' && width !== 'xl'
+    console.log(width)
+    let activeTab = 'docs'
+    if (location && location.pathname) {
+      var partialPath = location.pathname.split('/')[1]
+      if (partialPath === 'blog' || partialPath === 'api-reference') {
+        activeTab = partialPath
+      }
+    }
+    return (
+      <React.Fragment>
+        <AppBar color="primary" className={classes.root}>
+          {/* <Container> */}
+          <Toolbar>
+            <Hidden mdUp>
+              <IconButton
+                color="inherit"
+                edge="start"
+                onClick={this.toggleNav(!this.state.mobileOpen)}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Hidden>
+            <Link to="/" className={classes.logo}>
+              <img src={ocLogo}></img>
+            </Link>
+            <Hidden smDown>
+              <Tabs
+                value={activeTab}
+                className={classes.tabs}
+                classes={{ flexContainer: classes.tabsContainer }}
+              >
+                <Tab
+                  classes={{ root: classes.tab }}
+                  value="console"
+                  label="Console"
+                  component={Link}
+                  to="/console"
+                ></Tab>
+                <Tab
+                  value="docs"
+                  label="Docs"
+                  classes={{ root: classes.tab }}
+                  component={Link}
+                  to="/"
+                ></Tab>
+                <Tab
+                  classes={{ root: classes.tab }}
+                  value="api-reference"
+                  label="Reference"
+                  component={Link}
+                  to="/api-reference"
+                ></Tab>
+
+                <Tab
+                  classes={{ root: classes.tab }}
+                  value="blog"
+                  label="Blog"
+                  component={Link}
+                  to="/blog"
+                ></Tab>
+              </Tabs>
+            </Hidden>
+
+            <div className={classes.grow}></div>
+            <Hidden smDown>
+              <ChipLink
+                color="primary"
+                label="v1.0.109"
+                to="/release-notes/v1.0.109"
+              ></ChipLink>
+              <div className={classes.spacer}></div>
+              <Button
+                variant="text"
+                color="inherit"
+                size="small"
+                style={{ marginRight: 5 }}
+              >
+                Login
+              </Button>
+              <Button variant="outlined" color="inherit" size="small">
+                Sign-Up
+              </Button>
+              <div className={classes.spacer}></div>
+            </Hidden>
+            <DocSearch
+              classes={{
+                searchBox: `${isMobile ? classes.mobileSearchBox : undefined}`,
+                searchBoxInput: `${
+                  isMobile ? classes.mobileSearchInput : undefined
+                }`,
+              }}
+              darkMode={true}
+              noPopper={isMobile}
+            ></DocSearch>
+          </Toolbar>
+        </AppBar>
+        <Drawer open={this.state.mobileOpen} onClose={this.toggleNav(false)}>
+          <List>
+            <ListItem>Console</ListItem>
+            <ListItem>Docs</ListItem>
+            <ListItem>Reference</ListItem>
+            <ListItem>Blog</ListItem>
           </List>
-          <div className={classes.grow} />
-        </Hidden>
-        {auth && (
-          <div>
-            <IconButton
-              className={classes.menuItem__profile}
-              aria-owns={open ? 'menu-appbar' : undefined}
-              aria-haspopup="true"
-              onClick={this.handleMenu}
-              color="inherit"
-            >
-              <Avatar alt={this.state.username}>
-                <Gravatar email={this.state.email} />
-              </Avatar>
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              className={classes.adminMenu}
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={this.handleClose}
-            >
-              <MenuItem>
-                <Avatar alt="Email" className={classes.mr1rem}>
-                  <Gravatar email={this.state.email} />
-                </Avatar>
-                Welcome {this.state.firstName}!
-              </MenuItem>
-              <Divider />
-              <MenuItem onClick={this.goToPortal('/profile')}>
-                <ListItemIcon className={classes.mr1rem}>
-                  <PeopleTwoTone />
-                </ListItemIcon>
-                Profile
-              </MenuItem>
-              <MenuItem onClick={this.goToPortal('/profile/account')}>
-                <ListItemIcon className={classes.mr1rem}>
-                  <LockTwoTone />
-                </ListItemIcon>
-                Account
-              </MenuItem>
-              <MenuItem component={Link} to="/profile/console-settings">
-                <ListItemIcon className={classes.mr1rem}>
-                  <CodeTwoTone />
-                </ListItemIcon>
-                Console Settings
-              </MenuItem>
-              <Divider />
-              <MenuItem dense={true} onClick={this.handleLogout}>
-                Logout
-              </MenuItem>
-            </Menu>
-          </div>
-        )}
-      </div>
+        </Drawer>
+      </React.Fragment>
     )
   }
 }
@@ -279,55 +244,32 @@ const drawerWidth = '25vw'
 
 const styles = (theme: Theme) =>
   createStyles({
+    logo: {
+      width: theme.spacing(7),
+      height: theme.spacing(7),
+      padding: theme.spacing(1),
+    },
+    tabs: {
+      alignSelf: 'stretch',
+    },
+    tabsContainer: {
+      height: '100%',
+    },
+    tab: {
+      minWidth: 0,
+    },
     root: {
-      display: 'flex',
-      position: 'fixed',
-      top: 0,
-      alignItems: 'center',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      backgroundColor: theme.palette.primary.main,
-      width: '100%',
-      maxWidth: '100vw',
-      zIndex: 2,
-      [theme.breakpoints.up('md')]: {
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        overflow: 'hidden',
-        maxWidth: theme.spacing(7.5),
-        height: '100vh',
-        boxShadow: `0px 0px 0px transparent`,
-        transition: `max-width 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`,
-        transitionDelay: '400ms',
-        '&:focus-within': {
-          boxShadow: `0px 0px 15px ${theme.palette.primary.dark}`,
-          maxWidth: theme.spacing(40),
-        },
-        '&:hover': {
-          boxShadow: `0px 0px 15px ${theme.palette.primary.dark}`,
-          maxWidth: theme.spacing(40),
-        },
-      },
-    },
-    searchBox: {
-      position: 'relative',
-    },
-    searchBoxInput: {
-      // width: 100,
-    },
-    searchHits: {
-      position: 'fixed',
+      width: '100vw',
       left: 0,
-      right: 0,
-      top: theme.spacing(7.5),
-      bottom: theme.spacing(8),
-      '& > div': {
-        width: '100%',
-        height: '100%',
-      },
+      top: 0,
     },
-    searchHitsPaper: {
-      borderRadius: 0,
+    mobileSearchBox: {
+      marginRight: -theme.spacing(1),
+    },
+    mobileSearchInput: {
+      paddingTop: theme.spacing(1),
+      paddingBottom: theme.spacing(1),
+      width: 100,
     },
     icon: {
       color: theme.palette.common.white,
@@ -339,15 +281,11 @@ const styles = (theme: Theme) =>
     logoContainer: {
       boxSizing: 'content-box',
     },
-    logo: {
-      paddingTop: theme.spacing(2),
-      paddingBottom: theme.spacing(2),
-      paddingLeft: theme.spacing(1.66),
-      width: 'auto',
-      height: theme.spacing(5),
-    },
     grow: {
       flexGrow: 1,
+    },
+    spacer: {
+      width: theme.spacing(2),
     },
     menuItem__profile: {
       padding: '10px',
@@ -362,4 +300,4 @@ const styles = (theme: Theme) =>
     },
   })
 
-export default withStyles(styles)(Header)
+export default withStyles(styles)(withWidth()(Header))

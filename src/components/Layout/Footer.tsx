@@ -7,38 +7,40 @@ import {
   Typography,
   Grid,
   Box,
+  Container,
 } from '@material-ui/core'
-import Toolbar from '@material-ui/core/Toolbar'
 import { OpenInNewOutlined } from '@material-ui/icons'
 import { mediumgrey, blackpearl } from '../../theme/ocPalette.constants'
-import { drawerWidthSpacingLg, drawerWidthSpacing } from './RightMenu'
 import ocOrange from '../../../src/assets/images/four51-logo--orange.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
-    ocFooter: {
-      position: 'fixed',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      zIndex: -1,
-      [theme.breakpoints.down('sm')]: {
-        paddingBottom: theme.spacing(20),
-        position: 'relative',
-        zIndex: 0,
-      },
+    root: {
+      position: 'relative',
+      zIndex: 0,
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(4),
       [theme.breakpoints.up('md')]: {
-        height: theme.spacing(56),
-        paddingLeft: theme.spacing(9),
-        paddingRight: theme.spacing(drawerWidthSpacing),
-      },
-      [theme.breakpoints.up('lg')]: {
-        paddingRight: theme.spacing(drawerWidthSpacingLg),
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: -1,
       },
       backgroundColor: blackpearl[500],
       borderTop: '2px solid',
       borderColor: mediumgrey[100],
       ...theme.typography.body2,
+    },
+    inner: {
+      display: 'flex',
+      flexFlow: 'row nowrap',
+    },
+    footerContent: {
+      flex: '1',
+    },
+    footerAside: {
+      flex: '0 0 350px',
     },
     logo: {
       marginTop: theme.spacing(2),
@@ -86,9 +88,10 @@ class Footer extends React.Component<any> {
     const currentYear = new Date().getFullYear()
     const { siteTitle, classes, right, theme, sections } = this.props
     return (
-      <footer className={classes.ocFooter}>
-        <Box paddingX={5} paddingY={3}>
+      <div className={classes.root}>
+        <Container className={classes.inner}>
           <Grid
+            className={classes.footerContent}
             container
             spacing={3}
             justify="space-between"
@@ -126,10 +129,7 @@ class Footer extends React.Component<any> {
                       {section.title}
                     </Link>
                   ))}
-                  <Link
-                      className={classes.footerLinks}
-                      to="/api-reference"
-                    >
+                  <Link className={classes.footerLinks} to="/api-reference">
                     API Reference
                   </Link>
                 </Box>
@@ -188,7 +188,10 @@ class Footer extends React.Component<any> {
                 >
                   More
                 </Typography>
-                <Link className={classes.footerLinks} to="/api-release-notes">
+                <Link
+                  className={classes.footerLinks}
+                  to="/release-notes/v1.0.109"
+                >
                   API Release Notes
                 </Link>
                 <Link className={classes.footerLinks} to="/">
@@ -203,8 +206,9 @@ class Footer extends React.Component<any> {
               </Box>
             </Grid>
           </Grid>
-        </Box>
-      </footer>
+          <div className={classes.footerAside}></div>
+        </Container>
+      </div>
     )
   }
 }

@@ -12,12 +12,12 @@ import {
 } from '@material-ui/core/'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
+import ocLogo from '../../assets/images/four51-logo--white.svg'
 import { darkgrey, mediumgrey } from '../../theme/ocPalette.constants'
 import utility from '../../utility'
-import Footer from '../Layout/Footer'
-import DocSearch from '../Shared/DocSearch'
 import Jumbotron from '../Shared/Jumbotron'
 import ListLink from '../Shared/ListLink'
+import ButtonLink from '../Shared/ButtonLink'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       minHeight: '100vh',
       backgroundColor: mediumgrey[50],
-      [theme.breakpoints.up('md')]: {
-        marginBottom: theme.spacing(55),
-      },
     },
     paperRoot: {
       zIndex: 1,
@@ -77,7 +74,9 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     paperList: {
-      columns: 2,
+      [theme.breakpoints.up('md')]: {
+        columns: 2,
+      },
     },
     cardWrapper: {
       overflowX: 'hidden',
@@ -137,14 +136,27 @@ const MainComponent: React.FunctionComponent = props => {
 
   return (
     <div className={classes.root}>
-      <Hidden smDown>
-        <DocSearch
-          darkMode={false}
-          classes={{ searchBox: classes.searchBox }}
-        />
-      </Hidden>
-      <Jumbotron />
-      <Container maxWidth="xl">
+      <Jumbotron
+        secondary={true}
+        image={{ src: ocLogo, alt: 'Four51 OrderCloud Logo' }}
+        heading="Welcome to Documentation for OrderCloud by Four51"
+        actions={[
+          <ButtonLink
+            to="/getting-started/intro-to-ordercloud"
+            variant="contained"
+          >
+            Introduction
+          </ButtonLink>,
+          <ButtonLink
+            to="/getting-started/quick-start-guide"
+            variant="contained"
+            color="secondary"
+          >
+            Quick Start
+          </ButtonLink>,
+        ]}
+      />
+      <Container>
         <Grid container className={classes.cardWrapper} spacing={5}>
           {sections
             .filter(section => section.title !== 'Getting Started')
@@ -201,7 +213,6 @@ const MainComponent: React.FunctionComponent = props => {
             ))}
         </Grid>
       </Container>
-      <Footer sections={sections} right={0} />
     </div>
   )
 }

@@ -13,29 +13,26 @@ import {
   Theme,
   Tooltip,
   Typography,
-  Hidden,
 } from '@material-ui/core/'
 import { Share } from '@material-ui/icons'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
-import DocSearch from '../components/Shared/DocSearch'
 import { mediumgrey, seafoam } from '../theme/ocPalette.constants'
 import utility from '../utility'
+import Jumbotron from '../components/Shared/Jumbotron'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    searchBox: {
-      position: 'absolute',
-      right: 0,
-      top: theme.spacing(3),
+    body: {
+      overflowX: 'hidden',
     },
-    header: {
-      marginBottom: theme.spacing(0),
-      [theme.breakpoints.up('lg')]: {
-        marginBottom: theme.spacing(3),
-      },
+    html: {
+      overflowX: 'hidden',
+    },
+    blogContainer: {
+      marginTop: -theme.spacing(14),
     },
     title: {
       marginBottom: theme.spacing(1),
@@ -139,10 +136,12 @@ interface PageData {
 
 const placeholderImg = '/images/blog/placeholder.jpg'
 
-interface BlogListProps {}
+interface BlogListProps {
+  location: any
+}
 
 export default function BlogListComponent(props: BlogListProps) {
-  const classes = useStyles(props)
+  const classes = useStyles({})
   const data: PageData = useStaticQuery(graphql`
     query {
       allMdx(
@@ -167,28 +166,16 @@ export default function BlogListComponent(props: BlogListProps) {
     }
   `)
   return (
-    <Layout>
+    <Layout location={props.location}>
       <Helmet title={`OrderCloud Blog`} />
-      <Container maxWidth="lg">
-        <Hidden smDown>
-          <DocSearch
-            darkMode={false}
-            classes={{ searchBox: classes.searchBox }}
-          />
-        </Hidden>
-        <div className={classes.header}>
-          <Typography variant="h1" className={classes.title}>
-            OrderCloud Blog
-          </Typography>
-          <Typography variant="subtitle1" className={classes.subtitle}>
-            Learn the platform like never before with these big thought blogs
-            <br />
-            written by some of the best orderclouders in the world.
-          </Typography>
-        </div>
+      <Jumbotron
+        secondary={true}
+        heading="OrderCloud Blog"
+        text="Learn the platform like never before with these big thought blogs written by some of the best orderclouders in the world."
+      />
+      <Container className={classes.blogContainer}>
         <Grid container spacing={3}>
           {data.allMdx.edges.map(edge => {
-            console.log(edge)
             return (
               <Grid item sm={6} md={4} lg={3} key={edge.node.id}>
                 <Card className={classes.cardBase}>

@@ -1,29 +1,17 @@
-import React from 'react'
 import {
-  ThumbUp,
-  ThumbDown,
-  KeyboardArrowRight,
-  KeyboardArrowLeft,
-} from '@material-ui/icons'
-import {
-  groupBy as _groupBy,
-  forEach as _forEach,
-  flatten as _flatten,
-} from 'lodash'
-import {
+  Box,
   Button,
   createStyles,
-  Theme,
-  withStyles,
-  Paper,
-  Typography,
-  IconButton,
-  Grid,
-  Box,
   Divider,
+  Grid,
+  Theme,
+  Typography,
+  withStyles,
 } from '@material-ui/core'
+import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons'
 import { Link } from 'gatsby'
-import { mediumgrey } from '../../theme/ocPalette.constants'
+import { flatten as _flatten } from 'lodash'
+import React from 'react'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -76,9 +64,9 @@ const styles = (theme: Theme) =>
 class DocFooter extends React.Component<any> {
   public render() {
     const { contents, currentGuide, classes, theme } = this.props
-    const flatContents = _flatten(contents.map(c => c.guides))
+    const flatContents: any = _flatten(contents.map(c => c.guides))
     const guideIndex = flatContents.findIndex(
-      section => section.path === currentGuide
+      (section: any) => section.path === currentGuide
     )
 
     const buildDirectionLink = to =>

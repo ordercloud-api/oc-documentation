@@ -1,34 +1,15 @@
-import {
-  Container,
-  createStyles,
-  Grid,
-  makeStyles,
-  Theme,
-  Typography,
-  Hidden,
-} from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../Layout/Layout'
-import DocSearch from '../Shared/DocSearch'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    searchBox: {
-      width: '100%',
-      marginTop: theme.spacing(3),
-    },
-    container: {
-      marginBlockStart: '2rem',
-      marginBlockEnd: '4rem',
-    },
-    body: {},
-  })
-)
+import LayoutContainer from '../Layout/LayoutContainer'
+import LayoutMain from '../Layout/LayoutMain'
+import LayoutMenu from '../Layout/LayoutMenu'
 
 interface BlogComponentProps {
+  location: any
   data: {
     mdx: {
       body: string
@@ -44,30 +25,21 @@ interface BlogComponentProps {
 }
 
 function BlogComponent(props: BlogComponentProps) {
-  const { data } = props
-  const classes = useStyles(props)
+  const { data, location } = props
   return (
-    <Layout>
+    <Layout location={location}>
       <Helmet title={`${data.mdx.frontmatter.title} - OrderCloud Blog`} />
-      <Container maxWidth="lg">
-        <Grid container spacing={3}>
-          <Grid item md={9}>
-            <Typography variant="h1">{data.mdx.frontmatter.title}</Typography>
-            <MDXRenderer>{data.mdx.body}</MDXRenderer>
-          </Grid>
-          <Grid item md={3}>
-            <Hidden smDown>
-              <DocSearch
-                darkMode={false}
-                classes={{ searchBox: classes.searchBox }}
-              />
-            </Hidden>
-            <Typography variant="h5">Related Articles</Typography>
-            <Typography variant="h5">Recent Articles</Typography>
-            <Typography variant="h5">Social Share</Typography>
-          </Grid>
-        </Grid>
-      </Container>
+      <LayoutContainer>
+        <LayoutMain>
+          <Typography variant="h1">{data.mdx.frontmatter.title}</Typography>
+          <MDXRenderer>{data.mdx.body}</MDXRenderer>
+        </LayoutMain>
+        <LayoutMenu>
+          <Typography variant="h5">Related Articles</Typography>
+          <Typography variant="h5">Recent Articles</Typography>
+          <Typography variant="h5">Social Share</Typography>
+        </LayoutMenu>
+      </LayoutContainer>
     </Layout>
   )
 }

@@ -163,6 +163,14 @@ export default createMuiTheme({
         a: {
           color: secondaryColor[900],
         },
+        code: {
+          whiteSpace: 'pre-wrap !important',
+          wordBreak: 'break-all !important',
+        },
+        pre: {
+          whiteSpace: 'pre-wrap !important',
+          workBreak: 'break-all !important',
+        },
         mark: {
           padding: defaultTheme.spacing(0, 0.25),
           borderRadius: defaultTheme.shape.borderRadius,
@@ -180,13 +188,6 @@ export default createMuiTheme({
       },
     },
     MuiTypography: {
-      root: {
-        // marginBottom: '0.5rem',
-        // @bob, this ^^^^ and this ⌄⌄⌄⌄ is not a good idea.
-      },
-      body1: {
-        // marginBottom: '1rem',
-      },
       h1: {
         paddingTop: '2rem',
         marginBottom: '2rem',

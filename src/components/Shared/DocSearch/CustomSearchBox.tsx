@@ -18,12 +18,12 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: theme.shape.borderRadius,
       padding: theme.spacing(0, 1.5),
       backgroundColor: props.darkMode
-        ? theme.palette.primary.main
+        ? theme.palette.primary.dark
         : theme.palette.grey[200],
     }),
     input: (props: any) => ({
       padding: theme.spacing(2, 1, 2, 0),
-      width: props.expanded ? 300 : 200,
+      width: 200,
       transition: theme.transitions.create('width', {
         duration: theme.transitions.duration.shorter,
       }),
@@ -97,10 +97,12 @@ const OrderCloudSearchBox = ({
         </InputAdornment>
       }
       endAdornment={
-        (Boolean(currentRefinement.length) || (noPopper && expanded)) && (
-          <InputAdornment
-            position="end"
-            classes={{ root: classesSelf.adornment }}
+        <InputAdornment
+          position="end"
+          classes={{ root: classesSelf.adornment }}
+        >
+          <Grow
+            in={Boolean(currentRefinement.length) || (noPopper && expanded)}
           >
             <IconButton
               color="inherit"
@@ -110,8 +112,8 @@ const OrderCloudSearchBox = ({
             >
               <Close color="inherit" />
             </IconButton>
-          </InputAdornment>
-        )
+          </Grow>
+        </InputAdornment>
       }
     />
   )

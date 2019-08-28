@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
-import ocLogo from '../../assets/images/four51-logo--white.svg'
+import ButtonLink from './ButtonLink'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -28,6 +28,9 @@ const styles = (theme: Theme) =>
       overflowY: 'hidden',
       overflowX: 'hidden',
       backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
+    },
+    jumbotronSecondary: {
+      backgroundImage: `linear-gradient(62deg, ${theme.palette.secondary.dark} 0%, ${theme.palette.secondary.light} 100%)`,
     },
     logo: {
       maxWidth: '40rem',
@@ -74,6 +77,7 @@ const styles = (theme: Theme) =>
     },
     jumbotronHeading: {
       fontWeight: 300,
+      padding: 0,
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
         margin: '0 auto',
@@ -83,10 +87,23 @@ const styles = (theme: Theme) =>
 
 class Jumbotron extends React.Component<any> {
   public render() {
-    const { classes } = this.props
+    const {
+      classes,
+      image,
+      heading,
+      text,
+      actions,
+      height,
+      secondary,
+    } = this.props
     return (
-      <div className={classes.jumbotron}>
-        {/* <Hidden mdDown implementation="js">
+      <div
+        className={`${classes.jumbotron} ${
+          secondary ? classes.jumbotronSecondary : undefined
+        }`}
+        style={{ height }}
+      >
+        <Hidden mdDown implementation="js">
           <Particles
             className={classes.jumbotronParticle}
             params={{
@@ -108,46 +125,39 @@ class Jumbotron extends React.Component<any> {
               },
             }}
           />
-        </Hidden> */}
-        <Container maxWidth="xl">
+        </Hidden>
+        <Container>
           <Paper className={classes.jumbotronContainer}>
-            <img
-              className={classes.logo}
-              src={ocLogo}
-              alt="OrderCloud by Four51"
-            />
-            <Typography
-              className={classes.jumbotronHeading}
-              variant="h4"
-              component="h1"
-            >
-              Welcome to Documentation for OrderCloud by Four51
-            </Typography>
-            <div className={classes.jumbotronLinkGroup}>
-              <Link
-                to="/getting-started/intro-to-ordercloud"
-                className={classes.buttonLink}
+            {image && (
+              <img className={classes.logo} src={image.src} alt={image.alt} />
+            )}
+            {heading && (
+              <Typography
+                className={classes.jumbotronHeading}
+                variant={image ? 'h4' : 'h1'}
+                component="h1"
               >
-                <Button
-                  variant="contained"
-                  className={classes.jumbotronLinkGroupLink}
-                >
-                  Intro to OrderCloud
-                </Button>
-              </Link>
-              <Link
-                to="/getting-started/quick-start-guide"
-                className={classes.buttonLink}
+                {heading}
+              </Typography>
+            )}
+            {text && (
+              <Typography
+                className={classes.jumbotronHeading}
+                variant={image ? 'h6' : 'h4'}
+                component="p"
               >
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  className={classes.jumbotronLinkGroupLink}
-                >
-                  Quick Start Guide
-                </Button>
-              </Link>
-            </div>
+                {text}
+              </Typography>
+            )}
+            {actions && (
+              <div className={classes.jumbotronLinkGroup}>
+                {actions.map(a => {
+                  return (
+                    <div className={classes.jumbotronLinkGroupLink}>{a}</div>
+                  )
+                })}
+              </div>
+            )}
           </Paper>
         </Container>
       </div>

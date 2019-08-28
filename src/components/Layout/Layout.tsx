@@ -3,34 +3,56 @@ import Header from './Header'
 import { ThemeProvider } from '@material-ui/styles'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import {
-  Hidden,
   Box,
   Theme,
   makeStyles,
   createStyles,
   Typography,
-  IconButton,
   Table,
   TableRow,
   TableCell,
   CssBaseline,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
-import MobileNav from './MobileNav'
 import { MDXProvider } from '@mdx-js/react'
-import { Link } from 'gatsby'
+import { useStaticQuery, graphql } from 'gatsby'
+import utility from '../../utility'
 import IconButtonLink from '../Shared/IconButtonLink'
-import { FileCopy } from '@material-ui/icons'
+import { Helmet } from 'react-helmet'
+import Footer from './Footer'
+import { seafoam } from '../../theme/ocPalette.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageWrapper: {
       backgroundColor: 'white',
-      marginTop: theme.spacing(9), // spacing from top of page on mobile (due to horiz menu)
+      marginTop: theme.spacing(7), // spacing from top of page on mobile (due to horiz menu)
+      paddingBottom: theme.spacing(8),
+      overflow: 'hidden',
       [theme.breakpoints.up('md')]: {
-        marginLeft: theme.spacing(7.5), // vertical nav width spacing
-        marginTop: 0, // no horizontal nav to worry about
+        marginTop: theme.spacing(8), // spacing from top of page on mobile (due to horiz menu)
+        marginBottom: theme.spacing(53),
+        // marginLeft: theme.spacing(7.5), // vertical nav width spacing
+        // marginTop: 0, // no horizontal nav to worry about
       },
+      '& img': {
+        maxWidth: '100%',
+      },
+    },
+    html: {
+      // width: '100vw',
+      // overflowX: 'hidden',
+    },
+    body: {
+      width: '100vw',
+      overflowX: 'hidden',
+    },
+    heading: {
+      position: 'relative',
+      paddingTop: theme.spacing(11),
+      top: -theme.spacing(10),
+      marginTop: theme.spacing(3),
+      marginBottom: -theme.spacing(8),
     },
   })
 )
@@ -65,25 +87,110 @@ const LayoutLink: React.FunctionComponent = (props: any) => {
       </div>
     )
   }
-  return <Link to={props.href} children={props.children} />
+  return <a href={props.href} children={props.children} />
 }
 
 export default props => {
   const classes = useStyles(props)
+  const data = useStaticQuery(graphql`
+    query {
+      allMdx(
+        sort: { order: ASC, fields: [frontmatter___priority] }
+        filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
+      ) {
+        totalCount
+        edges {
+          node {
+            id
+            fileAbsolutePath
+            frontmatter {
+              section
+              title
+              hidden
+            }
+          }
+        }
+      }
+    }
+  `)
+  const sections = utility.getSectionsFromDocsQuery(data)
   return (
-    <React.Fragment>
-      <ThemeProvider theme={ORDERCLOUD_THEME}>
-        <CssBaseline />
-        <Header siteTitle="OrderCloud Documentation" />
+    <ThemeProvider theme={ORDERCLOUD_THEME}>
+      <Helmet
+        meta={[
+          {
+            name: 'viewport',
+            content:
+              'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+          },
+        ]}
+      >
+        <html className={classes.html} />
+        <body className={classes.body} />
+      </Helmet>
+      <CssBaseline />
+      <React.Fragment>
+        <Header
+          location={props.location}
+          siteTitle="OrderCloud Documentation"
+        />
         <div className={classes.pageWrapper}>
           <MDXProvider
             components={{
-              h1: props => <Typography {...props} variant="h1" />,
-              h2: props => <Typography {...props} variant="h2" />,
-              h3: props => <Typography {...props} variant="h3" />,
-              h4: props => <Typography {...props} variant="h4" />,
-              h5: props => <Typography {...props} variant="h5" />,
-              h6: props => <Typography {...props} variant="h6" />,
+              h1: props => (
+                <Typography
+                  {...props}
+                  className={classes.heading}
+                  variant="h1"
+                />
+              ),
+              h2: props => (
+                <Typography
+                  {...props}
+                  className={classes.heading}
+                  variant="h2"
+                />
+              ),
+              h3: props => (
+                <Typography
+                  {...props}
+                  className={classes.heading}
+                  variant="h3"
+                />
+              ),
+              h4: props => (
+                <Typography
+                  {...props}
+                  className={classes.heading}
+                  variant="h4"
+                />
+              ),
+              h5: props => (
+                <Typography
+                  {...props}
+                  className={classes.heading}
+                  variant="h5"
+                />
+              ),
+              h6: props => (
+                <Typography
+                  {...props}
+                  className={classes.heading}
+                  variant="h6"
+                />
+              ),
+              blockquote: props => (
+                <Box
+                  paddingX={2}
+                  paddingTop={2}
+                  paddingBottom="1px"
+                  marginBottom={2}
+                  bgcolor={seafoam[100]}
+                  borderRadius={4}
+                >
+                  {props.children}
+                </Box>
+              ),
               p: props => <Typography {...props} paragraph variant="body1" />,
               ol: props => (
                 <Typography {...props} component="ol" variant="body1" />
@@ -109,10 +216,9 @@ export default props => {
             {props.children}
           </MDXProvider>
         </div>
-        <Hidden mdUp>
-          <MobileNav />
-        </Hidden>
-      </ThemeProvider>
-    </React.Fragment>
+
+        <Footer sections={sections}></Footer>
+      </React.Fragment>
+    </ThemeProvider>
   )
 }
