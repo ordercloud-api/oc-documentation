@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: 'white',
       marginTop: theme.spacing(7), // spacing from top of page on mobile (due to horiz menu)
       paddingBottom: theme.spacing(8),
-      overflow: 'hidden',
       [theme.breakpoints.up('md')]: {
         marginTop: theme.spacing(8), // spacing from top of page on mobile (due to horiz menu)
         marginBottom: theme.spacing(53),

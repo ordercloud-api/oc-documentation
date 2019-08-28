@@ -5,7 +5,6 @@ import {
   Drawer,
   Hidden,
   List,
-  ListItem,
   Tab,
   Tabs,
   Theme,
@@ -25,7 +24,7 @@ import {
   Box,
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
-import { Menu as MenuIcon, Person } from '@material-ui/icons'
+import { Menu as MenuIcon } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import React from 'react'
 import Cookies from 'universal-cookie'
@@ -34,7 +33,6 @@ import Gravatar from 'react-gravatar'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
 import { navigate } from '../Shared/PortalLink'
-import themeConstants from '../../theme/theme.constants'
 import ListItemLink from '../Shared/ListItemLink'
 
 function isTokenExpired(token: string): boolean {
@@ -65,12 +63,6 @@ function parseJwt(token: string) {
   return JSON.parse(jsonPayload)
 }
 
-const buildChipLink = (to: string) => {
-  return React.forwardRef((props: any, ref: any) => {
-    return <Link {...props} to={to} ref={ref} />
-  })
-}
-
 interface HeaderState {
   auth: boolean
   anchorEl?: HTMLElement
@@ -90,7 +82,7 @@ class Header extends React.Component<any, HeaderState> {
     email: '',
     showResults: false,
   }
-
+  private readonly autologin = true
   private readonly cookies = new Cookies()
 
   public onInit() {
@@ -121,11 +113,26 @@ class Header extends React.Component<any, HeaderState> {
     this.setState({ anchorEl: null })
   }
 
-  public handleLogout = (): void => {
+  public handleFakeLogin = () => {
+    this.cookies.set(
+      'DevCenter.token',
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3IiOiJyd2F0dEBmb3VyNTEuY29tIiwiY2lkIjoiYjA5N2E5YWEtNWJjMy00OTM3LWI2YmItNmVhMzdlMDA0NDg2IiwidXNydHlwZSI6ImRldiIsInJvbGUiOiJEZXZDZW50ZXIiLCJpc3MiOiJodHRwczovL2F1dGgub3JkZXJjbG91ZC5pbyIsImF1ZCI6Imh0dHBzOi8vYXBpLm9yZGVyY2xvdWQuaW8iLCJleHAiOjE1NjcwMTE3NjQsIm5iZiI6MTU2Njk4Mjk2NH0.eLhNs3LQNrTMDR2G762UNCH4bGDBB7Q-uiN0kSOwOtI',
+      { domain: window.location.hostname }
+    )
+    this.cookies.set('DevCenter.firstName', 'Robert', {
+      domain: window.location.hostname,
+    })
+    this.cookies.set('DevCenter.email', 'rwatt@four51.com', {
+      domain: window.location.hostname,
+    })
+    this.onInit()
+  }
+
+  public handleLogout = () => {
     this.setState({ anchorEl: null })
-    this.cookies.remove('DevCenter.token')
-    this.cookies.remove('DevCenter.firstName')
-    this.cookies.remove('DevCenter.email')
+    this.cookies.remove('DevCenter.token', { domain: window.location.hostname })
+    this.cookies.set('DevCenter.firstName', null)
+    this.cookies.set('DevCenter.email', null)
     this.onInit()
   }
 
@@ -209,13 +216,15 @@ class Header extends React.Component<any, HeaderState> {
                   component={Link}
                   to="/api-reference"
                 ></Tab>
-                <Tab
-                  classes={{ root: classes.tab }}
-                  value="console"
-                  label="Console"
-                  component={Link}
-                  to="/console"
-                ></Tab>
+                {this.state.auth && (
+                  <Tab
+                    classes={{ root: classes.tab }}
+                    value="console"
+                    label="Console"
+                    component={Link}
+                    to="/console"
+                  ></Tab>
+                )}
               </Tabs>
             </Hidden>
 
@@ -283,7 +292,10 @@ class Header extends React.Component<any, HeaderState> {
                                 <MenuItem className={classes.menuItem}>
                                   Help
                                 </MenuItem>
-                                <MenuItem className={classes.menuItem}>
+                                <MenuItem
+                                  className={classes.menuItem}
+                                  onClick={this.handleLogout}
+                                >
                                   Sign Out
                                 </MenuItem>
                               </MenuList>
@@ -297,6 +309,7 @@ class Header extends React.Component<any, HeaderState> {
               ) : (
                 <React.Fragment>
                   <Button
+                    onClick={this.handleFakeLogin}
                     variant="text"
                     color="inherit"
                     size="small"
@@ -304,6 +317,7 @@ class Header extends React.Component<any, HeaderState> {
                   >
                     Login
                   </Button>
+
                   <Button variant="outlined" color="inherit" size="small">
                     Sign-Up
                   </Button>
@@ -381,7 +395,10 @@ class Header extends React.Component<any, HeaderState> {
                                 <MenuItem className={classes.menuItem}>
                                   Help
                                 </MenuItem>
-                                <MenuItem className={classes.menuItem}>
+                                <MenuItem
+                                  onClick={this.handleLogout}
+                                  className={classes.menuItem}
+                                >
                                   Sign Out
                                 </MenuItem>
                               </MenuList>
@@ -410,6 +427,23 @@ class Header extends React.Component<any, HeaderState> {
             </ListItemLink>
             <ListItemLink to="/">Support</ListItemLink>
           </List>
+          {!this.state.auth && (
+            <Box>
+              <Button
+                onClick={this.handleFakeLogin}
+                variant="text"
+                color="inherit"
+                size="small"
+                style={{ marginRight: 5 }}
+              >
+                Login
+              </Button>
+
+              <Button variant="outlined" color="inherit" size="small">
+                Sign-Up
+              </Button>
+            </Box>
+          )}
         </Drawer>
       </React.Fragment>
     )

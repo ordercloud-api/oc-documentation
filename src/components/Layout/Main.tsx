@@ -8,7 +8,6 @@ import {
   Paper,
   Theme,
   Typography,
-  Hidden,
 } from '@material-ui/core/'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'

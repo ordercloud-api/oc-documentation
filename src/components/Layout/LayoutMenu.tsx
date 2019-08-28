@@ -7,14 +7,13 @@ import {
   Fab,
   Drawer,
 } from '@material-ui/core'
-import { ExpandMore, ChevronLeft, ChevronRight } from '@material-ui/icons'
+import { ChevronLeft, ChevronRight } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flex: '0 0 350px',
       marginLeft: theme.spacing(4),
-      borderLeft: `1px solid ${theme.palette.divider}`,
     },
     inner: {
       overflowY: 'auto',
@@ -23,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: -999,
       paddingRight: 999,
       backgroundColor: theme.palette.background.default,
+      borderLeft: `1px solid ${theme.palette.divider}`,
       height: `calc(100vh - ${theme.spacing(8)}px)`,
     },
     content: {
