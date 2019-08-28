@@ -5,7 +5,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       [theme.breakpoints.up('md')]: {
-        overflow: 'hidden',
         display: 'flex',
         flexFlow: 'row nowrap',
       },

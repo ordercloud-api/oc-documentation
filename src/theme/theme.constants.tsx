@@ -191,6 +191,7 @@ export default createMuiTheme({
       h1: {
         paddingTop: '2rem',
         marginBottom: '2rem',
+        fontSize: '2.8rem',
       },
       h2: {
         paddingTop: '1.75rem',

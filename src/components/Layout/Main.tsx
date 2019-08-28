@@ -17,6 +17,7 @@ import utility from '../../utility'
 import Jumbotron from '../Shared/Jumbotron'
 import ListLink from '../Shared/ListLink'
 import ButtonLink from '../Shared/ButtonLink'
+import ListItemLink from '../Shared/ListItemLink'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -45,12 +46,12 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       maxWidth: '100vw',
       [theme.breakpoints.up('md')]: {
-        minHeight: '40vh',
+        minHeight: '30vh',
       },
     },
     paperTitleHeading: {
+      padding: theme.spacing(1, 0, 0, 2),
       color: darkgrey[900],
-      paddingLeft: theme.spacing(2),
       textAlign: 'left',
     },
     paperTitleSubheading: {
@@ -125,7 +126,7 @@ const MainComponent: React.FunctionComponent = props => {
       case 'Main Concepts':
         return `Establish a firm foundation by learning fundamental OrderCloud concepts`
       case 'Features':
-        return `Explore some of our API features you can use to solve your complex B2B scenarios`
+        return `Explore some of our API features that can help you solve complex B2B scenarios`
       case 'Guides':
         return `Walkthrough some common scenarios you'll encounter in the OrderCloud API`
       default:
@@ -156,7 +157,7 @@ const MainComponent: React.FunctionComponent = props => {
         ]}
       />
       <Container>
-        <Grid container className={classes.cardWrapper} spacing={3}>
+        <Grid container className={classes.cardWrapper} spacing={2}>
           {sections
             .filter(section => section.title !== 'Getting Started')
             .map((section, index) => (
@@ -175,13 +176,13 @@ const MainComponent: React.FunctionComponent = props => {
                       <div className={classes.paperCard}>
                         <Typography
                           className={classes.paperTitleHeading}
-                          variant="h2"
+                          variant="h3"
                         >
                           {section.title}
                         </Typography>
                         <Typography
                           className={classes.paperTitleSubheading}
-                          variant="body1"
+                          variant="subtitle1"
                         >
                           {getSectionSubtitle(section.title)}
                         </Typography>
@@ -194,13 +195,9 @@ const MainComponent: React.FunctionComponent = props => {
                             .filter(g => !g.frontmatter.hidden)
                             .map(g => {
                               return (
-                                <ListLink
-                                  key={g.id}
-                                  guideProps={{
-                                    path: g.path,
-                                    title: g.frontmatter.title,
-                                  }}
-                                />
+                                <ListItemLink key={g.id} to={g.path}>
+                                  {g.frontmatter.title}
+                                </ListItemLink>
                               )
                             })}
                         </List>
