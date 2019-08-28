@@ -40,10 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     html: {
       // width: '100vw',
-      // overflowX: 'hidden',
     },
     body: {
-      width: '100vw',
+      maxWidth: '100vw',
       overflowX: 'hidden',
     },
     heading: {

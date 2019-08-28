@@ -40,7 +40,9 @@ const styles = (theme: Theme) =>
       flex: '1',
     },
     footerAside: {
-      flex: '0 0 350px',
+      [theme.breakpoints.up('md')]: {
+        flex: '0 0 350px',
+      },
     },
     logo: {
       marginTop: theme.spacing(2),
