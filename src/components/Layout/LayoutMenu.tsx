@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
       right: theme.spacing(2),
     },
     drawerPaper: {
-      width: '90vw',
+      width: '70vw',
     },
   })
 )

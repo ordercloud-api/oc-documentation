@@ -47,6 +47,7 @@ const OrderCloudSearchBox = ({
   onClose,
   darkMode,
   expanded,
+  placeholder,
   classes,
   noPopper,
 }) => {
@@ -83,7 +84,7 @@ const OrderCloudSearchBox = ({
         input: `${classesSelf.input} ${classes.searchInput}`,
         root: `${classesSelf.root} ${classes.searchRoot}`,
       }}
-      placeholder="Search OrderCloud…"
+      placeholder={placeholder || 'Search OrderCloud…'}
       inputProps={{ 'aria-label': 'search' }}
       inputRef={inputRef}
       startAdornment={

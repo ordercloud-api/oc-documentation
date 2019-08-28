@@ -12,16 +12,30 @@ import {
   Toolbar,
   withStyles,
   withWidth,
+  Avatar,
+  Menu,
+  MenuItem,
+  MenuList,
+  ClickAwayListener,
+  Paper,
+  Grow,
+  Popper,
+  Divider,
+  Typography,
+  Box,
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
-import { Menu as MenuIcon } from '@material-ui/icons'
+import { Menu as MenuIcon, Person } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import React from 'react'
 import Cookies from 'universal-cookie'
 import ocLogo from '../../assets/images/four51-badge--flame.svg'
+import Gravatar from 'react-gravatar'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
 import { navigate } from '../Shared/PortalLink'
+import themeConstants from '../../theme/theme.constants'
+import ListItemLink from '../Shared/ListItemLink'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -135,8 +149,11 @@ class Header extends React.Component<any, HeaderState> {
     let activeTab = 'docs'
     if (location && location.pathname) {
       var partialPath = location.pathname.split('/')[1]
+      if (!partialPath) return
       if (partialPath === 'blog' || partialPath === 'api-reference') {
         activeTab = partialPath
+      } else {
+        activeTab = 'rest'
       }
     }
     return (
@@ -156,6 +173,7 @@ class Header extends React.Component<any, HeaderState> {
             <Link to="/" className={classes.logo}>
               <img src={ocLogo}></img>
             </Link>
+            <div className={classes.spacer}></div>
             <Hidden smDown>
               <Tabs
                 value={activeTab}
@@ -163,25 +181,18 @@ class Header extends React.Component<any, HeaderState> {
                 classes={{ flexContainer: classes.tabsContainer }}
               >
                 <Tab
-                  classes={{ root: classes.tab }}
-                  value="console"
-                  label="Console"
-                  component={Link}
-                  to="/console"
-                ></Tab>
-                <Tab
                   value="docs"
-                  label="Docs"
+                  label="Home"
                   classes={{ root: classes.tab }}
                   component={Link}
                   to="/"
                 ></Tab>
                 <Tab
+                  value="rest"
+                  label="Learn"
                   classes={{ root: classes.tab }}
-                  value="api-reference"
-                  label="Reference"
                   component={Link}
-                  to="/api-reference"
+                  to="/main-concepts/organization-hierarchy"
                 ></Tab>
 
                 <Tab
@@ -190,6 +201,20 @@ class Header extends React.Component<any, HeaderState> {
                   label="Blog"
                   component={Link}
                   to="/blog"
+                ></Tab>
+                <Tab
+                  classes={{ root: classes.tab }}
+                  value="api-reference"
+                  label="Docs"
+                  component={Link}
+                  to="/api-reference"
+                ></Tab>
+                <Tab
+                  classes={{ root: classes.tab }}
+                  value="console"
+                  label="Console"
+                  component={Link}
+                  to="/console"
                 ></Tab>
               </Tabs>
             </Hidden>
@@ -202,17 +227,89 @@ class Header extends React.Component<any, HeaderState> {
                 to="/release-notes/v1.0.109"
               ></ChipLink>
               <div className={classes.spacer}></div>
-              <Button
-                variant="text"
-                color="inherit"
-                size="small"
-                style={{ marginRight: 5 }}
-              >
-                Login
-              </Button>
-              <Button variant="outlined" color="inherit" size="small">
-                Sign-Up
-              </Button>
+              {this.state.auth ? (
+                <React.Fragment>
+                  <Button color="default" variant="contained" size="small">
+                    Support
+                  </Button>
+                  <div className={classes.spacer}></div>
+                  <IconButton color="inherit" onClick={this.handleMenu}>
+                    <Avatar alt={this.state.username}>
+                      <Gravatar size={40} email={this.state.email} />
+                    </Avatar>
+                  </IconButton>
+                  <Popper
+                    placement="bottom-end"
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    transition
+                    disablePortal
+                  >
+                    {({ TransitionProps, placement }) => (
+                      <Grow
+                        {...TransitionProps}
+                        style={{
+                          transformOrigin:
+                            placement === 'bottom-end'
+                              ? 'right top'
+                              : 'right bottom',
+                        }}
+                      >
+                        <Paper>
+                          <ClickAwayListener onClickAway={this.handleClose}>
+                            <div>
+                              <Box paddingX={2} paddingY={1}>
+                                <Typography>
+                                  Signed in as
+                                  <br />
+                                  <b>{this.state.username}</b>
+                                </Typography>
+                              </Box>
+                              <Divider />
+                              <MenuList className={classes.menuList}>
+                                <MenuItem className={classes.menuItem}>
+                                  Your Profile
+                                </MenuItem>
+                                <MenuItem className={classes.menuItem}>
+                                  Your Organizations
+                                </MenuItem>
+                                <MenuItem className={classes.menuItem}>
+                                  Shared Organizations
+                                </MenuItem>
+                                <Divider className={classes.menuListDivider} />
+                                <MenuItem className={classes.menuItem}>
+                                  Settings
+                                </MenuItem>
+                                <MenuItem className={classes.menuItem}>
+                                  Help
+                                </MenuItem>
+                                <MenuItem className={classes.menuItem}>
+                                  Sign Out
+                                </MenuItem>
+                              </MenuList>
+                            </div>
+                          </ClickAwayListener>
+                        </Paper>
+                      </Grow>
+                    )}
+                  </Popper>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Button
+                    variant="text"
+                    color="inherit"
+                    size="small"
+                    style={{ marginRight: 5 }}
+                  >
+                    Login
+                  </Button>
+                  <Button variant="outlined" color="inherit" size="small">
+                    Sign-Up
+                  </Button>
+                </React.Fragment>
+              )}
+
               <div className={classes.spacer}></div>
             </Hidden>
             <DocSearch
@@ -222,17 +319,96 @@ class Header extends React.Component<any, HeaderState> {
                   isMobile ? classes.mobileSearchInput : undefined
                 }`,
               }}
+              placeholder={isMobile && 'Search...'}
               darkMode={true}
               noPopper={isMobile}
             ></DocSearch>
+            <Hidden mdUp>
+              {this.state.auth && (
+                <React.Fragment>
+                  <div className={classes.spacer}></div>
+                  <IconButton
+                    edge="end"
+                    color="inherit"
+                    onClick={this.handleMenu}
+                  >
+                    <Avatar alt={this.state.username}>
+                      <Gravatar size={40} email={this.state.email} />
+                    </Avatar>
+                  </IconButton>
+                  <Popper
+                    placement="bottom-end"
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    transition
+                    disablePortal
+                  >
+                    {({ TransitionProps, placement }) => (
+                      <Grow
+                        {...TransitionProps}
+                        style={{
+                          transformOrigin:
+                            placement === 'bottom-end'
+                              ? 'right top'
+                              : 'right bottom',
+                        }}
+                      >
+                        <Paper>
+                          <ClickAwayListener onClickAway={this.handleClose}>
+                            <div>
+                              <Box paddingX={2} paddingY={1}>
+                                <Typography>
+                                  Signed in as
+                                  <br />
+                                  <b>{this.state.username}</b>
+                                </Typography>
+                              </Box>
+                              <Divider />
+                              <MenuList className={classes.menuList}>
+                                <MenuItem className={classes.menuItem}>
+                                  Your Profile
+                                </MenuItem>
+                                <MenuItem className={classes.menuItem}>
+                                  Your Organizations
+                                </MenuItem>
+                                <MenuItem className={classes.menuItem}>
+                                  Shared Organizations
+                                </MenuItem>
+                                <Divider className={classes.menuListDivider} />
+                                <MenuItem className={classes.menuItem}>
+                                  Settings
+                                </MenuItem>
+                                <MenuItem className={classes.menuItem}>
+                                  Help
+                                </MenuItem>
+                                <MenuItem className={classes.menuItem}>
+                                  Sign Out
+                                </MenuItem>
+                              </MenuList>
+                            </div>
+                          </ClickAwayListener>
+                        </Paper>
+                      </Grow>
+                    )}
+                  </Popper>
+                </React.Fragment>
+              )}
+            </Hidden>
           </Toolbar>
         </AppBar>
         <Drawer open={this.state.mobileOpen} onClose={this.toggleNav(false)}>
           <List>
-            <ListItem>Console</ListItem>
-            <ListItem>Docs</ListItem>
-            <ListItem>Reference</ListItem>
-            <ListItem>Blog</ListItem>
+            <ListItemLink to="/">Home</ListItemLink>
+            <ListItemLink to="/getting-started/quick-start-guide">
+              Learn
+            </ListItemLink>
+            <ListItemLink to="/blog">Blog</ListItemLink>
+            <ListItemLink to="/api-reference">Documentation</ListItemLink>
+            <ListItemLink to="/console">Console</ListItemLink>
+            <ListItemLink to="/release-notes/v1.0.109">
+              Release Notes
+            </ListItemLink>
+            <ListItemLink to="/">Support</ListItemLink>
           </List>
         </Drawer>
       </React.Fragment>
@@ -269,14 +445,20 @@ const styles = (theme: Theme) =>
     mobileSearchInput: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
-      width: 100,
+      width: 80,
     },
     icon: {
       color: theme.palette.common.white,
     },
+    menuList: {
+      // padding: ,
+    },
+    menuListDivider: {
+      margin: theme.spacing(1, 0),
+    },
     menuItem: {
-      color: theme.palette.common.white,
-      width: theme.spacing(40),
+      minHeight: 0,
+      padding: theme.spacing(0.5, 2),
     },
     logoContainer: {
       boxSizing: 'content-box',

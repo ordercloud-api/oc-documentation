@@ -7,14 +7,22 @@ import {
   Theme,
   Typography,
   withStyles,
+  withWidth,
 } from '@material-ui/core'
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import { flatten as _flatten } from 'lodash'
 import React from 'react'
+import { isWidthDown } from '@material-ui/core/withWidth'
 
 const styles = (theme: Theme) =>
   createStyles({
+    root: {
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: -theme.spacing(2),
+        marginRight: -theme.spacing(2),
+      },
+    },
     groupHelpful: {
       display: 'flex',
       alignItems: 'center',
@@ -46,6 +54,9 @@ const styles = (theme: Theme) =>
       color: theme.palette.secondary.main,
       fontSize: theme.typography.h1.fontSize,
     },
+    extendedIconSmall: {
+      fontSize: theme.typography.h2.fontSize,
+    },
     boxMain: {
       padding: theme.spacing(3),
       textAlign: 'center',
@@ -63,7 +74,7 @@ const styles = (theme: Theme) =>
 
 class DocFooter extends React.Component<any> {
   public render() {
-    const { contents, currentGuide, classes, theme } = this.props
+    const { contents, currentGuide, classes, width } = this.props
     const flatContents: any = _flatten(contents.map(c => c.guides))
     const guideIndex = flatContents.findIndex(
       (section: any) => section.path === currentGuide
@@ -86,7 +97,11 @@ class DocFooter extends React.Component<any> {
           aria-label="Guide Navigation Button"
         >
           {direction === 'Previous' && (
-            <KeyboardArrowLeft className={classes.extendedIcon} />
+            <KeyboardArrowLeft
+              className={`${classes.extendedIcon} ${
+                isWidthDown('md', width) ? classes.extendedIconSmall : undefined
+              }`}
+            />
           )}
 
           <div>
@@ -107,7 +122,11 @@ class DocFooter extends React.Component<any> {
           </div>
 
           {direction === 'Next' && (
-            <KeyboardArrowRight className={classes.extendedIcon} />
+            <KeyboardArrowRight
+              className={`${classes.extendedIcon} ${
+                isWidthDown('md', width) ? classes.extendedIconSmall : undefined
+              }`}
+            />
           )}
         </Button>
       ) : null
@@ -115,11 +134,11 @@ class DocFooter extends React.Component<any> {
 
     return (
       //TODO: Link to Slack, syntax on ordercloud tag
-      <React.Fragment>
+      <div className={classes.root}>
         <Grid
           className={classes.gridContainer}
           container
-          spacing={3}
+          spacing={width === 'md' || width === 'lg' || width === 'xl' ? 3 : 0}
           justify="space-between"
           alignItems="stretch"
         >
@@ -173,9 +192,9 @@ class DocFooter extends React.Component<any> {
             Ask on Stack Overflow
           </Button>
         </Box>
-      </React.Fragment>
+      </div>
     )
   }
 }
 
-export default withStyles(styles, { withTheme: true })(DocFooter)
+export default withStyles(styles, { withTheme: true })(withWidth()(DocFooter))

@@ -142,8 +142,8 @@ class Jumbotron extends React.Component<any> {
             )}
             {text && (
               <Typography
-                className={classes.jumbotronHeading}
-                variant={image ? 'h6' : 'h4'}
+                className={classes.jumbotronText}
+                variant={image ? 'subtitle1' : 'h4'}
                 component="p"
               >
                 {text}

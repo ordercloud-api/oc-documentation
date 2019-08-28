@@ -126,9 +126,9 @@ const MainComponent: React.FunctionComponent = props => {
       case 'Main Concepts':
         return `Establish a firm foundation by learning fundamental OrderCloud concepts`
       case 'Features':
-        return `Explore at a high-level some of the features you can use to solve your complex B2B scenarios`
+        return `Explore some of our API features you can use to solve your complex B2B scenarios`
       case 'Guides':
-        return `Hands-on guides for some of the most common scenarios you'll encounter in the OrderCloud API`
+        return `Walkthrough some common scenarios you'll encounter in the OrderCloud API`
       default:
         return ''
     }
@@ -139,7 +139,7 @@ const MainComponent: React.FunctionComponent = props => {
       <Jumbotron
         secondary={true}
         image={{ src: ocLogo, alt: 'Four51 OrderCloud Logo' }}
-        heading="Welcome to Documentation for OrderCloud by Four51"
+        heading="Commerce catered to your business."
         actions={[
           <ButtonLink
             to="/getting-started/intro-to-ordercloud"
@@ -157,7 +157,7 @@ const MainComponent: React.FunctionComponent = props => {
         ]}
       />
       <Container>
-        <Grid container className={classes.cardWrapper} spacing={5}>
+        <Grid container className={classes.cardWrapper} spacing={3}>
           {sections
             .filter(section => section.title !== 'Getting Started')
             .map((section, index) => (

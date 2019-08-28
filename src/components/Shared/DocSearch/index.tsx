@@ -13,6 +13,7 @@ const searchClient = algoliasearch(
 interface DocSearchProps {
   darkMode?: boolean
   noPopper?: boolean
+  placeholder?: string
   classes?: {
     searchBox?: string
     searchBoxInput?: string
@@ -51,6 +52,7 @@ const DocSearch: React.FunctionComponent<DocSearchProps> = props => {
                 searchInput: props.classes.searchBoxInput,
               }
             }
+            placeholder={props.placeholder}
             expanded={showHits}
             darkMode={props.darkMode || false}
             onClick={handleSearchClick}
