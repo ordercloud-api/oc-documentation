@@ -1,7 +1,10 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
+import BackgroundImage from '../assets/images/DegreePattern.svg'
+import SlackIllustration from '../assets/images/JoinTheCommunity.svg'
 import Particles from 'react-particles-js'
+import axios from 'axios'
 import {
   makeStyles,
   createStyles,
@@ -12,6 +15,7 @@ import {
   Hidden,
   TextField,
   SvgIcon,
+  Link,
 } from '@material-ui/core'
 
 interface SlackCommunityProps {
@@ -20,40 +24,18 @@ interface SlackCommunityProps {
 
 export default function SlackCommunityComoponent(props: SlackCommunityProps) {
   const classes = useStyles(props)
-  const [values, setValues] = React.useState({
-    email: 'example@example.com',
-  })
-  const handleChange = name => event => {
-    setValues({ ...values, [name]: event.target.value })
+  const [email, setEmail] = React.useState()
+  const signup = () => {
+    console.log(`signing up ${email}`)
+  }
+  const handleChange = event => {
+    setEmail(event.target.value)
   }
   return (
     <Layout>
-      <Helmet title={`OrderCloud Slack Workspace`} />
-      <Box display="flex" flexDirection="column">
-        <div className={classes.doop}>
-          <Hidden mdDown implementation="js">
-            <Particles
-              className={classes.jumbotronParticle}
-              params={{
-                particles: {
-                  number: {
-                    value: 350,
-                  },
-                  size: {
-                    value: 0.25,
-                  },
-                },
-                interactivity: {
-                  events: {
-                    onhover: {
-                      enable: true,
-                      mode: 'repulse',
-                    },
-                  },
-                },
-              }}
-            />
-          </Hidden>
+      <div className={classes.doop}>
+        <Helmet title={`OrderCloud Slack Community`} />
+        <Box display="flex" flexDirection="column" alignItems="start">
           <SvgIcon viewBox="0 0 270 270" className={classes.svgIcon}>
             <path
               fill="#e01e5a"
@@ -75,18 +57,21 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
           <Typography className={classes.h1} variant="h1">
             Join OrderCloud on Slack
           </Typography>
-          <Typography color="textSecondary" variant="subtitle1">
+          <Typography variant="subtitle1">
             Our community of developers is here to help.
           </Typography>
           <form className={classes.containerForm} noValidate autoComplete="off">
-            <TextField
-              label="Email"
-              className={classes.mr1}
-              onChange={handleChange('email')}
-            />
-            <Button color="primary" variant="contained">
-              Get My Invite
-            </Button>
+            <Box display="flex" flex="1" marginBottom={1}>
+              <TextField
+                label="Email"
+                variant="outlined"
+                className={classes.mr1}
+                onChange={handleChange}
+              />
+              <Button color="primary" variant="contained" onClick={signup}>
+                Join
+              </Button>
+            </Box>
           </form>
           <Box display="flex" alignItems="center">
             <Typography
@@ -96,60 +81,54 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
             >
               Already a member?
             </Typography>
-            <Button
-              size="small"
-              color="inherit"
-              href="https://ordercloudapi.slack.com/"
-            >
-              Sign In
-            </Button>
+            <Link to="https://ordercloudapi.slack.com/">Sign In</Link>
           </Box>
-        </div>
-      </Box>
+        </Box>
+        <img
+          className={classes.slackIllustration}
+          src={SlackIllustration}
+          alt="OrderCloud Slack Community"
+        />
+      </div>
     </Layout>
   )
 }
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    svgIcon: {
-      fontSize: theme.typography.h1.fontSize,
-    },
     h1: {
-      color: theme.palette.grey[50],
-      marginBottom: theme.spacing(1),
+      marginBottom: theme.spacing(2),
+    },
+    svgIcon: {
+      fontSize: '8rem',
     },
     doop: {
       display: 'flex',
       position: 'relative',
-      flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
+      padding: '0rem 10rem',
       height: '100vh',
-      backgroundColor: 'transparent',
       borderRadius: 0,
       overflowY: 'hidden',
       overflowX: 'hidden',
-      backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
-    },
-    hidden: {
-      position: 'absolute',
-      width: '100vw',
-      height: '100%',
-    },
-    jumbotronParticle: {
-      position: 'absolute',
-      backgroundColor: 'transparent',
-      width: '150vw',
-      height: '150vh',
+      backgroundColor: 'rgba(28, 33, 41, 0.05)',
+      backgroundImage: `url(${BackgroundImage})`,
+      backgroundSize: 'cover',
+      '-webkit-background-size': 'cover',
+      '-moz-background-size': 'cover',
+      '-o-background-size': 'cover',
     },
     containerForm: {
       display: 'flex',
       alignItems: 'center',
       marginBlock: '1rem',
+      marginTop: theme.spacing(10),
     },
     mr1: {
       marginRight: '1rem',
+    },
+    slackIllustration: {
+      width: '45rem',
     },
   })
 )
