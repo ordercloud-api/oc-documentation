@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core'
 import { OpenInNewOutlined } from '@material-ui/icons'
 import { mediumgrey, blackpearl } from '../../theme/ocPalette.constants'
-import ocOrange from '../../../src/assets/images/four51-logo--orange.svg'
+import ocOrange from '../../../src/assets/images/four51-logo-geo--full-color-white.svg'
 
 const styles = (theme: Theme) =>
   createStyles({

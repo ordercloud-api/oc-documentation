@@ -206,7 +206,7 @@ class Header extends React.Component<any, HeaderState> {
                 <Tab
                   disableRipple
                   value="rest"
-                  label="Learn"
+                  label="Docs"
                   classes={{
                     root: classes.tab,
                     selected: classes.navTabSelected,
@@ -233,7 +233,7 @@ class Header extends React.Component<any, HeaderState> {
                     selected: classes.navTabSelected,
                   }}
                   value="api-reference"
-                  label="Docs"
+                  label="Api Reference"
                   component={Link}
                   to="/api-reference"
                 ></Tab>

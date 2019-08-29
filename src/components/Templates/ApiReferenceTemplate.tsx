@@ -9,6 +9,7 @@ import ApiReferenceSelection from '../Layout/ApiReferenceSelection'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
+import ApiResource from '../Shared/ApiReference/ApiResource'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -39,6 +40,7 @@ interface Operation {
 
 class ApiReference extends React.Component<any> {
   public state = {
+    selectedResource: null,
     selectedOperation: null,
     listResources: [],
     listOperations: [],
@@ -66,7 +68,11 @@ class ApiReference extends React.Component<any> {
 
   public handleResourceChange = (resourceName: string) => {
     const operations = OpenApi.operationsByResource[resourceName]
-    this.setState({ listOperations: operations })
+    const resource = OpenApi.findResourceByName(resourceName)
+    this.setState({
+      listOperations: operations,
+      selectedResource: resource,
+    })
   }
 
   public handleOperationChange = (operation: Operation) => {
@@ -79,15 +85,12 @@ class ApiReference extends React.Component<any> {
       <Layout location={location}>
         <LayoutContainer>
           <LayoutMain>
-            {this.state.listOperations.length
-              ? this.state.listOperations.map(r => (
-                  <ApiReferenceSelection
-                    key={r.operationId}
-                    className={classes.operationsList}
-                    method={r}
-                  />
-                ))
-              : null}
+            {this.state.selectedResource && (
+              <ApiResource
+                resource={this.state.selectedResource}
+                operations={this.state.listOperations}
+              />
+            )}
           </LayoutMain>
           <LayoutMenu>
             <ApiReferenceMenu

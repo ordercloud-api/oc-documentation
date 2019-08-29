@@ -9,10 +9,12 @@ import {
   createStyles,
   Container,
   responsiveFontSizes,
+  Typography,
 } from '@material-ui/core'
 
 import Prism from 'prismjs'
 import { map, forIn as _forIn } from 'lodash'
+import { mergeClasses } from '@material-ui/styles'
 
 const styles = () => {
   createStyles({
@@ -119,7 +121,7 @@ function CodeBlock(props) {
   )
 }
 
-class ApiReferenceSelection extends React.Component<any> {
+class ApiReferenceMethod extends React.Component<any> {
   public async componentDidMount() {
     // Use setTimeout to push onto callback queue so it runs after the DOM is updated
     setTimeout(() => Prism.highlightAll(), 0)
@@ -206,4 +208,16 @@ class ApiReferenceSelection extends React.Component<any> {
   }
 }
 
-export default withStyles(styles)(ApiReferenceSelection)
+const ApiReferenceSelection: React.FunctionComponent<any> = (props: any) => {
+  const { resource, operations } = props
+  return (
+    <React.Fragment>
+      <Typography variant="h1">{resource}</Typography>
+      {operations.map(o => (
+        <ApiReferenceMethod key={o.operationId} method={o} />
+      ))}
+    </React.Fragment>
+  )
+}
+
+export default ApiReferenceSelection
