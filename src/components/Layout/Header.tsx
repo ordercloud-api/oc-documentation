@@ -28,12 +28,14 @@ import { Menu as MenuIcon } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import React from 'react'
 import Cookies from 'universal-cookie'
-import ocLogo from '../../assets/images/four51-badge--flame.svg'
+import ocLogo from '../../assets/images/four51-badge--flame-white.svg'
 import Gravatar from 'react-gravatar'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
 import { navigate } from '../Shared/PortalLink'
 import ListItemLink from '../Shared/ListItemLink'
+import { flame, seafoam } from '../../theme/ocPalette.constants'
+import ORDERCLOUD_THEME from '../../theme/theme.constants'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -116,7 +118,7 @@ class Header extends React.Component<any, HeaderState> {
   public handleFakeLogin = () => {
     this.cookies.set(
       'DevCenter.token',
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3IiOiJyd2F0dEBmb3VyNTEuY29tIiwiY2lkIjoiYjA5N2E5YWEtNWJjMy00OTM3LWI2YmItNmVhMzdlMDA0NDg2IiwidXNydHlwZSI6ImRldiIsInJvbGUiOiJEZXZDZW50ZXIiLCJpc3MiOiJodHRwczovL2F1dGgub3JkZXJjbG91ZC5pbyIsImF1ZCI6Imh0dHBzOi8vYXBpLm9yZGVyY2xvdWQuaW8iLCJleHAiOjE1NjcwMTE3NjQsIm5iZiI6MTU2Njk4Mjk2NH0.eLhNs3LQNrTMDR2G762UNCH4bGDBB7Q-uiN0kSOwOtI',
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3IiOiJyd2F0dEBmb3VyNTEuY29tIiwiY2lkIjoiYjA5N2E5YWEtNWJjMy00OTM3LWI2YmItNmVhMzdlMDA0NDg2IiwidXNydHlwZSI6ImRldiIsInJvbGUiOiJEZXZDZW50ZXIiLCJpc3MiOiJodHRwczovL2F1dGgub3JkZXJjbG91ZC5pbyIsImF1ZCI6Imh0dHBzOi8vYXBpLm9yZGVyY2xvdWQuaW8iLCJleHAiOjE1NjcxMzA3NzksIm5iZiI6MTU2NzEwMTk3OX0._esOeRaH36XbHUNd7HzMFOhFx-4YDFwUa3sZ5UigiQs',
       { domain: window.location.hostname }
     )
     this.cookies.set('DevCenter.firstName', 'Robert', {
@@ -167,7 +169,7 @@ class Header extends React.Component<any, HeaderState> {
       <React.Fragment>
         <AppBar color="primary" className={classes.root}>
           {/* <Container> */}
-          <Toolbar>
+          <Toolbar className={classes.toolbar}>
             <Hidden mdUp>
               <IconButton
                 color="inherit"
@@ -185,32 +187,51 @@ class Header extends React.Component<any, HeaderState> {
               <Tabs
                 value={activeTab}
                 className={classes.tabs}
-                classes={{ flexContainer: classes.tabsContainer }}
+                classes={{
+                  flexContainer: classes.tabsContainer,
+                  indicator: classes.tabsIndicator,
+                }}
               >
                 <Tab
+                  disableRipple
                   value="docs"
                   label="Home"
-                  classes={{ root: classes.tab }}
+                  classes={{
+                    root: classes.tab,
+                    selected: classes.navTabSelected,
+                  }}
                   component={Link}
                   to="/"
                 ></Tab>
                 <Tab
+                  disableRipple
                   value="rest"
                   label="Learn"
-                  classes={{ root: classes.tab }}
+                  classes={{
+                    root: classes.tab,
+                    selected: classes.navTabSelected,
+                  }}
                   component={Link}
                   to="/main-concepts/organization-hierarchy"
                 ></Tab>
 
                 <Tab
-                  classes={{ root: classes.tab }}
+                  disableRipple
+                  classes={{
+                    root: classes.tab,
+                    selected: classes.navTabSelected,
+                  }}
                   value="blog"
                   label="Blog"
                   component={Link}
                   to="/blog"
                 ></Tab>
                 <Tab
-                  classes={{ root: classes.tab }}
+                  disableRipple
+                  classes={{
+                    root: classes.tab,
+                    selected: classes.navTabSelected,
+                  }}
                   value="api-reference"
                   label="Docs"
                   component={Link}
@@ -218,7 +239,11 @@ class Header extends React.Component<any, HeaderState> {
                 ></Tab>
                 {this.state.auth && (
                   <Tab
-                    classes={{ root: classes.tab }}
+                    disableRipple
+                    classes={{
+                      root: classes.tab,
+                      selected: classes.navTabSelected,
+                    }}
                     value="console"
                     label="Console"
                     component={Link}
@@ -451,19 +476,30 @@ class Header extends React.Component<any, HeaderState> {
 }
 
 const drawerWidth = '25vw'
+export const navHeight = ORDERCLOUD_THEME.spacing(10)
 
 const styles = (theme: Theme) =>
   createStyles({
     logo: {
+      marginLeft: -theme.spacing(2),
       width: theme.spacing(7),
       height: theme.spacing(7),
-      padding: theme.spacing(1),
+      padding: theme.spacing(0.5, 1, 1),
     },
     tabs: {
       alignSelf: 'stretch',
     },
     tabsContainer: {
       height: '100%',
+    },
+    tabsIndicator: {
+      height: theme.spacing(0.5),
+      backgroundColor: theme.palette.secondary.light,
+      // zIndex: 1,
+    },
+    navTabSelected: {
+      fontWeight: 'bolder',
+      color: seafoam[400],
     },
     tab: {
       minWidth: 0,
@@ -472,6 +508,18 @@ const styles = (theme: Theme) =>
       width: '100vw',
       left: 0,
       top: 0,
+      '&:after': {
+        content: '""',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: theme.spacing(0.5),
+        backgroundImage: `linear-gradient(90deg, ${flame[400]} 0%, #F8AC1A 100%)`,
+      },
+    },
+    toolbar: {
+      height: navHeight,
     },
     mobileSearchBox: {
       marginRight: -theme.spacing(1),

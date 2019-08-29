@@ -40,8 +40,7 @@ const CoreSans = {
 }
 
 const defaultTheme = createMuiTheme()
-
-const primaryColor = blackpearl
+const primaryColor = sherpablue
 const secondaryColor = seafoam
 
 export default createMuiTheme({

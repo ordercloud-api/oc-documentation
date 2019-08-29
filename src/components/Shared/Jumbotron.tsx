@@ -13,6 +13,13 @@ import {
 import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
 import ButtonLink from './ButtonLink'
+import {
+  flame,
+  seafoam,
+  sunset,
+  mediumgrey,
+} from '../../theme/ocPalette.constants'
+import ocDegrees from '../../assets/images/four51-background-degrees-light.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -23,14 +30,19 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       height: '50vh',
-      backgroundColor: 'transparent',
       borderRadius: 0,
       overflowY: 'hidden',
       overflowX: 'hidden',
-      backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
+      backgroundColor: mediumgrey[100],
+      backgroundImage: `url('${ocDegrees}')`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      '-webkit-background-size': 'cover',
+      '-moz-background-size': 'cover',
+      '-o-background-size': 'cover',
     },
     jumbotronSecondary: {
-      backgroundImage: `linear-gradient(62deg, ${theme.palette.secondary.dark} 0%, ${theme.palette.secondary.light} 100%)`,
+      backgroundColor: theme.palette.secondary.main,
     },
     logo: {
       maxWidth: '40rem',
@@ -59,7 +71,6 @@ const styles = (theme: Theme) =>
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-      color: 'white',
       zIndex: 1,
       [theme.breakpoints.down('md')]: {
         padding: 20,
@@ -76,8 +87,10 @@ const styles = (theme: Theme) =>
       },
     },
     jumbotronHeading: {
-      fontWeight: 300,
       padding: 0,
+      fontWeight: 'bolder',
+      textTransform: 'uppercase',
+      // color: seafoam[400],
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
         margin: '0 auto',
@@ -103,7 +116,7 @@ class Jumbotron extends React.Component<any> {
         }`}
         style={{ height }}
       >
-        <Hidden mdDown implementation="js">
+        {/* <Hidden mdDown implementation="js">
           <Particles
             className={classes.jumbotronParticle}
             params={{
@@ -125,7 +138,7 @@ class Jumbotron extends React.Component<any> {
               },
             }}
           />
-        </Hidden>
+        </Hidden> */}
         <Container>
           <Paper className={classes.jumbotronContainer}>
             {image && (

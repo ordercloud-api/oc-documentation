@@ -36,8 +36,8 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
     },
     gridContainer: {
-      marginBlockStart: '3rem',
-      marginBlockEnd: '2rem',
+      marginBlockStart: `${theme.spacing(3)}px`,
+      marginBlockEnd: `${theme.spacing(2)}px`,
     },
     gridItem: {
       display: 'flex',
@@ -58,7 +58,7 @@ const styles = (theme: Theme) =>
       fontSize: theme.typography.h2.fontSize,
     },
     boxMain: {
-      padding: theme.spacing(3),
+      padding: theme.spacing(3, 3, 6),
       textAlign: 'center',
     },
     questionsHeader: {

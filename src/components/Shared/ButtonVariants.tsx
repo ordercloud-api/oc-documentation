@@ -3,6 +3,7 @@ import { Button, makeStyles, Theme, createStyles } from '@material-ui/core'
 import { ButtonProps } from '@material-ui/core/Button'
 import classNames from 'classnames'
 import { darken, lighten, fade } from '@material-ui/core/styles'
+import { Link } from 'gatsby'
 
 interface CustomButtonProps extends ButtonProps {
   color: any
@@ -50,5 +51,22 @@ export const CustomButton: React.FunctionComponent<
       {...props}
       className={classNames(classes.root, props.className)}
     ></Button>
+  )
+}
+
+interface CustomButtonLinkProps extends CustomButtonProps {
+  to: string
+}
+
+export const CustomButtonLink: React.FunctionComponent<
+  CustomButtonLinkProps
+> = (props: any) => {
+  return (
+    <CustomButton
+      component={React.forwardRef((props: any, ref: any) => {
+        return <Link {...props} to={props.to} ref={ref} />
+      })}
+      {...props}
+    />
   )
 }

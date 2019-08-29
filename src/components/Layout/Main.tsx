@@ -11,13 +11,15 @@ import {
 } from '@material-ui/core/'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
-import ocLogo from '../../assets/images/four51-logo--white.svg'
-import { darkgrey, mediumgrey } from '../../theme/ocPalette.constants'
+import ocLogo from '../../assets/images/four51-logo-nopyramid--full-color.svg'
+import { darkgrey, mediumgrey, flame } from '../../theme/ocPalette.constants'
 import utility from '../../utility'
 import Jumbotron from '../Shared/Jumbotron'
 import ListLink from '../Shared/ListLink'
 import ButtonLink from '../Shared/ButtonLink'
 import ListItemLink from '../Shared/ListItemLink'
+import { CustomButton, CustomButtonLink } from '../Shared/ButtonVariants'
+import { navHeight } from './Header'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -32,8 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
       top: theme.spacing(3),
     },
     root: {
-      minHeight: '100vh',
-      backgroundColor: mediumgrey[50],
+      minHeight: `calc(100vh - ${navHeight}px)`,
+      [theme.breakpoints.up('md')]: {
+        minHeight: `calc(100vh - ${navHeight}px)`,
+      },
     },
     paperRoot: {
       zIndex: 1,
@@ -137,27 +141,27 @@ const MainComponent: React.FunctionComponent = props => {
   return (
     <div className={classes.root}>
       <Jumbotron
-        secondary={true}
         image={{ src: ocLogo, alt: 'Four51 OrderCloud Logo' }}
         heading="Commerce catered to your business."
         actions={[
-          <ButtonLink
+          <CustomButtonLink
+            color="#fff"
             to="/getting-started/intro-to-ordercloud"
             variant="contained"
           >
             Introduction
-          </ButtonLink>,
-          <ButtonLink
+          </CustomButtonLink>,
+          <CustomButtonLink
             to="/getting-started/quick-start-guide"
             variant="contained"
-            color="secondary"
+            color={flame[600]}
           >
             Quick Start
-          </ButtonLink>,
+          </CustomButtonLink>,
         ]}
       />
       <Container>
-        <Grid container className={classes.cardWrapper} spacing={2}>
+        <Grid container className={classes.cardWrapper} spacing={3}>
           {sections
             .filter(section => section.title !== 'Getting Started')
             .map((section, index) => (
@@ -171,7 +175,7 @@ const MainComponent: React.FunctionComponent = props => {
               >
                 {section.guides.filter(c => !c.frontmatter.hidden).length >
                 0 ? (
-                  <Paper elevation={10}>
+                  <Paper elevation={5}>
                     <Box p={2} zIndex={1}>
                       <div className={classes.paperCard}>
                         <Typography

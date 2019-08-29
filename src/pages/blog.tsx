@@ -169,7 +169,6 @@ export default function BlogListComponent(props: BlogListProps) {
     <Layout location={props.location}>
       <Helmet title={`OrderCloud Blog`} />
       <Jumbotron
-        secondary={true}
         heading="OrderCloud Blog"
         text="Learn the platform like never before with these big thought blogs written by some of the best orderclouders in the world."
       />

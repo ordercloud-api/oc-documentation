@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from './Header'
+import Header, { navHeight } from './Header'
 import { ThemeProvider } from '@material-ui/styles'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import {
@@ -26,11 +26,11 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageWrapper: {
       backgroundColor: 'white',
-      marginTop: theme.spacing(7), // spacing from top of page on mobile (due to horiz menu)
-      paddingBottom: theme.spacing(8),
+      marginTop: navHeight, // spacing from top of page on mobile (due to horiz menu)
+      // paddingBottom: theme.spacing(4),
       [theme.breakpoints.up('md')]: {
-        marginTop: theme.spacing(8), // spacing from top of page on mobile (due to horiz menu)
-        marginBottom: theme.spacing(53),
+        marginTop: navHeight, // spacing from top of page on mobile (due to horiz menu)
+        marginBottom: theme.spacing(52.25),
         // marginLeft: theme.spacing(7.5), // vertical nav width spacing
         // marginTop: 0, // no horizontal nav to worry about
       },
