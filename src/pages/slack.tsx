@@ -17,6 +17,7 @@ import {
   SvgIcon,
   Link,
 } from '@material-ui/core'
+import { breakpoints } from '@material-ui/system'
 
 interface SlackCommunityProps {
   classes: any
@@ -84,11 +85,13 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
             <Link to="https://ordercloudapi.slack.com/">Sign In</Link>
           </Box>
         </Box>
-        <img
-          className={classes.slackIllustration}
-          src={SlackIllustration}
-          alt="OrderCloud Slack Community"
-        />
+        <Hidden mdDown>
+          <img
+            className={classes.slackIllustration}
+            src={SlackIllustration}
+            alt="OrderCloud Slack Community"
+          />
+        </Hidden>
       </div>
     </Layout>
   )
@@ -106,7 +109,6 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '0rem 10rem',
       height: '100vh',
       borderRadius: 0,
       overflowY: 'hidden',
@@ -117,6 +119,10 @@ const useStyles = makeStyles((theme: Theme) =>
       '-webkit-background-size': 'cover',
       '-moz-background-size': 'cover',
       '-o-background-size': 'cover',
+      padding: '0rem 2rem',
+      [theme.breakpoints.up('md')]: {
+        padding: '0rem 10rem',
+      },
     },
     containerForm: {
       display: 'flex',
