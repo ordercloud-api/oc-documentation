@@ -39,9 +39,15 @@ const CoreSans = {
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
 }
 
+const defaultTheme = createMuiTheme()
+
+const primaryColor = blackpearl
+const secondaryColor = seafoam
+
 export default createMuiTheme({
   typography: {
     h1: {
+      fontSize: '3.5rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -57,6 +63,8 @@ export default createMuiTheme({
       ].join(','),
     },
     h2: {
+      fontWeight: 'normal',
+      fontSize: '2rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -72,6 +80,7 @@ export default createMuiTheme({
       ].join(','),
     },
     h3: {
+      fontSize: '1.5rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -87,6 +96,7 @@ export default createMuiTheme({
       ].join(','),
     },
     h4: {
+      fontSize: '1.25rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -102,6 +112,7 @@ export default createMuiTheme({
       ].join(','),
     },
     h5: {
+      fontSize: '1.15rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -117,6 +128,7 @@ export default createMuiTheme({
       ].join(','),
     },
     h6: {
+      fontSize: '1rem',
       fontFamily: [
         '"Geometria"',
         '-apple-system',
@@ -149,17 +161,52 @@ export default createMuiTheme({
     MuiCssBaseline: {
       '@global': {
         a: {
-          color: flame[500],
+          color: secondaryColor[900],
         },
+        mark: {
+          padding: defaultTheme.spacing(0, 0.25),
+          borderRadius: defaultTheme.shape.borderRadius,
+          backgroundColor: secondaryColor[100],
+          fontWeight: defaultTheme.typography.fontWeightMedium,
+          color: defaultTheme.palette.getContrastText(
+            defaultTheme.palette.background.paper
+          ),
+        },
+      },
+    },
+    MuiTable: {
+      root: {
+        marginBottom: '2rem',
+      },
+    },
+    MuiTypography: {
+      root: {
+        // marginBottom: '0.5rem',
+        // @bob, this ^^^^ and this ⌄⌄⌄⌄ is not a good idea.
+      },
+      body1: {
+        // marginBottom: '1rem',
+      },
+      h1: {
+        paddingTop: '2rem',
+        marginBottom: '2rem',
+      },
+      h2: {
+        paddingTop: '1.75rem',
+        marginBottom: '0.5rem',
+      },
+      h3: {
+        paddingTop: '1.5rem',
+        marginBottom: '0.5rem',
       },
     },
   },
   palette: {
     primary: {
-      main: blackpearl[400],
+      main: primaryColor[400],
     },
     secondary: {
-      main: flame[400],
+      main: secondaryColor[900],
       contrastText: '#FFF',
     },
   },

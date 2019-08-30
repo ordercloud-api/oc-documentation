@@ -1,3 +1,69 @@
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+})
+const docsQuery = `{
+  docs: allMdx(sort: {order: ASC, fields: [frontmatter___priority]}, filter: {fileAbsolutePath: {glob: "**/content/docs/**/*.mdx"}}) {
+    edges {
+      node {
+        objectID: id
+        fileAbsolutePath
+        frontmatter {
+          section
+          title
+          hidden
+          summary
+          authors
+        }
+        excerpt(pruneLength:5000)
+      }
+    }
+  }
+}
+`
+const blogQuery = `{
+  blogs: allMdx(sort: {order: ASC, fields: [frontmatter___priority]}, filter: {fileAbsolutePath: {glob: "**/content/blog/*.mdx"}}) {
+    edges {
+      node {
+        objectID: id
+        fileAbsolutePath
+        timeToRead
+        frontmatter {
+          title
+          authors
+          date
+          tags
+        }
+        excerpt(pruneLength:5000)
+      }
+    }
+  }
+}`
+
+const flatten = arr => {
+  return arr.map(({ node: { frontmatter, ...rest } }) => ({
+    ...frontmatter,
+    ...rest,
+  }))
+}
+
+const settings = {
+  attributesToSnippet: [`excerpt:20`],
+}
+
+const queries = [
+  {
+    query: docsQuery,
+    transformer: ({ data }) => flatten(data.docs.edges),
+    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
+    settings,
+  },
+  {
+    query: blogQuery,
+    transformer: ({ data }) => flatten(data.blogs.edges),
+    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
+    settings,
+  },
+]
 module.exports = {
   siteMetadata: {
     title: `OrderCloud Documentation`,
@@ -13,6 +79,16 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-typescript`,
     `gatsby-transformer-sharp`,
+    {
+      resolve: `gatsby-plugin-algolia`,
+      options: {
+        appId: process.env.GATSBY_ALGOLIA_APP_ID,
+        apiKey: process.env.GATSBY_ALGOLIA_ADMIN_API_KEY,
+        indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
+        queries,
+        chunkSize: 10000, // default: 1000
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {

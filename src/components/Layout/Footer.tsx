@@ -121,11 +121,17 @@ class Footer extends React.Component<any> {
                     <Link
                       className={classes.footerLinks}
                       key={section.title}
-                      to={section.guides[0].frontmatter.path}
+                      to={section.guides[0].path}
                     >
                       {section.title}
                     </Link>
                   ))}
+                  <Link
+                      className={classes.footerLinks}
+                      to="/api-reference"
+                    >
+                    API Reference
+                  </Link>
                 </Box>
               )}
             </Grid>
@@ -188,10 +194,10 @@ class Footer extends React.Component<any> {
                 <Link className={classes.footerLinks} to="/">
                   Terms
                 </Link>
-                <Link className={classes.footerLinks} to="">
+                <Link className={classes.footerLinks} to="/">
                   Privacy Policy
                 </Link>
-                <Link className={classes.footerLinks} to="">
+                <Link className={classes.footerLinks} to="/">
                   Four51
                 </Link>
               </Box>

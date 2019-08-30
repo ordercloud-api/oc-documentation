@@ -12,6 +12,7 @@ There are basic principles around how assignments work that are critical to unde
 - Assignments are used to define a relationship
 - Assignments are inclusive
 - Assignments can be made at different levels
+- Assignments may include configuration data
 - Assignments cascade down higher levels to the individual user
 - Assignments are many to many
 
@@ -22,6 +23,8 @@ When a user is created they exist in a vacuum. The user will not have access to 
 ## Assignments Can Be Made at Different Levels
 
 Assignments can be made at the company level (buyer, seller, supplier) or any usergroup within one of those companies.
+
+You may notice that some assignments contain configuration options. These options allow you to provide additional information about the assignment. For example, when assigning an address to a user, you can set IsShipping & IsBilling, these properties control whether the address can be used as a shipping and/or billing address on an order.
 
 ## Assignments Cascade Down Higher Levels to the Individual User
 

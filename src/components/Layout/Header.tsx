@@ -1,40 +1,34 @@
-import { Link } from 'gatsby'
-import React from 'react'
 import {
-  Theme,
   createStyles,
-  withStyles,
   Hidden,
-  Typography,
-  Box,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Theme,
+  withStyles,
 } from '@material-ui/core'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Gravatar from 'react-gravatar'
 import Avatar from '@material-ui/core/Avatar'
+import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import Divider from '@material-ui/core/Divider'
-import ocLogo from '../../assets/images/four51-logo--full-color.svg'
-
-import Cookies from 'universal-cookie'
 import {
-  SettingsTwoTone,
-  PeopleTwoTone,
-  LockTwoTone,
-  CodeTwoTone,
   BookmarksTwoTone,
-  SpeakerNotesTwoTone,
+  CodeTwoTone,
   LocalLibraryTwoTone,
+  LockTwoTone,
+  PeopleTwoTone,
+  SettingsTwoTone,
+  SpeakerNotesTwoTone,
 } from '@material-ui/icons'
+import { Link } from 'gatsby'
+import React from 'react'
+import Gravatar from 'react-gravatar'
+import Cookies from 'universal-cookie'
+import ocLogo from '../../assets/images/four51-logo--full-color--header.svg'
 import { navigate } from '../Shared/PortalLink'
-import { drawerWidthSpacing } from './RightMenu'
+import DocSearch from '../Shared/DocSearch'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -56,7 +50,7 @@ function parseJwt(token: string) {
   var jsonPayload = decodeURIComponent(
     atob(base64)
       .split('')
-      .map(function(c) {
+      .map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
       })
       .join('')
@@ -70,6 +64,7 @@ interface HeaderState {
   username: string
   firstName: string
   email: string
+  showResults: boolean
 }
 class Header extends React.Component<any, HeaderState> {
   state = {
@@ -78,6 +73,7 @@ class Header extends React.Component<any, HeaderState> {
     username: '',
     firstName: '',
     email: '',
+    showResults: false,
   }
 
   private readonly cookies = new Cookies()
@@ -128,11 +124,11 @@ class Header extends React.Component<any, HeaderState> {
 
   public render() {
     const { classes } = this.props
-    const { anchorEl, auth } = this.state
+    const { anchorEl, auth, showResults } = this.state
     const open = Boolean(anchorEl)
     return (
       <div className={classes.root}>
-        <Link to="/">
+        <Link to="/" className={classes.logoContainer}>
           <img className={classes.logo} src={ocLogo} alt="OC" />
         </Link>
         <Hidden smDown>
@@ -151,13 +147,7 @@ class Header extends React.Component<any, HeaderState> {
               <ListItemIcon>
                 <SettingsTwoTone className={classes.icon} />
               </ListItemIcon>
-              <ListItemText primary="Organization Settings" />
-            </ListItem>
-            <ListItem button className={classes.menuItem}>
-              <ListItemIcon>
-                <PeopleTwoTone className={classes.icon} />
-              </ListItemIcon>
-              <ListItemText primary="Contributor Access" />
+              <ListItemText primary="My Organizations" />
             </ListItem>
             <ListItem
               button
@@ -191,6 +181,14 @@ class Header extends React.Component<any, HeaderState> {
                 <SpeakerNotesTwoTone className={classes.icon} />
               </ListItemIcon>
               <ListItemText primary="API Release Notes" />
+            </ListItem>
+            <ListItem
+              button
+              className={classes.menuItem}
+              component={Link}
+              to="/api-reference"
+            >
+              <ListItemText primary="API Reference" />
             </ListItem>
           </List>
           <div className={classes.grow} />
@@ -272,7 +270,6 @@ const styles = (theme: Theme) =>
       flexDirection: 'row',
       justifyContent: 'space-between',
       backgroundColor: theme.palette.primary.main,
-      color: theme.palette.background.paper,
       width: '100%',
       maxWidth: '100vw',
       zIndex: 2,
@@ -285,17 +282,25 @@ const styles = (theme: Theme) =>
         boxShadow: `0px 0px 0px transparent`,
         transition: `max-width 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`,
         transitionDelay: '400ms',
+        '&:focus-within': {
+          boxShadow: `0px 0px 15px ${theme.palette.primary.dark}`,
+          maxWidth: theme.spacing(40),
+        },
         '&:hover': {
           boxShadow: `0px 0px 15px ${theme.palette.primary.dark}`,
-          maxWidth: theme.spacing(32),
+          maxWidth: theme.spacing(40),
         },
       },
     },
     icon: {
-      color: theme.palette.background.paper,
+      color: theme.palette.common.white,
     },
     menuItem: {
-      width: theme.spacing(32),
+      color: theme.palette.common.white,
+      width: theme.spacing(40),
+    },
+    logoContainer: {
+      boxSizing: 'content-box',
     },
     logo: {
       paddingTop: theme.spacing(2),
@@ -309,6 +314,14 @@ const styles = (theme: Theme) =>
     },
     menuItem__profile: {
       padding: '10px',
+    },
+    search: {
+      alignItems: 'flex-start',
+    },
+    'ais-Hits': {
+      maxHeight: theme.spacing(25),
+      overflowY: 'scroll',
+      overflowX: 'auto',
     },
   })
 
