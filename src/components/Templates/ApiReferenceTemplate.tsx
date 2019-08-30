@@ -53,8 +53,9 @@ class ApiReference extends React.Component<any> {
   }
 
   public handleSectionChange = sectionIndex => {
-    const listResources = this.props.pageContext.OcApi.resources.filter(ref => {
-      return ref['x-section-id'] === this.props.pageContext.OcApi.sections[sectionIndex]['x-id']
+    const ocApi = this.props.pageContext.OcApi
+    const listResources = ocApi.resources.filter(ref => {
+      return ref['x-section-id'] === ocApi.sections[sectionIndex]['x-id']
     });
     const activeIndex = sectionIndex === this.state.activeIndex ? -1 : sectionIndex;
     this.setState({
