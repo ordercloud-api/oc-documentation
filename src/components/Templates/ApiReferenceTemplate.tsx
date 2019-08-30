@@ -52,14 +52,11 @@ class ApiReference extends React.Component<any> {
     await Initialize()
   }
 
-  public handleSectionChange = section => {
+  public handleSectionChange = sectionIndex => {
     const listResources = this.props.pageContext.OcApi.resources.filter(ref => {
-      return ref['x-section-id'] === section['x-id']
-    })
-    const activeIndex = _findIndex(
-      this.props.pageContext.OcApi.sections,
-      sect => sect['x-id'] === section['x-id']
-    )
+      return ref['x-section-id'] === this.props.pageContext.OcApi.sections[sectionIndex]['x-id']
+    });
+    const activeIndex = sectionIndex === this.state.activeIndex ? -1 : sectionIndex;
     this.setState({
       activeIndex,
       listResources,
