@@ -9,12 +9,12 @@ import {
 } from '@material-ui/core'
 
 interface ApiParametersProps {
-  parameters: any[]
+  parameters?: any[]
 }
 
 const ApiParameters: React.FunctionComponent<ApiParametersProps> = props => {
   const { parameters } = props
-  return (
+  return parameters ? (
     <React.Fragment>
       <Typography variant="h4">Parameters</Typography>
       <Table>
@@ -36,7 +36,7 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = props => {
         </TableBody>
       </Table>
     </React.Fragment>
-  )
+  ) : null
 }
 
 export default ApiParameters

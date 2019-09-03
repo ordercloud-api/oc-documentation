@@ -5,6 +5,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       minHeight: '100vh',
+      paddingBottom: theme.spacing(4),
       flex: '1',
     },
   })
