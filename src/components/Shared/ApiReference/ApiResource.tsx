@@ -9,7 +9,6 @@ interface ApiResourceProps {
 
 const ApiResource: React.FunctionComponent<ApiResourceProps> = props => {
   const { resource, operations } = props
-  console.log(operations)
   return (
     <React.Fragment>
       <Typography variant="h1">{resource.name}</Typography>

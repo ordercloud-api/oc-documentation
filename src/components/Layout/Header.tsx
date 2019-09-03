@@ -495,7 +495,7 @@ const styles = (theme: Theme) =>
     tabsIndicator: {
       height: theme.spacing(0.5),
       backgroundColor: theme.palette.secondary.light,
-      // zIndex: 1,
+      zIndex: -2,
     },
     navTabSelected: {
       fontWeight: 'bolder',
@@ -514,6 +514,7 @@ const styles = (theme: Theme) =>
         bottom: 0,
         left: 0,
         right: 0,
+        zIndex: -1,
         height: theme.spacing(0.5),
         backgroundImage: `linear-gradient(90deg, ${flame[400]} 0%, #F8AC1A 100%)`,
       },

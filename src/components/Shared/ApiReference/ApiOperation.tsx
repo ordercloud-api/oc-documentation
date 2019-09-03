@@ -2,6 +2,8 @@ import React from 'react'
 import { Typography } from '@material-ui/core'
 import ApiRoute from './ApiRoute'
 import ApiParameters from './ApiParameters'
+import ApiRequestBody from './ApiRequestBody'
+import ApiResponses from './ApiResponses'
 
 interface ApiOperationProps {
   operation: any
@@ -9,7 +11,6 @@ interface ApiOperationProps {
 
 const ApiOperation: React.FunctionComponent<ApiOperationProps> = props => {
   const { operation } = props
-  console.log(operation)
   return (
     <React.Fragment>
       <a
@@ -24,10 +25,15 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = props => {
       <Typography variant="h3">
         {operation.summary.replace(/\./g, '')}
       </Typography>
+
       <ApiRoute operation={operation}></ApiRoute>
-      {operation.parameters && (
-        <ApiParameters parameters={operation.parameters}></ApiParameters>
-      )}
+
+      <ApiParameters parameters={operation.parameters}></ApiParameters>
+
+      <ApiRequestBody requestBody={operation.requestBody}></ApiRequestBody>
+
+      <ApiResponses responses={operation.responses}></ApiResponses>
+      {/* <pre>{JSON.stringify(operation, null, 2)}</pre> */}
     </React.Fragment>
   )
 }

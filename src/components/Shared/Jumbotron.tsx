@@ -33,7 +33,7 @@ const styles = (theme: Theme) =>
       borderRadius: 0,
       overflowY: 'hidden',
       overflowX: 'hidden',
-      backgroundColor: mediumgrey[100],
+      backgroundColor: 'rgba(28, 33, 41, 0.05)',
       backgroundImage: `url('${ocDegrees}')`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
