@@ -1,0 +1,49 @@
+{
+  "MainNavigation": [
+    {
+      "value": "docs",
+      "label": "Home",
+      "disableRipple": true,
+      "to": "/"
+    },
+    {
+      "value": "rest",
+      "label": "Docs",
+      "disableRipple": true,
+      "to": "/main-concepts/organization-hierarchy"
+    },
+    {
+      "value": "blog",
+      "label": "Blog",
+      "disableRipple": true,
+      "to": "/blog"
+    },
+    {
+      "value": "api-reference",
+      "label": "Api Reference",
+      "disableRipple": true,
+      "to": "/api-reference"
+    }
+  ],
+  "OrgControls": [
+    {
+      "label": "Your Profile"
+    },
+    {
+      "label": "Your Organizations"
+    },
+    {
+      "label": "Shared Organizations"
+    }
+  ],
+  "AuthControls": [
+    {
+      "label": "Settings",
+      "to": "javascript://"
+    },
+    {
+      "label": "Help",
+      "to": "javascript://"
+    }
+  ]
+}

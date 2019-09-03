@@ -25,7 +25,7 @@ import {
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import { Menu as MenuIcon } from '@material-ui/icons'
-import { Link } from 'gatsby'
+import { Link, graphql, StaticQuery } from 'gatsby'
 import React from 'react'
 import Cookies from 'universal-cookie'
 import ocLogo from '../../assets/images/four51-badge--flame-white.svg'
@@ -36,6 +36,7 @@ import { navigate } from '../Shared/PortalLink'
 import ListItemLink from '../Shared/ListItemLink'
 import { flame, seafoam } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
+import MenuItems from '../Shared/MenuItems.json'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -65,6 +66,13 @@ function parseJwt(token: string) {
   return JSON.parse(jsonPayload)
 }
 
+interface HeaderProps {
+  data: any
+  classes: any
+  location: any
+  width: any
+}
+
 interface HeaderState {
   auth: boolean
   anchorEl?: HTMLElement
@@ -74,7 +82,7 @@ interface HeaderState {
   email: string
   showResults: boolean
 }
-class Header extends React.Component<any, HeaderState> {
+class Header extends React.Component<HeaderProps, HeaderState> {
   state = {
     auth: false,
     anchorEl: null,
@@ -151,10 +159,10 @@ class Header extends React.Component<any, HeaderState> {
   }
 
   public render() {
-    const { classes, location, width } = this.props
+    const { classes, location, width, data } = this.props
     const { anchorEl, auth, showResults } = this.state
     const isMobile = width !== 'md' && width !== 'lg' && width !== 'xl'
-    console.log(width)
+    const currentApiVersion = data.allMdx.nodes[0].frontmatter.apiVersion
     let activeTab = 'docs'
     if (location && location.pathname) {
       var partialPath = location.pathname.split('/')[1]
@@ -192,51 +200,20 @@ class Header extends React.Component<any, HeaderState> {
                   indicator: classes.tabsIndicator,
                 }}
               >
-                <Tab
-                  disableRipple
-                  value="docs"
-                  label="Home"
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  component={Link}
-                  to="/"
-                ></Tab>
-                <Tab
-                  disableRipple
-                  value="rest"
-                  label="Docs"
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  component={Link}
-                  to="/main-concepts/organization-hierarchy"
-                ></Tab>
-
-                <Tab
-                  disableRipple
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  value="blog"
-                  label="Blog"
-                  component={Link}
-                  to="/blog"
-                ></Tab>
-                <Tab
-                  disableRipple
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  value="api-reference"
-                  label="Api Reference"
-                  component={Link}
-                  to="/api-reference"
-                ></Tab>
+                {MenuItems.MainNavigation.map((item, index) => (
+                  <Tab
+                    disableRipple={item.disableRipple}
+                    value={item.value}
+                    label={item.label}
+                    classes={{
+                      root: classes.tab,
+                      selected: classes.navTabSelected,
+                    }}
+                    component={Link}
+                    to={item.to}
+                    key={index}
+                  ></Tab>
+                ))}
                 {this.state.auth && (
                   <Tab
                     disableRipple
@@ -257,8 +234,8 @@ class Header extends React.Component<any, HeaderState> {
             <Hidden smDown>
               <ChipLink
                 color="primary"
-                label="v1.0.109"
-                to="/release-notes/v1.0.109"
+                label={`v${currentApiVersion}`}
+                to={`/release-notes/v${currentApiVersion}`}
               ></ChipLink>
               <div className={classes.spacer}></div>
               {this.state.auth ? (
@@ -301,22 +278,23 @@ class Header extends React.Component<any, HeaderState> {
                               </Box>
                               <Divider />
                               <MenuList className={classes.menuList}>
-                                <MenuItem className={classes.menuItem}>
-                                  Your Profile
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Your Organizations
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Shared Organizations
-                                </MenuItem>
+                                {MenuItems.OrgControls.map((item, index) => (
+                                  <MenuItem
+                                    key={index}
+                                    className={classes.menuItem}
+                                  >
+                                    {item.label}
+                                  </MenuItem>
+                                ))}
                                 <Divider className={classes.menuListDivider} />
-                                <MenuItem className={classes.menuItem}>
-                                  Settings
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Help
-                                </MenuItem>
+                                {MenuItems.AuthControls.map((item, index) => (
+                                  <MenuItem
+                                    key={index}
+                                    className={classes.menuItem}
+                                  >
+                                    {item.label}
+                                  </MenuItem>
+                                ))}
                                 <MenuItem
                                   className={classes.menuItem}
                                   onClick={this.handleLogout}
@@ -404,22 +382,17 @@ class Header extends React.Component<any, HeaderState> {
                               </Box>
                               <Divider />
                               <MenuList className={classes.menuList}>
-                                <MenuItem className={classes.menuItem}>
-                                  Your Profile
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Your Organizations
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Shared Organizations
-                                </MenuItem>
+                                {MenuItems.OrgControls.map(item => (
+                                  <MenuItem className={classes.menuItem}>
+                                    {item.label}
+                                  </MenuItem>
+                                ))}
                                 <Divider className={classes.menuListDivider} />
-                                <MenuItem className={classes.menuItem}>
-                                  Settings
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Help
-                                </MenuItem>
+                                {MenuItems.AuthControls.map(item => (
+                                  <MenuItem className={classes.menuItem}>
+                                    {item.label}
+                                  </MenuItem>
+                                ))}
                                 <MenuItem
                                   onClick={this.handleLogout}
                                   className={classes.menuItem}
@@ -565,4 +538,37 @@ const styles = (theme: Theme) =>
     },
   })
 
-export default withStyles(styles)(withWidth()(Header))
+interface HeaderWithStaticQueryProps {
+  classes: any
+  location: any
+  width: any
+}
+class HeaderWithStaticQuery extends React.Component<
+  HeaderWithStaticQueryProps
+> {
+  render() {
+    return (
+      <StaticQuery
+        query={graphql`
+          query {
+            allMdx(
+              filter: {
+                fileAbsolutePath: { glob: "**/content/release-notes/**/*.mdx" }
+              }
+              sort: { order: DESC, fields: [frontmatter___date] }
+              limit: 1
+            ) {
+              nodes {
+                frontmatter {
+                  apiVersion
+                }
+              }
+            }
+          }
+        `}
+        render={data => <Header data={data} {...this.props} />}
+      />
+    )
+  }
+}
+export default withStyles(styles)(withWidth()(HeaderWithStaticQuery))
