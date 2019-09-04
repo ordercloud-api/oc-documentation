@@ -24,8 +24,8 @@ import {
   Box,
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
-import { Menu as MenuIcon } from '@material-ui/icons'
-import { Link } from 'gatsby'
+import { Menu as MenuIcon, Close as CloseIcon } from '@material-ui/icons'
+import { Link, graphql, StaticQuery } from 'gatsby'
 import React from 'react'
 import Cookies from 'universal-cookie'
 import ocLogo from '../../assets/images/four51-badge--flame-white.svg'
@@ -34,8 +34,10 @@ import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
 import { navigate } from '../Shared/PortalLink'
 import ListItemLink from '../Shared/ListItemLink'
-import { flame, seafoam } from '../../theme/ocPalette.constants'
+import { flame, sunset } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
+import MenuItems from '../Shared/MenuItems.json'
+import ocOrange from '../../../src/assets/images/four51-logo-geo--full-color-white.svg'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -65,6 +67,13 @@ function parseJwt(token: string) {
   return JSON.parse(jsonPayload)
 }
 
+interface HeaderProps {
+  data: any
+  classes: any
+  location: any
+  width: any
+}
+
 interface HeaderState {
   auth: boolean
   anchorEl?: HTMLElement
@@ -74,7 +83,7 @@ interface HeaderState {
   email: string
   showResults: boolean
 }
-class Header extends React.Component<any, HeaderState> {
+class Header extends React.Component<HeaderProps, HeaderState> {
   state = {
     auth: false,
     anchorEl: null,
@@ -118,13 +127,13 @@ class Header extends React.Component<any, HeaderState> {
   public handleFakeLogin = () => {
     this.cookies.set(
       'DevCenter.token',
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3IiOiJyd2F0dEBmb3VyNTEuY29tIiwiY2lkIjoiYjA5N2E5YWEtNWJjMy00OTM3LWI2YmItNmVhMzdlMDA0NDg2IiwidXNydHlwZSI6ImRldiIsInJvbGUiOiJEZXZDZW50ZXIiLCJpc3MiOiJodHRwczovL2F1dGgub3JkZXJjbG91ZC5pbyIsImF1ZCI6Imh0dHBzOi8vYXBpLm9yZGVyY2xvdWQuaW8iLCJleHAiOjE1NjcxMzA3NzksIm5iZiI6MTU2NzEwMTk3OX0._esOeRaH36XbHUNd7HzMFOhFx-4YDFwUa3sZ5UigiQs',
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3IiOiJkc3RlaW5tZXR6QGZvdXI1MS5jb20iLCJjaWQiOiJiMDk3YTlhYS01YmMzLTQ5MzctYjZiYi02ZWEzN2UwMDQ0ODYiLCJ1c3J0eXBlIjoiZGV2Iiwicm9sZSI6IkRldkNlbnRlciIsImlzcyI6Imh0dHBzOi8vYXV0aC5vcmRlcmNsb3VkLmlvIiwiYXVkIjoiaHR0cHM6Ly9hcGkub3JkZXJjbG91ZC5pbyIsImV4cCI6MTU2NzYzOTgwNCwibmJmIjoxNTY3NjExMDA0fQ.1lbxBTNUo4YZ-Z1HLUoxA3tvwPKv57IL8xqnWiFgSjc',
       { domain: window.location.hostname }
     )
-    this.cookies.set('DevCenter.firstName', 'Robert', {
+    this.cookies.set('DevCenter.firstName', 'DJ', {
       domain: window.location.hostname,
     })
-    this.cookies.set('DevCenter.email', 'rwatt@four51.com', {
+    this.cookies.set('DevCenter.email', 'dsteinmetz@four51.com', {
       domain: window.location.hostname,
     })
     this.onInit()
@@ -151,10 +160,10 @@ class Header extends React.Component<any, HeaderState> {
   }
 
   public render() {
-    const { classes, location, width } = this.props
+    const { classes, location, width, data } = this.props
     const { anchorEl, auth, showResults } = this.state
     const isMobile = width !== 'md' && width !== 'lg' && width !== 'xl'
-    console.log(width)
+    const currentApiVersion = data.allMdx.nodes[0].frontmatter.apiVersion
     let activeTab = 'docs'
     if (location && location.pathname) {
       var partialPath = location.pathname.split('/')[1]
@@ -168,7 +177,6 @@ class Header extends React.Component<any, HeaderState> {
     return (
       <React.Fragment>
         <AppBar color="primary" className={classes.root}>
-          {/* <Container> */}
           <Toolbar className={classes.toolbar}>
             <Hidden mdUp>
               <IconButton
@@ -192,76 +200,60 @@ class Header extends React.Component<any, HeaderState> {
                   indicator: classes.tabsIndicator,
                 }}
               >
-                <Tab
-                  disableRipple
-                  value="docs"
-                  label="Home"
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  component={Link}
-                  to="/"
-                ></Tab>
-                <Tab
-                  disableRipple
-                  value="rest"
-                  label="Docs"
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  component={Link}
-                  to="/main-concepts/organization-hierarchy"
-                ></Tab>
-
-                <Tab
-                  disableRipple
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  value="blog"
-                  label="Blog"
-                  component={Link}
-                  to="/blog"
-                ></Tab>
-                <Tab
-                  disableRipple
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  value="api-reference"
-                  label="Api Reference"
-                  component={Link}
-                  to="/api-reference"
-                ></Tab>
-                {this.state.auth && (
-                  <Tab
-                    disableRipple
-                    classes={{
-                      root: classes.tab,
-                      selected: classes.navTabSelected,
-                    }}
-                    value="console"
-                    label="Console"
-                    component={Link}
-                    to="/console"
-                  ></Tab>
-                )}
+                {MenuItems.MainNavigation.map((item, index) => {
+                  const {
+                    mobileMenu,
+                    authRequired,
+                    disableRipple,
+                    value,
+                    label,
+                    to,
+                  } = item
+                  if (!mobileMenu && !authRequired) {
+                    return (
+                      <Tab
+                        disableRipple={disableRipple}
+                        value={value}
+                        label={label}
+                        classes={{
+                          root: classes.tab,
+                          selected: classes.navTabSelected,
+                        }}
+                        component={Link}
+                        to={to}
+                        key={index}
+                      ></Tab>
+                    )
+                  }
+                  if (!mobileMenu && authRequired) {
+                    return (
+                      auth && (
+                        <Tab
+                          disableRipple={disableRipple}
+                          classes={{
+                            root: classes.tab,
+                            selected: classes.navTabSelected,
+                          }}
+                          value={value}
+                          label={label}
+                          component={Link}
+                          to={to}
+                        ></Tab>
+                      )
+                    )
+                  }
+                })}
               </Tabs>
             </Hidden>
-
             <div className={classes.grow}></div>
             <Hidden smDown>
               <ChipLink
                 color="primary"
-                label="v1.0.109"
-                to="/release-notes/v1.0.109"
+                label={`v${currentApiVersion}`}
+                to={`/release-notes/v${currentApiVersion}`}
               ></ChipLink>
               <div className={classes.spacer}></div>
-              {this.state.auth ? (
+              {auth ? (
                 <React.Fragment>
                   <Button color="default" variant="contained" size="small">
                     Support
@@ -301,22 +293,26 @@ class Header extends React.Component<any, HeaderState> {
                               </Box>
                               <Divider />
                               <MenuList className={classes.menuList}>
-                                <MenuItem className={classes.menuItem}>
-                                  Your Profile
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Your Organizations
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Shared Organizations
-                                </MenuItem>
+                                {MenuItems.OrgControls.map((item, index) => (
+                                  <MenuItem
+                                    key={index}
+                                    className={classes.menuItem}
+                                  >
+                                    {item.label}
+                                  </MenuItem>
+                                ))}
                                 <Divider className={classes.menuListDivider} />
-                                <MenuItem className={classes.menuItem}>
-                                  Settings
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Help
-                                </MenuItem>
+                                {MenuItems.AuthControls.map((item, index) => {
+                                  const { label, to } = item
+                                  return (
+                                    <MenuItem
+                                      key={index}
+                                      className={classes.menuItem}
+                                    >
+                                      {label}
+                                    </MenuItem>
+                                  )
+                                })}
                                 <MenuItem
                                   className={classes.menuItem}
                                   onClick={this.handleLogout}
@@ -404,22 +400,17 @@ class Header extends React.Component<any, HeaderState> {
                               </Box>
                               <Divider />
                               <MenuList className={classes.menuList}>
-                                <MenuItem className={classes.menuItem}>
-                                  Your Profile
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Your Organizations
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Shared Organizations
-                                </MenuItem>
+                                {MenuItems.OrgControls.map(item => (
+                                  <MenuItem className={classes.menuItem}>
+                                    {item.label}
+                                  </MenuItem>
+                                ))}
                                 <Divider className={classes.menuListDivider} />
-                                <MenuItem className={classes.menuItem}>
-                                  Settings
-                                </MenuItem>
-                                <MenuItem className={classes.menuItem}>
-                                  Help
-                                </MenuItem>
+                                {MenuItems.AuthControls.map(item => (
+                                  <MenuItem className={classes.menuItem}>
+                                    {item.label}
+                                  </MenuItem>
+                                ))}
                                 <MenuItem
                                   onClick={this.handleLogout}
                                   className={classes.menuItem}
@@ -438,37 +429,68 @@ class Header extends React.Component<any, HeaderState> {
             </Hidden>
           </Toolbar>
         </AppBar>
-        <Drawer open={this.state.mobileOpen} onClose={this.toggleNav(false)}>
-          <List>
-            <ListItemLink to="/">Home</ListItemLink>
-            <ListItemLink to="/getting-started/quick-start-guide">
-              Learn
-            </ListItemLink>
-            <ListItemLink to="/blog">Blog</ListItemLink>
-            <ListItemLink to="/api-reference">Documentation</ListItemLink>
-            <ListItemLink to="/console">Console</ListItemLink>
-            <ListItemLink to="/release-notes/v1.0.109">
-              Release Notes
-            </ListItemLink>
-            <ListItemLink to="/">Support</ListItemLink>
-          </List>
-          {!this.state.auth && (
-            <Box>
-              <Button
-                onClick={this.handleFakeLogin}
-                variant="text"
+        <Drawer
+          open={this.state.mobileOpen}
+          onClose={this.toggleNav(false)}
+          classes={{ paper: classes.drawerPaper, root: classes.drawerRoot }}
+          anchor="left"
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            paddingRight="1rem"
+          >
+            <Box padding="1.5rem 1rem">
+              <CloseIcon
+                fontSize="large"
                 color="inherit"
-                size="small"
-                style={{ marginRight: 5 }}
-              >
-                Login
-              </Button>
-
-              <Button variant="outlined" color="inherit" size="small">
-                Sign-Up
-              </Button>
+                onClick={this.toggleNav(!this.state.mobileOpen)}
+              />
             </Box>
-          )}
+            {!auth && (
+              <Box padding="1rem 0rem">
+                <Button
+                  onClick={this.handleFakeLogin}
+                  variant="text"
+                  color="inherit"
+                  size="small"
+                  style={{ marginRight: 5 }}
+                >
+                  Login
+                </Button>
+
+                <Button variant="outlined" color="inherit" size="small">
+                  Sign-Up
+                </Button>
+              </Box>
+            )}
+          </Box>
+          <List className={classes.mobileMenuList}>
+            {MenuItems.MainNavigation.map(item => {
+              const { mobileMenu, authRequired, to, label } = item
+              if (
+                (!mobileMenu || mobileMenu) &&
+                !authRequired &&
+                to !== '/release-notes/v'
+              ) {
+                return <ListItemLink to={to}>{label}</ListItemLink>
+              }
+              if (authRequired) {
+                return auth && <ListItemLink to={to}>{label}</ListItemLink>
+              }
+              if (to === '/release-notes/v') {
+                return (
+                  <ListItemLink to={to + currentApiVersion}>
+                    {label}
+                  </ListItemLink>
+                )
+              }
+            })}
+          </List>
+          <div className={classes.grow}></div>
+          <Box padding="1rem">
+            <img className={classes.mobileMenuLogo} src={ocOrange} alt="OC" />
+          </Box>
         </Drawer>
       </React.Fragment>
     )
@@ -499,7 +521,7 @@ const styles = (theme: Theme) =>
     },
     navTabSelected: {
       fontWeight: 'bolder',
-      color: seafoam[400],
+      color: flame[400],
     },
     tab: {
       minWidth: 0,
@@ -563,6 +585,55 @@ const styles = (theme: Theme) =>
       overflowY: 'scroll',
       overflowX: 'auto',
     },
+    drawerRoot: {
+      zIndex: `10000000!important`,
+    },
+    drawerPaper: {
+      backgroundColor: theme.palette.primary.main,
+      width: '100vw',
+      height: '100vh',
+      color: theme.palette.common.white,
+      fontSize: '1.5rem',
+    },
+    mobileMenuLogo: {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+      marginRight: theme.spacing(2),
+      width: theme.spacing(30),
+    },
   })
 
-export default withStyles(styles)(withWidth()(Header))
+interface HeaderWithStaticQueryProps {
+  classes: any
+  location: any
+  width: any
+}
+class HeaderWithStaticQuery extends React.Component<
+  HeaderWithStaticQueryProps
+> {
+  render() {
+    return (
+      <StaticQuery
+        query={graphql`
+          query {
+            allMdx(
+              filter: {
+                fileAbsolutePath: { glob: "**/content/release-notes/**/*.mdx" }
+              }
+              sort: { order: DESC, fields: [frontmatter___date] }
+              limit: 1
+            ) {
+              nodes {
+                frontmatter {
+                  apiVersion
+                }
+              }
+            }
+          }
+        `}
+        render={data => <Header data={data} {...this.props} />}
+      />
+    )
+  }
+}
+export default withStyles(styles)(withWidth()(HeaderWithStaticQuery))
