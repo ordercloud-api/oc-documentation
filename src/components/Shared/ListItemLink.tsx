@@ -12,7 +12,6 @@ const ListItemLink: React.FunctionComponent<ListItemLinkProps> = (
   props: any
 ) => {
   const classes = useStyles(props)
-  console.log(classes)
   return (
     <ListItem
       {...props}
