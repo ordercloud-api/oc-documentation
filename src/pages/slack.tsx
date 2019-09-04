@@ -37,7 +37,7 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
     <Layout>
       <div className={classes.doop}>
         <Helmet title={`OrderCloud Slack Community`} />
-        <Box display="flex" flexDirection="column" alignItems="start">
+        <Box display="flex" flexDirection="column" alignItems="center">
           <SvgIcon viewBox="0 0 200 200" className={classes.svgIcon}>
             <path
               fill="#e01e5a"
@@ -86,13 +86,13 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
             <Link to="https://ordercloudapi.slack.com/">Sign In</Link>
           </Box>
         </Box>
-        <Hidden mdDown>
+        {/* <Hidden mdDown>
           <img
             className={classes.slackIllustration}
             src={SlackIllustration}
             alt="OrderCloud Slack Community"
           />
-        </Hidden>
+        </Hidden> */}
       </div>
     </Layout>
   )
@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       position: 'relative',
       alignItems: 'flex-start',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       height: `calc(100vh - ${navHeight}px)`,
       borderRadius: 0,
       overflowY: 'hidden',
