@@ -4,46 +4,81 @@
       "value": "docs",
       "label": "Home",
       "disableRipple": true,
-      "to": "/"
+      "to": "/",
+      "mobileMenu": false,
+      "authRequired": false
     },
     {
       "value": "rest",
       "label": "Docs",
       "disableRipple": true,
-      "to": "/main-concepts/organization-hierarchy"
+      "to": "/main-concepts/organization-hierarchy",
+      "mobileMenu": false,
+      "authRequired": false
     },
     {
       "value": "blog",
       "label": "Blog",
       "disableRipple": true,
-      "to": "/blog"
+      "to": "/blog",
+      "mobileMenu": false,
+      "authRequired": false
     },
     {
       "value": "api-reference",
       "label": "Api Reference",
       "disableRipple": true,
-      "to": "/api-reference"
+      "to": "/api-reference",
+      "mobileMenu": false,
+      "authRequired": false
+    },
+    {
+      "value": "console",
+      "label": "Console",
+      "disableRipple": true,
+      "to": "/console",
+      "mobileMenu": false,
+      "authRequired": true
+    },
+    {
+      "value": "support",
+      "label": "Support",
+      "disableRipple": true,
+      "to": "/",
+      "mobileMenu": true,
+      "authRequired": false
+    },
+    {
+      "value": "release-notes",
+      "label": "Release Notes",
+      "disableRipple": true,
+      "to": "/release-notes/v",
+      "mobileMenu": true,
+      "authRequired": false
     }
   ],
   "OrgControls": [
     {
-      "label": "Your Profile"
+      "label": "Your Profile",
+      "to": ""
     },
     {
-      "label": "Your Organizations"
+      "label": "Your Organizations",
+      "to": ""
     },
     {
-      "label": "Shared Organizations"
+      "label": "Shared Organizations",
+      "to": ""
     }
   ],
   "AuthControls": [
     {
       "label": "Settings",
-      "to": "javascript://"
+      "to": ""
     },
     {
       "label": "Help",
-      "to": "javascript://"
+      "to": ""
     }
   ]
 }
