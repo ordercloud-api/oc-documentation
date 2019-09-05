@@ -63,26 +63,24 @@ const result: OpenApiResult = {
 
 export const Initialize = async () => {
   if (!result.oc) {
-    const parsedSpec = await SwaggerParser.dereference(SwaggerSpec);
+    const parsedSpec = await SwaggerParser.dereference(SwaggerSpec)
     const resources = parsedSpec.tags
       .filter(tag => tag['x-section-id'])
-      .concat(GetSubsectionsToAdd());
+      .concat(GetSubsectionsToAdd())
     const operations = flatten(
       values(
         mapValues(parsedSpec.paths, (ops, path) => {
           return values(
             mapValues(ops, (o, verb) => {
               const tags =
-                o.tags[0] === 'Me' ? [GetSubSectionName(path)] : o.tags;
-              const resource = resources.filter(r => r.name === tags[0])[0];
-              return { ...o, verb, path, tags, resource };
-
+                o.tags[0] === 'Me' ? [GetSubSectionName(path)] : o.tags
+              const resource = resources.filter(r => r.name === tags[0])[0]
+              return { ...o, verb, path, tags, resource }
             })
           )
         })
       )
     )
-
 
     return (result.oc = {
       openapi: parsedSpec,
@@ -131,6 +129,10 @@ export class OpenApi {
   }
 
   public initialize = Initialize
+
+  public findResourceByName(resourceName: string): ApiResource | undefined {
+    return result.oc.resources.find(resource => resource.name === resourceName)
+  }
 
   public findResource(operationId: string): ApiResource | undefined {
     const operation = result.oc.operationsById[operationId]
