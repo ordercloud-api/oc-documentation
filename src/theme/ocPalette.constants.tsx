@@ -36,6 +36,24 @@ export const darkgrey = {
   contrastDefaultColor: 'light',
 }
 
+export const sunset = {
+  50: '#fef5e4',
+  100: '#fde6ba',
+  200: '#fcd68d',
+  300: '#fac55f',
+  400: '#f9b83c',
+  500: '#f8ac1a',
+  600: '#f7a517',
+  700: '#f69b13',
+  800: '#f5920f',
+  900: '#f38208',
+  A100: '#ffffff',
+  A200: '#fff3e8',
+  A400: '#ffd8b5',
+  A700: '#ffcb9c',
+  contrastDefaultColor: 'light',
+}
+
 export const flame = {
   50: '#fdece4',
   100: '#fbd0bd',

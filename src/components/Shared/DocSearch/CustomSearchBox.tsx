@@ -18,12 +18,12 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: theme.shape.borderRadius,
       padding: theme.spacing(0, 1.5),
       backgroundColor: props.darkMode
-        ? theme.palette.primary.main
+        ? theme.palette.primary.dark
         : theme.palette.grey[200],
     }),
     input: (props: any) => ({
       padding: theme.spacing(2, 1, 2, 0),
-      width: props.expanded ? 300 : 200,
+      width: 200,
       transition: theme.transitions.create('width', {
         duration: theme.transitions.duration.shorter,
       }),
@@ -47,9 +47,11 @@ const OrderCloudSearchBox = ({
   onClose,
   darkMode,
   expanded,
-  className,
+  placeholder,
+  classes,
+  noPopper,
 }) => {
-  const classes = useStyles({ darkMode, expanded })
+  const classesSelf = useStyles({ darkMode, expanded })
   const inputRef = useRef<HTMLInputElement | undefined>()
 
   const handleInputChange = (
@@ -78,20 +80,31 @@ const OrderCloudSearchBox = ({
       value={currentRefinement}
       onChange={handleInputChange}
       onClick={handleInputClick}
-      classes={{ input: classes.input, root: `${classes.root} ${className}` }}
-      placeholder="Search OrderCloud…"
+      classes={{
+        input: `${classesSelf.input} ${classes.searchInput}`,
+        root: `${classesSelf.root} ${classes.searchRoot}`,
+      }}
+      placeholder={placeholder || 'Search OrderCloud…'}
       inputProps={{ 'aria-label': 'search' }}
       inputRef={inputRef}
       startAdornment={
-        <InputAdornment position="start" classes={{ root: classes.adornment }}>
+        <InputAdornment
+          position="start"
+          classes={{ root: classesSelf.adornment }}
+        >
           <IconButton color="inherit" size="small" edge="start">
             <SearchIcon color="inherit" />
           </IconButton>
         </InputAdornment>
       }
       endAdornment={
-        <InputAdornment position="end" classes={{ root: classes.adornment }}>
-          <Grow in={Boolean(currentRefinement.length)}>
+        <InputAdornment
+          position="end"
+          classes={{ root: classesSelf.adornment }}
+        >
+          <Grow
+            in={Boolean(currentRefinement.length) || (noPopper && expanded)}
+          >
             <IconButton
               color="inherit"
               size="small"

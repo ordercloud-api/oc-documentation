@@ -10,7 +10,7 @@ import {
   Theme,
 } from '@material-ui/core'
 import { ArrowDropUp } from '@material-ui/icons'
-import { createStyles, makeStyles } from '@material-ui/styles'
+import { createStyles, makeStyles, CSSProperties } from '@material-ui/styles'
 import { Link } from 'gatsby'
 import { groupBy, map } from 'lodash'
 import React from 'react'
@@ -24,24 +24,41 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       zIndex: 1,
     },
-    caret: {
+    caret: (props: any) => ({
+      display: props.noPopper ? 'none' : undefined,
       position: 'absolute',
       zIndex: 3,
-      color: theme.palette.background.paper,
+      color: props.darkMode
+        ? theme.palette.primary.dark
+        : theme.palette.background.paper,
+      right: theme.spacing(3),
+      fontSize: '4rem',
+      top: -theme.spacing(2.5),
+    }),
+    caretBackground: (props: any) => ({
+      display: props.noPopper ? 'none' : undefined,
+      position: 'absolute',
+      zIndex: 3,
+      color: 'rgba(0,0,0,0.1)',
       right: theme.spacing(3),
       fontSize: '4rem',
       top: -theme.spacing(2.6),
-    },
-    caretBackground: {
-      position: 'absolute',
-      zIndex: 3,
-      color: theme.palette.grey[300],
-      right: theme.spacing(3),
-      fontSize: '4rem',
-      top: -theme.spacing(2.8),
-    },
-    inner: {
-      transformOrigin: 'top right',
+    }),
+    inner: (props: any) => {
+      const noPopperStyles: CSSProperties = {
+        maxWidth: '100vw',
+        position: 'fixed',
+        left: 0,
+        height: `calc(100vh - ${theme.spacing(7)}px)`,
+        top: theme.spacing(5),
+        transform: 'none',
+      }
+      return {
+        width: 500,
+        height: 500,
+        transformOrigin: 'top right',
+        ...(props.noPopper ? noPopperStyles : {}),
+      }
     },
     paper: (props: any) => ({
       zIndex: 2,
@@ -50,13 +67,9 @@ const useStyles = makeStyles((theme: Theme) =>
       background: props.darkMode
         ? theme.palette.primary.dark
         : theme.palette.background.paper,
-      width: 500,
-      height: 500,
+      width: '100%',
+      height: '100%',
       overflow: 'hidden',
-      borderRadius: theme.shape.borderRadius,
-      '&:hover $searchResultsScrollbar > div': {
-        opacity: 1,
-      },
     }),
     searchResultsScrollbar: {
       zIndex: 3,
@@ -103,9 +116,12 @@ function ListItemLink(props) {
 }
 
 function HitItem(hit, classes) {
-  const url = service.resolvePath(hit.fileAbsolutePath)
   return (
-    <ListItemLink button to={url} key={hit.id}>
+    <ListItemLink
+      button
+      to={service.resolvePath(hit.fileAbsolutePath)}
+      key={hit.objectID}
+    >
       <Box display="flex" flexDirection="column">
         <ListItemText
           primary={hit.title}
@@ -113,17 +129,7 @@ function HitItem(hit, classes) {
             primary: classes.hitItemPrimary,
             secondary: classes.hitItemSecondary,
           }}
-          secondary={
-            <Snippet
-              attribute="excerpt"
-              hit={hit}
-              tagName="mark"
-              // Optional parameters
-              // tagName={string}
-              // nonHighlightedTagName={string}
-              // separator={React.Node}
-            />
-          }
+          secondary={<Snippet attribute="excerpt" hit={hit} tagName="mark" />}
         ></ListItemText>
       </Box>
     </ListItemLink>
@@ -135,71 +141,78 @@ const OrderCloudSearchHits = ({
   anchorEl,
   container,
   darkMode,
+  noPopper,
+  classes,
 }) => {
-  const classes = useStyles({ darkMode })
+  const classesSelf = useStyles({ darkMode: false, noPopper })
   const sections = groupBy(hits, 'section')
+  const inner = (
+    <div className={`${classesSelf.inner} ${classes.searchHits}`}>
+      <ArrowDropUp className={classesSelf.caretBackground} />
+      <ArrowDropUp className={classesSelf.caret} />
+      <Paper
+        className={`${classesSelf.paper} ${classes.searchHitsPaper}`}
+        elevation={5}
+      >
+        <Scrollbars
+          style={{ width: '100%', height: '100%' }}
+          renderTrackHorizontal={props => (
+            <div
+              {...props}
+              style={{ display: 'none' }}
+              className="track-horizontal"
+            />
+          )}
+          renderTrackVertical={props => (
+            <div {...props} className={classesSelf.searchResultsScrollbar} />
+          )}
+          renderView={props => (
+            <div
+              {...props}
+              className={classesSelf.searchResultsScrollbarView}
+            />
+          )}
+        >
+          <div>
+            {map(sections, (items, section) => {
+              return (
+                Boolean(items.length) && (
+                  <React.Fragment key={section}>
+                    <ListSubheader
+                      component="div"
+                      className={classesSelf.subheader}
+                    >
+                      {section === 'undefined' ? 'OrderCloud Blog' : section}
+                    </ListSubheader>
+                    {items.map(hit => {
+                      return HitItem(hit, classesSelf)
+                    })}
+                  </React.Fragment>
+                )
+              )
+            })}
+          </div>
+          {Boolean(hits.length) && <Divider />}
+          <DocSearchFooter darkMode={false} />
+        </Scrollbars>
+      </Paper>
+    </div>
+  )
   return (
-    anchorEl && (
+    anchorEl &&
+    (noPopper ? (
+      <div style={{ display: open ? 'block' : 'none' }}>{inner}</div>
+    ) : (
       <Popper
         open={true}
         anchorEl={anchorEl}
         placement="bottom-end"
-        className={classes.root}
+        className={classesSelf.root}
         container={container}
       >
-        <Grow in={open}>
-          <div className={classes.inner}>
-            <ArrowDropUp className={classes.caretBackground} />
-            <ArrowDropUp className={classes.caret} />
-            <Paper className={classes.paper} elevation={5}>
-              <Scrollbars
-                style={{ width: '100%', height: '100%' }}
-                renderTrackHorizontal={props => (
-                  <div
-                    {...props}
-                    style={{ display: 'none' }}
-                    className="track-horizontal"
-                  />
-                )}
-                renderTrackVertical={props => (
-                  <div {...props} className={classes.searchResultsScrollbar} />
-                )}
-                renderView={props => (
-                  <div
-                    {...props}
-                    className={classes.searchResultsScrollbarView}
-                  />
-                )}
-              >
-                <div>
-                  {map(sections, (items, section) => {
-                    return (
-                      Boolean(items.length) && (
-                        <React.Fragment>
-                          <ListSubheader
-                            component="div"
-                            className={classes.subheader}
-                          >
-                            {section === 'undefined'
-                              ? 'OrderCloud Blog'
-                              : section}
-                          </ListSubheader>
-                          {items.map(hit => {
-                            return HitItem(hit, classes)
-                          })}
-                        </React.Fragment>
-                      )
-                    )
-                  })}
-                </div>
-                {Boolean(hits.length) && <Divider />}
-                <DocSearchFooter darkMode={darkMode} />
-              </Scrollbars>
-            </Paper>
-          </div>
-        </Grow>
+        <Grow in={open}>{inner}</Grow>
       </Popper>
-    )
+    ))
   )
 }
 
