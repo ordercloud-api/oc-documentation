@@ -12,7 +12,14 @@ import {
 } from '@material-ui/core'
 import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
-import ocLogo from '../../assets/images/four51-logo--white.svg'
+import ButtonLink from './ButtonLink'
+import {
+  flame,
+  seafoam,
+  sunset,
+  mediumgrey,
+} from '../../theme/ocPalette.constants'
+import ocDegrees from '../../assets/images/four51-background-degrees-light.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -23,11 +30,19 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       height: '50vh',
-      backgroundColor: 'transparent',
       borderRadius: 0,
       overflowY: 'hidden',
       overflowX: 'hidden',
-      backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
+      backgroundColor: 'rgba(28, 33, 41, 0.05)',
+      backgroundImage: `url('${ocDegrees}')`,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      '-webkit-background-size': 'cover',
+      '-moz-background-size': 'cover',
+      '-o-background-size': 'cover',
+    },
+    jumbotronSecondary: {
+      backgroundColor: theme.palette.secondary.main,
     },
     logo: {
       maxWidth: '40rem',
@@ -56,7 +71,6 @@ const styles = (theme: Theme) =>
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-      color: 'white',
       zIndex: 1,
       [theme.breakpoints.down('md')]: {
         padding: 20,
@@ -73,7 +87,10 @@ const styles = (theme: Theme) =>
       },
     },
     jumbotronHeading: {
-      fontWeight: 300,
+      padding: 0,
+      fontWeight: 'bolder',
+      textTransform: 'uppercase',
+      // color: seafoam[400],
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
         margin: '0 auto',
@@ -83,9 +100,22 @@ const styles = (theme: Theme) =>
 
 class Jumbotron extends React.Component<any> {
   public render() {
-    const { classes } = this.props
+    const {
+      classes,
+      image,
+      heading,
+      text,
+      actions,
+      height,
+      secondary,
+    } = this.props
     return (
-      <div className={classes.jumbotron}>
+      <div
+        className={`${classes.jumbotron} ${
+          secondary ? classes.jumbotronSecondary : undefined
+        }`}
+        style={{ height }}
+      >
         {/* <Hidden mdDown implementation="js">
           <Particles
             className={classes.jumbotronParticle}
@@ -109,45 +139,38 @@ class Jumbotron extends React.Component<any> {
             }}
           />
         </Hidden> */}
-        <Container maxWidth="xl">
+        <Container>
           <Paper className={classes.jumbotronContainer}>
-            <img
-              className={classes.logo}
-              src={ocLogo}
-              alt="OrderCloud by Four51"
-            />
-            <Typography
-              className={classes.jumbotronHeading}
-              variant="h4"
-              component="h1"
-            >
-              Welcome to Documentation for OrderCloud by Four51
-            </Typography>
-            <div className={classes.jumbotronLinkGroup}>
-              <Link
-                to="/getting-started/intro-to-ordercloud"
-                className={classes.buttonLink}
+            {image && (
+              <img className={classes.logo} src={image.src} alt={image.alt} />
+            )}
+            {heading && (
+              <Typography
+                className={classes.jumbotronHeading}
+                variant={image ? 'h4' : 'h1'}
+                component="h1"
               >
-                <Button
-                  variant="contained"
-                  className={classes.jumbotronLinkGroupLink}
-                >
-                  Intro to OrderCloud
-                </Button>
-              </Link>
-              <Link
-                to="/getting-started/quick-start-guide"
-                className={classes.buttonLink}
+                {heading}
+              </Typography>
+            )}
+            {text && (
+              <Typography
+                className={classes.jumbotronText}
+                variant={image ? 'subtitle1' : 'h4'}
+                component="p"
               >
-                <Button
-                  color="secondary"
-                  variant="contained"
-                  className={classes.jumbotronLinkGroupLink}
-                >
-                  Quick Start Guide
-                </Button>
-              </Link>
-            </div>
+                {text}
+              </Typography>
+            )}
+            {actions && (
+              <div className={classes.jumbotronLinkGroup}>
+                {actions.map(a => {
+                  return (
+                    <div className={classes.jumbotronLinkGroupLink}>{a}</div>
+                  )
+                })}
+              </div>
+            )}
           </Paper>
         </Container>
       </div>
