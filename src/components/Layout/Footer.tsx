@@ -10,7 +10,11 @@ import {
   Container,
 } from '@material-ui/core'
 import { OpenInNewOutlined } from '@material-ui/icons'
-import { mediumgrey, blackpearl } from '../../theme/ocPalette.constants'
+import {
+  mediumgrey,
+  blackpearl,
+  sherpablue,
+} from '../../theme/ocPalette.constants'
 import ocOrange from '../../../src/assets/images/four51-logo-geo--full-color-white.svg'
 
 const styles = (theme: Theme) =>
@@ -27,7 +31,7 @@ const styles = (theme: Theme) =>
         right: 0,
         zIndex: -1,
       },
-      backgroundColor: blackpearl[500],
+      backgroundColor: theme.palette.primary.main,
       borderTop: '2px solid',
       borderColor: mediumgrey[100],
       ...theme.typography.body2,
@@ -58,7 +62,7 @@ const styles = (theme: Theme) =>
       textTransform: 'uppercase',
       letterSpacing: theme.spacing(0.2),
       fontWeight: 600,
-      color: theme.palette.grey[600],
+      color: sherpablue[300],
     },
     footerLogo: {
       maxWidth: 50,
@@ -146,16 +150,16 @@ class Footer extends React.Component<any> {
                 >
                   Channels
                 </Typography>
-                <a
+                <Link
                   className={classes.footerLinks}
-                  href="https://developer.ordercloud.io/community"
+                  to="/slack"
                   target="_blank"
                 >
                   Slack Community
                   <Box marginLeft={0.5} display="flex" alignItems="center">
                     <OpenInNewOutlined fontSize="inherit" />
                   </Box>
-                </a>
+                </Link>
                 <a
                   className={classes.footerLinks}
                   href="https://stackoverflow.com/questions/tagged/ordercloud"

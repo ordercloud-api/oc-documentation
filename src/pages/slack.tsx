@@ -18,6 +18,7 @@ import {
   Link,
 } from '@material-ui/core'
 import { breakpoints } from '@material-ui/system'
+import { navHeight } from '../components/Layout/Header'
 
 interface SlackCommunityProps {
   classes: any
@@ -36,8 +37,8 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
     <Layout>
       <div className={classes.doop}>
         <Helmet title={`OrderCloud Slack Community`} />
-        <Box display="flex" flexDirection="column" alignItems="start">
-          <SvgIcon viewBox="0 0 270 270" className={classes.svgIcon}>
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <SvgIcon viewBox="0 0 200 200" className={classes.svgIcon}>
             <path
               fill="#e01e5a"
               d="M99.4 151.2c0 7.1-5.8 12.9-12.9 12.9-7.1 0-12.9-5.8-12.9-12.9 0-7.1 5.8-12.9 12.9-12.9h12.9v12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9v-32.3z"
@@ -85,13 +86,13 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
             <Link to="https://ordercloudapi.slack.com/">Sign In</Link>
           </Box>
         </Box>
-        <Hidden mdDown>
+        {/* <Hidden mdDown>
           <img
             className={classes.slackIllustration}
             src={SlackIllustration}
             alt="OrderCloud Slack Community"
           />
-        </Hidden>
+        </Hidden> */}
       </div>
     </Layout>
   )
@@ -107,9 +108,9 @@ const useStyles = makeStyles((theme: Theme) =>
     doop: {
       display: 'flex',
       position: 'relative',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      height: '100vh',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      height: `calc(100vh - ${navHeight}px)`,
       borderRadius: 0,
       overflowY: 'hidden',
       overflowX: 'hidden',
@@ -119,9 +120,9 @@ const useStyles = makeStyles((theme: Theme) =>
       '-webkit-background-size': 'cover',
       '-moz-background-size': 'cover',
       '-o-background-size': 'cover',
-      padding: '0rem 2rem',
+      padding: '2rem 2rem',
       [theme.breakpoints.up('md')]: {
-        padding: '0rem 10rem',
+        padding: '6rem 10rem',
       },
     },
     containerForm: {
