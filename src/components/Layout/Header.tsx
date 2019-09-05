@@ -358,75 +358,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               darkMode={true}
               noPopper={isMobile}
             ></DocSearch>
-            <Hidden mdUp>
-              {this.state.auth && (
-                <React.Fragment>
-                  <div className={classes.spacer}></div>
-                  <IconButton
-                    edge="end"
-                    color="inherit"
-                    onClick={this.handleMenu}
-                  >
-                    <Avatar alt={this.state.username}>
-                      <Gravatar size={40} email={this.state.email} />
-                    </Avatar>
-                  </IconButton>
-                  <Popper
-                    placement="bottom-end"
-                    open={Boolean(anchorEl)}
-                    anchorEl={anchorEl}
-                    transition
-                    disablePortal
-                  >
-                    {({ TransitionProps, placement }) => (
-                      <Grow
-                        {...TransitionProps}
-                        style={{
-                          transformOrigin:
-                            placement === 'bottom-end'
-                              ? 'right top'
-                              : 'right bottom',
-                        }}
-                      >
-                        <Paper>
-                          <ClickAwayListener onClickAway={this.handleClose}>
-                            <div>
-                              <Box paddingX={2} paddingY={1}>
-                                <Typography>
-                                  Signed in as
-                                  <br />
-                                  <b>{this.state.username}</b>
-                                </Typography>
-                              </Box>
-                              <Divider />
-                              <MenuList className={classes.menuList}>
-                                {MenuItems.OrgControls.map(item => (
-                                  <MenuItem className={classes.menuItem}>
-                                    {item.label}
-                                  </MenuItem>
-                                ))}
-                                <Divider className={classes.menuListDivider} />
-                                {MenuItems.AuthControls.map(item => (
-                                  <MenuItem className={classes.menuItem}>
-                                    {item.label}
-                                  </MenuItem>
-                                ))}
-                                <MenuItem
-                                  onClick={this.handleLogout}
-                                  className={classes.menuItem}
-                                >
-                                  Sign Out
-                                </MenuItem>
-                              </MenuList>
-                            </div>
-                          </ClickAwayListener>
-                        </Paper>
-                      </Grow>
-                    )}
-                  </Popper>
-                </React.Fragment>
-              )}
-            </Hidden>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -447,7 +378,13 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 onClick={this.toggleNav(!this.state.mobileOpen)}
               />
             </Box>
-            {!auth && (
+            {auth ? (
+              <Box padding="1rem 0rem">
+                <Avatar alt={this.state.username}>
+                  <Gravatar size={40} email={this.state.email} />
+                </Avatar>
+              </Box>
+            ) : (
               <Box padding="1rem 0rem">
                 <Button
                   onClick={this.handleFakeLogin}
@@ -486,6 +423,39 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 )
               }
             })}
+            {auth ? (
+              <React.Fragment>
+                <Divider />
+                <Box padding="1rem 0rem 0rem 1rem">
+                  <Typography variant="body1" className={classes.signedInAs}>
+                    Signed in as {this.state.username}
+                  </Typography>
+                </Box>
+                <MenuList className={classes.menuList}>
+                  {MenuItems.OrgControls.map((item, index) => (
+                    <MenuItem key={index} className={classes.menuItem}>
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                  {MenuItems.AuthControls.map((item, index) => {
+                    const { label, to } = item
+                    return (
+                      <MenuItem key={index} className={classes.menuItem}>
+                        {label}
+                      </MenuItem>
+                    )
+                  })}
+                  <MenuItem
+                    className={classes.menuItem}
+                    onClick={this.handleLogout}
+                  >
+                    Sign Out
+                  </MenuItem>
+                </MenuList>
+              </React.Fragment>
+            ) : (
+              <React.Fragment></React.Fragment>
+            )}
           </List>
           <div className={classes.grow}></div>
           <Box padding="1rem">
@@ -593,13 +563,16 @@ const styles = (theme: Theme) =>
       width: '100vw',
       height: '100vh',
       color: theme.palette.common.white,
-      fontSize: '1.5rem',
+      fontSize: '1rem',
     },
     mobileMenuLogo: {
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2),
       marginRight: theme.spacing(2),
       width: theme.spacing(30),
+    },
+    signedInAs: {
+      fontWeight: 'bolder',
     },
   })
 
