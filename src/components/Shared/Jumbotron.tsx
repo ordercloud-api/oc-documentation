@@ -116,29 +116,6 @@ class Jumbotron extends React.Component<any> {
         }`}
         style={{ height }}
       >
-        {/* <Hidden mdDown implementation="js">
-          <Particles
-            className={classes.jumbotronParticle}
-            params={{
-              particles: {
-                number: {
-                  value: 250,
-                },
-                size: {
-                  value: 0.25,
-                },
-              },
-              interactivity: {
-                events: {
-                  onhover: {
-                    enable: true,
-                    mode: 'repulse',
-                  },
-                },
-              },
-            }}
-          />
-        </Hidden> */}
         <Container>
           <Paper className={classes.jumbotronContainer}>
             {image && (
