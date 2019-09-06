@@ -15,7 +15,7 @@ import Particles from 'react-particles-js'
 import ButtonLink from './ButtonLink'
 import {
   flame,
-  seafoam,
+  sherpablue,
   sunset,
   mediumgrey,
 } from '../../theme/ocPalette.constants'
@@ -33,8 +33,8 @@ const styles = (theme: Theme) =>
       borderRadius: 0,
       overflowY: 'hidden',
       overflowX: 'hidden',
-      backgroundColor: 'rgba(28, 33, 41, 0.05)',
-      backgroundImage: `url('${ocDegrees}')`,
+      backgroundColor: sherpablue[500],
+      backgroundImage: `linear-gradient(90deg, ${sherpablue[500]} 0%, ${sherpablue[400]} 100%)`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       '-webkit-background-size': 'cover',
@@ -90,7 +90,7 @@ const styles = (theme: Theme) =>
       padding: 0,
       fontWeight: 'bolder',
       textTransform: 'uppercase',
-      // color: seafoam[400],
+      color: sherpablue[50],
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
         margin: '0 auto',

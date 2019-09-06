@@ -485,16 +485,21 @@ const styles = (theme: Theme) =>
       height: '100%',
     },
     tabsIndicator: {
-      height: theme.spacing(0.5),
-      backgroundColor: theme.palette.secondary.light,
+      height: theme.spacing(0.25),
+      backgroundImage: `linear-gradient(90deg, ${flame[400]} 0%, #F8AC1A 100%)`,
       zIndex: -2,
     },
     navTabSelected: {
-      fontWeight: 'bolder',
       color: flame[400],
+      backgroundColor: 'rgba(0, 0, 0, .1)',
     },
     tab: {
       minWidth: 0,
+      cursor: 'pointer',
+      transition: 'background-color .5s',
+      '&:hover': {
+        backgroundColor: 'rgba(0, 0, 0, .05)',
+      },
     },
     root: {
       width: '100vw',
@@ -507,8 +512,7 @@ const styles = (theme: Theme) =>
         left: 0,
         right: 0,
         zIndex: -1,
-        height: theme.spacing(0.5),
-        backgroundImage: `linear-gradient(90deg, ${flame[400]} 0%, #F8AC1A 100%)`,
+        height: theme.spacing(0.25),
       },
     },
     toolbar: {
