@@ -32,7 +32,7 @@ import ocLogo from '../../assets/images/four51-badge--flame-white.svg'
 import Gravatar from 'react-gravatar'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
-import { navigate } from '../Shared/PortalLink'
+import { navigate, PortalLink } from '../Shared/PortalLink'
 import ListItemLink from '../Shared/ListItemLink'
 import { flame, sunset } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
@@ -228,6 +228,18 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     )
                   }
                 })}
+                {auth && (
+                  <Tab
+                    disableRipple
+                    classes={{
+                      root: classes.tab,
+                      selected: classes.navTabSelected,
+                    }}
+                    value="console"
+                    label="Console"
+                    onClick={this.goToPortal('/console/')}
+                  ></Tab>
+                )}
               </Tabs>
             </Hidden>
             <div className={classes.grow}></div>
@@ -315,7 +327,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               ) : (
                 <React.Fragment>
                   <Button
-                    href="/console/login"
+                    onClick={this.goToPortal('/console/login')}
                     variant="text"
                     color="inherit"
                     size="small"
@@ -325,7 +337,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   </Button>
 
                   <Button
-                    href="/console/login"
+                    onClick={this.goToPortal('/console/login')}
                     variant="outlined"
                     color="inherit"
                     size="small"
@@ -377,7 +389,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             ) : (
               <Box padding="1rem 0rem">
                 <Button
-                  href="/console/login"
+                  onClick={this.goToPortal('/console/login')}
                   variant="text"
                   color="inherit"
                   size="small"
@@ -387,7 +399,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 </Button>
 
                 <Button
-                  href="/console/login"
+                  onClick={this.goToPortal('/console/login')}
                   variant="outlined"
                   color="inherit"
                   size="small"
