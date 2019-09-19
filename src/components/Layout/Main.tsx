@@ -11,12 +11,15 @@ import {
 } from '@material-ui/core/'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
-import { darkgrey, mediumgrey } from '../../theme/ocPalette.constants'
+import ocLogo from '../../assets/images/four51-logo-nopyramid--full-color.svg'
+import { darkgrey, mediumgrey, flame } from '../../theme/ocPalette.constants'
 import utility from '../../utility'
-import Footer from '../Layout/Footer'
-import DocSearch from '../Shared/DocSearch'
 import Jumbotron from '../Shared/Jumbotron'
 import ListLink from '../Shared/ListLink'
+import ButtonLink from '../Shared/ButtonLink'
+import ListItemLink from '../Shared/ListItemLink'
+import { CustomButton, CustomButtonLink } from '../Shared/ButtonVariants'
+import { navHeight } from './Header'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -31,10 +34,9 @@ const useStyles = makeStyles((theme: Theme) =>
       top: theme.spacing(3),
     },
     root: {
-      minHeight: '100vh',
-      backgroundColor: mediumgrey[50],
+      minHeight: `calc(100vh - ${navHeight}px)`,
       [theme.breakpoints.up('md')]: {
-        marginBottom: theme.spacing(55),
+        minHeight: `calc(100vh - ${navHeight}px)`,
       },
     },
     paperRoot: {
@@ -48,12 +50,12 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       maxWidth: '100vw',
       [theme.breakpoints.up('md')]: {
-        minHeight: '40vh',
+        minHeight: '30vh',
       },
     },
     paperTitleHeading: {
+      padding: theme.spacing(1, 0, 0, 2),
       color: darkgrey[900],
-      paddingLeft: theme.spacing(2),
       textAlign: 'left',
     },
     paperTitleSubheading: {
@@ -76,7 +78,9 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     paperList: {
-      columns: 2,
+      [theme.breakpoints.up('md')]: {
+        columns: 2,
+      },
     },
     cardWrapper: {
       overflowX: 'hidden',
@@ -126,9 +130,9 @@ const MainComponent: React.FunctionComponent = props => {
       case 'Main Concepts':
         return `Establish a firm foundation by learning fundamental OrderCloud concepts`
       case 'Features':
-        return `Explore at a high-level some of the features you can use to solve your complex B2B scenarios`
+        return `Explore some of our API features that can help you solve complex B2B scenarios`
       case 'Guides':
-        return `Hands-on guides for some of the most common scenarios you'll encounter in the OrderCloud API`
+        return `Walkthrough some common scenarios you'll encounter in the OrderCloud API`
       default:
         return ''
     }
@@ -136,10 +140,28 @@ const MainComponent: React.FunctionComponent = props => {
 
   return (
     <div className={classes.root}>
-      <DocSearch darkMode={false} classes={{ searchBox: classes.searchBox }} />
-      <Jumbotron />
-      <Container maxWidth="xl">
-        <Grid container className={classes.cardWrapper} spacing={5}>
+      <Jumbotron
+        image={{ src: ocLogo, alt: 'Four51 OrderCloud Logo' }}
+        heading="Commerce catered to your business."
+        actions={[
+          <CustomButtonLink
+            color="#fff"
+            to="/getting-started/intro-to-ordercloud"
+            variant="contained"
+          >
+            Introduction
+          </CustomButtonLink>,
+          <CustomButtonLink
+            to="/getting-started/quick-start-guide"
+            variant="contained"
+            color={flame[600]}
+          >
+            Quick Start
+          </CustomButtonLink>,
+        ]}
+      />
+      <Container>
+        <Grid container className={classes.cardWrapper} spacing={3}>
           {sections
             .filter(section => section.title !== 'Getting Started')
             .map((section, index) => (
@@ -153,18 +175,18 @@ const MainComponent: React.FunctionComponent = props => {
               >
                 {section.guides.filter(c => !c.frontmatter.hidden).length >
                 0 ? (
-                  <Paper elevation={10}>
+                  <Paper elevation={5}>
                     <Box p={2} zIndex={1}>
                       <div className={classes.paperCard}>
                         <Typography
                           className={classes.paperTitleHeading}
-                          variant="h2"
+                          variant="h3"
                         >
                           {section.title}
                         </Typography>
                         <Typography
                           className={classes.paperTitleSubheading}
-                          variant="body1"
+                          variant="subtitle1"
                         >
                           {getSectionSubtitle(section.title)}
                         </Typography>
@@ -177,13 +199,9 @@ const MainComponent: React.FunctionComponent = props => {
                             .filter(g => !g.frontmatter.hidden)
                             .map(g => {
                               return (
-                                <ListLink
-                                  key={g.id}
-                                  guideProps={{
-                                    path: g.path,
-                                    title: g.frontmatter.title,
-                                  }}
-                                />
+                                <ListItemLink key={g.id} to={g.path}>
+                                  {g.frontmatter.title}
+                                </ListItemLink>
                               )
                             })}
                         </List>
@@ -195,7 +213,6 @@ const MainComponent: React.FunctionComponent = props => {
             ))}
         </Grid>
       </Container>
-      <Footer sections={sections} right={0} />
     </div>
   )
 }
