@@ -7,7 +7,7 @@ hidden: false
 
 ## Overview
 
-The reality of all enterprise platforms is the need to customize the data model. To accommodate this, OrderCloud.io designed a property called Extended Properties (XP) to allow enterprise customization of the OrderCloud data model. OrderCloud.io exposes the `{ xp: {} }` property on most resources allowing you to apply JSON objects. The JSON object can be as complex and deeply-nested as necessary. Additionally, the XP property is available for filtering, sorting and searching in all list endpoints. Extended Properties allows you to overcome platform rigidity. So, to optimize the use of our data model, and to help you fully implement your B2B scenarios, we created a schema-less solution with XP and exposed it on virtually every API resource. We may not have `Product.YourSpecialDataPoint`, but we do have `Product.xp.YourSpecialDataPoint`.
+The reality of all enterprise platforms is the need to customize the data model. To accommodate this, OrderCloud designed a property called Extended Properties (XP) to allow enterprise customization of the OrderCloud data model. OrderCloud exposes the `{ xp: {} }` property on most resources allowing you to apply JSON objects. The JSON object can be as complex and deeply-nested as necessary. Additionally, the XP property is available for filtering, sorting and searching in all list endpoints. Extended Properties allows you to overcome platform rigidity. So, to optimize the use of our data model, and to help you fully implement your B2B scenarios, we created a schema-less solution with XP and exposed it on virtually every API resource. We may not have `Product.YourSpecialDataPoint`, but we do have `Product.xp.YourSpecialDataPoint`.
 
 ## Add, Update and Remove XP
 
@@ -145,7 +145,7 @@ Content-Type: application/json; charset=UTF-8
 
 ## Searching on XP
 
-Not only can XP be used to extend the functionality of your application, but you can use filters to search for indexed xp values on any given resource. After all, how much benefit would XP provide if you couldn't query a subset of objects based on a specific XP value? All of the filtering capabilities that apply to regular values on OrderCloud.io objects also apply to XP values. This means you can search with all of the standard operators available (`=`,`<`,`>`). Below is an example of filtering for a deeply nested value in XP:
+Not only can XP be used to extend the functionality of your application, but you can use filters to search for indexed xp values on any given resource. After all, how much benefit would XP provide if you couldn't query a subset of objects based on a specific XP value? All of the filtering capabilities that apply to regular values on OrderCloud objects also apply to XP values. This means you can search with all of the standard operators available (`=`,`<`,`>`). Below is an example of filtering for a deeply nested value in XP:
 
 ```http
 GET https://api.ordercloud.io/buyers/newbuyer/users?xp.EmploymentDetails.Department=Tech HTTP/1.1
