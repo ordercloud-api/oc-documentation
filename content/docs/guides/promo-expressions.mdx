@@ -5,7 +5,11 @@ priority: 4
 hidden: false
 ---
 
-Writing custom rule-base expressions for your order promotions may seem intimidating at first, but once you get the hang of it you'll realize there are virtually limitless possibilities which provide the flexibility to meet almost any business need. In fact, custom order promotions are a great example of how our core value *Flexibility over Features* informs everything we build (and don't build) into the platform. We've found that allowing developers to define their own custom if-then statements is incredibly robust and solves more problems than providing a limited set of non-customizable promotions out-of-the-box.
+import { Link } from 'gatsby'
+
+## Overview
+
+Writing custom rule-base expressions for your order promotions may seem intimidating at first, but once you get the hang of it you'll realize there are virtually limitless possibilities which provide the flexibility to meet almost any business need. In fact, custom order promotions are a great example of how our core value <Link to="/blog/flexibility-over-features">*Flexibility over Features*</Link> informs everything we build (and don't build) into the platform. We've found that allowing developers to define their own custom if-then statements is incredibly robust and solves more problems than providing a limited set of non-customizable promotions out-of-the-box.
 
 ## Where should I start?
 
@@ -72,13 +76,13 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
 
 ## That's a lot of flexibility. What else should I know?
 
-**Limitations**
+**Considerations**
  - Both `EligibleExpression` and `ValueExpression` are limited to 400 characters each. Use them wisely. If you're bumping up against the character limit, there's a good chance you could optimize your promo expressions in some way. 
-  - Promotion eligibility is currently only evaluated at the time the promotion is applied, and then again on order submit.
+  - Promotion eligibility is evaluated by the api at the time the promotion is applied, and then again on order submit.
 
 **Roadmap**
-
  - Line item level promotions
- - Re-evaluate promotion eligibility on all order changes
  - `product.inparentcategory()` - the current function `product.incategory()` only recognizes direct assignments, the new function will look for products assigned to any child categories of the parent that is passed in.
  - Promotion.MaxValue (discount the ValueExpression or MaxValue, whichever is less)
+ - Promotion.AutoApply (automatically apply the promotion to any qualifying order)
+ - `v1/orders/{direction}/{orderID}/validate` endpoint that will check validity of an order in it's current state, including, but not limited to, applied promotions
