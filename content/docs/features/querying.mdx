@@ -9,7 +9,7 @@ import { Link } from 'gatsby'
 
 ## Overview
 
-Most OrderCloud resources have list endpoints that can return many thousands, even hundreds of thousands of items. Being able to effectively query this data is not only practical but necessary. We understand how important this is and that's why we've built an assortment of API tools that will help you hone in on and extract exactly the data you and your users need. Up first, let's talk about Search.
+Most OrderCloud resources have list endpoints that can return many thousands, even hundreds of thousands of items. Being able to effectively query this data is not only practical but necessary. We understand how important this is and that's why we've built an assortment of API tools that will help you narrow down and extract exactly the data you and your users need. Up first, let's talk about Search.
 
 ## Searching
 
@@ -23,7 +23,7 @@ GET https://api.ordercloud.io/v1/me/products?search=bike HTTP/1.1
 
 This will return all results such as bike, words including bike, bikes, bicycle, etc. The fields searched include `ID`,`Name`, and `Description`. (This of course varies from endpoint to endpoint). Fields marked "Searchable" in the API reference will be searched and weighted according to priority level.
 
-You can also optionally specify which fields (of the searchable fields available) are searched by providing a `searchOn` parameter for any field available on the resource you're searching (including xp). Here's we're searching on Name and xp.Color so if our search finds a match in either of those two fields we will get a result.
+You can also optionally specify which fields (of the searchable fields available) are searched by providing a `searchOn` parameter for any field available on the resource you're searching including <Link to="/blog/leverage-xp">extended properties (XP)</Link>. Here's we're searching on Name and xp.Color so if our search finds a match in either of those two fields we will get a result.
 
 ```http
 GET https://api.ordercloud.io/v1/me/products?search=bike&searchOn=Name,xp.Color HTTP/1.1
@@ -35,7 +35,7 @@ Filtering is best when you are looking specific values in a given field. Favor f
 
 ### Filtering On XP
 
-Let's examine a common scenario of filtering on an extended property (XP) field. Suppose our XP field looks like this:
+Let's examine a common scenario of filtering on an <Link to="/blog/leverage-xp">extended property (XP) field</Link>. Suppose our XP field looks like this:
 
 ```json
 {
@@ -122,7 +122,7 @@ Your data is highly indexed for fast retrieval using any of the methods above, i
 
 ## Sorting
 
-In addition to being able to hone in the data itself, you can also indicate to OrderCloud how you want it sorted. Perhaps you want to sort the results (in ascending order) by the last name of the person who placed an order. To do this you can simply include the `sortBy` parameter for the field you would like to sort by.
+In addition to being able to narrow down the data itself, you can also indicate to OrderCloud how you want it sorted. Perhaps you want to sort the results (in ascending order) by the last name of the person who placed an order. To do this you can simply include the `sortBy` parameter for the field you would like to sort by.
 
 ```http
 GET https://api.ordercloud.io/v1/me/orders/incoming?sortBy=LastName HTTP/1.1
