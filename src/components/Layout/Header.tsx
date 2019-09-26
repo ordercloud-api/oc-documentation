@@ -32,7 +32,7 @@ import ocLogo from '../../assets/images/four51-badge--flame-white.svg'
 import Gravatar from 'react-gravatar'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
-import { navigate } from '../Shared/PortalLink'
+import { navigate, PortalLink } from '../Shared/PortalLink'
 import ListItemLink from '../Shared/ListItemLink'
 import { flame, sunset } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
@@ -124,26 +124,14 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     this.setState({ anchorEl: null })
   }
 
-  public handleFakeLogin = () => {
-    this.cookies.set(
-      'DevCenter.token',
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3IiOiJkc3RlaW5tZXR6QGZvdXI1MS5jb20iLCJjaWQiOiJiMDk3YTlhYS01YmMzLTQ5MzctYjZiYi02ZWEzN2UwMDQ0ODYiLCJ1c3J0eXBlIjoiZGV2Iiwicm9sZSI6IkRldkNlbnRlciIsImlzcyI6Imh0dHBzOi8vYXV0aC5vcmRlcmNsb3VkLmlvIiwiYXVkIjoiaHR0cHM6Ly9hcGkub3JkZXJjbG91ZC5pbyIsImV4cCI6MTU2NzYzOTgwNCwibmJmIjoxNTY3NjExMDA0fQ.1lbxBTNUo4YZ-Z1HLUoxA3tvwPKv57IL8xqnWiFgSjc',
-      { domain: window.location.hostname }
-    )
-    this.cookies.set('DevCenter.firstName', 'DJ', {
-      domain: window.location.hostname,
-    })
-    this.cookies.set('DevCenter.email', 'dsteinmetz@four51.com', {
-      domain: window.location.hostname,
-    })
-    this.onInit()
-  }
-
   public handleLogout = () => {
     this.setState({ anchorEl: null })
-    this.cookies.remove('DevCenter.token', { domain: window.location.hostname })
-    this.cookies.set('DevCenter.firstName', null)
-    this.cookies.set('DevCenter.email', null)
+    this.cookies.remove('DevCenter.token', {
+      path: '/',
+      domain: window.location.hostname,
+    })
+    this.cookies.set('DevCenter.firstName', { path: '/' })
+    this.cookies.set('DevCenter.email', { path: '/' })
     this.onInit()
   }
 
@@ -243,6 +231,18 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     )
                   }
                 })}
+                {auth && (
+                  <Tab
+                    disableRipple
+                    classes={{
+                      root: classes.tab,
+                      selected: classes.navTabSelected,
+                    }}
+                    value="console"
+                    label="Console"
+                    onClick={this.goToPortal('/console/')}
+                  ></Tab>
+                )}
               </Tabs>
             </Hidden>
             <div className={classes.grow}></div>
@@ -330,7 +330,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               ) : (
                 <React.Fragment>
                   <Button
-                    onClick={this.handleFakeLogin}
+                    onClick={this.goToPortal('/console/login')}
                     variant="text"
                     color="inherit"
                     size="small"
@@ -339,7 +339,12 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     Login
                   </Button>
 
-                  <Button variant="outlined" color="inherit" size="small">
+                  <Button
+                    onClick={this.goToPortal('/console/login')}
+                    variant="outlined"
+                    color="inherit"
+                    size="small"
+                  >
                     Sign-Up
                   </Button>
                 </React.Fragment>
@@ -387,7 +392,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             ) : (
               <Box padding="1rem 0rem">
                 <Button
-                  onClick={this.handleFakeLogin}
+                  onClick={this.goToPortal('/console/login')}
                   variant="text"
                   color="inherit"
                   size="small"
@@ -396,7 +401,12 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   Login
                 </Button>
 
-                <Button variant="outlined" color="inherit" size="small">
+                <Button
+                  onClick={this.goToPortal('/console/login')}
+                  variant="outlined"
+                  color="inherit"
+                  size="small"
+                >
                   Sign-Up
                 </Button>
               </Box>
