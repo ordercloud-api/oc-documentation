@@ -9,7 +9,7 @@ import { Link } from 'gatsby'
 
 Price schedules are one of the critical factors related to <Link to="main-concepts/product-visibility">product visibility</Link> and there are several ways that you can build relationships between products and price schedules.  One of the scenarios you may wish to achieve is one product with multiple price schedules.  _Why_ would you possibly want one product that had multiple different prices based on buyer/user?  Lets take a look at the example scenario below, and walk through a solution to achieve the desired result.
 
-> As a seller company, I sell two different memberships to my b2b ecommerce site.  The first is **Startup** and the second is **Enterprise**.  The **Enterprise** membership is considerably more expensive than the **Startup** membership, therefore I want to provide a slightly lower product pricing to my **Enterprise** customers.  Specifically, Jane Doe from Best Buy has signed up for an **Enterprise** membership, and John Deer from TechWorld has signed up for a **Startup** membership.
+> As a seller company, I sell two different memberships to my b2b ecommerce site.  The first is **Startup** and the second is **Enterprise**.  The **Enterprise** membership is considerably more expensive than the **Startup** membership, therefore I want to provide a slightly lower product pricing to my **Enterprise** customers.  Specifically, Jane Doe from CloudTech has signed up for an **Enterprise** membership, and John Deer from ComputerDudes has signed up for a **Startup** membership.
 
 How would we go about achieving this effect you might ask?  After reviewing the considerations, let's dive in!
 
@@ -22,18 +22,15 @@ How would we go about achieving this effect you might ask?  After reviewing the 
 
 ## Create a Price Schedule
 
-First, lets create the price schedule that is to be associated with the Enterprise membership.  For the length of this example, we will use "USB Cord" as our Product.  
+First, lets create the price schedule that is to be associated with the Enterprise membership.  For this example, we'll use "USB Cord" as our Product.  
 
 Lets assume there is no tax or shipping costs, and the minimum order quantity is 1.  Our call to the OrderCloud API should like this (If successful, our call should return a `201 Created` response):
 
 ```
-Method
-POST
+POST https://api.OrderCloud/v1/priceschedules
+Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Content-Type: application/json; charset=UTF-8
 
-URL
-https://api.OrderCloud/v1/priceschedules
-
-Data
 {
   "ID": "enterprise-priceschedule-id"
   "Name": "USB Cord",
@@ -45,13 +42,6 @@ Data
     }
   ]
 }
-
-Unflatten
-yes
-
-Headers
-application/json
-Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 ```
 
 Next, lets make the exact same call, but change the `PriceBreaks` field to adjust for the **Startup** pricing.  The `PriceBreaks` array in your second call should look like this: 
@@ -72,59 +62,39 @@ Next, lets make the exact same call, but change the `PriceBreaks` field to adjus
 
 ## Create a Product / Price Schedule Relationship
 
-Now that we have our two price schedules created, the next step is to create two different product assignments based on party.  By making these product assignments, we are creating a special relationships between the product, a price schedule and different parties.  Lets first connect the enterprise USB Cord price schedule and the Best Buy 'Buyer' party that is subject to **Enterprise** pricing.  Both of these `POST` calls should garner `204 No Content` responses if successful.
+Now that we have our two price schedules created, the next step is to create two different product assignments based on party.  By making these product assignments, we are creating a special relationships between the product, a price schedule and different parties.  Lets first assign the enterprise USB Cord price schedule and the CloudTech 'Buyer' party that is subject to **Enterprise** pricing.  Both of these `POST` calls should garner `204 No Content` responses if successful.
 
 ```
-Method
-POST
+POST https://api.OrderCloud/v1/products/assignments
+Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Content-Type: application/json; charset=UTF-8
 
-URL
-https://api.OrderCloud/v1/products/assignments
-
-Data
 {
   "ProductID": "usb-product-id",
-  "BuyerID": "bestbuy",
+  "BuyerID": "cloudtech",
   "PriceScheduleID": "enterprise-priceschedule-id"
 }
-
-Unflatten
-yes
-
-Headers
-application/json
-Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 ```
 
-Now that our connection between the **Enterprise** USB Cord Price Schedule, the Best Buy 'Buyer' and the USB Cord product has been made, lets wire up our second assignment.
+Now that our connection between the **Enterprise** USB Cord Price Schedule, the CloudTech 'Buyer' and the USB Cord product has been made, lets wire up our second assignment.
 
 ```
-Method
-POST
+POST https://api.OrderCloud/v1/products/assignments HTTP/1.1
+Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Content-Type: application/json; charset=UTF-8
 
-URL
-https://api.OrderCloud/v1/products/assignments
-
-Data
 {
   "ProductID": "usb-product-id",
-  "BuyerID": "techworld",
+  "BuyerID": "computerdudes",
   "PriceScheduleID": "startup-priceschedule-id"
 }
-
-Unflatten
-yes
-
-Headers
-application/json
-Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 ```
 
 Now that all of our assignments have been made, lets verify that we have successfully created special relationships between our two different buyers, two different price schedules and our product: USB Cord.
 
-In the context of Jane Doe from Best Buy, call `GET https://api.OrderCloud/v1/me/products/usb-product-id`, you should see the USB Cord product returned at the price of `"Price": 3.99`.
+In the context of Jane Doe from CloudTech, call `GET https://api.OrderCloud/v1/me/products/usb-product-id`, you should see the USB Cord product returned at the price of `"Price": 3.99`.
 
-In the context of John Deer from TechWorld, call `GET https://api.OrderCloud/v1/me/products/usb-product-id`, you should see the same product returned at a _different_ price of `"Price": 5.99`.
+In the context of John Deer from ComputerDudes, call `GET https://api.OrderCloud/v1/me/products/usb-product-id`, you should see the same product returned at a _different_ price of `"Price": 5.99`.
 
 
 ## Conclusion
