@@ -9,6 +9,7 @@ import {
   Hidden,
   SvgIcon,
   Container,
+  Box,
 } from '@material-ui/core'
 import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
@@ -16,10 +17,11 @@ import ButtonLink from './ButtonLink'
 import {
   flame,
   sherpablue,
+  blackpearl,
   sunset,
   mediumgrey,
 } from '../../theme/ocPalette.constants'
-import ocDegrees from '../../assets/images/four51-background-degrees-light.svg'
+import ocPlatform from '../../assets/svg/Platform--Ordercloud.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -34,12 +36,13 @@ const styles = (theme: Theme) =>
       overflowY: 'hidden',
       overflowX: 'hidden',
       backgroundColor: sherpablue[500],
-      backgroundImage: `linear-gradient(90deg, ${sherpablue[500]} 0%, ${sherpablue[400]} 100%)`,
+      // backgroundColor: sherpablue[500],
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       '-webkit-background-size': 'cover',
       '-moz-background-size': 'cover',
       '-o-background-size': 'cover',
+      zIndex: 1,
     },
     jumbotronSecondary: {
       backgroundColor: theme.palette.secondary.main,
@@ -57,11 +60,13 @@ const styles = (theme: Theme) =>
       width: '100vw',
       height: '100%',
     },
-    jumbotronParticle: {
+    jumbotronIcon: {
       position: 'absolute',
-      backgroundColor: 'transparent',
-      width: '100vw',
-      height: '100vh',
+      top: '-10vh',
+      left: '45vw',
+      opacity: 0.25,
+      minWidth: '55%',
+      mixBlendMode: 'exclusion',
     },
     buttonLink: {
       textDecoration: 'none',
@@ -71,14 +76,13 @@ const styles = (theme: Theme) =>
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-      zIndex: 1,
+
       [theme.breakpoints.down('md')]: {
         padding: 20,
       },
     },
     jumbotronLinkGroup: {
       display: 'flex',
-      // maxWidth: '75vw',
       marginTop: theme.spacing(3),
     },
     jumbotronLinkGroupLink: {
@@ -88,12 +92,17 @@ const styles = (theme: Theme) =>
     },
     jumbotronHeading: {
       padding: 0,
-      fontWeight: 'bolder',
       textTransform: 'uppercase',
+      marginTop: '.75rem',
       color: sherpablue[50],
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
         margin: '0 auto',
+      },
+      svgFlame: {
+        position: 'absolute',
+        top: '12vh',
+        zIndex: 0,
       },
     },
   })
@@ -124,7 +133,7 @@ class Jumbotron extends React.Component<any> {
             {heading && (
               <Typography
                 className={classes.jumbotronHeading}
-                variant={image ? 'h4' : 'h1'}
+                variant={image ? 'h2' : 'h1'}
                 component="h1"
               >
                 {heading}
@@ -150,6 +159,7 @@ class Jumbotron extends React.Component<any> {
             )}
           </Paper>
         </Container>
+        <img className={classes.jumbotronIcon} src={ocPlatform} alt="OC" />
       </div>
     )
   }
