@@ -34,7 +34,7 @@ import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
 import { navigate, PortalLink } from '../Shared/PortalLink'
 import ListItemLink from '../Shared/ListItemLink'
-import { flame, sunset } from '../../theme/ocPalette.constants'
+import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import MenuItems from '../Shared/MenuItems.json'
 import ocOrange from '../../../src/assets/images/four51-logo-geo--full-color-white.svg'
@@ -178,7 +178,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             <Link to="/" className={classes.logo}>
               <img src={ocLogo}></img>
             </Link>
-            <div className={classes.spacer}></div>
             <Hidden smDown>
               <Tabs
                 value={activeTab}
@@ -245,112 +244,108 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 )}
               </Tabs>
             </Hidden>
-            <div className={classes.grow}></div>
             <Hidden smDown>
-              <ChipLink
-                color="primary"
-                label={`v${currentApiVersion}`}
-                to={`/release-notes/v${currentApiVersion}`}
-              ></ChipLink>
-              <div className={classes.spacer}></div>
-              {auth ? (
-                <React.Fragment>
-                  <Button color="default" variant="contained" size="small">
-                    Support
-                  </Button>
-                  <div className={classes.spacer}></div>
-                  <IconButton color="inherit" onClick={this.handleMenu}>
-                    <Avatar alt={this.state.username}>
-                      <Gravatar size={40} email={this.state.email} />
-                    </Avatar>
-                  </IconButton>
-                  <Popper
-                    placement="bottom-end"
-                    open={Boolean(anchorEl)}
-                    anchorEl={anchorEl}
-                    transition
-                    disablePortal
-                  >
-                    {({ TransitionProps, placement }) => (
-                      <Grow
-                        {...TransitionProps}
-                        style={{
-                          transformOrigin:
-                            placement === 'bottom-end'
-                              ? 'right top'
-                              : 'right bottom',
-                        }}
-                      >
-                        <Paper>
-                          <ClickAwayListener onClickAway={this.handleClose}>
-                            <div>
-                              <Box paddingX={2} paddingY={1}>
-                                <Typography>
-                                  Signed in as
-                                  <br />
-                                  <b>{this.state.username}</b>
-                                </Typography>
-                              </Box>
-                              <Divider />
-                              <MenuList className={classes.menuList}>
-                                {MenuItems.OrgControls.map((item, index) => (
-                                  <MenuItem
-                                    key={index}
-                                    className={classes.menuItem}
-                                  >
-                                    {item.label}
-                                  </MenuItem>
-                                ))}
-                                <Divider className={classes.menuListDivider} />
-                                {MenuItems.AuthControls.map((item, index) => {
-                                  const { label, to } = item
-                                  return (
+              <div className={classes.navbarRight}>
+                <ChipLink
+                  color="secondary"
+                  label={`v${currentApiVersion}`}
+                  to={`/release-notes/v${currentApiVersion}`}
+                ></ChipLink>
+                {auth ? (
+                  <React.Fragment>
+                    <Button color="default" variant="contained" size="small">
+                      Support
+                    </Button>
+                    <IconButton color="inherit" onClick={this.handleMenu}>
+                      <Avatar alt={this.state.username}>
+                        <Gravatar size={40} email={this.state.email} />
+                      </Avatar>
+                    </IconButton>
+                    <Popper
+                      placement="bottom-end"
+                      open={Boolean(anchorEl)}
+                      anchorEl={anchorEl}
+                      transition
+                      disablePortal
+                    >
+                      {({ TransitionProps, placement }) => (
+                        <Grow
+                          {...TransitionProps}
+                          style={{
+                            transformOrigin:
+                              placement === 'bottom-end'
+                                ? 'right top'
+                                : 'right bottom',
+                          }}
+                        >
+                          <Paper>
+                            <ClickAwayListener onClickAway={this.handleClose}>
+                              <div>
+                                <Box paddingX={2} paddingY={1}>
+                                  <Typography>
+                                    Signed in as
+                                    <br />
+                                    <strong>{this.state.username}</strong>
+                                  </Typography>
+                                </Box>
+                                <Divider />
+                                <MenuList className={classes.menuList}>
+                                  {MenuItems.OrgControls.map((item, index) => (
                                     <MenuItem
                                       key={index}
                                       className={classes.menuItem}
                                     >
-                                      {label}
+                                      {item.label}
                                     </MenuItem>
-                                  )
-                                })}
-                                <MenuItem
-                                  className={classes.menuItem}
-                                  onClick={this.handleLogout}
-                                >
-                                  Sign Out
-                                </MenuItem>
-                              </MenuList>
-                            </div>
-                          </ClickAwayListener>
-                        </Paper>
-                      </Grow>
-                    )}
-                  </Popper>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <Button
-                    onClick={this.goToPortal('/console/login')}
-                    variant="text"
-                    color="inherit"
-                    size="small"
-                    style={{ marginRight: 5 }}
-                  >
-                    Login
-                  </Button>
-
-                  <Button
-                    onClick={this.goToPortal('/console/login')}
-                    variant="outlined"
-                    color="inherit"
-                    size="small"
-                  >
-                    Sign-Up
-                  </Button>
-                </React.Fragment>
-              )}
-
-              <div className={classes.spacer}></div>
+                                  ))}
+                                  <Divider
+                                    className={classes.menuListDivider}
+                                  />
+                                  {MenuItems.AuthControls.map((item, index) => {
+                                    const { label, to } = item
+                                    return (
+                                      <MenuItem
+                                        key={index}
+                                        className={classes.menuItem}
+                                      >
+                                        {label}
+                                      </MenuItem>
+                                    )
+                                  })}
+                                  <MenuItem
+                                    className={classes.menuItem}
+                                    onClick={this.handleLogout}
+                                  >
+                                    Sign Out
+                                  </MenuItem>
+                                </MenuList>
+                              </div>
+                            </ClickAwayListener>
+                          </Paper>
+                        </Grow>
+                      )}
+                    </Popper>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <Button
+                      onClick={this.goToPortal('/console/login')}
+                      color="inherit"
+                      size="small"
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      onClick={this.goToPortal('/console/login')}
+                      variant="outlined"
+                      color="inherit"
+                      size="small"
+                    >
+                      Sign-Up
+                    </Button>
+                  </React.Fragment>
+                )}
+              </div>
             </Hidden>
             <DocSearch
               classes={{
@@ -374,14 +369,16 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           <Box
             display="flex"
             justifyContent="space-between"
+            alignItems="center"
             paddingRight="1rem"
           >
-            <Box padding="1.5rem 1rem">
-              <CloseIcon
-                fontSize="large"
-                color="inherit"
-                onClick={this.toggleNav(!this.state.mobileOpen)}
-              />
+            <Box>
+              <IconButton aria-label="close" color="inherit">
+                <CloseIcon
+                  fontSize="large"
+                  onClick={this.toggleNav(!this.state.mobileOpen)}
+                />
+              </IconButton>
             </Box>
             {auth ? (
               <Box padding="1rem 0rem">
@@ -395,8 +392,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   onClick={this.goToPortal('/console/login')}
                   variant="text"
                   color="inherit"
+                  className={classes.mr1}
                   size="small"
-                  style={{ marginRight: 5 }}
                 >
                   Login
                 </Button>
@@ -467,7 +464,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               <React.Fragment></React.Fragment>
             )}
           </List>
-          <div className={classes.grow}></div>
           <Box padding="1rem">
             <img className={classes.mobileMenuLogo} src={ocOrange} alt="OC" />
           </Box>
@@ -483,33 +479,43 @@ export const navHeight = ORDERCLOUD_THEME.spacing(10)
 const styles = (theme: Theme) =>
   createStyles({
     logo: {
-      marginLeft: -theme.spacing(2),
+      marginRight: theme.spacing(2),
       width: theme.spacing(7),
       height: theme.spacing(7),
       padding: theme.spacing(0.5, 1, 1),
+      [theme.breakpoints.down('md')]: {
+        marginRight: 'auto',
+      },
     },
     tabs: {
+      flexGrow: 1,
       alignSelf: 'stretch',
     },
     tabsContainer: {
       height: '100%',
     },
     tabsIndicator: {
-      height: theme.spacing(0.5),
-      backgroundColor: theme.palette.secondary.light,
+      height: theme.spacing(0.25),
+      backgroundColor: seafoam[500],
       zIndex: -2,
     },
     navTabSelected: {
-      fontWeight: 'bolder',
-      color: flame[400],
+      color: seafoam[500],
+      backgroundColor: 'rgba(0, 0, 0, .1)',
     },
     tab: {
       minWidth: 0,
+      cursor: 'pointer',
+      transition: 'background-color .5s',
+      '&:hover': {
+        backgroundColor: 'rgba(0, 0, 0, .05)',
+      },
     },
     root: {
       width: '100vw',
       left: 0,
       top: 0,
+      backgroundColor: sherpablue[500],
       '&:after': {
         content: '""',
         position: 'absolute',
@@ -517,8 +523,7 @@ const styles = (theme: Theme) =>
         left: 0,
         right: 0,
         zIndex: -1,
-        height: theme.spacing(0.5),
-        backgroundImage: `linear-gradient(90deg, ${flame[400]} 0%, #F8AC1A 100%)`,
+        height: theme.spacing(0.25),
       },
     },
     toolbar: {
@@ -535,8 +540,8 @@ const styles = (theme: Theme) =>
     icon: {
       color: theme.palette.common.white,
     },
-    menuList: {
-      // padding: ,
+    mobileMenuList: {
+      marginBottom: 'auto',
     },
     menuListDivider: {
       margin: theme.spacing(1, 0),
@@ -548,11 +553,13 @@ const styles = (theme: Theme) =>
     logoContainer: {
       boxSizing: 'content-box',
     },
-    grow: {
-      flexGrow: 1,
-    },
-    spacer: {
-      width: theme.spacing(2),
+    navbarRight: {
+      '&>*': {
+        margin: theme.spacing(0, 1),
+      },
+      '&>:last-child': {
+        marginRight: theme.spacing(3),
+      },
     },
     menuItem__profile: {
       padding: '10px',
@@ -583,6 +590,9 @@ const styles = (theme: Theme) =>
     },
     signedInAs: {
       fontWeight: 'bolder',
+    },
+    mr1: {
+      marginRight: theme.spacing(1),
     },
   })
 
