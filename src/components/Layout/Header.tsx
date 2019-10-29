@@ -481,6 +481,9 @@ const styles = (theme: Theme) =>
       width: theme.spacing(7),
       height: theme.spacing(7),
       padding: theme.spacing(0.5, 1, 1),
+      [theme.breakpoints.down('md')]: {
+        marginRight: 'auto',
+      },
     },
     tabs: {
       flexGrow: 1,

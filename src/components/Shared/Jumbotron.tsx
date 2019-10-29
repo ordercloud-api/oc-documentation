@@ -58,6 +58,11 @@ const styles = (theme: Theme) =>
       opacity: 0.25,
       minWidth: '55%',
       mixBlendMode: 'exclusion',
+      [theme.breakpoints.down('md')]: {
+        minWidth: '150%',
+        left: '6vh',
+        top: 0,
+      },
     },
     buttonLink: {
       textDecoration: 'none',
