@@ -369,14 +369,16 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           <Box
             display="flex"
             justifyContent="space-between"
+            alignItems="center"
             paddingRight="1rem"
           >
-            <Box padding="1.5rem 1rem">
-              <CloseIcon
-                fontSize="large"
-                color="inherit"
-                onClick={this.toggleNav(!this.state.mobileOpen)}
-              />
+            <Box>
+              <IconButton aria-label="close" color="inherit">
+                <CloseIcon
+                  fontSize="large"
+                  onClick={this.toggleNav(!this.state.mobileOpen)}
+                />
+              </IconButton>
             </Box>
             {auth ? (
               <Box padding="1rem 0rem">
@@ -388,8 +390,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               <Box padding="1rem 0rem">
                 <Button
                   onClick={this.goToPortal('/console/login')}
-                  variant="outlined"
-                  color="primary"
+                  variant="text"
+                  color="inherit"
+                  className={classes.mr1}
                   size="small"
                 >
                   Login
@@ -461,7 +464,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               <React.Fragment></React.Fragment>
             )}
           </List>
-          <div className={classes.grow}></div>
           <Box padding="1rem">
             <img className={classes.mobileMenuLogo} src={ocOrange} alt="OC" />
           </Box>
@@ -538,6 +540,9 @@ const styles = (theme: Theme) =>
     icon: {
       color: theme.palette.common.white,
     },
+    mobileMenuList: {
+      marginBottom: 'auto',
+    },
     menuListDivider: {
       margin: theme.spacing(1, 0),
     },
@@ -585,6 +590,9 @@ const styles = (theme: Theme) =>
     },
     signedInAs: {
       fontWeight: 'bolder',
+    },
+    mr1: {
+      marginRight: theme.spacing(1),
     },
   })
 
