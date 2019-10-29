@@ -5,22 +5,12 @@ import {
   withStyles,
   Typography,
   Paper,
-  Button,
-  Hidden,
-  SvgIcon,
   Container,
-  Box,
 } from '@material-ui/core'
 import { Link } from 'gatsby'
 import Particles from 'react-particles-js'
 import ButtonLink from './ButtonLink'
-import {
-  flame,
-  sherpablue,
-  blackpearl,
-  sunset,
-  mediumgrey,
-} from '../../theme/ocPalette.constants'
+import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
 import ocPlatform from '../../assets/svg/Platform--Ordercloud.svg'
 
 const styles = (theme: Theme) =>
@@ -36,13 +26,14 @@ const styles = (theme: Theme) =>
       overflowY: 'hidden',
       overflowX: 'hidden',
       backgroundColor: sherpablue[500],
-      // backgroundColor: sherpablue[500],
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       '-webkit-background-size': 'cover',
       '-moz-background-size': 'cover',
       '-o-background-size': 'cover',
-      zIndex: 1,
+      '&>div': {
+        zIndex: 1,
+      },
     },
     jumbotronSecondary: {
       backgroundColor: theme.palette.secondary.main,
@@ -94,16 +85,14 @@ const styles = (theme: Theme) =>
       padding: 0,
       textTransform: 'uppercase',
       marginTop: '.75rem',
-      color: sherpablue[50],
+      color: seafoam[50],
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
         margin: '0 auto',
       },
-      svgFlame: {
-        position: 'absolute',
-        top: '12vh',
-        zIndex: 0,
-      },
+    },
+    jumbotronText: {
+      color: seafoam[100],
     },
   })
 
@@ -159,7 +148,12 @@ class Jumbotron extends React.Component<any> {
             )}
           </Paper>
         </Container>
-        <img className={classes.jumbotronIcon} src={ocPlatform} alt="OC" />
+        <img
+          className={classes.jumbotronIcon}
+          aria-hidden="true"
+          src={ocPlatform}
+          alt="OrderCloud Platform Icon"
+        />
       </div>
     )
   }
