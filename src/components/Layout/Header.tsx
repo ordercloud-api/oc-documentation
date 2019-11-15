@@ -126,12 +126,15 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   public handleLogout = () => {
     this.setState({ anchorEl: null })
-    this.cookies.remove('DevCenter.token', {
-      path: '/',
-      domain: window.location.hostname,
-    })
-    this.cookies.set('DevCenter.firstName', { path: '/' })
-    this.cookies.set('DevCenter.email', { path: '/' })
+
+    ;['DevCenter.token', 'DevCenter.firstName', 'DevCenter.email'].forEach(
+      cookieName => {
+        this.cookies.remove(cookieName, {
+          path: '/',
+          domain: window.location.hostname,
+        })
+      }
+    )
     this.onInit()
   }
 

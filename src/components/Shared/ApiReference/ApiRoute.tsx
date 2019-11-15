@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
 const ApiRoute: React.FunctionComponent<ApiRouteProps> = props => {
   const { operation } = props
   const classes = useStyles({})
-  console.log(operation)
   return (
     <div className={classes.root}>
       <div className={classes.verb}>

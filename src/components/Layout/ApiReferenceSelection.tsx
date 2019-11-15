@@ -30,7 +30,6 @@ const styles = () => {
 
 function Section(props) {
   const { title, body, language } = props
-  console.log(body)
   return (
     <div>
       <h2>{title}</h2>
@@ -129,7 +128,6 @@ class ApiReferenceMethod extends React.Component<any> {
 
   public render() {
     const { method } = this.props
-    console.log(method)
     const path = (
       <pre>
         <code className="language-http">
@@ -151,8 +149,6 @@ class ApiReferenceMethod extends React.Component<any> {
           2
         )
       : null
-
-    console.log('METHOD', method)
 
     return (
       <React.Fragment>
