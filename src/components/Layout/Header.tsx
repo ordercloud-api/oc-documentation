@@ -233,18 +233,20 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     )
                   }
                 })}
-                {auth && (
-                  <Tab
-                    disableRipple
-                    classes={{
-                      root: classes.tab,
-                      selected: classes.navTabSelected,
-                    }}
-                    value="console"
-                    label="Console"
-                    onClick={this.goToPortal('/console/')}
-                  ></Tab>
-                )}
+                <Tab
+                  disableRipple
+                  classes={{
+                    root: classes.tab,
+                    selected: classes.navTabSelected,
+                  }}
+                  value="console"
+                  label="Console"
+                  onClick={
+                    auth
+                      ? this.goToPortal('/console/')
+                      : this.goToPortal('/console/login/')
+                  }
+                ></Tab>
               </Tabs>
             </Hidden>
             <Hidden smDown>
