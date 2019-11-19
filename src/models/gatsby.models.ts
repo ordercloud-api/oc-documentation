@@ -20,3 +20,7 @@ export type GatsbyCreatePages = (fns: {
   graphql: any
   actions: ActionCreators
 }) => void
+
+export type GatsbyOnCreateWebpackConfig = (fns: {
+  actions: ActionCreators
+}) => void
