@@ -126,7 +126,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   public handleLogout = () => {
     this.setState({ anchorEl: null })
-
     ;['DevCenter.token', 'DevCenter.firstName', 'DevCenter.email'].forEach(
       cookieName => {
         this.cookies.remove(cookieName, {
@@ -228,11 +227,26 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                           label={label}
                           component={Link}
                           to={to}
+                          key={index}
                         ></Tab>
                       )
                     )
                   }
                 })}
+                <Tab
+                  disableRipple
+                  classes={{
+                    root: classes.tab,
+                    selected: classes.navTabSelected,
+                  }}
+                  value="organizations"
+                  label="Organizations"
+                  onClick={
+                    auth
+                      ? this.goToPortal('/console/organizations')
+                      : this.goToPortal('/console/login/')
+                  }
+                ></Tab>
                 <Tab
                   disableRipple
                   classes={{
