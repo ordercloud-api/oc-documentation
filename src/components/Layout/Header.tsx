@@ -255,10 +255,14 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 ></ChipLink>
                 {auth ? (
                   <React.Fragment>
-                    <Button color="default" variant="contained" size="small">
+                    <Button color="inherit" variant="outlined" size="small">
                       Support
                     </Button>
-                    <IconButton color="inherit" onClick={this.handleMenu}>
+                    <IconButton
+                      color="inherit"
+                      onClick={this.handleMenu}
+                      className={classes.iconButton}
+                    >
                       <Avatar alt={this.state.username}>
                         <Gravatar size={40} email={this.state.email} />
                       </Avatar>
@@ -569,6 +573,9 @@ const styles = (theme: Theme) =>
     },
     icon: {
       color: theme.palette.common.white,
+    },
+    iconButton: {
+      padding: 0,
     },
     mobileMenuList: {
       display: 'flex',
