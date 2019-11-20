@@ -106,7 +106,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: props.darkMode ? theme.palette.common.white : undefined,
     }),
     hitItemSecondary: (props: any) => ({
-      color: props.darkMode ? theme.palette.grey[400] : undefined,
+      color: props.darkMode ? theme.palette.primary.dark : undefined,
     }),
   })
 )

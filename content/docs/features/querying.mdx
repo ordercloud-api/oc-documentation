@@ -9,11 +9,11 @@ import { Link } from 'gatsby'
 
 ## Overview
 
-Most OrderCloud resources have list endpoints that can return many thousands, even hundreds of thousands of items. Being able to effectively query this data is not only practical but necessary. We understand how important this is and that's why we've built an assortment of API tools that will help you narrow down and extract exactly the data you and your users need. Up first, let's talk about Search.
+Most OrderCloud resources have list endpoints that can return thousands, even hundreds of thousands of items. We understand that effectively querying this data is not only practical but necessary and have built an assortment of API tools to help pinpoint and extract the exact data you and your users need. Up first, let's talk about Search.
 
 ## Searching
 
-Google-esque searches, simply provide a search term.
+_Google-esque_ searches, simply provide a search term.
 
 This type of querying is best for natural language searches like a product search on a buyer site. Our search handles case-insensitive word stemming (plural inference for example), synonyms, and intelligently ranks results based on fields relevant to each resource. If you're curious about which default fields are taken into account and how much weight they're given for a search check out our <Link to="/api-reference">API reference</Link>.
 
@@ -23,7 +23,7 @@ GET https://api.ordercloud.io/v1/me/products?search=bike HTTP/1.1
 
 This will return all results such as bike, words including bike, bikes, bicycle, etc. The fields searched include `ID`,`Name`, and `Description`. (This of course varies from endpoint to endpoint). Fields marked "Searchable" in the API reference will be searched and weighted according to priority level.
 
-You can also optionally specify which fields (of the searchable fields available) are searched by providing a `searchOn` parameter for any field available on the resource you're searching including <Link to="/blog/leverage-xp">extended properties (XP)</Link>. Here's we're searching on Name and xp.Color so if our search finds a match in either of those two fields we will get a result.
+You can also optionally specify which fields (of the searchable fields available) are searched by providing a `searchOn` parameter for any field available on the resource you're searching including <Link to="/features/extended-properties">extended properties (XP)</Link>. Here's we're searching on Name and xp.Color so if our search finds a match in either of those two fields we will get a result.
 
 ```http
 GET https://api.ordercloud.io/v1/me/products?search=bike&searchOn=Name,xp.Color HTTP/1.1
@@ -31,11 +31,11 @@ GET https://api.ordercloud.io/v1/me/products?search=bike&searchOn=Name,xp.Color 
 
 ## Filtering
 
-Filtering is best when you are looking specific values in a given field. Favor filtering anytime you don't need natural language type searching over text fields because it's more performant _and_ more powerful.
+Filtering is best for looking at specific values in a given field. If you do not require natural language type searching over text fields, filtering is a more performant _and_ more powerful method for querying data.
 
 ### Filtering On XP
 
-Let's examine a common scenario of filtering on an <Link to="/blog/leverage-xp">extended property (XP) field</Link>. Suppose our XP field looks like this:
+Let's examine a common scenario of filtering on an <Link to="/features/extended-properties">extended property (XP) field</Link>. Suppose our XP field looks like this:
 
 ```json
 {
@@ -108,7 +108,7 @@ GET https://api.ordercloud.io/v1/buyers/xyz/users?ID=!<0&ID=!>9 HTTP/1.1
 
 ### Absence of a value
 
-Sometimes you need a list of items where some field either doesn't exist or is null or undefined. To search on the absence of a field you can combine the negate operator and the wildcard operator
+Sometimes you need a list of items where some field either doesn't exist or is null or undefined. To search on the absence of a field, you can combine the negate operator and the wildcard operator.
 
 ```http
 GET https://api.ordercloud.io/v1/orders?xp.Billed=!* HTTP/1.1
@@ -118,7 +118,7 @@ Here we're saying "give me all orders that haven't been billed (xp.Billed is und
 
 ### Performance Considerations
 
-Your data is highly indexed for fast retrieval using any of the methods above, including deep XP object graphs. However, there are a few things to keep in mind to keep search and listing functionality efficient. Filters with many `OR` conditions or with values that start with the `*` wildcard character may be particularly performance-sensitive. The larger the set of data, the more likely you are to notice any performance impact. It pays to know the data model well, and use grouping constructs like User Groups and Categories effectively.
+Your data is highly indexed for fast retrieval using the methods mentioned above, including deep XP object graphs. However, there are a _few important takeaways_ to keep search and listing functionality efficient. Filters with many `OR` conditions or with values that start with the `*` wildcard character may be particularly performance-sensitive. The larger the set of data, the more likely you are to notice any performance impact. It pays to know the data model well, and use grouping constructs like User Groups and Categories effectively.
 
 ## Sorting
 

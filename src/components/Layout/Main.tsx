@@ -142,7 +142,7 @@ const MainComponent: React.FunctionComponent = props => {
     <div className={classes.root}>
       <Jumbotron
         image={{ src: ocLogo, alt: 'Four51 OrderCloud Logo' }}
-        heading="Commerce catered to your business."
+        heading="A Next Generation Headless eCommerce Platform"
         actions={[
           <CustomButtonLink
             color="#fff"

@@ -31,7 +31,7 @@ const styles = (theme: Theme) =>
         right: 0,
         zIndex: -1,
       },
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.dark,
       borderTop: '2px solid',
       borderColor: mediumgrey[100],
       ...theme.typography.body2,
