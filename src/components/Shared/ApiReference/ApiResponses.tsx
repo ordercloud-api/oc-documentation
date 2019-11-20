@@ -24,7 +24,6 @@ const ApiResponses: React.FunctionComponent<ApiResponsesProps> = props => {
     <React.Fragment>
       <Typography variant="h4">Responses</Typography>
       {Object.entries(responses).map(([statusCode, response]) => {
-        console.log(response)
         let schema
         if (
           response.content &&

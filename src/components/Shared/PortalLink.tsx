@@ -38,11 +38,10 @@ export class PortalLink extends React.Component<PortalLinkProps> {
   }
 
   public render() {
-    const { to, ...rest } = this.props
+    const { to, children } = this.props
 
     const prefixedTo = withPrefix(to)
-    // prefixing with '/' denotes an absolute url to reach router
-    return <ReachLink to={`/${prefixedTo}`} {...rest} />
+    return <a href={prefixedTo}>{children}</a>
   }
 }
 
