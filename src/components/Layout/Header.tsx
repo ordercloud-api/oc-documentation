@@ -199,6 +199,26 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     to,
                   } = item
                   if (!mobileMenu && !authRequired) {
+                    if (to.includes('console')) {
+                      return (
+                        <Tab
+                          disableRipple={disableRipple}
+                          value={value}
+                          label={label}
+                          classes={{
+                            root: classes.tab,
+                            selected: classes.navTabSelected,
+                          }}
+                          component={Link}
+                          onClick={
+                            auth
+                              ? this.goToPortal(to)
+                              : this.goToPortal('/console/login/')
+                          }
+                          key={index}
+                        ></Tab>
+                      )
+                    }
                     return (
                       <Tab
                         disableRipple={disableRipple}
@@ -227,40 +247,11 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                           label={label}
                           component={Link}
                           to={to}
-                          key={index}
                         ></Tab>
                       )
                     )
                   }
                 })}
-                <Tab
-                  disableRipple
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  value="organizations"
-                  label="Organizations"
-                  onClick={
-                    auth
-                      ? this.goToPortal('/console/organizations')
-                      : this.goToPortal('/console/login/')
-                  }
-                ></Tab>
-                <Tab
-                  disableRipple
-                  classes={{
-                    root: classes.tab,
-                    selected: classes.navTabSelected,
-                  }}
-                  value="console"
-                  label="Console"
-                  onClick={
-                    auth
-                      ? this.goToPortal('/console/')
-                      : this.goToPortal('/console/login/')
-                  }
-                ></Tab>
               </Tabs>
             </Hidden>
             <Hidden smDown>
@@ -431,36 +422,33 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           <List className={classes.mobileMenuList}>
             {MenuItems.MainNavigation.map(item => {
               const { mobileMenu, authRequired, to, label } = item
-              if (
-                (!mobileMenu || mobileMenu) &&
-                !authRequired &&
-                to !== '/release-notes/v'
-              ) {
+              if (to.includes('console')) {
                 return (
                   <ListItemLink
-                    size="small"
-                    className={classes.mobileMenuItem}
-                    to={to}
+                    to={''}
+                    onClick={
+                      auth
+                        ? this.goToPortal(to)
+                        : this.goToPortal('/console/login/')
+                    }
                   >
                     {label}
                   </ListItemLink>
                 )
               }
+              if (
+                (!mobileMenu || mobileMenu) &&
+                !authRequired &&
+                to !== '/release-notes/v'
+              ) {
+                return <ListItemLink to={to}>{label}</ListItemLink>
+              }
               if (authRequired) {
-                return (
-                  auth && (
-                    <ListItemLink className={classes.mobileMenuItem} to={to}>
-                      {label}
-                    </ListItemLink>
-                  )
-                )
+                return auth && <ListItemLink to={to}>{label}</ListItemLink>
               }
               if (to === '/release-notes/v') {
                 return (
-                  <ListItemLink
-                    className={classes.mobileMenuItem}
-                    to={to + currentApiVersion}
-                  >
+                  <ListItemLink to={to + currentApiVersion}>
                     {label}
                   </ListItemLink>
                 )
@@ -468,52 +456,41 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             })}
             {auth ? (
               <React.Fragment>
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  flexWrap="nowrap"
-                  justifyContent="flex-end"
-                  flexGrow="1"
-                >
-                  <Typography
-                    variant="subtitle1"
-                    className={classes.mobileMenuListHeading}
-                  >
+                <Divider />
+                <Box padding="1rem 0rem 0rem 1rem">
+                  <Typography variant="body1" className={classes.signedInAs}>
                     Signed in as {this.state.username}
                   </Typography>
-                  <MenuList className={classes.menuList}>
-                    {MenuItems.OrgControls.map((item, index) => (
-                      <MenuItem key={index} className={classes.mobileMenuItem}>
-                        {item.label}
-                      </MenuItem>
-                    ))}
-                    {MenuItems.AuthControls.map((item, index) => {
-                      const { label, to } = item
-                      return (
-                        <MenuItem
-                          key={index}
-                          className={classes.mobileMenuItem}
-                        >
-                          {label}
-                        </MenuItem>
-                      )
-                    })}
-                    <MenuItem
-                      className={classes.mobileMenuItem}
-                      onClick={this.handleLogout}
-                    >
-                      <strong>SIGN OUT</strong>
-                    </MenuItem>
-                  </MenuList>
                 </Box>
+                <MenuList className={classes.menuList}>
+                  {MenuItems.OrgControls.map((item, index) => (
+                    <MenuItem key={index} className={classes.menuItem}>
+                      {item.label}
+                    </MenuItem>
+                  ))}
+                  {MenuItems.AuthControls.map((item, index) => {
+                    const { label, to } = item
+                    return (
+                      <MenuItem key={index} className={classes.menuItem}>
+                        {label}
+                      </MenuItem>
+                    )
+                  })}
+                  <MenuItem
+                    className={classes.menuItem}
+                    onClick={this.handleLogout}
+                  >
+                    Sign Out
+                  </MenuItem>
+                </MenuList>
               </React.Fragment>
             ) : (
               <React.Fragment></React.Fragment>
             )}
           </List>
-          {/* <Box padding="1rem">
+          <Box padding="1rem">
             <img className={classes.mobileMenuLogo} src={ocOrange} alt="OC" />
-          </Box> */}
+          </Box>
         </Drawer>
       </React.Fragment>
     )
@@ -588,20 +565,7 @@ const styles = (theme: Theme) =>
       color: theme.palette.common.white,
     },
     mobileMenuList: {
-      display: 'flex',
-      flexFlow: 'column nowrap',
-      justifyContent: 'space-between',
-      height: '100%',
-    },
-    mobileMenuItem: {
-      textTransform: 'uppercase',
-      fontSize: '.875rem',
-      lineHeight: '1.75',
-      color: seafoam[50],
-      cursor: 'pointer',
-      '&:hover, &:active, &:focus': {
-        backgroundColor: 'rgba(0,0,0,.1)',
-      },
+      marginBottom: 'auto',
     },
     menuListDivider: {
       margin: theme.spacing(1, 0),
@@ -648,14 +612,6 @@ const styles = (theme: Theme) =>
       marginRight: theme.spacing(2),
       width: theme.spacing(30),
     },
-
-    mobileMenuListHeading: {
-      padding: theme.spacing(1, 2),
-      color: sherpablue[100],
-      fontStyle: 'italic',
-      backgroundColor: 'rgba(0,0,0,.1)',
-    },
-
     signedInAs: {
       fontWeight: 'bolder',
     },
