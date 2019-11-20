@@ -126,7 +126,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   public handleLogout = () => {
     this.setState({ anchorEl: null })
-
     ;['DevCenter.token', 'DevCenter.firstName', 'DevCenter.email'].forEach(
       cookieName => {
         this.cookies.remove(cookieName, {
@@ -420,14 +419,31 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 !authRequired &&
                 to !== '/release-notes/v'
               ) {
-                return <ListItemLink to={to}>{label}</ListItemLink>
+                return (
+                  <ListItemLink
+                    size="small"
+                    className={classes.mobileMenuItem}
+                    to={to}
+                  >
+                    {label}
+                  </ListItemLink>
+                )
               }
               if (authRequired) {
-                return auth && <ListItemLink to={to}>{label}</ListItemLink>
+                return (
+                  auth && (
+                    <ListItemLink className={classes.mobileMenuItem} to={to}>
+                      {label}
+                    </ListItemLink>
+                  )
+                )
               }
               if (to === '/release-notes/v') {
                 return (
-                  <ListItemLink to={to + currentApiVersion}>
+                  <ListItemLink
+                    className={classes.mobileMenuItem}
+                    to={to + currentApiVersion}
+                  >
                     {label}
                   </ListItemLink>
                 )
@@ -435,41 +451,52 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             })}
             {auth ? (
               <React.Fragment>
-                <Divider />
-                <Box padding="1rem 0rem 0rem 1rem">
-                  <Typography variant="body1" className={classes.signedInAs}>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  flexWrap="nowrap"
+                  justifyContent="flex-end"
+                  flexGrow="1"
+                >
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.mobileMenuListHeading}
+                  >
                     Signed in as {this.state.username}
                   </Typography>
-                </Box>
-                <MenuList className={classes.menuList}>
-                  {MenuItems.OrgControls.map((item, index) => (
-                    <MenuItem key={index} className={classes.menuItem}>
-                      {item.label}
-                    </MenuItem>
-                  ))}
-                  {MenuItems.AuthControls.map((item, index) => {
-                    const { label, to } = item
-                    return (
-                      <MenuItem key={index} className={classes.menuItem}>
-                        {label}
+                  <MenuList className={classes.menuList}>
+                    {MenuItems.OrgControls.map((item, index) => (
+                      <MenuItem key={index} className={classes.mobileMenuItem}>
+                        {item.label}
                       </MenuItem>
-                    )
-                  })}
-                  <MenuItem
-                    className={classes.menuItem}
-                    onClick={this.handleLogout}
-                  >
-                    Sign Out
-                  </MenuItem>
-                </MenuList>
+                    ))}
+                    {MenuItems.AuthControls.map((item, index) => {
+                      const { label, to } = item
+                      return (
+                        <MenuItem
+                          key={index}
+                          className={classes.mobileMenuItem}
+                        >
+                          {label}
+                        </MenuItem>
+                      )
+                    })}
+                    <MenuItem
+                      className={classes.mobileMenuItem}
+                      onClick={this.handleLogout}
+                    >
+                      <strong>SIGN OUT</strong>
+                    </MenuItem>
+                  </MenuList>
+                </Box>
               </React.Fragment>
             ) : (
               <React.Fragment></React.Fragment>
             )}
           </List>
-          <Box padding="1rem">
+          {/* <Box padding="1rem">
             <img className={classes.mobileMenuLogo} src={ocOrange} alt="OC" />
-          </Box>
+          </Box> */}
         </Drawer>
       </React.Fragment>
     )
@@ -544,7 +571,20 @@ const styles = (theme: Theme) =>
       color: theme.palette.common.white,
     },
     mobileMenuList: {
-      marginBottom: 'auto',
+      display: 'flex',
+      flexFlow: 'column nowrap',
+      justifyContent: 'space-between',
+      height: '100%',
+    },
+    mobileMenuItem: {
+      textTransform: 'uppercase',
+      fontSize: '.875rem',
+      lineHeight: '1.75',
+      color: seafoam[50],
+      cursor: 'pointer',
+      '&:hover, &:active, &:focus': {
+        backgroundColor: 'rgba(0,0,0,.1)',
+      },
     },
     menuListDivider: {
       margin: theme.spacing(1, 0),
@@ -591,6 +631,14 @@ const styles = (theme: Theme) =>
       marginRight: theme.spacing(2),
       width: theme.spacing(30),
     },
+
+    mobileMenuListHeading: {
+      padding: theme.spacing(1, 2),
+      color: sherpablue[100],
+      fontStyle: 'italic',
+      backgroundColor: 'rgba(0,0,0,.1)',
+    },
+
     signedInAs: {
       fontWeight: 'bolder',
     },

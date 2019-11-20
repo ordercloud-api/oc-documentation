@@ -51,26 +51,10 @@
   ],
   "OrgControls": [
     {
-      "label": "Your Profile",
-      "to": ""
-    },
-    {
-      "label": "Your Organizations",
-      "to": ""
-    },
-    {
-      "label": "Shared Organizations",
+      "label": "Profile",
       "to": ""
     }
   ],
   "AuthControls": [
-    {
-      "label": "Settings",
-      "to": ""
-    },
-    {
-      "label": "Help",
-      "to": ""
-    }
   ]
 }
