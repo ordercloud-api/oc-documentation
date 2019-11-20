@@ -7,33 +7,33 @@ hidden: false
 
 import { Link } from 'gatsby'
 
-## Getting Started with OrderCloud.io
+## Getting Started with OrderCloud
 
-OrderCloud.io is a RESTful API that enables you to create complex, custom B2B eCommerce solutions.
+OrderCloud is a RESTful API that enables you to create complex, custom B2B eCommerce solutions.
 
-This guide is meant to get you started with OrderCloud.io as quickly as possible. In order to accomplish this, we’ve stripped away some of the detail, so keep an eye out for links to relevant guides that provide much more in-depth explanations.
+This guide is meant to get you started with OrderCloud as quickly as possible. In order to accomplish this, we’ve stripped away some of the detail, so keep an eye out for links to relevant guides that provide much more in-depth explanations.
 
 ## Creating an Account
 
-The first thing you will need to do is [create an account](https://developer.ordercloud.io/register). Registration is free and gives you access to the entire OrderCloud.io platform.
+The first thing you will need to do is [create an account](https://developer.ordercloud.io/register). Registration is free and gives you access to the entire OrderCloud platform.
 
 After you submit your email address, you will be sent a verification code which will be required to complete the registration process.
 
 ## Your First Seller Organization
 
-Now that you have an OrderCloud.io account you can navigate to your [dashboard](https://dashboard.ordercloud.io) and access your first <Link to="/getting-started/introduction-to-ordercloud">seller organization</Link>.
+Now that you have an OrderCloud account you can navigate to your [dashboard](https://dashboard.ordercloud.io) and access your first <Link to="/getting-started/introduction-to-ordercloud">seller organization</Link>.
 
-It is the highest level container that encompasses everything else in OrderCloud.io (applications, products, pricing, users, etc.). You can have multiple Seller Organizations; however, data is not shared between them.
+It is the highest level container that encompasses everything else in OrderCloud (applications, products, pricing, users, etc.). You can have multiple Seller Organizations; however, data is not shared between them.
 
 Newly created Seller Organizations come with a "default access" application giving you immediate access to the API however you can also create your own. To do this first click on the seller applications pane on the left and then click the "New" button located in the upper right hand corner.
 
-Using the API Console is the simplest way to start exploring OrderCloud.io; however, understanding the fundamentals of how to access and use the API on it's own is extremely important for any OrderCloud.io developer.
+Using the API Console is the simplest way to start exploring OrderCloud; however, understanding the fundamentals of how to access and use the API on it's own is extremely important for any OrderCloud developer.
 
 ## Authentication
 
-Before you are able to interact with the OrderCloud.io API you will need to get an `access_token` from the auth server. The following sections will include raw request and response examples to the OAuth API.
+Before you are able to interact with the OrderCloud API you will need to get an `access_token` from the auth server. The following sections will include raw request and response examples to the OAuth API.
 
-The first thing you need is the `ClientID`. This unique identifier represents a single application on OrderCloud.io. Feel free to use the ClientID from the "Seller App" API Client that was automatically created on your first Seller Organization.
+The first thing you need is the `ClientID`. This unique identifier represents a single application on OrderCloud. Feel free to use the ClientID from the "Seller App" API Client that was automatically created on your first Seller Organization.
 
 ![API Settings](/images/docs/getting-started/quick-start-guide/api-settings.png)
 
@@ -73,7 +73,7 @@ Request
 
 ```http
 GET https://api.ordercloud.io/v1/me HTTP/1.1
-Authentication: Bearer put_access_token_here
+Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 ```
 

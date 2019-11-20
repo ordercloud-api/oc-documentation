@@ -40,6 +40,13 @@ class ApiReferenceMethod extends React.Component<any> {
 
   public render() {
     const { method } = this.props
+    const path = (
+      <pre>
+        <code className="language-http">
+          {method.verb.toUpperCase()} {method.path}
+        </code>
+      </pre>
+    )
     const roles =
       method.security[0] && method.security[0].OAuth2
         ? method.security[0].OAuth2.map(role => (

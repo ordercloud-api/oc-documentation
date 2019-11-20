@@ -1,0 +1,88 @@
+---
+title: 'Rules-Based Promotion Expressions'
+section: 'Guides'
+priority: 4
+hidden: false
+---
+
+import { Link } from 'gatsby'
+
+## Overview
+
+Writing custom rule-base expressions for your order promotions may seem intimidating at first, but once you get the hang of it you'll realize there are virtually limitless possibilities which provide the flexibility to meet almost any business need. In fact, custom order promotions are a great example of how our core value <Link to="/blog/flexibility-over-features">*Flexibility over Features*</Link> informs everything we build (and don't build) into the platform. We've found that allowing developers to define their own custom if-then statements is incredibly robust and solves more problems than providing a limited set of non-customizable promotions out-of-the-box.
+
+## Where should I start?
+
+Every promotion requires two rule expressions, an `EligibleExpression`, which evaluates the current state of the order and returns true or false indicating whether the promotion can be applied to the order, and a `ValueExpression`, which evaluates the order and returns a monetary value, which is then subtracted from the order subtotal.
+
+**There are several properties that you can include in both expressions to build your custom promotion:**\
+`order` supports the same properties as the Order model returned from /orders API endpoints, including xp.\
+`items` supports a total of four functions:
+ - `items.any()` (true if any item on the order matches filter)
+ - `items.all()` (true if all item matches filter)
+ - `items.quantity()`(compare result to a number)
+ - `items.total()` (compare result to a dollar amount)
+
+**The following operators are all supported in rule engine expressions:**
+-  Comparison: `=` ,  `<` ,  `>`,  `<=`,  `>=`  
+-  Logical: `and`,  `or`  and  `not`
+-  Mathematical:`+`,  `-`,`*`, `/` and `%` 
+
+##  Can you give me some examples?
+
+**$10 off any order greater than $50:**  
+`EligibleExpression`: *"order.Subtotal > 50"*  
+`ValueExpression`: *"10"*
+
+**Free Shipping when you spend $60:**  
+`EligibleExpression`: *"order.Subtotal >= 60"*  
+`ValueExpression`: *"order.ShippingCost"*
+
+**BOGO (limited to 1 free item):**  
+`EligibleExpression`: *"items.quantity(ProductID = 'ABC') > 1"*  
+`ValueExpression`: *"items.total(ProductID = 'ABC') / items.quantity(ProductID = 'ABC')"*  
+
+**$5 off the order total when any line item has a given product ID:**  
+`EligibleExpression`: *"items.any(ProductID = '123')"*  
+`ValueExpression`: *"5"*
+
+**15% off all line items with a product assigned to a given CategoryID:**    
+`EligibleExpression`: *"items.any(product.incategory('Bikes'))"*  
+`ValueExpression`: *"items.total(product.incategory('Bikes')) * .15"*
+
+**10% when all products are on sale (utilizing product xp):**  
+`EligibleExpression`: *"items.all(Product.xp.OnSale = true)"*  
+`ValueExpression`: *"order.Subtotal* .1"*
+
+**30% off when you buy 10 or more products assigned to a given CategoryID:**  
+`EligibleExpression`: *"items.quantity(product.incategory('GuitarAccessories')) >= 10"*  
+`ValueExpression`: *"items.total(product.incategory('GuitarAccessories')) * .3"*
+
+**20% off when you buy these 2 products together (no quantity limit):**  
+`EligibleExpression`: *"items.any(ProductID = 'ABC')  and items.any(ProductID = 'XYZ')"*  
+`ValueExpression`: *"(items.total(ProductID = 'ABC') + items.total(ProductID = 'XYZ'))  * .2"*
+
+**10% off your entire order when you spend more than $200 in these categories:**  
+`EligibleExpression`: *"items.total(product.incategory('Kitchen')) + items.total(product.incategory('Bedding')) + items.total(product.incategory('Bathroom')) > 200"*  
+`ValueExpression`: *"order.Subtotal * .1"
+
+**25% off a user's first order (utilizing user xp):**  
+`EligibleExpression`: *"order.FromUser.xp.FirstOrder = true"*  
+`ValueExpression`: *"order.Subtotal * .25"
+
+**BOGO (scales with quantity):**  
+`EligibleExpression`: *"items.quantity(ProductID = 'XYZ') > 1"*  
+`ValueExpression`: *"((items.quantity(ProductID='XYZ')/2) - (items.quantity(ProductID='XYZ') % 2 * .5)) * items.total (ProductID='XYZ') / items.quantity(ProductID='XYZ')"*
+
+## That's a lot of flexibility. What else should I know?
+
+**Considerations**
+ - Both `EligibleExpression` and `ValueExpression` are limited to 400 characters each. Use them wisely. If you're bumping up against the character limit, there's a good chance you could optimize your promo expressions in some way. 
+  - Promotion eligibility is evaluated by the api at the time the promotion is applied, and then again on order submit.
+
+**Roadmap**
+ - Line item level promotions
+ - `product.inparentcategory()` - the current function `product.incategory()` only recognizes direct assignments, the new function will look for products assigned to any child categories of the parent that is passed in.
+ - Promotion.MaxValue (discount the ValueExpression or MaxValue, whichever is less)
+ - Promotion.AutoApply (automatically apply the promotion to any qualifying order)
+ - `v1/orders/{direction}/{orderID}/validate` endpoint that will check validity of an order in it's current state, including, but not limited to, applied promotions

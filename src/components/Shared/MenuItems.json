@@ -33,14 +33,6 @@
       "authRequired": false
     },
     {
-      "value": "console",
-      "label": "Console",
-      "disableRipple": true,
-      "to": "/console",
-      "mobileMenu": false,
-      "authRequired": true
-    },
-    {
       "value": "support",
       "label": "Support",
       "disableRipple": true,
