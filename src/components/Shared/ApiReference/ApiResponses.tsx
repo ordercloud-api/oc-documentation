@@ -44,9 +44,9 @@ const ApiResponses: React.FunctionComponent<ApiResponsesProps> = props => {
             {response.description && (
               <Typography paragraph>{response.description}</Typography>
             )}
-            {schema && schema.example && (
+            {schema && schema.properties && (
               <pre className={classes.pre}>
-                {JSON.stringify(schema.example, null, 2)}
+                {JSON.stringify(schema.properties, null, 2)}
               </pre>
             )}
           </React.Fragment>

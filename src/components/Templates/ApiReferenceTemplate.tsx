@@ -2,10 +2,9 @@ import React from 'react'
 import Layout from '../Layout/Layout'
 import { Initialize } from '../../openapi.service'
 import OpenApi from '../../openapi.service'
-import { withStyles, Theme, createStyles, Container } from '@material-ui/core'
+import { withStyles, Theme, createStyles } from '@material-ui/core'
 import ApiReferenceMenu from '../Layout/ApiReferenceMenu'
 import { flatten as _flatten, findIndex as _findIndex } from 'lodash'
-import ApiReferenceSelection from '../Layout/ApiReferenceSelection'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
@@ -52,14 +51,12 @@ class ApiReference extends React.Component<any> {
     await Initialize()
   }
 
-  public handleSectionChange = section => {
-    const listResources = this.props.pageContext.OcApi.resources.filter(ref => {
-      return ref['x-section-id'] === section['x-id']
-    })
-    const activeIndex = _findIndex(
-      this.props.pageContext.OcApi.sections,
-      sect => sect['x-id'] === section['x-id']
-    )
+  public handleSectionChange = sectionIndex => {
+    const ocApi = this.props.pageContext.OcApi
+    const listResources = ocApi.resources.filter(ref => {
+      return ref['x-section-id'] === ocApi.sections[sectionIndex]['x-id']
+    });
+    const activeIndex = sectionIndex === this.state.activeIndex ? -1 : sectionIndex;
     this.setState({
       activeIndex,
       listResources,

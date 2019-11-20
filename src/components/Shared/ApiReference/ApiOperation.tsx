@@ -4,13 +4,15 @@ import ApiRoute from './ApiRoute'
 import ApiParameters from './ApiParameters'
 import ApiRequestBody from './ApiRequestBody'
 import ApiResponses from './ApiResponses'
+import ApiRoles from './ApiRoles'
 
 interface ApiOperationProps {
   operation: any
 }
 
 const ApiOperation: React.FunctionComponent<ApiOperationProps> = props => {
-  const { operation } = props
+  const { operation } = props;
+
   return (
     <React.Fragment>
       <a
@@ -34,6 +36,7 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = props => {
 
       <ApiResponses responses={operation.responses}></ApiResponses>
       {/* <pre>{JSON.stringify(operation, null, 2)}</pre> */}
+      <ApiRoles roles={operation.security[0].OAuth2}></ApiRoles>
     </React.Fragment>
   )
 }
