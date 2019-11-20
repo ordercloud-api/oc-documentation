@@ -600,9 +600,6 @@ const styles = (theme: Theme) =>
       '&>*': {
         margin: theme.spacing(0, 1),
       },
-      '&>:last-child': {
-        marginRight: theme.spacing(3),
-      },
     },
     menuItem__profile: {
       padding: '10px',
