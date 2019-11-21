@@ -59,6 +59,7 @@ export default function ApiReferenceMenu(props) {
     resourceChange,
     operationChange,
     activeIndex,
+    selectedOperation,
   } = props
   const classes = useStyles(props)
   return (
@@ -73,6 +74,7 @@ export default function ApiReferenceMenu(props) {
             resourceChange={resourceChange}
             operationChange={operationChange}
             activeIndex={activeIndex}
+            selectedOperation={selectedOperation}
           />
         )
       })}
@@ -88,6 +90,7 @@ function Section(props) {
     activeIndex,
     resourceChange,
     operationChange,
+    selectedOperation,
   } = props
 
   const classes = useStyles(props)
@@ -125,6 +128,7 @@ function Section(props) {
             resource={resource}
             operationChange={operationChange}
             resourceChange={resourceChange}
+            selectedOperation={selectedOperation}
           />
         ))}
       </Collapse>
@@ -133,20 +137,28 @@ function Section(props) {
 }
 
 function Resource(props) {
-  const { resource, operationChange, resourceChange } = props
+  const {
+    resource,
+    operationChange,
+    resourceChange,
+    selectedOperation
+  } = props;
+
   const classes = useStyles(props)
 
-  const [open, setOpen] = React.useState(false)
+  const isActive = selectedOperation ? selectedOperation.resource.name === resource.name : false;
+  if (isActive) {
+    window.location.hash = selectedOperation.operationId;
+  }
+  const [open, setOpen] = React.useState(isActive)
 
   const operations = OpenApi.operationsByResource
     ? OpenApi.operationsByResource[resource.name]
-    : null
+    : null;
 
   function handleClick() {
     setOpen(!open)
-    if (!open) {
-      resourceChange(resource.name)
-    }
+    resourceChange(resource.name)
   }
 
   return (
@@ -159,12 +171,12 @@ function Resource(props) {
       >
         {resource.name}
         {open ? (
-          <ExpandLess onClick={handleClick} />
+          <ExpandLess />
         ) : (
-            <ExpandMore onClick={handleClick} />
+            <ExpandMore />
           )}
       </Typography>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse in={isActive} timeout="auto" unmountOnExit>
         <ul className={classes.operations}>
           {operations && operations.length
             ? operations.map((o, index) => {
