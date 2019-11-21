@@ -22,6 +22,7 @@ import {
   Divider,
   Typography,
   Box,
+  ListItem,
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import { Menu as MenuIcon, Close as CloseIcon } from '@material-ui/icons'
@@ -197,9 +198,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     value,
                     label,
                     to,
+                    isPortalLink,
                   } = item
                   if (!mobileMenu && !authRequired) {
-                    if (to.includes('console')) {
+                    if (isPortalLink == true) {
                       return (
                         <Tab
                           disableRipple={disableRipple}
@@ -209,7 +211,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                             root: classes.tab,
                             selected: classes.navTabSelected,
                           }}
-                          component={Link}
                           onClick={
                             auth
                               ? this.goToPortal(to)
@@ -421,11 +422,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           </Box>
           <List className={classes.mobileMenuList}>
             {MenuItems.MainNavigation.map(item => {
-              const { mobileMenu, authRequired, to, label } = item
-              if (to.includes('console')) {
+              const { mobileMenu, authRequired, to, label, isPortalLink } = item
+              if (isPortalLink == true) {
                 return (
-                  <ListItemLink
-                    to={''}
+                  <ListItem
                     onClick={
                       auth
                         ? this.goToPortal(to)
@@ -433,7 +433,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     }
                   >
                     {label}
-                  </ListItemLink>
+                  </ListItem>
                 )
               }
               if (
