@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core'
 import Prism from 'prismjs'
 import { Lock } from '@material-ui/icons';
+import { flame, maroon, seafoam, sherpablue, sunset } from '../../../theme/ocPalette.constants'
 
 interface ApiRequestBodyProps {
   requestBody?: any
@@ -26,19 +27,19 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.common.white,
     },
     string: {
-      color: 'red'
+      color: flame[600]
     },
     boolean: {
-      color: 'blue'
+      color: sunset[600]
     },
     array: {
-      color: 'green'
+      color: maroon[600]
     },
     object: {
-      color: 'orange'
+      color: sherpablue[600]
     },
     integer: {
-      color: 'purple'
+      color: seafoam[600]
     }
   })
 )
@@ -94,7 +95,7 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
                       <Lock />
                     </Tooltip>
                   ) : null}</TableCell>
-                  <TableCell className={classes[field.type]}>{field.type || 'object'}</TableCell>
+                  <TableCell><code className={classes[field.type]}>{field.type || 'object'}</code></TableCell>
                   <TableCell>{field.format || '---'}</TableCell>
                   <TableCell>{field.maxLength ? `${field.maxLength} characters` : '---'}</TableCell>
                 </TableRow>

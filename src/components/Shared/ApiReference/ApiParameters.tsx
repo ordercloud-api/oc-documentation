@@ -10,6 +10,7 @@ import {
   Theme,
   createStyles,
 } from '@material-ui/core'
+import { flame, maroon, seafoam, sherpablue, sunset } from '../../../theme/ocPalette.constants'
 
 interface ApiParametersProps {
   parameters?: any[]
@@ -23,19 +24,19 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.common.white,
     },
     string: {
-      color: 'red'
+      color: flame[600]
     },
     boolean: {
-      color: 'blue'
+      color: sunset[600]
     },
     array: {
-      color: 'green'
+      color: maroon[600]
     },
     object: {
-      color: 'orange'
+      color: sherpablue[600]
     },
     integer: {
-      color: 'purple'
+      color: seafoam[600]
     }
   })
 )
