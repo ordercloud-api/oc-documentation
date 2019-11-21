@@ -14,7 +14,7 @@ const NotFoundPage = () => (
         <img src={svg404} alt="svg img" />
         <h1>404</h1>
         <h3>Page Not Found</h3>
-        <Link to="/console">go home</Link>
+        <Link to="/">Go Home</Link>
       </div>
     </div>
   </Layout>
