@@ -201,7 +201,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     isPortalLink,
                   } = item
                   if (!mobileMenu && !authRequired) {
-                    if (isPortalLink == true) {
+                    if (isPortalLink) {
                       return (
                         <Tab
                           disableRipple={disableRipple}
@@ -427,7 +427,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           <List className={classes.mobileMenuList}>
             {MenuItems.MainNavigation.map(item => {
               const { mobileMenu, authRequired, to, label, isPortalLink } = item
-              if (isPortalLink == true) {
+              if (isPortalLink) {
                 return (
                   <ListItem
                     onClick={
