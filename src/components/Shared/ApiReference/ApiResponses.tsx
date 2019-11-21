@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Typography, makeStyles, Theme, createStyles } from '@material-ui/core'
+import Prism from 'prismjs'
 
 interface ApiResponsesProps {
   responses?: {
@@ -17,6 +18,10 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 const ApiResponses: React.FunctionComponent<ApiResponsesProps> = props => {
+  useEffect(() => {
+    Prism.highlightAll();
+  })
+
   const { responses } = props
 
   const classes = useStyles({})
@@ -46,7 +51,9 @@ const ApiResponses: React.FunctionComponent<ApiResponsesProps> = props => {
             )}
             {schema && schema.properties && (
               <pre className={classes.pre}>
-                {JSON.stringify(schema.properties, null, 2)}
+                <code className="language-json">
+                  {JSON.stringify(schema.properties, null, 2)}
+                </code>
               </pre>
             )}
           </React.Fragment>
