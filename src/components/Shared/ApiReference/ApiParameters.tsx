@@ -23,6 +23,7 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = props => {
             <TableCell>Name</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Description</TableCell>
+            <TableCell>Fields</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -31,6 +32,7 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = props => {
               <TableCell>{param.name}</TableCell>
               <TableCell>{param.schema.type}</TableCell>
               <TableCell>{param.description}</TableCell>
+              <TableCell>{param.schema.items && param.schema.items.enum ? param.schema.items.enum.map((e, i) => <span>{param.schema.items.enum.length - 1 == i ? e : `${e},`} </span>) : '---'}</TableCell>
             </TableRow>
           ))}
         </TableBody>
