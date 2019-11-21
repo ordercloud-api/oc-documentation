@@ -93,7 +93,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexFlow: 'column nowrap',
     },
     subheader: (props: any) => ({
-      // padding: theme.spacing(2),
       color: props.darkMode ? theme.palette.common.white : undefined,
       background: props.darkMode
         ? theme.palette.primary.dark
