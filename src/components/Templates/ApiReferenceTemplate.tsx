@@ -43,12 +43,39 @@ class ApiReference extends React.Component<any> {
     selectedOperation: null,
     listResources: [],
     listOperations: [],
-    activeIndex: 0,
+    activeIndex: null,
     ocApi: null,
   }
 
   public async componentDidMount() {
-    await Initialize()
+    await Initialize();
+    const selectedOperationId = window.location.hash.replace('#', '');
+    const ocApi = this.props.pageContext.OcApi;
+    if (!selectedOperationId) return;
+    const selectedOperation = ocApi.operationsById[selectedOperationId];
+
+    // this.handleResourceChange(selectedOperation.resource.name);
+
+    const resource = OpenApi.findResourceByName(selectedOperation.resource.name);
+
+    const activeIndex = _findIndex(ocApi.sections, x => x['x-id'] === resource['x-section-id']);
+    const listResources = ocApi.resources.filter(ref => {
+      return ref['x-section-id'] === ocApi.sections[activeIndex]['x-id']
+    });
+    const resourceData = this.getResourceData(resource.name);
+    this.setState({
+      activeIndex,
+      listResources,
+      selectedResource: resourceData['selectedResource'],
+      listOperations: resourceData['listOperations'],
+    })
+  }
+
+  private getResourceData = (resourceName: string) => {
+    return {
+      selectedResource: OpenApi.findResourceByName(resourceName),
+      listOperations: OpenApi.operationsByResource[resourceName],
+    }
   }
 
   public handleSectionChange = sectionIndex => {
@@ -64,11 +91,10 @@ class ApiReference extends React.Component<any> {
   }
 
   public handleResourceChange = (resourceName: string) => {
-    const operations = OpenApi.operationsByResource[resourceName]
-    const resource = OpenApi.findResourceByName(resourceName)
+    const resourceData = this.getResourceData(resourceName);
     this.setState({
-      listOperations: operations,
-      selectedResource: resource,
+      selectedResource: resourceData['selectedResource'],
+      listOperations: resourceData['listOperations']
     })
   }
 
