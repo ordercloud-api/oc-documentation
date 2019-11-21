@@ -28,6 +28,10 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = props => {
         {operation.summary.replace(/\./g, '')}
       </Typography>
 
+      <Typography variant="body1">
+        {operation.description}
+      </Typography>
+
       <ApiRoute operation={operation}></ApiRoute>
 
       <ApiParameters parameters={operation.parameters}></ApiParameters>
