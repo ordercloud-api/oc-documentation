@@ -6,14 +6,44 @@ import {
   TableCell,
   TableBody,
   Typography,
+  makeStyles,
+  Theme,
+  createStyles,
 } from '@material-ui/core'
 
 interface ApiParametersProps {
   parameters?: any[]
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    pre: {
+      padding: theme.spacing(2),
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    string: {
+      color: 'red'
+    },
+    boolean: {
+      color: 'blue'
+    },
+    array: {
+      color: 'green'
+    },
+    object: {
+      color: 'orange'
+    },
+    integer: {
+      color: 'purple'
+    }
+  })
+)
+
 const ApiParameters: React.FunctionComponent<ApiParametersProps> = props => {
   const { parameters } = props
+  const classes = useStyles({})
+
   return parameters ? (
     <React.Fragment>
       <Typography variant="h4">Parameters</Typography>
@@ -30,7 +60,7 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = props => {
           {parameters.map((param, index) => (
             <TableRow key={index}>
               <TableCell>{param.name}</TableCell>
-              <TableCell>{param.schema.type}</TableCell>
+              <TableCell><code className={classes[param.schema.type]}>{param.schema.type}</code></TableCell>
               <TableCell>{param.description}</TableCell>
               <TableCell>{param.schema.items && param.schema.items.enum ? param.schema.items.enum.map((e, i) => <span>{param.schema.items.enum.length - 1 == i ? e : `${e},`} </span>) : '---'}</TableCell>
             </TableRow>

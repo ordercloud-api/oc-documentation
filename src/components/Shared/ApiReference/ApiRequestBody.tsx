@@ -25,6 +25,21 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.common.black,
       color: theme.palette.common.white,
     },
+    string: {
+      color: 'red'
+    },
+    boolean: {
+      color: 'blue'
+    },
+    array: {
+      color: 'green'
+    },
+    object: {
+      color: 'orange'
+    },
+    integer: {
+      color: 'purple'
+    }
   })
 )
 
@@ -79,7 +94,7 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
                       <Lock />
                     </Tooltip>
                   ) : null}</TableCell>
-                  <TableCell>{field.type || 'object'}</TableCell>
+                  <TableCell className={classes[field.type]}>{field.type || 'object'}</TableCell>
                   <TableCell>{field.format || '---'}</TableCell>
                   <TableCell>{field.maxLength ? `${field.maxLength} characters` : '---'}</TableCell>
                 </TableRow>
