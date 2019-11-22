@@ -25,10 +25,15 @@ Throughout a workflow an order undergoes various status changes:
 
 - Unsubmitted: Created but has not yet been submitted
 - Open: Submitted but not yet fulfilled
-- AwaitingApproval: Submitted but on hold awaiting approval
+- AwaitingApproval: On hold awaiting approval
 - Declined: Submitted but has been declined
 - Completed: Submitted and all the line items on the order have been shipped
 - Canceled: Order can no longer be submitted
+
+<sub><sup>Note: Once and order is canceled, it is effectively DEAD and must be manually recreated.</sup></sub>
+<br/>
+<br/>
+
 
 We've made it easy for you by tracking these changes as well as the time the status changes. A status is often time changed by the API automatically under certain conditions (e.g. all the quantities on all the lines are shipped so the platform changes the order status to 'Complete')
 

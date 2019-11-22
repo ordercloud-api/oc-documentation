@@ -13,13 +13,32 @@ You have many options to achieve product visibility, each with a unique purpose.
 
 ## Components of Product Visibility
 
-Buyer product visibility is powered completely via assignments. Recall that assignments are inclusive meaning that, to start with, a user will have no assignments made to them and thus will not see any products.
+Buyer product visibility is powered completely via assignments. Recall that assignments are explicit meaning that, to start with, a user will have no assignments made to them and thus will not see any products.
 
 At a high level three types of assignments need to be made before a user can begin seeing products.
 
 - The product is assigned to the catalog
 - The user is assigned to the catalog
 - A price schedule is assigned to the product/user
+
+### Visibility Rules Checklist
+
+All of the following must be true for a Buyer User to see a Product (via me routes):
+
+- Product.Active = true
+- Catalog exists where:
+  - Catalog.Active = true
+  - Buyer is assigned via CatalogAssignment
+  - Product is assigned via ProductCatalogAssignment
+- One of the following is true:
+  - CatalogAssignment.ViewAllProducts = true, OR
+  - Category exists in Catalog where
+    - Active = true
+    - Product assigned via CategoryProductAssignment
+    - CategoryAssignment exists where
+      - Buyer, User, or Group matches the user
+      - ViewAllProducts = true for first non-null setting up the tree
+  - ProductAssignment exists for Buyer or any Group the user belongs to (PriceScheduleID not required)
 
 ### The product is assigned to the catalog
 
@@ -40,8 +59,8 @@ Content-Type: application/json; charset=UTF-8
 {
 	"CatalogID": "MyCatalogName"
 	"BuyerID": "MyBuyerID",
-	"ViewAllCategories": true/false,
-	"ViewAllProducts": true/false
+	"ViewAllCategories": true,
+	"ViewAllProducts": true
 },
 ```
 
@@ -58,8 +77,8 @@ Content-Type: application/json; charset=UTF-8
   "CategoryID": "MyCategoryID",
   "BuyerID": "MyBuyerID",
   "UserGroupID": "MyUserGroupID",
-  "Visible": true/false,
-  "ViewAllProducts": true/false
+  "Visible": true,
+  "ViewAllProducts": true
 }
 ```
 
@@ -121,29 +140,6 @@ Product and Category have always had an `Active` property, independent of assign
 > "I want a search-driven catalog where products do not belong to categories."
 
 We've already discussed that a product's assignment to a buyer party (`ProductAssignment`) is no longer required for visibility. The same holds `true` for a product's assignment to a category. As long as `CatalogAssignment.ViewAllProducts` is true, the only requirement for a product to become visible via search or direct link is the existence of a `CatalogProductAssignment`. (Note: This assignment is technically required in all product visibility scenarios. If you do not create one before assigning the product to a category, it will be created implicitly. But if it doesn't exist before creating a `ProductAssignment`, an error will occur. No more "floating" product-party relationships - the Catalog is King!)
-
-## Visibility Checklist
-
-Having trouble getting visibility to work? Here's a quick checklist to help you get to the bottom of it.
-
-### Visibility Rules
-
-All of the following must be true for a Buyer User to see a Product (via me routes):
-
-- Product.Active = true
-- Catalog exists where:
-  - Catalog.Active = true
-  - Buyer is assigned via CatalogAssignment
-  - Product is assigned via ProductCatalogAssignment
-- One of the following is true:
-  - CatalogAssignment.ViewAllProducts = true, OR
-  - Category exists in Catalog where
-    - Active = true
-    - Product assigned via CategoryProductAssignment
-    - CategoryAssignment exists where
-      - Buyer, User, or Group matches the user
-      - ViewAllProducts = true for first non-null setting up the tree
-  - ProductAssignment exists for Buyer or any Group the user belongs to (PriceScheduleID not required)
 
 ### Validation Rules
 

@@ -22,6 +22,7 @@ import {
   Divider,
   Typography,
   Box,
+  ListItem,
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import { Menu as MenuIcon, Close as CloseIcon } from '@material-ui/icons'
@@ -126,7 +127,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   public handleLogout = () => {
     this.setState({ anchorEl: null })
-
     ;['DevCenter.token', 'DevCenter.firstName', 'DevCenter.email'].forEach(
       cookieName => {
         this.cookies.remove(cookieName, {
@@ -198,8 +198,28 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     value,
                     label,
                     to,
+                    isPortalLink,
                   } = item
                   if (!mobileMenu && !authRequired) {
+                    if (isPortalLink) {
+                      return (
+                        <Tab
+                          disableRipple={disableRipple}
+                          value={value}
+                          label={label}
+                          classes={{
+                            root: classes.tab,
+                            selected: classes.navTabSelected,
+                          }}
+                          onClick={
+                            auth
+                              ? this.goToPortal(to)
+                              : this.goToPortal('/console/login/')
+                          }
+                          key={index}
+                        ></Tab>
+                      )
+                    }
                     return (
                       <Tab
                         disableRipple={disableRipple}
@@ -233,18 +253,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     )
                   }
                 })}
-                {auth && (
-                  <Tab
-                    disableRipple
-                    classes={{
-                      root: classes.tab,
-                      selected: classes.navTabSelected,
-                    }}
-                    value="console"
-                    label="Console"
-                    onClick={this.goToPortal('/console/')}
-                  ></Tab>
-                )}
               </Tabs>
             </Hidden>
             <Hidden smDown>
@@ -256,10 +264,14 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 ></ChipLink>
                 {auth ? (
                   <React.Fragment>
-                    <Button color="default" variant="contained" size="small">
+                    <Button color="inherit" variant="outlined" size="small">
                       Support
                     </Button>
-                    <IconButton color="inherit" onClick={this.handleMenu}>
+                    <IconButton
+                      color="inherit"
+                      onClick={this.handleMenu}
+                      className={classes.iconButton}
+                    >
                       <Avatar alt={this.state.username}>
                         <Gravatar size={40} email={this.state.email} />
                       </Avatar>
@@ -414,7 +426,20 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           </Box>
           <List className={classes.mobileMenuList}>
             {MenuItems.MainNavigation.map(item => {
-              const { mobileMenu, authRequired, to, label } = item
+              const { mobileMenu, authRequired, to, label, isPortalLink } = item
+              if (isPortalLink) {
+                return (
+                  <ListItem
+                    onClick={
+                      auth
+                        ? this.goToPortal(to)
+                        : this.goToPortal('/console/login/')
+                    }
+                  >
+                    {label}
+                  </ListItem>
+                )
+              }
               if (
                 (!mobileMenu || mobileMenu) &&
                 !authRequired &&
@@ -543,6 +568,9 @@ const styles = (theme: Theme) =>
     icon: {
       color: theme.palette.common.white,
     },
+    iconButton: {
+      padding: 0,
+    },
     mobileMenuList: {
       marginBottom: 'auto',
     },
@@ -559,9 +587,6 @@ const styles = (theme: Theme) =>
     navbarRight: {
       '&>*': {
         margin: theme.spacing(0, 1),
-      },
-      '&>:last-child': {
-        marginRight: theme.spacing(3),
       },
     },
     menuItem__profile: {
