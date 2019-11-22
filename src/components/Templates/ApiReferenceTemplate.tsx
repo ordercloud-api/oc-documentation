@@ -2,10 +2,9 @@ import React from 'react'
 import Layout from '../Layout/Layout'
 import { Initialize } from '../../openapi.service'
 import OpenApi from '../../openapi.service'
-import { withStyles, Theme, createStyles, Container } from '@material-ui/core'
+import { withStyles, Theme, createStyles } from '@material-ui/core'
 import ApiReferenceMenu from '../Layout/ApiReferenceMenu'
 import { flatten as _flatten, findIndex as _findIndex } from 'lodash'
-import ApiReferenceSelection from '../Layout/ApiReferenceSelection'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
@@ -44,22 +43,58 @@ class ApiReference extends React.Component<any> {
     selectedOperation: null,
     listResources: [],
     listOperations: [],
-    activeIndex: 0,
+    activeIndex: null,
     ocApi: null,
   }
 
   public async componentDidMount() {
-    await Initialize()
+    await Initialize();
+    const ocApi = this.props.pageContext.OcApi;
+    const selectedOperationId = window.location.hash.replace('#', '');
+    this.initSelectedOperation(ocApi, selectedOperationId);
   }
 
-  public handleSectionChange = section => {
-    const listResources = this.props.pageContext.OcApi.resources.filter(ref => {
-      return ref['x-section-id'] === section['x-id']
+  private getResourceData = (resourceName: string) => {
+    return {
+      selectedResource: OpenApi.findResourceByName(resourceName),
+      listOperations: OpenApi.operationsByResource[resourceName],
+    }
+  }
+
+  private initSelectedOperation = (ocApi: any, operId: string) => {
+    let selectedOperation;
+    let activeIndex = 0;
+    let resourceData;
+    let listResources;
+    if (operId) { // bottom up (single operation to section)
+      selectedOperation = ocApi.operationsById[operId];
+
+      resourceData = this.getResourceData(selectedOperation.resource.name);
+
+      activeIndex = _findIndex(ocApi.sections, x => x['x-id'] === selectedOperation.resource['x-section-id']);
+      listResources = ocApi.resources.filter(ref => ref['x-section-id'] === ocApi.sections[activeIndex]['x-id']);
+
+    } else { // top down (section to single operation)
+      listResources = ocApi.resources.filter(ref => ref['x-section-id'] === ocApi.sections[activeIndex]['x-id']);
+      resourceData = this.getResourceData(listResources[activeIndex].name);
+      selectedOperation = resourceData['listOperations'][activeIndex];
+    }
+
+    this.setState({
+      activeIndex,
+      listResources,
+      selectedOperation,
+      selectedResource: resourceData['selectedResource'],
+      listOperations: resourceData['listOperations'],
     })
-    const activeIndex = _findIndex(
-      this.props.pageContext.OcApi.sections,
-      sect => sect['x-id'] === section['x-id']
-    )
+  }
+
+  public handleSectionChange = sectionIndex => {
+    const ocApi = this.props.pageContext.OcApi
+    const listResources = ocApi.resources.filter(ref => {
+      return ref['x-section-id'] === ocApi.sections[sectionIndex]['x-id']
+    });
+    const activeIndex = sectionIndex === this.state.activeIndex ? -1 : sectionIndex;
     this.setState({
       activeIndex,
       listResources,
@@ -67,11 +102,13 @@ class ApiReference extends React.Component<any> {
   }
 
   public handleResourceChange = (resourceName: string) => {
-    const operations = OpenApi.operationsByResource[resourceName]
-    const resource = OpenApi.findResourceByName(resourceName)
+    const resourceData = this.getResourceData(resourceName);
+
+    const selectedOperation = (this.state.selectedResource && resourceName != this.state.selectedResource.name) || !this.state.selectedOperation ? resourceData['listOperations'][0] : null;
     this.setState({
-      listOperations: operations,
-      selectedResource: resource,
+      listOperations: resourceData['listOperations'],
+      selectedResource: resourceData['selectedResource'],
+      selectedOperation
     })
   }
 
@@ -99,6 +136,7 @@ class ApiReference extends React.Component<any> {
               sectionChange={this.handleSectionChange}
               resourceChange={this.handleResourceChange}
               operationChange={this.handleOperationChange}
+              selectedOperation={this.state.selectedOperation}
             />
           </LayoutMenu>
         </LayoutContainer>
