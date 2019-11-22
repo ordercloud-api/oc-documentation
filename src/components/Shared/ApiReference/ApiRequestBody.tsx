@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Typography,
   Table,
@@ -6,10 +6,14 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Tooltip,
   makeStyles,
   Theme,
   createStyles,
 } from '@material-ui/core'
+import Prism from 'prismjs'
+import { Lock } from '@material-ui/icons';
+import { flame, maroon, seafoam, sherpablue, sunset } from '../../../theme/ocPalette.constants'
 
 interface ApiRequestBodyProps {
   requestBody?: any
@@ -22,12 +26,32 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.common.black,
       color: theme.palette.common.white,
     },
+    string: {
+      color: flame[600]
+    },
+    boolean: {
+      color: sunset[600]
+    },
+    array: {
+      color: maroon[600]
+    },
+    object: {
+      color: sherpablue[600]
+    },
+    integer: {
+      color: seafoam[600]
+    }
   })
 )
 
 const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
+  useEffect(() => {
+    Prism.highlightAll();
+  })
+
   const { requestBody } = props
   const classes = useStyles({})
+
   let schema, required
   if (requestBody) {
     required = requestBody.content['application/json'].schema.required
@@ -53,23 +77,27 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
           <TableHead>
             <TableRow>
               <TableCell>Property</TableCell>
+              <TableCell></TableCell>
               <TableCell>Type</TableCell>
               <TableCell>Format</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Max Length</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {Object.entries(schema.properties).map(
               ([name, field]: [string, any]) => (
                 <TableRow key={name}>
-                  <TableCell>{`${name} ${
-                    required && required.includes(name)
-                      ? '(required)'
-                      : '(optional)'
-                  }`}</TableCell>
-                  <TableCell>{field.type || 'object'}</TableCell>
+                  <TableCell>{name} {required && required.includes(name)
+                    ? '(required)'
+                    : null}</TableCell>
+                  <TableCell>{field.readOnly ? (
+                    <Tooltip title="Read Only" placement="top">
+                      <Lock />
+                    </Tooltip>
+                  ) : null}</TableCell>
+                  <TableCell><code className={classes[field.type]}>{field.type || 'object'}</code></TableCell>
                   <TableCell>{field.format || '---'}</TableCell>
-                  <TableCell>{field.maxLength || '---'}</TableCell>
+                  <TableCell>{field.maxLength ? `${field.maxLength} characters` : '---'}</TableCell>
                 </TableRow>
               )
             )}
@@ -79,7 +107,9 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
           <React.Fragment>
             <Typography variant="h5">Example</Typography>
             <pre className={classes.pre}>
-              {JSON.stringify(schema.example, null, 2)}
+              <code className="language-json">
+                {JSON.stringify(schema.example, null, 2)}
+              </code>
             </pre>
           </React.Fragment>
         )}

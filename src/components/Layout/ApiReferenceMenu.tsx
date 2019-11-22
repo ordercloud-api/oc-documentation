@@ -2,13 +2,9 @@ import React from 'react'
 import { map as _map, findIndex as _findIndex } from 'lodash'
 import {
   Collapse,
-  List,
-  ListItem,
-  ListItemText,
   makeStyles,
   Theme,
   createStyles,
-  Drawer,
   Typography,
 } from '@material-ui/core'
 import OpenApi from '../../openapi.service'
@@ -63,6 +59,7 @@ export default function ApiReferenceMenu(props) {
     resourceChange,
     operationChange,
     activeIndex,
+    selectedOperation,
   } = props
   const classes = useStyles(props)
   return (
@@ -77,6 +74,7 @@ export default function ApiReferenceMenu(props) {
             resourceChange={resourceChange}
             operationChange={operationChange}
             activeIndex={activeIndex}
+            selectedOperation={selectedOperation}
           />
         )
       })}
@@ -92,6 +90,7 @@ function Section(props) {
     activeIndex,
     resourceChange,
     operationChange,
+    selectedOperation,
   } = props
 
   const classes = useStyles(props)
@@ -99,8 +98,8 @@ function Section(props) {
     ocApi.sections,
     sect => sect['x-id'] === section['x-id']
   )
-  const isActive = sectionIndex === activeIndex
-  const [open, setOpen] = React.useState(isActive)
+  const isActive = sectionIndex === activeIndex;
+  const [open, setOpen] = React.useState(isActive);
 
   const resources = ocApi.resources.filter(
     r => r['x-section-id'] == section['x-id']
@@ -108,9 +107,7 @@ function Section(props) {
 
   function handleClick() {
     setOpen(!open)
-    if (open) {
-      sectionChange(section)
-    }
+    sectionChange(sectionIndex)
   }
 
   return (
@@ -122,11 +119,7 @@ function Section(props) {
         onClick={handleClick}
       >
         {section.name}
-        {open ? (
-          <ExpandLess onClick={handleClick} />
-        ) : (
-          <ExpandMore onClick={handleClick} />
-        )}
+        {open ? <ExpandLess /> : <ExpandMore />}
       </Typography>
       <Collapse in={isActive} timeout="auto" unmountOnExit>
         {resources.map((resource, index) => (
@@ -135,6 +128,7 @@ function Section(props) {
             resource={resource}
             operationChange={operationChange}
             resourceChange={resourceChange}
+            selectedOperation={selectedOperation}
           />
         ))}
       </Collapse>
@@ -143,20 +137,28 @@ function Section(props) {
 }
 
 function Resource(props) {
-  const { resource, operationChange, resourceChange } = props
+  const {
+    resource,
+    operationChange,
+    resourceChange,
+    selectedOperation
+  } = props;
+
   const classes = useStyles(props)
 
-  const [open, setOpen] = React.useState(false)
+  const isActive = selectedOperation ? selectedOperation.resource.name === resource.name : false;
+  if (isActive) {
+    window.location.hash = selectedOperation.operationId;
+  }
+  const [open, setOpen] = React.useState(isActive)
 
   const operations = OpenApi.operationsByResource
     ? OpenApi.operationsByResource[resource.name]
-    : null
+    : null;
 
   function handleClick() {
     setOpen(!open)
-    if (!open) {
-      resourceChange(resource.name)
-    }
+    resourceChange(resource.name)
   }
 
   return (
@@ -169,23 +171,23 @@ function Resource(props) {
       >
         {resource.name}
         {open ? (
-          <ExpandLess onClick={handleClick} />
+          <ExpandLess />
         ) : (
-          <ExpandMore onClick={handleClick} />
-        )}
+            <ExpandMore />
+          )}
       </Typography>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+      <Collapse in={isActive} timeout="auto" unmountOnExit>
         <ul className={classes.operations}>
           {operations && operations.length
             ? operations.map((o, index) => {
-                return (
-                  <li key={index} onClick={() => operationChange(o)}>
-                    <a className={classes.operation} href={`#${o.operationId}`}>
-                      {o.summary.replace(/\./g, ' ')}
-                    </a>
-                  </li>
-                )
-              })
+              return (
+                <li key={index} onClick={() => operationChange(o)}>
+                  <a className={classes.operation} href={`#${o.operationId}`}>
+                    {o.summary.replace(/\./g, ' ')}
+                  </a>
+                </li>
+              )
+            })
             : null}
         </ul>
       </Collapse>
