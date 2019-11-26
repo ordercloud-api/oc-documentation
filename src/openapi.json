@@ -3,7 +3,7 @@
   "info": {
     "title": "OrderCloud",
     "description": "OrderCloud is an awesome C# platform API for making eCommerce applications. It is NOT a complete solution. It's designed to be used as the backend component with various other integrations and services.",
-    "version": "1.0.109",
+    "version": "1.0.130",
     "contact": {
       "name": "OrderCloud",
       "url": "http://ordercloud.io",
