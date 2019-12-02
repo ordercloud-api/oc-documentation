@@ -1,4 +1,4 @@
-import { Link as ReachLink } from '@reach/router'
+import { Link } from '@material-ui/core'
 import React from 'react'
 
 /**
@@ -39,9 +39,7 @@ export class PortalLink extends React.Component<PortalLinkProps> {
 
   public render() {
     const { to, children } = this.props
-
-    const prefixedTo = withPrefix(to)
-    return <a href={prefixedTo}>{children}</a>
+    return <Link onClick={() => navigate(to)}>{children}</Link>
   }
 }
 
