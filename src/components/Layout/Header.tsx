@@ -38,7 +38,6 @@ import ListItemLink from '../Shared/ListItemLink'
 import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import MenuItems from '../Shared/MenuItems.json'
-import ocOrange from '../../../src/assets/images/four51-logo-geo--full-color-white.svg'
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -489,12 +488,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 </MenuList>
               </React.Fragment>
             ) : (
-              <React.Fragment></React.Fragment>
-            )}
+                <React.Fragment></React.Fragment>
+              )}
           </List>
-          <Box padding="1rem">
-            <img className={classes.mobileMenuLogo} src={ocOrange} alt="OC" />
-          </Box>
         </Drawer>
       </React.Fragment>
     )
@@ -601,12 +597,12 @@ const styles = (theme: Theme) =>
       overflowX: 'auto',
     },
     drawerRoot: {
-      zIndex: `10000000!important`,
+      zIndex: `${theme.zIndex.modal + 5} !important` as any,
     },
     drawerPaper: {
       backgroundColor: theme.palette.primary.main,
       width: '100vw',
-      height: '100vh',
+      minHeight: '100vh',
       color: theme.palette.common.white,
       fontSize: '1rem',
     },
