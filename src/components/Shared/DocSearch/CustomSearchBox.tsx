@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: theme.shape.borderRadius,
       padding: theme.spacing(0, 1.5),
       backgroundColor: props.darkMode
-        ? theme.palette.primary.main
+        ? theme.palette.primary.dark
         : theme.palette.grey[200],
     }),
     input: (props: any) => ({
@@ -33,9 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     }),
     adornment: (props: any) => ({
-      color: props.darkMode
-        ? theme.palette.secondary.main
-        : theme.palette.grey[500],
+      color: props.darkMode ? theme.palette.grey[600] : theme.palette.grey[500],
     }),
   })
 )

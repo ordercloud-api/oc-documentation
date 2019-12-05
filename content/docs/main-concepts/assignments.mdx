@@ -10,13 +10,13 @@ Now that we have an understanding of the various OrderCloud parties (companies a
 There are basic principles around how assignments work that are critical to understanding our data model and more importantly how the data model can be applied to solve the most complex ordering scenarios efficiently.
 
 - Assignments are used to define a relationship
-- Assignments are inclusive
+- Assignments are explicit
 - Assignments can be made at different levels
 - Assignments may include configuration data
 - Assignments cascade down higher levels to the individual user
 - Assignments are many to many
 
-## Assignments are Inclusive
+## Assignments are Explicit
 
 When a user is created they exist in a vacuum. The user will not have access to any objects until an assignment is made to them directly, or through a higher level party assignment.
 
@@ -33,6 +33,8 @@ When the API is looking for what a given user has access to, it is checking for 
 ## Assignments are Many to Many
 
 Resources can be assigned to many different parties. Those parties can be assigned to many other resources. For example, one user can be assigned to multiple address while one address can be assigned to multiple users.
+
+![Assignments](/images/docs/main-concepts/assignments/oc-docs__assignments-1.png)
 
 ## Conclusion
 
