@@ -27,13 +27,13 @@ const Geometria = {
 }
 
 const CoreSans = {
-  fontFamily: 'Core Sans',
+  fontFamily: 'Core Sans D 35 Regular',
   fontStyle: 'normal',
   fontDisplay: 'swap',
   fontWeight: 400,
   src: `
-    local('CoreSans'),
-    url('../assets/fonts/CORESANSD35REGULAR.OTF' format('opentype'))
+    local('Core Sans D 35 Regular'),
+    url('../assets/fonts/CoreSans/3A0B9A_8_0.woff' format('woff'))
   `,
   unicodeRange:
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
@@ -143,7 +143,7 @@ export default createMuiTheme({
       ].join(','),
     },
     fontFamily: [
-      '"CoreSans"',
+      '"Core Sans D 35 Regular"',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',
@@ -200,6 +200,9 @@ export default createMuiTheme({
         paddingTop: '1.5rem',
         marginBottom: '0.5rem',
       },
+      body1: {
+        lineHeight: '1.75',
+      }
     },
   },
   palette: {
