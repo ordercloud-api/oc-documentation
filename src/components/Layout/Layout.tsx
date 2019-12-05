@@ -27,12 +27,9 @@ const useStyles = makeStyles((theme: Theme) =>
     pageWrapper: {
       backgroundColor: 'white',
       marginTop: navHeight, // spacing from top of page on mobile (due to horiz menu)
-      // paddingBottom: theme.spacing(4),
+      minHeight: `calc(100vh - ${navHeight}px)`,
       [theme.breakpoints.up('md')]: {
-        marginTop: navHeight, // spacing from top of page on mobile (due to horiz menu)
         marginBottom: theme.spacing(52.25),
-        // marginLeft: theme.spacing(7.5), // vertical nav width spacing
-        // marginTop: 0, // no horizontal nav to worry about
       },
       '& img': {
         maxWidth: '100%',
@@ -49,6 +46,10 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(11),
       marginBottom: -theme.spacing(8),
     },
+    containerMain: {
+      zIndex: 1,
+      position: 'relative',
+    },
   })
 )
 
@@ -61,6 +62,7 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
       marginLeft: -theme.spacing(8),
       paddingRight: theme.spacing(2),
     },
+
   })
 )
 
@@ -124,7 +126,7 @@ export default props => {
         <body className={classes.body} />
       </Helmet>
       <CssBaseline />
-      <React.Fragment>
+      <div className={classes.containerMain}>
         <Header
           location={props.location}
           siteTitle="OrderCloud Documentation"
@@ -211,8 +213,8 @@ export default props => {
             {props.children}
           </MDXProvider>
         </div>
-        <Footer sections={sections}></Footer>
-      </React.Fragment>
+      </div>
+      <Footer sections={sections}></Footer>
     </ThemeProvider>
   )
 }

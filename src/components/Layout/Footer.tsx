@@ -29,7 +29,6 @@ const styles = (theme: Theme) =>
         bottom: 0,
         left: 0,
         right: 0,
-        zIndex: -1,
       },
       backgroundColor: theme.palette.primary.dark,
       borderTop: '2px solid',
@@ -94,7 +93,7 @@ class Footer extends React.Component<any> {
     const currentYear = new Date().getFullYear()
     const { siteTitle, classes, right, theme, sections } = this.props
     return (
-      <div className={classes.root}>
+      <footer className={classes.root}>
         <Container className={classes.inner}>
           <Grid
             className={classes.footerContent}
@@ -214,7 +213,7 @@ class Footer extends React.Component<any> {
           </Grid>
           <div className={classes.footerAside}></div>
         </Container>
-      </div>
+      </footer>
     )
   }
 }
