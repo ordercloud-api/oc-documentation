@@ -52,6 +52,10 @@ class ApiReference extends React.Component<any> {
     const ocApi = this.props.pageContext.OcApi;
     const selectedOperationId = window.location.hash.replace('#', '');
     this.initSelectedOperation(ocApi, selectedOperationId);
+    if (selectedOperationId) {
+      // TODO : would be 'dry'er to put in if(operId) statement in initSelectedOperation but it breaks
+      document.getElementById(selectedOperationId).scrollIntoView();
+    }
   }
 
   private getResourceData = (resourceName: string) => {
