@@ -103,7 +103,7 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
             )}
           </TableBody>
         </Table>
-        {schema.example && (
+        {/* {schema.example && (
           <React.Fragment>
             <Typography variant="h5">Example</Typography>
             <pre className={classes.pre}>
@@ -112,7 +112,7 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
               </code>
             </pre>
           </React.Fragment>
-        )}
+        )} */}
       </React.Fragment>
     )
   }
