@@ -38,10 +38,8 @@ const useStyles = makeStyles((theme: Theme) =>
         maxWidth: '100%',
       },
     },
-    html: {
-      // width: '100vw',
-    },
     body: {
+      height: ' 100%',
       maxWidth: '100vw',
       overflowX: 'hidden',
     },
@@ -213,7 +211,6 @@ export default props => {
             {props.children}
           </MDXProvider>
         </div>
-
         <Footer sections={sections}></Footer>
       </React.Fragment>
     </ThemeProvider>
