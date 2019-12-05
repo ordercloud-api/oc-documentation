@@ -3,7 +3,7 @@
   "info": {
     "title": "OrderCloud",
     "description": "OrderCloud is an awesome C# platform API for making eCommerce applications. It is NOT a complete solution. It's designed to be used as the backend component with various other integrations and services.",
-    "version": "1.0.109",
+    "version": "1.0.130",
     "contact": {
       "name": "OrderCloud",
       "url": "http://ordercloud.io",
@@ -1001,6 +1001,7 @@
         "type": "object",
         "example": {
           "ID": "",
+          "OwnerID": "",
           "Name": "",
           "Description": "",
           "Active": false,
@@ -1010,6 +1011,11 @@
         "properties": {
           "ID": {
             "type": "string"
+          },
+          "OwnerID": {
+            "type": "string",
+            "readOnly": true,
+            "description": "ID of the Seller or Supplier org that created the Catalog."
           },
           "Name": {
             "type": "string",
@@ -1259,7 +1265,8 @@
         "type": "object",
         "example": {
           "ClientID": "",
-          "Roles": ["DevCenter"]
+          "Roles": ["DevCenter"],
+          "CustomRoles": [""]
         },
         "properties": {
           "ClientID": {
@@ -1351,6 +1358,12 @@
             "items": {
               "type": "string"
             }
+          },
+          "CustomRoles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -1372,22 +1385,28 @@
             "type": "string"
           },
           "ImpersonationBuyerID": {
-            "type": "string"
+            "type": "string",
+            "description": "The Buyer ID of the impersonator group or user (party doing the impersonating)"
           },
           "ImpersonationGroupID": {
-            "type": "string"
+            "type": "string",
+            "description": "The UserGroupID of the impersonator (party doing the impersonating)"
           },
           "ImpersonationUserID": {
-            "type": "string"
+            "type": "string",
+            "description": "The UserID of the impersonator (party doing the impersonating)"
           },
           "BuyerID": {
-            "type": "string"
+            "type": "string",
+            "description": "The BuyerID of the impersonatee (party being impersonated)"
           },
           "GroupID": {
-            "type": "string"
+            "type": "string",
+            "description": "The UserGroupID of the impersonatee (party being impersonated)"
           },
           "UserID": {
-            "type": "string"
+            "type": "string",
+            "description": "The UserID of the impersonatee (party being impersonated)"
           },
           "SecurityProfileID": {
             "type": "string"
@@ -2992,6 +3011,7 @@
             "PasswordLastSetDate": "2018-01-01T00:00:00-06:00"
           },
           "FromCompanyID": "",
+          "ToCompanyID": "",
           "FromUserID": "",
           "BillingAddressID": "",
           "BillingAddress": {
@@ -3039,7 +3059,12 @@
             "readOnly": true
           },
           "FromCompanyID": {
-            "type": "string"
+            "type": "string",
+            "description": "ID of the Buyer or Seller placing the order. Mainly useful to the Seller or Supplier receiving it."
+          },
+          "ToCompanyID": {
+            "type": "string",
+            "description": "ID of the Seller or Supplier receiving the order. Mainly useful to the Buyer or Seller placing it."
           },
           "FromUserID": {
             "type": "string"
@@ -3315,6 +3340,83 @@
           }
         }
       },
+      "OrderSplitResult": {
+        "type": "object",
+        "example": {
+          "OutgoingOrders": [{
+            "ID": "",
+            "FromUser": {
+              "ID": "",
+              "Username": "",
+              "Password": "",
+              "FirstName": "",
+              "LastName": "",
+              "Email": "",
+              "Phone": "",
+              "TermsAccepted": "2018-01-01T00:00:00-06:00",
+              "Active": false,
+              "xp": {},
+              "AvailableRoles": [""],
+              "DateCreated": "2018-01-01T00:00:00-06:00",
+              "PasswordLastSetDate": "2018-01-01T00:00:00-06:00"
+            },
+            "FromCompanyID": "",
+            "ToCompanyID": "",
+            "FromUserID": "",
+            "BillingAddressID": "",
+            "BillingAddress": {
+              "ID": "",
+              "DateCreated": "2018-01-01T00:00:00-06:00",
+              "CompanyName": "",
+              "FirstName": "",
+              "LastName": "",
+              "Street1": "",
+              "Street2": "",
+              "City": "",
+              "State": "",
+              "Zip": "",
+              "Country": "",
+              "Phone": "",
+              "AddressName": "",
+              "xp": {}
+            },
+            "ShippingAddressID": "",
+            "Comments": "",
+            "LineItemCount": 0,
+            "Status": "Unsubmitted",
+            "DateCreated": "2018-01-01T00:00:00-06:00",
+            "DateSubmitted": "2018-01-01T00:00:00-06:00",
+            "DateApproved": "2018-01-01T00:00:00-06:00",
+            "DateDeclined": "2018-01-01T00:00:00-06:00",
+            "DateCanceled": "2018-01-01T00:00:00-06:00",
+            "DateCompleted": "2018-01-01T00:00:00-06:00",
+            "Subtotal": 0,
+            "ShippingCost": 0,
+            "TaxCost": 0,
+            "PromotionDiscount": 0,
+            "Total": 0,
+            "IsSubmitted": false,
+            "xp": {}
+          }],
+          "RemainingLineItemIDs": [""]
+        },
+        "properties": {
+          "OutgoingOrders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Order"
+            },
+            "description": "The outgoing Orders created, one for each unique Product.DefaultSupplierID on the original Order."
+          },
+          "RemainingLineItemIDs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "IDs of Line Items not added to an outgoing Order, most likely because Product.DefaultSupplierID is not set."
+          }
+        }
+      },
       "PasswordConfig": {
         "type": "object",
         "example": {
@@ -3565,7 +3667,9 @@
       "Product": {
         "type": "object",
         "example": {
+          "OwnerID": "",
           "DefaultPriceScheduleID": "",
+          "AutoForward": false,
           "ID": "",
           "Name": "",
           "Description": "",
@@ -3590,8 +3694,17 @@
           "DefaultSupplierID": ""
         },
         "properties": {
+          "OwnerID": {
+            "type": "string",
+            "readOnly": true,
+            "description": "ID of the Seller or Supplier org that created the Product."
+          },
           "DefaultPriceScheduleID": {
             "type": "string"
+          },
+          "AutoForward": {
+            "type": "boolean",
+            "description": "If true, when this product is ordered by a Buyer, it will automatically be added to a new Order from the Seller to the Default Supplier and submitted. Requires a valid DefaultSupplierID."
           },
           "ID": {
             "type": "string"
@@ -4824,6 +4937,7 @@
                 "type": "string",
                 "enum": [
                   "ID",
+                  "CompanyName",
                   "FirstName",
                   "LastName",
                   "Street1",
@@ -5475,9 +5589,9 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "ID",
                   "AppName",
-                  "DefaultContextUserName",
-                  "xp"
+                  "DefaultContextUserName"
                 ]
               }
             }
@@ -5492,9 +5606,9 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "ID",
                   "AppName",
-                  "DefaultContextUserName",
-                  "xp"
+                  "DefaultContextUserName"
                 ]
               }
             }
@@ -6206,6 +6320,7 @@
                 "type": "string",
                 "enum": [
                   "ID",
+                  "CompanyName",
                   "FirstName",
                   "LastName",
                   "Street1",
@@ -9949,6 +10064,7 @@
                 "type": "string",
                 "enum": [
                   "ID",
+                  "OwnerID",
                   "Name"
                 ]
               }
@@ -12016,6 +12132,7 @@
                 "type": "string",
                 "enum": [
                   "ID",
+                  "CompanyName",
                   "FirstName",
                   "LastName",
                   "Street1",
@@ -12357,6 +12474,7 @@
                 "type": "string",
                 "enum": [
                   "ID",
+                  "OwnerID",
                   "Name"
                 ]
               }
@@ -13061,6 +13179,7 @@
                 "enum": [
                   "ID",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "Comments"
                 ]
               }
@@ -13079,6 +13198,7 @@
                   "ID",
                   "FromUser",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "FromUserID",
                   "Status",
                   "DateCreated",
@@ -13220,6 +13340,7 @@
                 "enum": [
                   "ID",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "Comments"
                 ]
               }
@@ -13238,6 +13359,7 @@
                   "ID",
                   "FromUser",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "FromUserID",
                   "Status",
                   "DateCreated",
@@ -13412,6 +13534,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "OwnerID",
                   "ID",
                   "Name"
                 ]
@@ -13565,6 +13688,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "OwnerID",
                   "ID",
                   "Name"
                 ]
@@ -15426,6 +15550,7 @@
                 "enum": [
                   "ID",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "Comments"
                 ]
               }
@@ -15444,6 +15569,7 @@
                   "ID",
                   "FromUser",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "FromUserID",
                   "Status",
                   "DateCreated",
@@ -15837,6 +15963,7 @@
                 "enum": [
                   "ID",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "Comments"
                 ]
               }
@@ -15855,6 +15982,7 @@
                   "ID",
                   "FromUser",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "FromUserID",
                   "Status",
                   "DateCreated",
@@ -16291,6 +16419,7 @@
                 "enum": [
                   "ID",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "Comments"
                 ]
               }
@@ -16309,6 +16438,7 @@
                   "ID",
                   "FromUser",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "FromUserID",
                   "Status",
                   "DateCreated",
@@ -16363,6 +16493,57 @@
             "OrderAdmin",
             "Shopper",
             "OrderReader"
+          ]
+        }]
+      }
+    },
+    "/orders/{direction}/{orderID}/forward": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Creates and submits 0 or more outgoing Orders to Suppliers, one for each unique Product.DefaultSupplierID on this Order.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderSplitResult"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "Orders.Forward",
+        "tags": [
+          "Orders"
+        ],
+        "parameters": [{
+            "name": "direction",
+            "in": "path",
+            "description": "Direction of the order, from the current user's perspective. Possible values: incoming, outgoing.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Incoming",
+                "Outgoing"
+              ]
+            }
+          },
+          {
+            "name": "orderID",
+            "in": "path",
+            "description": "ID of the order.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Forward an order forward.",
+        "description": "Creates and submits 0 or more outgoing Orders to Suppliers, one for each unique Product.DefaultSupplierID on this Order.",
+        "security": [{
+          "OAuth2": [
+            "FullAccess",
+            "OrderAdmin"
           ]
         }]
       }
@@ -17609,6 +17790,7 @@
                 "enum": [
                   "ID",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "Comments"
                 ]
               }
@@ -17627,6 +17809,7 @@
                   "ID",
                   "FromUser",
                   "FromCompanyID",
+                  "ToCompanyID",
                   "FromUserID",
                   "Status",
                   "DateCreated",
@@ -18001,6 +18184,57 @@
             "FullAccess",
             "OrderAdmin",
             "Shopper"
+          ]
+        }]
+      }
+    },
+    "/orders/{direction}/{orderID}/split": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Creates, but does not submit, 0 or more outgoing Orders to Suppliers, one for each unique Product.DefaultSupplierID on this Order.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderSplitResult"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "Orders.Split",
+        "tags": [
+          "Orders"
+        ],
+        "parameters": [{
+            "name": "direction",
+            "in": "path",
+            "description": "Direction of the order, from the current user's perspective. Possible values: incoming, outgoing.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Incoming",
+                "Outgoing"
+              ]
+            }
+          },
+          {
+            "name": "orderID",
+            "in": "path",
+            "description": "ID of the order.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "summary": "Split an order split.",
+        "description": "Creates, but does not submit, 0 or more outgoing Orders to Suppliers, one for each unique Product.DefaultSupplierID on this Order.",
+        "security": [{
+          "OAuth2": [
+            "FullAccess",
+            "OrderAdmin"
           ]
         }]
       }
@@ -18923,6 +19157,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "OwnerID",
                   "ID",
                   "Name"
                 ]
@@ -19299,6 +19534,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "OwnerID",
                   "ID",
                   "Name"
                 ]
@@ -19485,6 +19721,7 @@
               "items": {
                 "type": "string",
                 "enum": [
+                  "OwnerID",
                   "ID",
                   "Name"
                 ]
@@ -22704,6 +22941,7 @@
                 "type": "string",
                 "enum": [
                   "ID",
+                  "CompanyName",
                   "FirstName",
                   "LastName",
                   "Street1",
