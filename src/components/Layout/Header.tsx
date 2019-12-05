@@ -271,7 +271,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                       onClick={this.handleMenu}
                       className={classes.iconButton}
                     >
-                      <Avatar alt={this.state.username}>
+                      <Avatar className={classes.gravatarAvatar} alt={this.state.username}>
                         <Gravatar size={40} email={this.state.email} />
                       </Avatar>
                     </IconButton>
