@@ -24,7 +24,7 @@ const ApiResource: React.FunctionComponent<ApiResourceProps> = props => {
       <Typography variant="h1">{resource.name}</Typography>
       <Typography>{resource.description}</Typography>
       {Boolean(operations) &&
-        operations.map(o => <ApiOperation key={o.operationId} operation={o} example={example.requestBody.content['application/json'].schema.allOf[0].example} />)}
+        operations.map(o => <ApiOperation key={o.operationId} operation={o} example={example ? example.requestBody.content['application/json'].schema.allOf[0].example : null} />)}
     </React.Fragment>
   )
 }

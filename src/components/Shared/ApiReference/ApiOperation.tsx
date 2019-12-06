@@ -30,8 +30,6 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = props => {
         {operation.summary.replace(/\./g, '')}
       </Typography>
 
-      <ApiExampleModel example={example} />
-
       <Typography variant="body1">
         {operation.description}
       </Typography>
@@ -42,6 +40,8 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = props => {
       <ApiParameters parameters={operation.parameters}></ApiParameters>
 
       <ApiRequestBody requestBody={operation.requestBody}></ApiRequestBody>
+
+      <ApiExampleModel example={example} />
 
       <ApiResponses responses={operation.responses}></ApiResponses>
       {/* <pre>{JSON.stringify(operation, null, 2)}</pre> */}

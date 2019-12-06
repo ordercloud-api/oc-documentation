@@ -33,7 +33,7 @@ const ApiExampleModel: React.FunctionComponent<any> = props => {
     const { example } = props;
     return (
         <React.Fragment>
-            <Typography variant="h5">Example</Typography>
+            <Typography variant="h5">Example Request Body</Typography>
             <pre className={classes.pre}>
                 <code className="language-json">
                     {JSON.stringify(example, null, 2)}
