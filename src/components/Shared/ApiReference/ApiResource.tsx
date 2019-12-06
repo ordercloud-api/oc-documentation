@@ -19,12 +19,25 @@ const ApiResource: React.FunctionComponent<ApiResourceProps> = props => {
     operation.requestBody.content['application/json'].schema.allOf.length
   );
 
+  // Only display example when operation ID in iteration matches the first POST type operation ID
+  const firstPostOperation = operations.find(operation => operation.verb.toUpperCase() === 'POST');
+
   return (
     <React.Fragment>
       <Typography variant="h1">{resource.name}</Typography>
       <Typography>{resource.description}</Typography>
       {Boolean(operations) &&
-        operations.map((o, index) => <ApiOperation key={o.operationId} operation={o} example={example && index === 0 ? example.requestBody.content['application/json'].schema.allOf[0].example : null} />)}
+        operations.map((o) =>
+          <ApiOperation
+            key={o.operationId}
+            operation={o}
+            example={example && o.operationId === firstPostOperation.operationId
+              ? example.requestBody.content['application/json'].schema.allOf[0].example
+              : null
+            }
+          />
+        )
+      }
     </React.Fragment>
   )
 }
