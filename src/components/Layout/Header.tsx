@@ -396,7 +396,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             </Box>
             {auth ? (
               <Box padding="1rem 0rem">
-                <Avatar alt={this.state.username}>
+                <Avatar className={classes.gravatarAvatar} alt={this.state.username}>
                   <Gravatar size={40} email={this.state.email} />
                 </Avatar>
               </Box>
@@ -566,6 +566,9 @@ const styles = (theme: Theme) =>
     },
     iconButton: {
       padding: 0,
+    },
+    gravatarAvatar: {
+      marginBottom: 0,
     },
     mobileMenuList: {
       marginBottom: 'auto',
