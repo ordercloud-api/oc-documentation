@@ -1,4 +1,4 @@
-import { Collapse, createStyles, makeStyles, Theme } from '@material-ui/core'
+import { Collapse, createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { Link, withPrefix } from 'gatsby'
 import React from 'react'
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     list: {
-      padding: 0,
+      margin: theme.spacing(3, 4, 0, 4),
       listStyle: 'none',
     },
     listItemLink: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: theme.spacing(2),
       borderLeft: `${theme.spacing(0.5)}px solid ${
         theme.palette.secondary.light
-      }`,
+        }`,
       '& > $listItemLink': {
         fontWeight: 'bold',
       },
@@ -80,7 +80,7 @@ export default function DocMenu(props: DocMenuProps) {
           <div
             className={`${classes.sectionButton} ${
               activeIndex === sindex ? classes.activeSection : undefined
-            }`}
+              }`}
             onClick={handleSetActiveIndex(sindex)}
           >
             {`${section.title} `}
@@ -95,10 +95,10 @@ export default function DocMenu(props: DocMenuProps) {
                     currentPath.includes(guide.path)
                       ? classes.active
                       : undefined
-                  }`}
+                    }`}
                 >
                   <Link className={classes.listItemLink} to={guide.path}>
-                    {guide.frontmatter.title}
+                    <Typography variant="body2">{guide.frontmatter.title}</Typography>
                   </Link>
                 </li>
               ))}

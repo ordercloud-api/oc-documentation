@@ -1,5 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { flame, seafoam, sherpablue, blackpearl } from './ocPalette.constants'
+import CoreSansRegularWoff from '../assets/fonts/CoreSans/3A0B9A_8_0.woff'
 
 const Geometria = {
   fontFamily: [
@@ -20,20 +21,45 @@ const Geometria = {
   fontWeight: 600,
   src: `
     local('Geometria'),
-    url('../assets/fonts/Geometria/Geometria-Bold.ttf' format('truetype'))
+    url('../assets/fonts/Geometria/3A0B9A_23_0.woff') format('woff')
+  `,
+  unicodeRange:
+    'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
+}
+
+const GeometriaLight = {
+  fontFamily: [
+    '"Geometria"',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(','),
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 600,
+  src: `
+    local('Geometria'),
+    url('../assets/fonts/Geometria/3A0B9A_21_0.woff') format('woff')
   `,
   unicodeRange:
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
 }
 
 const CoreSans = {
-  fontFamily: 'Core Sans',
+  fontFamily: 'Core Sans D',
   fontStyle: 'normal',
   fontDisplay: 'swap',
   fontWeight: 400,
   src: `
-    local('CoreSans'),
-    url('../assets/fonts/CORESANSD35REGULAR.OTF' format('opentype'))
+    local('Core Sans D'),
+    url('../assets/fonts/CoreSans/3A0B9A_8_0.woff') format('woff')
   `,
   unicodeRange:
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
@@ -143,7 +169,7 @@ export default createMuiTheme({
       ].join(','),
     },
     fontFamily: [
-      '"CoreSans"',
+      "'Core Sans D 35 Regular'",
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',
@@ -159,6 +185,7 @@ export default createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
+        '@font-face': [GeometriaLight],
         a: {
           color: secondaryColor[900],
         },
@@ -200,6 +227,9 @@ export default createMuiTheme({
         paddingTop: '1.5rem',
         marginBottom: '0.5rem',
       },
+      body1: {
+        lineHeight: '1.75',
+      }
     },
   },
   palette: {

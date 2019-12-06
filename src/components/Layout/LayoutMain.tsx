@@ -4,9 +4,9 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      minHeight: '100vh',
-      paddingBottom: theme.spacing(4),
       flex: '1',
+      minHeight: '100vh',
+      padding: theme.spacing(0, 4, 4, 4),
     },
   })
 )
@@ -15,7 +15,7 @@ const LayoutMain: React.FunctionComponent = props => {
   const classes = useStyles({})
   return (
     <div className={classes.root}>
-      <div>{props.children}</div>
+      {props.children}
     </div>
   )
 }
