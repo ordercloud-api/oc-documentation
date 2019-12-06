@@ -64,7 +64,7 @@ const queries = [
     settings,
   },
 ]
-module.exports = {
+const toExport = {
   siteMetadata: {
     title: `OrderCloud Documentation`,
     description: `Documentation for OrderCloud's B2B eCommerce API`,
@@ -78,16 +78,6 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-typescript`,
     `gatsby-transformer-sharp`,
-    {
-      resolve: `gatsby-plugin-algolia`,
-      options: {
-        appId: process.env.GATSBY_ALGOLIA_APP_ID,
-        apiKey: process.env.GATSBY_ALGOLIA_ADMIN_API_KEY,
-        indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
-        queries,
-        chunkSize: 10000, // default: 1000
-      },
-    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -152,4 +142,20 @@ module.exports = {
       },
     },
   ],
+}
+
+module.exports = toExport
+if (process.env.GATSBY_ALGOLIA_ADMIN_API_KEY) {
+  // for local development, don't store GATSBY_ALGOLIA_ADMIN_API_KEY
+  // because it will rebuild the algolia index
+  toExport.plugins.push({
+    resolve: `gatsby-plugin-algolia`,
+    options: {
+      appId: process.env.GATSBY_ALGOLIA_APP_ID,
+      apiKey: process.env.GATSBY_ALGOLIA_ADMIN_API_KEY,
+      indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
+      queries,
+      chunkSize: 10000, // default: 1000
+    },
+  })
 }
