@@ -69,7 +69,7 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
     return (
       <React.Fragment>
         <Typography variant="h4">Request Body Properties</Typography>
-        {/** TODO: I have yet to see this appear; scrap? pending future use? */}
+        {/** TODO: I have yet to see this appear; scrap or save for future use? */}
         {requestBody.description && (
           <Typography paragraph>{requestBody.description}</Typography>
         )}
