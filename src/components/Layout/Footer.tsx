@@ -29,7 +29,6 @@ const styles = (theme: Theme) =>
         bottom: 0,
         left: 0,
         right: 0,
-        zIndex: -1,
       },
       backgroundColor: theme.palette.primary.dark,
       borderTop: '2px solid',
@@ -94,7 +93,7 @@ class Footer extends React.Component<any> {
     const currentYear = new Date().getFullYear()
     const { siteTitle, classes, right, theme, sections } = this.props
     return (
-      <div className={classes.root}>
+      <footer className={classes.root}>
         <Container className={classes.inner}>
           <Grid
             className={classes.footerContent}
@@ -172,7 +171,7 @@ class Footer extends React.Component<any> {
                 </a>
                 <a
                   className={classes.footerLinks}
-                  href="https://twitter.com/OrderCloudIO"
+                  href="https://twitter.com/Four51ecommerce"
                   target="_blank"
                 >
                   Twitter
@@ -200,21 +199,32 @@ class Footer extends React.Component<any> {
                 >
                   API Release Notes
                 </Link>
-                <Link className={classes.footerLinks} to="/">
-                  Terms
-                </Link>
-                <Link className={classes.footerLinks} to="/">
+                <a
+                  className={classes.footerLinks}
+                  href="https://four51.io/privacy-policy/"
+                  target="_blank"
+                >
                   Privacy Policy
-                </Link>
-                <Link className={classes.footerLinks} to="/">
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <a
+                  className={classes.footerLinks}
+                  href="https://four51.io/"
+                  target="_blank"
+                >
                   Four51
-                </Link>
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
               </Box>
             </Grid>
           </Grid>
           <div className={classes.footerAside}></div>
         </Container>
-      </div>
+      </footer>
     )
   }
 }

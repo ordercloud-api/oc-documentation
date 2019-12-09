@@ -39,7 +39,7 @@
 
   :not(pre) > code[class*="language-"], pre[class*="language-"] {
       background-color: #e4f5f5; /* seafoam[50] */
-      padding: 0 5px;
+      padding: 0 2px;
       border-radius: 0.3em;
       color: #1c2129; /* blackpearl[500] */
   }
