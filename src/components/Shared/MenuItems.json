@@ -1,6 +1,5 @@
 {
-  "MainNavigation": [
-    {
+  "MainNavigation": [{
       "value": "docs",
       "label": "Home",
       "disableRipple": true,
@@ -58,7 +57,7 @@
       "value": "organizations",
       "label": "Organizations",
       "disableRipple": true,
-      "to": "/console/organizations",
+      "to": "/organizations",
       "mobileMenu": false,
       "authRequired": false,
       "isPortalLink": true
@@ -67,18 +66,15 @@
       "value": "console",
       "label": "Console",
       "disableRipple": true,
-      "to": "/console",
+      "to": "/",
       "mobileMenu": false,
       "authRequired": false,
       "isPortalLink": true
     }
   ],
-  "OrgControls": [
-    {
-      "label": "Profile",
-      "to": ""
-    }
-  ],
-  "AuthControls": [
-  ]
+  "OrgControls": [{
+    "label": "Profile",
+    "to": ""
+  }],
+  "AuthControls": []
 }

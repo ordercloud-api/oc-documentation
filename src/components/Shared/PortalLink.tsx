@@ -11,13 +11,7 @@ function withPrefix(path) {
 }
 
 function getBaseUrl() {
-  const protocol = window.location.protocol
-  const hostname = window.location.hostname
-  let port = ''
-  if (window.location.port) {
-    port = `:${window.location.port}`
-  }
-  return `${protocol}//${hostname}${port}`
+  return process.env.GATSBY_PORTAL_URL
 }
 
 function normalizePath(path) {

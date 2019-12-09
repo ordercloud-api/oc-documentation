@@ -213,7 +213,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                           onClick={
                             auth
                               ? this.goToPortal(to)
-                              : this.goToPortal('/console/login/')
+                              : this.goToPortal('/login')
                           }
                           key={index}
                         ></Tab>
@@ -271,7 +271,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                       onClick={this.handleMenu}
                       className={classes.iconButton}
                     >
-                      <Avatar className={classes.gravatarAvatar} alt={this.state.username}>
+                      <Avatar
+                        className={classes.gravatarAvatar}
+                        alt={this.state.username}
+                      >
                         <Gravatar size={40} email={this.state.email} />
                       </Avatar>
                     </IconButton>
@@ -343,14 +346,14 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 ) : (
                   <React.Fragment>
                     <Button
-                      onClick={this.goToPortal('/console/login')}
+                      onClick={this.goToPortal('/login')}
                       color="inherit"
                       size="small"
                     >
                       Login
                     </Button>
                     <Button
-                      onClick={this.goToPortal('/console/login')}
+                      onClick={this.goToPortal('/login')}
                       variant="outlined"
                       color="inherit"
                       size="small"
@@ -396,7 +399,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             </Box>
             {auth ? (
               <Box padding="1rem 0rem">
-                <Avatar className={classes.gravatarAvatar} alt={this.state.username}>
+                <Avatar
+                  className={classes.gravatarAvatar}
+                  alt={this.state.username}
+                >
                   <Gravatar size={40} email={this.state.email} />
                 </Avatar>
               </Box>
@@ -488,8 +494,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 </MenuList>
               </React.Fragment>
             ) : (
-                <React.Fragment></React.Fragment>
-              )}
+              <React.Fragment></React.Fragment>
+            )}
           </List>
         </Drawer>
       </React.Fragment>

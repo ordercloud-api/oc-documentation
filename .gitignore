@@ -54,6 +54,9 @@ typings/
 # dotenv development variable
 .env.development
 
+# dotenv test variablt
+.env.test
+
 # dotenv production variable
 .env.production
 
