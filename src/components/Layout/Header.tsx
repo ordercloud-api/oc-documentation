@@ -310,6 +310,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                                   {MenuItems.OrgControls.map((item, index) => (
                                     <MenuItem
                                       key={index}
+                                      onClick={this.goToPortal('/profile')}
                                       className={classes.menuItem}
                                     >
                                       {item.label}
