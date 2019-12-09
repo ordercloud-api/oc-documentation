@@ -42,7 +42,7 @@
       "to": "/",
       "mobileMenu": true,
       "authRequired": false,
-      "isPortalLink": false
+      "isPortalLink": true
     },
     {
       "value": "release-notes",
@@ -59,7 +59,7 @@
       "disableRipple": true,
       "to": "/organizations",
       "mobileMenu": false,
-      "authRequired": false,
+      "authRequired": true,
       "isPortalLink": true
     },
     {
@@ -68,7 +68,7 @@
       "disableRipple": true,
       "to": "/",
       "mobileMenu": false,
-      "authRequired": false,
+      "authRequired": true,
       "isPortalLink": true
     }
   ],
