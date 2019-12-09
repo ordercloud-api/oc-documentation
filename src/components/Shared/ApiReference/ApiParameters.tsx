@@ -54,7 +54,7 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = props => {
             <TableCell>Name</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Description</TableCell>
-            <TableCell>Fields</TableCell>
+            <TableCell>Fields <small>(descending by priority)</small></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
