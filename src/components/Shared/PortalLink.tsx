@@ -11,13 +11,14 @@ function withPrefix(path) {
 }
 
 function getBaseUrl() {
-  const protocol = window.location.protocol
   const hostname = window.location.hostname
-  let port = ''
-  if (window.location.port) {
-    port = `:${window.location.port}`
+  if (hostname === 'localhost') {
+    return 'http://localhost:3000'
   }
-  return `${protocol}//${hostname}${port}`
+  if (hostname.includes('azurewebsites')) {
+    return 'https://oc-portal.azurewebsites.net'
+  }
+  return 'https://portal.ordercloud.io'
 }
 
 function normalizePath(path) {

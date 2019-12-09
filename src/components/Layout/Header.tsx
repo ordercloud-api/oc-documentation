@@ -199,7 +199,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     to,
                     isPortalLink,
                   } = item
-                  if (!mobileMenu && !authRequired) {
+                  if (!mobileMenu) {
                     if (isPortalLink) {
                       return (
                         <Tab
@@ -211,9 +211,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                             selected: classes.navTabSelected,
                           }}
                           onClick={
-                            auth
+                            auth || !authRequired
                               ? this.goToPortal(to)
-                              : this.goToPortal('/console/login/')
+                              : this.goToPortal('/login')
                           }
                           key={index}
                         ></Tab>
@@ -234,23 +234,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                       ></Tab>
                     )
                   }
-                  if (!mobileMenu && authRequired) {
-                    return (
-                      auth && (
-                        <Tab
-                          disableRipple={disableRipple}
-                          classes={{
-                            root: classes.tab,
-                            selected: classes.navTabSelected,
-                          }}
-                          value={value}
-                          label={label}
-                          component={Link}
-                          to={to}
-                        ></Tab>
-                      )
-                    )
-                  }
                 })}
               </Tabs>
             </Hidden>
@@ -263,7 +246,12 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 ></ChipLink>
                 {auth ? (
                   <React.Fragment>
-                    <Button color="inherit" variant="outlined" size="small">
+                    <Button
+                      color="inherit"
+                      onClick={this.goToPortal('/support')}
+                      variant="outlined"
+                      size="small"
+                    >
                       Support
                     </Button>
                     <IconButton
@@ -271,7 +259,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                       onClick={this.handleMenu}
                       className={classes.iconButton}
                     >
-                      <Avatar className={classes.gravatarAvatar} alt={this.state.username}>
+                      <Avatar
+                        className={classes.gravatarAvatar}
+                        alt={this.state.username}
+                      >
                         <Gravatar size={40} email={this.state.email} />
                       </Avatar>
                     </IconButton>
@@ -307,6 +298,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                                   {MenuItems.OrgControls.map((item, index) => (
                                     <MenuItem
                                       key={index}
+                                      onClick={this.goToPortal('/profile')}
                                       className={classes.menuItem}
                                     >
                                       {item.label}
@@ -343,14 +335,14 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 ) : (
                   <React.Fragment>
                     <Button
-                      onClick={this.goToPortal('/console/login')}
+                      onClick={this.goToPortal('/login')}
                       color="inherit"
                       size="small"
                     >
                       Login
                     </Button>
                     <Button
-                      onClick={this.goToPortal('/console/login')}
+                      onClick={this.goToPortal('/login')}
                       variant="outlined"
                       color="inherit"
                       size="small"
@@ -396,14 +388,17 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             </Box>
             {auth ? (
               <Box padding="1rem 0rem">
-                <Avatar className={classes.gravatarAvatar} alt={this.state.username}>
+                <Avatar
+                  className={classes.gravatarAvatar}
+                  alt={this.state.username}
+                >
                   <Gravatar size={40} email={this.state.email} />
                 </Avatar>
               </Box>
             ) : (
               <Box padding="1rem 0rem">
                 <Button
-                  onClick={this.goToPortal('/console/login')}
+                  onClick={this.goToPortal('/login')}
                   variant="text"
                   color="inherit"
                   className={classes.mr1}
@@ -413,7 +408,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 </Button>
 
                 <Button
-                  onClick={this.goToPortal('/console/login')}
+                  onClick={this.goToPortal('/login')}
                   variant="outlined"
                   color="inherit"
                   size="small"
@@ -430,9 +425,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 return (
                   <ListItem
                     onClick={
-                      auth
+                      auth || !authRequired
                         ? this.goToPortal(to)
-                        : this.goToPortal('/console/login/')
+                        : this.goToPortal('/login')
                     }
                   >
                     {label}
@@ -445,9 +440,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 to !== '/release-notes/v'
               ) {
                 return <ListItemLink to={to}>{label}</ListItemLink>
-              }
-              if (authRequired) {
-                return auth && <ListItemLink to={to}>{label}</ListItemLink>
               }
               if (to === '/release-notes/v') {
                 return (
@@ -488,8 +480,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 </MenuList>
               </React.Fragment>
             ) : (
-                <React.Fragment></React.Fragment>
-              )}
+              <React.Fragment></React.Fragment>
+            )}
           </List>
         </Drawer>
       </React.Fragment>
@@ -497,7 +489,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 }
 
-const drawerWidth = '25vw'
 export const navHeight = ORDERCLOUD_THEME.spacing(10)
 
 const styles = (theme: Theme) =>
