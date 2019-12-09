@@ -11,7 +11,14 @@ function withPrefix(path) {
 }
 
 function getBaseUrl() {
-  return process.env.GATSBY_PORTAL_URL
+  const hostname = window.location.hostname
+  if (hostname === 'localhost') {
+    return 'http://localhost:3000'
+  }
+  if (hostname.includes('azurewebsites')) {
+    return 'https://oc-portal.azurewebsites.net'
+  }
+  return 'https://portal.ordercloud.io'
 }
 
 function normalizePath(path) {
