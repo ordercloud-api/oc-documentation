@@ -16,6 +16,9 @@ function getBaseUrl() {
     return 'http://localhost:3000'
   }
   if (hostname.includes('azurewebsites')) {
+    if (hostname.includes('test')) {
+      return 'https://oc-portal-test.azurewebsites.net'
+    }
     return 'https://oc-portal.azurewebsites.net'
   }
   return 'https://portal.ordercloud.io'
