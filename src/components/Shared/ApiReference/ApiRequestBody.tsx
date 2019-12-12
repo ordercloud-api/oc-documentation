@@ -68,11 +68,11 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
     }
     return (
       <React.Fragment>
-        <Typography variant="h4">Request Body</Typography>
+        <Typography variant="h4">Request Body Properties</Typography>
+        {/** TODO: I have yet to see this appear; scrap or save for future use? */}
         {requestBody.description && (
           <Typography paragraph>{requestBody.description}</Typography>
         )}
-        <Typography variant="h5">Properties</Typography>
         <Table>
           <TableHead>
             <TableRow>
@@ -103,16 +103,6 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
             )}
           </TableBody>
         </Table>
-        {schema.example && (
-          <React.Fragment>
-            <Typography variant="h5">Example</Typography>
-            <pre className={classes.pre}>
-              <code className="language-json">
-                {JSON.stringify(schema.example, null, 2)}
-              </code>
-            </pre>
-          </React.Fragment>
-        )}
       </React.Fragment>
     )
   }

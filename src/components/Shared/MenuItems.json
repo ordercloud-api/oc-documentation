@@ -1,6 +1,5 @@
 {
-  "MainNavigation": [
-    {
+  "MainNavigation": [{
       "value": "docs",
       "label": "Home",
       "disableRipple": true,
@@ -43,7 +42,7 @@
       "to": "/",
       "mobileMenu": true,
       "authRequired": false,
-      "isPortalLink": false
+      "isPortalLink": true
     },
     {
       "value": "release-notes",
@@ -58,27 +57,24 @@
       "value": "organizations",
       "label": "Organizations",
       "disableRipple": true,
-      "to": "/console/organizations",
+      "to": "/organizations",
       "mobileMenu": false,
-      "authRequired": false,
+      "authRequired": true,
       "isPortalLink": true
     },
     {
       "value": "console",
       "label": "Console",
       "disableRipple": true,
-      "to": "/console",
+      "to": "/",
       "mobileMenu": false,
-      "authRequired": false,
+      "authRequired": true,
       "isPortalLink": true
     }
   ],
-  "OrgControls": [
-    {
-      "label": "Profile",
-      "to": ""
-    }
-  ],
-  "AuthControls": [
-  ]
+  "OrgControls": [{
+    "label": "Profile",
+    "to": ""
+  }],
+  "AuthControls": []
 }
