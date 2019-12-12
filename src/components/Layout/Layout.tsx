@@ -21,6 +21,7 @@ import IconButtonLink from '../Shared/IconButtonLink'
 import { Helmet } from 'react-helmet'
 import Footer from './Footer'
 import { seafoam } from '../../theme/ocPalette.constants'
+import AlertContainer from '../Shared/Alert'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -62,7 +63,6 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
       marginLeft: -theme.spacing(8),
       paddingRight: theme.spacing(2),
     },
-
   })
 )
 
@@ -126,6 +126,7 @@ export default props => {
         <body className={classes.body} />
       </Helmet>
       <CssBaseline />
+      <AlertContainer />
       <div className={classes.containerMain}>
         <Header
           location={props.location}

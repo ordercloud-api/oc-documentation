@@ -10,7 +10,7 @@ function withPrefix(path) {
   return [portalBaseUrl, normalizePath(path)].join(`/`)
 }
 
-function getBaseUrl() {
+export function getBaseUrl() {
   const hostname = window.location.hostname
   if (hostname === 'localhost') {
     return 'http://localhost:3000'
