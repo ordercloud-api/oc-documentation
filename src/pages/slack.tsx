@@ -2,9 +2,6 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
 import BackgroundImage from '../assets/images/DegreePattern.svg'
-import SlackIllustration from '../assets/images/JoinTheCommunity.svg'
-import Particles from 'react-particles-js'
-import axios from 'axios'
 import {
   makeStyles,
   createStyles,
@@ -12,13 +9,14 @@ import {
   Typography,
   Box,
   Button,
-  Hidden,
   TextField,
   SvgIcon,
-  Link,
 } from '@material-ui/core'
-import { breakpoints } from '@material-ui/system'
 import { navHeight } from '../components/Layout/Header'
+import DevcenterMiddleware from '../services/devcenterMiddleware.service'
+import { Alert } from '../components/Shared/Alert'
+import { isEmail } from 'validator'
+import LoadingIndicator from '../components/Shared/LoadingIndicator'
 
 interface SlackCommunityProps {
   classes: any
@@ -26,13 +24,39 @@ interface SlackCommunityProps {
 
 export default function SlackCommunityComoponent(props: SlackCommunityProps) {
   const classes = useStyles(props)
-  const [email, setEmail] = React.useState()
-  const signup = () => {
-    console.log(`signing up ${email}`)
+  const [email, setEmail] = React.useState('')
+  const [errorText, setErrorText] = React.useState('')
+  const [isLoading, setIsloading] = React.useState(false)
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const email = event.target.value
+    const errorText = isEmail(email) ? '' : 'Please set a valid email'
+    setErrorText(errorText)
+    setEmail(email)
   }
-  const handleChange = event => {
-    setEmail(event.target.value)
+
+  const handleSubmit = async () => {
+    setIsloading(true)
+    try {
+      await DevcenterMiddleware.Post('/api/slack/signup', {
+        Email: email,
+      })
+      Alert.success('Please check your email for an invite')
+      setEmail('')
+    } catch (e) {
+      if (e && e.status === 409) {
+        Alert.warn('An email has already been sent, please check your inbox')
+        setEmail('')
+      } else {
+        Alert.error(
+          'Whoops, an error occurred. Please make sure your email address is valid'
+        )
+      }
+    } finally {
+      setIsloading(false)
+    }
   }
+
   return (
     <Layout>
       <div className={classes.doop}>
@@ -62,19 +86,36 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
           <Typography variant="subtitle1">
             Our community of developers is here to help.
           </Typography>
+
           <form className={classes.containerForm} noValidate autoComplete="off">
-            <Box display="flex" flex="1" marginBottom={1}>
-              <TextField
-                label="Email"
-                variant="outlined"
-                className={classes.mr1}
-                onChange={handleChange}
-              />
-              <Button color="primary" variant="contained" onClick={signup}>
-                Join
-              </Button>
-            </Box>
+            <LoadingIndicator active={isLoading}>
+              <Box display="flex" flex="1" marginBottom={1}>
+                <TextField
+                  value={email}
+                  error={Boolean(errorText.length)}
+                  helperText={errorText}
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Email Address"
+                  variant="outlined"
+                  className={classes.mr1}
+                  type="email"
+                  onChange={handleEmailChange}
+                  fullWidth
+                />
+                <Button
+                  disabled={Boolean(errorText.length)}
+                  color="primary"
+                  variant="contained"
+                  onClick={handleSubmit}
+                >
+                  Join
+                </Button>
+              </Box>
+            </LoadingIndicator>
           </form>
+
           <Box display="flex" alignItems="center">
             <Typography
               className={classes.mr1}
@@ -83,16 +124,9 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
             >
               Already a member?
             </Typography>
-            <Link to="https://ordercloudapi.slack.com/">Sign In</Link>
+            <a href="https://ordercloudapi.slack.com/">Sign In</a>
           </Box>
         </Box>
-        {/* <Hidden mdDown>
-          <img
-            className={classes.slackIllustration}
-            src={SlackIllustration}
-            alt="OrderCloud Slack Community"
-          />
-        </Hidden> */}
       </div>
     </Layout>
   )
