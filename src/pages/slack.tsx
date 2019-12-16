@@ -2,7 +2,6 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
 import BackgroundImage from '../assets/images/DegreePattern.svg'
-import slackMark from '../assets/svg/slack/slack_Mark.svg';
 import {
   makeStyles,
   createStyles,
