@@ -559,7 +559,9 @@ const styles = (theme: Theme) =>
       padding: 0,
     },
     gravatarAvatar: {
+      '& img': {
       marginBottom: 0,
+      },
     },
     mobileMenuList: {
       marginBottom: 'auto',
