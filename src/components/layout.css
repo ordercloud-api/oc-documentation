@@ -742,7 +742,7 @@ pre tt:after {
 }
 
 .card__404 img {
-  max-width: 200px;
+  max-width: 150px;
   height: auto;
   display: block;
 }
@@ -754,7 +754,7 @@ pre tt:after {
 
 .card__404 a {
   border: 1px solid #90d5d6;
-  padding: 1rem 2rem;
+  padding: .5rem 2rem;
   border-radius: .25rem;
   margin-top: 1rem;
   transition: background-color .3s;
@@ -764,6 +764,23 @@ pre tt:after {
 
 .card__404 a:hover {
   background-color: #189a9c;
+}
+
+.levitate {
+  transform: translatey(0px);
+	animation: float 2s ease-in-out infinite;
+}
+
+@keyframes float {
+	0% {
+		transform: translatey(0px);
+	}
+	50% {
+		transform: translatey(-15px);
+	}
+	100% {
+		transform: translatey(0px);
+	}
 }
 
 /* 404 page styles: END */
