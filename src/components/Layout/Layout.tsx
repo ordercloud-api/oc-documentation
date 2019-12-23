@@ -191,10 +191,14 @@ export default props => {
               ),
               p: props => <Typography {...props} paragraph variant="body1" />,
               ol: props => (
-                <Typography {...props} component="ol" variant="body1" />
+                <Typography paragraph variant="body1">
+                  <ol {...props} />
+                </Typography>
               ),
               ul: props => (
-                <Typography {...props} component="ul" variant="body1" />
+                <Typography paragraph variant="body1">
+                  <ul {...props} />
+                </Typography>
               ),
               a: LayoutLink,
               table: props => <Table {...props} />,
