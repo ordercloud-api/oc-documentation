@@ -23,12 +23,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const ChipLink: React.FunctionComponent<ChipLinkProps> = props => {
+const ChipLink: React.FunctionComponent<ChipLinkProps> = (
+  props: ChipLinkProps
+) => {
   const classes = useStyles({})
+  const to = props.to
   return (
     <Chip
-      component={React.forwardRef((props: any, ref: any) => {
-        return <Link {...props} href={props.to} ref={ref} />
+      component={React.forwardRef((childProps: any, ref: any) => {
+        return <Link {...childProps} href={to} ref={ref} />
       })}
       {...props}
       classes={{ root: classes.root }}

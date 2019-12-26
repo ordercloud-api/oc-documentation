@@ -5,7 +5,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { DocsQuery } from '../../models/docsQuery'
 import '../../styles/doc-template.css'
-import utility from '../../utility'
+import utility from '../../services/utility'
 import DocFooter from '../Layout/DocFooter'
 import DocMenu from '../Layout/DocMenu'
 import Layout from '../Layout/Layout'
@@ -21,9 +21,7 @@ interface DocTemplateProps {
 
 class Template extends React.Component<DocTemplateProps> {
   public render() {
-    const gitHubUrl =
-      'https://github.com/ordercloud-api/oc-documentation/tree/development/content/docs'
-    const { data: post, location, theme } = this.props
+    const { data: post, location } = this.props
     const sections = utility.getSectionsFromDocsQuery(post)
     return (
       <Layout location={location}>

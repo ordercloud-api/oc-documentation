@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const LayoutMenu: React.FunctionComponent = props => {
+const LayoutMenu: React.FunctionComponent = (props: { children: any }) => {
   const classes = useStyles({})
   const [mobileOpen, setMobileOpen] = useState(false)
 

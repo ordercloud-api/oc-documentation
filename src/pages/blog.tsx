@@ -20,7 +20,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
 import { mediumgrey, seafoam } from '../theme/ocPalette.constants'
-import utility from '../utility'
+import utility from '../services/utility'
 import Jumbotron from '../components/Shared/Jumbotron'
 
 const useStyles = makeStyles((theme: Theme) =>

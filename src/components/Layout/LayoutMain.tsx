@@ -11,13 +11,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const LayoutMain: React.FunctionComponent = props => {
+const LayoutMain: React.FunctionComponent = (props: { children: any }) => {
   const classes = useStyles({})
-  return (
-    <div className={classes.root}>
-      {props.children}
-    </div>
-  )
+  return <div className={classes.root}>{props.children}</div>
 }
 
 export default LayoutMain

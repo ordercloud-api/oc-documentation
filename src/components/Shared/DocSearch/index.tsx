@@ -22,7 +22,9 @@ interface DocSearchProps {
   }
 }
 
-const DocSearch: React.FunctionComponent<DocSearchProps> = props => {
+const DocSearch: React.FunctionComponent<DocSearchProps> = (
+  props: DocSearchProps
+) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLInputElement | null>(null)
   const [showHits, setShowHits] = React.useState(false)
   const containerRef = React.useRef<HTMLDivElement>()
@@ -31,10 +33,10 @@ const DocSearch: React.FunctionComponent<DocSearchProps> = props => {
     setAnchorEl(event.currentTarget)
     setShowHits(true)
   }
-  const handleSearchClose = (event: React.MouseEvent<Document, MouseEvent>) => {
+  const handleSearchClose = () => {
     setShowHits(false)
   }
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = () => {
     setShowHits(true)
   }
   return (

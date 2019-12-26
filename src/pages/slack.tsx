@@ -65,20 +65,36 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
         <Paper elevation={3} className={classes.cardSignIn}>
           <Box display="flex" flexDirection="column" alignItems="center">
             <SvgIcon viewBox="0 0  270 270" className={classes.svgIcon}>
-              <path style={{ fill: '#e01e5a' }} d="M99.4 151.2c0 7.1-5.8 12.9-12.9 12.9-7.1 0-12.9-5.8-12.9-12.9 0-7.1 5.8-12.9 12.9-12.9h12.9v12.9zM105.9 151.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9v-32.3z" />
-              <path style={{ fill: '#36c5f0' }} d="M118.8 99.4c-7.1 0-12.9-5.8-12.9-12.9 0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v12.9h-12.9zM118.8 105.9c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H86.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3z" />
-              <path style={{ fill: '#2eb67d' }} d="M170.6 118.8c0-7.1 5.8-12.9 12.9-12.9 7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9h-12.9v-12.9zM164.1 118.8c0 7.1-5.8 12.9-12.9 12.9-7.1 0-12.9-5.8-12.9-12.9V86.5c0-7.1 5.8-12.9 12.9-12.9 7.1 0 12.9 5.8 12.9 12.9v32.3z" />
-              <path style={{ fill: '#ecb22e' }} d="M151.2 170.6c7.1 0 12.9 5.8 12.9 12.9 0 7.1-5.8 12.9-12.9 12.9-7.1 0-12.9-5.8-12.9-12.9v-12.9h12.9zM151.2 164.1c-7.1 0-12.9-5.8-12.9-12.9 0-7.1 5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9 0 7.1-5.8 12.9-12.9 12.9h-32.3z" />
+              <path
+                style={{ fill: '#e01e5a' }}
+                d="M99.4 151.2c0 7.1-5.8 12.9-12.9 12.9-7.1 0-12.9-5.8-12.9-12.9 0-7.1 5.8-12.9 12.9-12.9h12.9v12.9zM105.9 151.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9v-32.3z"
+              />
+              <path
+                style={{ fill: '#36c5f0' }}
+                d="M118.8 99.4c-7.1 0-12.9-5.8-12.9-12.9 0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v12.9h-12.9zM118.8 105.9c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H86.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3z"
+              />
+              <path
+                style={{ fill: '#2eb67d' }}
+                d="M170.6 118.8c0-7.1 5.8-12.9 12.9-12.9 7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9h-12.9v-12.9zM164.1 118.8c0 7.1-5.8 12.9-12.9 12.9-7.1 0-12.9-5.8-12.9-12.9V86.5c0-7.1 5.8-12.9 12.9-12.9 7.1 0 12.9 5.8 12.9 12.9v32.3z"
+              />
+              <path
+                style={{ fill: '#ecb22e' }}
+                d="M151.2 170.6c7.1 0 12.9 5.8 12.9 12.9 0 7.1-5.8 12.9-12.9 12.9-7.1 0-12.9-5.8-12.9-12.9v-12.9h12.9zM151.2 164.1c-7.1 0-12.9-5.8-12.9-12.9 0-7.1 5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9 0 7.1-5.8 12.9-12.9 12.9h-32.3z"
+              />
             </SvgIcon>
             <Typography variant="h3" component="h1">
               Join OrderCloud on Slack
-          </Typography>
+            </Typography>
             <Typography variant="caption">
               Our community of developers is here to help.
-          </Typography>
+            </Typography>
             <div className={classes.loadingWrapper}>
               <LoadingIndicator active={isLoading}>
-                <form className={classes.containerForm} noValidate autoComplete="off">
+                <form
+                  className={classes.containerForm}
+                  noValidate
+                  autoComplete="off"
+                >
                   <TextField
                     value={email}
                     error={Boolean(errorText.length)}
@@ -100,7 +116,7 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
                     onClick={handleSubmit}
                   >
                     Join
-                </Button>
+                  </Button>
                   <Box display="flex" alignItems="center">
                     <Typography
                       color="textSecondary"
@@ -108,8 +124,14 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
                       style={{ marginRight: '.5rem' }}
                     >
                       Already a member?
-            </Typography>
-                    <Button size="small" target="_blank" href="https://ordercloudapi.slack.com/">Sign In</Button>
+                    </Typography>
+                    <Button
+                      size="small"
+                      target="_blank"
+                      href="https://ordercloudapi.slack.com/"
+                    >
+                      Sign In
+                    </Button>
                   </Box>
                 </form>
               </LoadingIndicator>
@@ -155,7 +177,7 @@ const useStyles = makeStyles((theme: Theme) =>
       '& > *': {
         marginTop: theme.spacing(2),
         justifyContent: 'center',
-      }
+      },
     },
   })
 )

@@ -16,7 +16,7 @@ import { groupBy, map } from 'lodash'
 import React from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { connectHits, Snippet } from 'react-instantsearch-dom'
-import service from '../../../utility'
+import service from '../../../services/utility'
 import DocSearchFooter from './DocSearchFooter'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -139,7 +139,7 @@ const OrderCloudSearchHits = ({
   open,
   anchorEl,
   container,
-  darkMode,
+  // darkMode,
   noPopper,
   classes,
 }) => {

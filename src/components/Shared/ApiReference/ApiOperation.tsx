@@ -6,14 +6,17 @@ import ApiRequestBody from './ApiRequestBody'
 import ApiResponses from './ApiResponses'
 import ApiRoles from './ApiRoles'
 import ApiExampleModel from './ApiExampleModel'
+import { ApiOperation as ApiOperationModel } from '../../../models/openapi.models'
 
 interface ApiOperationProps {
-  operation: any,
-  example: any
+  operation: ApiOperationModel
+  example: string
 }
 
-const ApiOperation: React.FunctionComponent<ApiOperationProps> = props => {
-  const { operation, example } = props;
+const ApiOperation: React.FunctionComponent<ApiOperationProps> = (
+  props: ApiOperationProps
+) => {
+  const { operation, example } = props
 
   return (
     <React.Fragment>
@@ -30,10 +33,7 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = props => {
         {operation.summary.replace(/\./g, '')}
       </Typography>
 
-      <Typography variant="body1">
-        {operation.description}
-      </Typography>
-
+      <Typography variant="body1">{operation.description}</Typography>
 
       <ApiRoute operation={operation}></ApiRoute>
 
