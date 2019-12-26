@@ -139,7 +139,6 @@ const OrderCloudSearchHits = ({
   open,
   anchorEl,
   container,
-  // darkMode,
   noPopper,
   classes,
 }) => {
