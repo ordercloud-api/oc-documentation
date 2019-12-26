@@ -139,10 +139,11 @@ const OrderCloudSearchHits = ({
   open,
   anchorEl,
   container,
+  darkMode,
   noPopper,
   classes,
 }) => {
-  const classesSelf = useStyles({ darkMode: false, noPopper })
+  const classesSelf = useStyles({ darkMode, noPopper })
   const sections = groupBy(hits, 'section')
   const inner = (
     <div className={`${classesSelf.inner} ${classes.searchHits}`}>
