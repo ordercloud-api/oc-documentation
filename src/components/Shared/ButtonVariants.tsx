@@ -5,10 +5,6 @@ import classNames from 'classnames'
 import { darken, lighten, fade } from '@material-ui/core/styles'
 import { Link } from 'gatsby'
 
-interface CustomButtonProps extends ButtonProps {
-  color: any
-}
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: (props: any) => {
@@ -42,13 +38,17 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const CustomButton: React.FunctionComponent<
-  CustomButtonProps
-> = props => {
-  const classes = useStyles({ color: props.color, variant: props.variant })
+interface CustomButtonProps extends ButtonProps {
+  color: any
+}
+export const CustomButton: React.FunctionComponent<CustomButtonProps> = (
+  props: CustomButtonProps
+) => {
+  const { color, ...rest } = props
+  const classes = useStyles({ color: color, variant: props.variant })
   return (
     <Button
-      {...props}
+      {...rest}
       className={classNames(classes.root, props.className)}
     ></Button>
   )
@@ -56,15 +56,16 @@ export const CustomButton: React.FunctionComponent<
 
 interface CustomButtonLinkProps extends CustomButtonProps {
   to: string
+  component?: any
 }
-
-export const CustomButtonLink: React.FunctionComponent<
-  CustomButtonLinkProps
-> = (props: any) => {
+export const CustomButtonLink: React.FunctionComponent<CustomButtonLinkProps> = (
+  props: CustomButtonLinkProps
+) => {
+  const to = props.to
   return (
     <CustomButton
       component={React.forwardRef((props: any, ref: any) => {
-        return <Link {...props} to={props.to} ref={ref} />
+        return <Link {...props} to={to} ref={ref} />
       })}
       {...props}
     />

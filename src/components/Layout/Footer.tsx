@@ -1,20 +1,16 @@
 import { Link } from 'gatsby'
 import React from 'react'
 import {
-  Theme,
   createStyles,
   withStyles,
   Typography,
   Grid,
   Box,
   Container,
+  Theme,
 } from '@material-ui/core'
 import { OpenInNewOutlined } from '@material-ui/icons'
-import {
-  mediumgrey,
-  blackpearl,
-  sherpablue,
-} from '../../theme/ocPalette.constants'
+import { mediumgrey, sherpablue } from '../../theme/ocPalette.constants'
 import ocOrange from '../../../src/assets/images/four51-logo-geo--full-color-white.svg'
 
 const styles = (theme: Theme) =>
@@ -91,7 +87,7 @@ const styles = (theme: Theme) =>
 class Footer extends React.Component<any> {
   public render() {
     const currentYear = new Date().getFullYear()
-    const { siteTitle, classes, right, theme, sections } = this.props
+    const { classes, sections } = this.props
     return (
       <footer className={classes.root}>
         <Container className={classes.inner}>
@@ -153,6 +149,7 @@ class Footer extends React.Component<any> {
                   className={classes.footerLinks}
                   to="/slack"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Slack Community
                   <Box marginLeft={0.5} display="flex" alignItems="center">
@@ -163,6 +160,7 @@ class Footer extends React.Component<any> {
                   className={classes.footerLinks}
                   href="https://stackoverflow.com/questions/tagged/ordercloud"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Stack Overflow
                   <Box marginLeft={0.5} display="flex" alignItems="center">
@@ -173,6 +171,7 @@ class Footer extends React.Component<any> {
                   className={classes.footerLinks}
                   href="https://twitter.com/Four51ecommerce"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Twitter
                   <Box marginLeft={0.5} display="flex" alignItems="center">
@@ -203,6 +202,7 @@ class Footer extends React.Component<any> {
                   className={classes.footerLinks}
                   href="https://four51.io/privacy-policy/"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Privacy Policy
                   <Box marginLeft={0.5} display="flex" alignItems="center">
@@ -213,6 +213,7 @@ class Footer extends React.Component<any> {
                   className={classes.footerLinks}
                   href="https://four51.io/"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Four51
                   <Box marginLeft={0.5} display="flex" alignItems="center">

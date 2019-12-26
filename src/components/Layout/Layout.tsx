@@ -16,12 +16,13 @@ import {
 import LinkIcon from '@material-ui/icons/Link'
 import { MDXProvider } from '@mdx-js/react'
 import { useStaticQuery, graphql } from 'gatsby'
-import utility from '../../utility'
+import utility from '../../services/utility'
 import IconButtonLink from '../Shared/IconButtonLink'
 import { Helmet } from 'react-helmet'
 import Footer from './Footer'
 import { seafoam } from '../../theme/ocPalette.constants'
 import AlertContainer from '../Shared/Alert'
+import { RouteComponentProps } from '@reach/router'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -84,10 +85,13 @@ const LayoutLink: React.FunctionComponent = (props: any) => {
       </div>
     )
   }
-  return <a href={props.href} children={props.children} />
+  return <a href={props.href}>{props.children}</a>
 }
 
-export default props => {
+interface LayoutProps extends RouteComponentProps {
+  children: any
+}
+export default (props: LayoutProps) => {
   const classes = useStyles(props)
   const data = useStaticQuery(graphql`
     query {
@@ -122,62 +126,59 @@ export default props => {
           },
         ]}
       >
-        <html className={classes.html} />
+        <html />
         <body className={classes.body} />
       </Helmet>
       <CssBaseline />
       <AlertContainer />
       <div className={classes.containerMain}>
-        <Header
-          location={props.location}
-          siteTitle="OrderCloud Documentation"
-        />
+        <Header location={props.location} />
         <div className={classes.pageWrapper}>
           <MDXProvider
             components={{
-              h1: props => (
+              h1: h1Props => (
                 <Typography
-                  {...props}
+                  {...h1Props}
                   className={classes.heading}
                   variant="h1"
                 />
               ),
-              h2: props => (
+              h2: h2Props => (
                 <Typography
-                  {...props}
+                  {...h2Props}
                   className={classes.heading}
                   variant="h2"
                 />
               ),
-              h3: props => (
+              h3: h3Props => (
                 <Typography
-                  {...props}
+                  {...h3Props}
                   className={classes.heading}
                   variant="h3"
                 />
               ),
-              h4: props => (
+              h4: h4Props => (
                 <Typography
-                  {...props}
+                  {...h4Props}
                   className={classes.heading}
                   variant="h4"
                 />
               ),
-              h5: props => (
+              h5: h5Props => (
                 <Typography
-                  {...props}
+                  {...h5Props}
                   className={classes.heading}
                   variant="h5"
                 />
               ),
-              h6: props => (
+              h6: h6Props => (
                 <Typography
-                  {...props}
+                  {...h6Props}
                   className={classes.heading}
                   variant="h6"
                 />
               ),
-              blockquote: props => (
+              blockquote: blockquoteProps => (
                 <Box
                   paddingX={2}
                   paddingTop={2}
@@ -186,32 +187,28 @@ export default props => {
                   bgcolor={seafoam[100]}
                   borderRadius={4}
                 >
-                  {props.children}
+                  {blockquoteProps.children}
                 </Box>
               ),
-              p: props => <Typography {...props} paragraph variant="body1" />,
-              ol: props => (
+              p: pProps => <Typography {...pProps} paragraph variant="body1" />,
+              ol: olProps => (
                 <Typography paragraph variant="body1">
-                  <ol {...props} />
+                  <ol {...olProps} />
                 </Typography>
               ),
-              ul: props => (
-                <Typography paragraph variant="body1">
-                  <ul {...props} />
+              ul: ulProps => (
+                <Typography paragraph variant="body1" component="span">
+                  <ul {...ulProps} />
                 </Typography>
               ),
               a: LayoutLink,
-              table: props => <Table {...props} />,
-              tr: props => <TableRow {...props} />,
-              th: props => (
-                <TableCell variant="head" align={props.align || undefined}>
-                  {props.children}
-                </TableCell>
+              table: tableProps => <Table {...tableProps} />,
+              tr: trProps => <TableRow {...trProps} />,
+              th: thProps => (
+                <TableCell variant="head">{thProps.children}</TableCell>
               ),
-              td: props => (
-                <TableCell variant="body" align={props.align || undefined}>
-                  {props.children}
-                </TableCell>
+              td: tdProps => (
+                <TableCell variant="body">{tdProps.children}</TableCell>
               ),
             }}
           >

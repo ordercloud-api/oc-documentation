@@ -1,10 +1,7 @@
 import React from 'react'
 import { makeStyles, Theme, createStyles, Chip } from '@material-ui/core'
 import { mediumgrey } from '../../../theme/ocPalette.constants'
-
-interface ApiRouteProps {
-  operation: any
-}
+import { ApiOperation } from '../../../models/openapi.models'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +28,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const ApiRoute: React.FunctionComponent<ApiRouteProps> = props => {
+interface ApiRouteProps {
+  operation: ApiOperation
+}
+const ApiRoute: React.FunctionComponent<ApiRouteProps> = (
+  props: ApiRouteProps
+) => {
   const { operation } = props
   const classes = useStyles({})
   return (

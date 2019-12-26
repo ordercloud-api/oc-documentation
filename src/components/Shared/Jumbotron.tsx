@@ -7,9 +7,6 @@ import {
   Paper,
   Container,
 } from '@material-ui/core'
-import { Link } from 'gatsby'
-import Particles from 'react-particles-js'
-import ButtonLink from './ButtonLink'
 import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
 import ocPlatform from '../../assets/svg/Platform--Ordercloud.svg'
 
@@ -144,9 +141,11 @@ class Jumbotron extends React.Component<any> {
             )}
             {actions && (
               <div className={classes.jumbotronLinkGroup}>
-                {actions.map(a => {
+                {actions.map((a, index) => {
                   return (
-                    <div className={classes.jumbotronLinkGroupLink}>{a}</div>
+                    <div className={classes.jumbotronLinkGroupLink} key={index}>
+                      {a}
+                    </div>
                   )
                 })}
               </div>

@@ -1,6 +1,6 @@
-import { DocsQuery } from './models/docsQuery'
+import { DocsQuery } from '../models/docsQuery'
 import { groupBy, forEach } from 'lodash'
-import { Section } from './models/section.model'
+import { Section } from '../models/section.model'
 
 const service = {
   getSectionsFromDocsQuery,
@@ -29,7 +29,7 @@ function getSectionsFromDocsQuery(query: DocsQuery): Section[] {
  * takes in gatsby's fileAbsolutePath and returns the routeable path
  */
 function resolvePath(fileAbsolutePath: string): string {
-  var path = fileAbsolutePath.split('/content')[1].replace('.mdx', '')
+  const path = fileAbsolutePath.split('/content')[1].replace('.mdx', '')
   if (path.startsWith('/docs')) {
     return path.replace('/docs', '') // served from root
   }

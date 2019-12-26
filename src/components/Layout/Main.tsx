@@ -13,7 +13,7 @@ import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
 import ocLogo from '../../assets/images/four51-logo-nopyramid--full-color.svg'
 import { darkgrey, mediumgrey, flame } from '../../theme/ocPalette.constants'
-import utility from '../../utility'
+import utility from '../../services/utility'
 import Jumbotron from '../Shared/Jumbotron'
 import ListItemLink from '../Shared/ListItemLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
@@ -21,6 +21,8 @@ import { navHeight } from './Header'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
+  // we ignore lint rule because we want to dynamically resolve smooth-scroll in browser env only
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   require('smooth-scroll')('a[href*="#"]')
 }
 import './../../../custom.d.ts' // custom type definitions
@@ -145,12 +147,14 @@ const MainComponent: React.FunctionComponent = props => {
         actions={[
           <CustomButtonLink
             color="#fff"
+            key="intro-to-ordercloud"
             to="/getting-started/intro-to-ordercloud"
             variant="contained"
           >
             Introduction
           </CustomButtonLink>,
           <CustomButtonLink
+            key="quick-start-guide"
             to="/getting-started/quick-start-guide"
             variant="contained"
             color={flame[600]}

@@ -4,10 +4,10 @@ import {
   createStyles,
   Divider,
   Grid,
-  Theme,
   Typography,
   withStyles,
   withWidth,
+  Theme,
 } from '@material-ui/core'
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons'
 import { Link } from 'gatsby'
@@ -173,8 +173,8 @@ class DocFooter extends React.Component<any> {
           </Typography>
           <Typography variant="body1" className={classes.questionsText}>
             If you have any questions, please ask our Developer Community on
-            Slack, or post your question on Stack Overflow using the tag "
-            <strong>ordercloud</strong>".
+            Slack, or post your question on Stack Overflow using the tag &quot;
+            <strong>ordercloud</strong>&quot;.
           </Typography>
 
           <Button variant="outlined" className={classes.questionsBtn}>
