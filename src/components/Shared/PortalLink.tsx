@@ -48,6 +48,6 @@ export class PortalLink extends React.Component<PortalLinkProps> {
 }
 
 export function navigate(path) {
-  var prefixedTo = withPrefix(path)
+  const prefixedTo = withPrefix(path)
   window.location.assign(prefixedTo)
 }

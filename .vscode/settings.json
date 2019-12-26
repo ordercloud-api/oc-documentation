@@ -2,9 +2,16 @@
   "files.associations": {
     "*.tsx": "typescriptreact"
   },
-  "eslint.autoFixOnSave": true,
-  "editor.formatOnSave": true,
-
+  "editor.formatOnSave": false, // DONT TURN THIS ON, it applies vscode specific formatting that may clash with eslint/prettier
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true // autofix eslint on save
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   // we might choose to enable format
   // on save for css/html but diabling for now
   "[html]": {
@@ -12,8 +19,5 @@
   },
   "[css]": {
     "editor.formatOnSave": false
-  },
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
   }
 }

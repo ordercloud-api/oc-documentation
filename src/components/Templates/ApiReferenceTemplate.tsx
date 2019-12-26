@@ -1,16 +1,16 @@
 import React from 'react'
 import Layout from '../Layout/Layout'
-import { Initialize } from '../../openapi.service'
-import OpenApi from '../../openapi.service'
-import { withStyles, Theme, createStyles } from '@material-ui/core'
+import OpenApi, { Initialize } from '../../services/openapi.service'
+import { withStyles, createStyles } from '@material-ui/core'
 import ApiReferenceMenu from '../Layout/ApiReferenceMenu'
-import { flatten as _flatten, findIndex as _findIndex } from 'lodash'
+import { findIndex as _findIndex } from 'lodash'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
 import ApiResource from '../Shared/ApiReference/ApiResource'
+import { ApiOperation } from '../../models/openapi.models'
 
-const styles = (theme: Theme) =>
+const styles = () =>
   createStyles({
     docContainer: {
       display: 'flex',
@@ -25,18 +25,6 @@ const styles = (theme: Theme) =>
     },
   })
 
-interface Operation {
-  description: string
-  operationId: string
-  path: string
-  requestBody: any
-  responses: any
-  security: any
-  summary: string
-  tags: string[]
-  verb: string
-}
-
 class ApiReference extends React.Component<any> {
   public state = {
     selectedResource: null,
@@ -48,13 +36,13 @@ class ApiReference extends React.Component<any> {
   }
 
   public async componentDidMount() {
-    await Initialize();
-    const ocApi = this.props.pageContext.OcApi;
-    const selectedOperationId = window.location.hash.replace('#', '');
-    this.initSelectedOperation(ocApi, selectedOperationId);
+    const ocApi = this.props.pageContext.OcApi
+    await Initialize(ocApi)
+    const selectedOperationId = window.location.hash.replace('#', '')
+    this.initSelectedOperation(ocApi, selectedOperationId)
     if (selectedOperationId) {
       // TODO : would be 'dry'er to put in if(operId) statement in initSelectedOperation but it breaks
-      document.getElementById(selectedOperationId).scrollIntoView();
+      document.getElementById(selectedOperationId).scrollIntoView()
     }
   }
 
@@ -66,22 +54,30 @@ class ApiReference extends React.Component<any> {
   }
 
   private initSelectedOperation = (ocApi: any, operId: string) => {
-    let selectedOperation;
-    let activeIndex = 0;
-    let resourceData;
-    let listResources;
-    if (operId) { // bottom up (single operation to section)
-      selectedOperation = ocApi.operationsById[operId];
+    let selectedOperation
+    let activeIndex = 0
+    let resourceData
+    let listResources
+    if (operId) {
+      // bottom up (single operation to section)
+      selectedOperation = ocApi.operationsById[operId]
 
-      resourceData = this.getResourceData(selectedOperation.resource.name);
+      resourceData = this.getResourceData(selectedOperation.resource.name)
 
-      activeIndex = _findIndex(ocApi.sections, x => x['x-id'] === selectedOperation.resource['x-section-id']);
-      listResources = ocApi.resources.filter(ref => ref['x-section-id'] === ocApi.sections[activeIndex]['x-id']);
-
-    } else { // top down (section to single operation)
-      listResources = ocApi.resources.filter(ref => ref['x-section-id'] === ocApi.sections[activeIndex]['x-id']);
-      resourceData = this.getResourceData(listResources[activeIndex].name);
-      selectedOperation = resourceData['listOperations'][activeIndex];
+      activeIndex = _findIndex(
+        ocApi.sections,
+        x => x['x-id'] === selectedOperation.resource['x-section-id']
+      )
+      listResources = ocApi.resources.filter(
+        ref => ref['x-section-id'] === ocApi.sections[activeIndex]['x-id']
+      )
+    } else {
+      // top down (section to single operation)
+      listResources = ocApi.resources.filter(
+        ref => ref['x-section-id'] === ocApi.sections[activeIndex]['x-id']
+      )
+      resourceData = this.getResourceData(listResources[activeIndex].name)
+      selectedOperation = resourceData['listOperations'][activeIndex]
     }
 
     this.setState({
@@ -97,8 +93,9 @@ class ApiReference extends React.Component<any> {
     const ocApi = this.props.pageContext.OcApi
     const listResources = ocApi.resources.filter(ref => {
       return ref['x-section-id'] === ocApi.sections[sectionIndex]['x-id']
-    });
-    const activeIndex = sectionIndex === this.state.activeIndex ? -1 : sectionIndex;
+    })
+    const activeIndex =
+      sectionIndex === this.state.activeIndex ? -1 : sectionIndex
     this.setState({
       activeIndex,
       listResources,
@@ -106,22 +103,27 @@ class ApiReference extends React.Component<any> {
   }
 
   public handleResourceChange = (resourceName: string) => {
-    const resourceData = this.getResourceData(resourceName);
+    const resourceData = this.getResourceData(resourceName)
 
-    const selectedOperation = (this.state.selectedResource && resourceName != this.state.selectedResource.name) || !this.state.selectedOperation ? resourceData['listOperations'][0] : null;
+    const selectedOperation =
+      (this.state.selectedResource &&
+        resourceName != this.state.selectedResource.name) ||
+      !this.state.selectedOperation
+        ? resourceData['listOperations'][0]
+        : null
     this.setState({
       listOperations: resourceData['listOperations'],
       selectedResource: resourceData['selectedResource'],
-      selectedOperation
+      selectedOperation,
     })
   }
 
-  public handleOperationChange = (operation: Operation) => {
+  public handleOperationChange = (operation: ApiOperation) => {
     this.setState({ selectedOperation: operation })
   }
 
   public render() {
-    const { classes, pageContext, location } = this.props
+    const { pageContext, location } = this.props
     return (
       <Layout location={location}>
         <LayoutContainer>

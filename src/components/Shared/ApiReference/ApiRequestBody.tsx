@@ -12,12 +12,15 @@ import {
   createStyles,
 } from '@material-ui/core'
 import Prism from 'prismjs'
-import { Lock } from '@material-ui/icons';
-import { flame, maroon, seafoam, sherpablue, sunset } from '../../../theme/ocPalette.constants'
-
-interface ApiRequestBodyProps {
-  requestBody?: any
-}
+import { Lock } from '@material-ui/icons'
+import {
+  flame,
+  maroon,
+  seafoam,
+  sherpablue,
+  sunset,
+} from '../../../theme/ocPalette.constants'
+import { OperationRequestBody } from '../../../models/openapi.models'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,26 +30,31 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.common.white,
     },
     string: {
-      color: flame[600]
+      color: flame[600],
     },
     boolean: {
-      color: sunset[600]
+      color: sunset[600],
     },
     array: {
-      color: maroon[600]
+      color: maroon[600],
     },
     object: {
-      color: sherpablue[600]
+      color: sherpablue[600],
     },
     integer: {
-      color: seafoam[600]
-    }
+      color: seafoam[600],
+    },
   })
 )
 
-const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
+interface ApiRequestBodyProps {
+  requestBody?: OperationRequestBody
+}
+const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = (
+  props: ApiRequestBodyProps
+) => {
   useEffect(() => {
-    Prism.highlightAll();
+    Prism.highlightAll()
   })
 
   const { requestBody } = props
@@ -87,17 +95,26 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = props => {
             {Object.entries(schema.properties).map(
               ([name, field]: [string, any]) => (
                 <TableRow key={name}>
-                  <TableCell>{name} {required && required.includes(name)
-                    ? '(required)'
-                    : null}</TableCell>
-                  <TableCell>{field.readOnly ? (
-                    <Tooltip title="Read Only" placement="top">
-                      <Lock />
-                    </Tooltip>
-                  ) : null}</TableCell>
-                  <TableCell><code className={classes[field.type]}>{field.type || 'object'}</code></TableCell>
+                  <TableCell>
+                    {name}{' '}
+                    {required && required.includes(name) ? '(required)' : null}
+                  </TableCell>
+                  <TableCell>
+                    {field.readOnly ? (
+                      <Tooltip title="Read Only" placement="top">
+                        <Lock />
+                      </Tooltip>
+                    ) : null}
+                  </TableCell>
+                  <TableCell>
+                    <code className={classes[field.type]}>
+                      {field.type || 'object'}
+                    </code>
+                  </TableCell>
                   <TableCell>{field.format || '---'}</TableCell>
-                  <TableCell>{field.maxLength ? `${field.maxLength} characters` : '---'}</TableCell>
+                  <TableCell>
+                    {field.maxLength ? `${field.maxLength} characters` : '---'}
+                  </TableCell>
                 </TableRow>
               )
             )}

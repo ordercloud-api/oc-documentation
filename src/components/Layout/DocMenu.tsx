@@ -1,9 +1,15 @@
-import { Collapse, createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
+import {
+  Collapse,
+  createStyles,
+  makeStyles,
+  Typography,
+  Theme,
+} from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { Link, withPrefix } from 'gatsby'
 import React from 'react'
-import { Section } from '../../models/section.model'
 import { grey } from '@material-ui/core/colors'
+import { Section } from '../../models/section.model'
 
 export const drawerWidthSpacingLg = 56
 export const drawerWidthSpacing = drawerWidthSpacingLg - 20
@@ -39,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: theme.spacing(2),
       borderLeft: `${theme.spacing(0.5)}px solid ${
         theme.palette.secondary.light
-        }`,
+      }`,
       '& > $listItemLink': {
         fontWeight: 'bold',
       },
@@ -56,7 +62,7 @@ const findActiveSection = (sections: Section[], path: string) => {
   return sections.findIndex(s => {
     return (
       s.guides.filter(g => {
-        return withPrefix(g.path) === path || withPrefix(g.path) + '/' === path
+        return withPrefix(g.path) === path || `${withPrefix(g.path)}/` === path
       }).length > 0
     )
   })
@@ -69,7 +75,7 @@ export default function DocMenu(props: DocMenuProps) {
   const [activeIndex, setActiveIndex] = React.useState(
     findActiveSection(sections, currentPath)
   )
-  const handleSetActiveIndex = (i: number) => (event: React.MouseEvent) => {
+  const handleSetActiveIndex = (i: number) => () => {
     setActiveIndex(activeIndex === i ? -1 : i)
   }
 
@@ -80,7 +86,7 @@ export default function DocMenu(props: DocMenuProps) {
           <div
             className={`${classes.sectionButton} ${
               activeIndex === sindex ? classes.activeSection : undefined
-              }`}
+            }`}
             onClick={handleSetActiveIndex(sindex)}
           >
             {`${section.title} `}
@@ -95,10 +101,12 @@ export default function DocMenu(props: DocMenuProps) {
                     currentPath.includes(guide.path)
                       ? classes.active
                       : undefined
-                    }`}
+                  }`}
                 >
                   <Link className={classes.listItemLink} to={guide.path}>
-                    <Typography variant="body2">{guide.frontmatter.title}</Typography>
+                    <Typography variant="body2">
+                      {guide.frontmatter.title}
+                    </Typography>
                   </Link>
                 </li>
               ))}

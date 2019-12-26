@@ -10,11 +10,14 @@ import {
   Theme,
   createStyles,
 } from '@material-ui/core'
-import { flame, maroon, seafoam, sherpablue, sunset } from '../../../theme/ocPalette.constants'
-
-interface ApiParametersProps {
-  parameters?: any[]
-}
+import {
+  flame,
+  maroon,
+  seafoam,
+  sherpablue,
+  sunset,
+} from '../../../theme/ocPalette.constants'
+import { OperationParameter } from '../../../models/openapi.models'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,24 +27,29 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.common.white,
     },
     string: {
-      color: flame[600]
+      color: flame[600],
     },
     boolean: {
-      color: sunset[600]
+      color: sunset[600],
     },
     array: {
-      color: maroon[600]
+      color: maroon[600],
     },
     object: {
-      color: sherpablue[600]
+      color: sherpablue[600],
     },
     integer: {
-      color: seafoam[600]
-    }
+      color: seafoam[600],
+    },
   })
 )
 
-const ApiParameters: React.FunctionComponent<ApiParametersProps> = props => {
+interface ApiParametersProps {
+  parameters?: OperationParameter[]
+}
+const ApiParameters: React.FunctionComponent<ApiParametersProps> = (
+  props: ApiParametersProps
+) => {
   const { parameters } = props
   const classes = useStyles({})
 
@@ -54,16 +62,30 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = props => {
             <TableCell>Name</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Description</TableCell>
-            <TableCell>Fields <small>(descending by priority)</small></TableCell>
+            <TableCell>
+              Fields <small>(descending by priority)</small>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {parameters.map((param, index) => (
             <TableRow key={index}>
               <TableCell>{param.name}</TableCell>
-              <TableCell><code className={classes[param.schema.type]}>{param.schema.type}</code></TableCell>
+              <TableCell>
+                <code className={classes[param.schema.type]}>
+                  {param.schema.type}
+                </code>
+              </TableCell>
               <TableCell>{param.description}</TableCell>
-              <TableCell>{param.schema.items && param.schema.items.enum ? param.schema.items.enum.map((e, i) => <span>{param.schema.items.enum.length - 1 == i ? e : `${e},`} </span>) : '---'}</TableCell>
+              <TableCell>
+                {param.schema.items && param.schema.items.enum
+                  ? param.schema.items.enum.map((e, i) => (
+                      <span key={i}>
+                        {param.schema.items.enum.length - 1 == i ? e : `${e},`}{' '}
+                      </span>
+                    ))
+                  : '---'}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
