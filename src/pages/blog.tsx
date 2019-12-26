@@ -170,7 +170,7 @@ export default function BlogListComponent(props: BlogListProps) {
       <Helmet title={`OrderCloud Blog`} />
       <Jumbotron
         heading="OrderCloud Blog"
-        text="Learn the platform like never before with these big thought blogs written by some of the best orderclouders in the world."
+        text="New feature announcements, tips & tricks, and best practices to help developers get the most out of the OrderCloud platform."
       />
       <Container className={classes.blogContainer}>
         <Grid container spacing={3}>
