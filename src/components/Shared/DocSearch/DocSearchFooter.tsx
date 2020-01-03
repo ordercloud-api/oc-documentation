@@ -30,9 +30,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const DocSearchFooter: React.FunctionComponent<{ darkMode: boolean }> = ({
+interface DocSearchFooterProps {
+  darkMode: boolean
+}
+const DocSearchFooter: React.FunctionComponent<DocSearchFooterProps> = ({
   darkMode,
-}) => {
+}: DocSearchFooterProps) => {
   const classes = useStyles({ darkMode })
   return (
     <footer className={classes.root}>

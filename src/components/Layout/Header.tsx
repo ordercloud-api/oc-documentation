@@ -7,12 +7,10 @@ import {
   List,
   Tab,
   Tabs,
-  Theme,
   Toolbar,
   withStyles,
   withWidth,
   Avatar,
-  Menu,
   MenuItem,
   MenuList,
   ClickAwayListener,
@@ -23,6 +21,7 @@ import {
   Typography,
   Box,
   ListItem,
+  Theme,
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import { Menu as MenuIcon, Close as CloseIcon } from '@material-ui/icons'
@@ -33,11 +32,28 @@ import ocLogo from '../../assets/images/four51-badge--flame-white.svg'
 import Gravatar from 'react-gravatar'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
-import { navigate, PortalLink } from '../Shared/PortalLink'
+import { navigate } from '../Shared/PortalLink'
 import ListItemLink from '../Shared/ListItemLink'
 import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import MenuItems from '../Shared/MenuItems.json'
+
+function parseJwt(token: string) {
+  if (!token) {
+    return null
+  }
+  const base64Url = token.split('.')[1]
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map(function(c) {
+        return `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`
+      })
+      .join('')
+  )
+  return JSON.parse(jsonPayload)
+}
 
 function isTokenExpired(token: string): boolean {
   if (!token) {
@@ -46,25 +62,8 @@ function isTokenExpired(token: string): boolean {
   const parsedToken = parseJwt(token)
   const currentSeconds = Date.now() / 1000
   const currentSecondsWithBuffer = currentSeconds - 2
-  var expired = parsedToken.exp < currentSecondsWithBuffer
+  const expired = parsedToken.exp < currentSecondsWithBuffer
   return expired
-}
-
-function parseJwt(token: string) {
-  if (!token) {
-    return null
-  }
-  var base64Url = token.split('.')[1]
-  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-  var jsonPayload = decodeURIComponent(
-    atob(base64)
-      .split('')
-      .map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-      })
-      .join('')
-  )
-  return JSON.parse(jsonPayload)
 }
 
 interface HeaderProps {
@@ -141,7 +140,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     this.onInit()
   }
 
-  public goToPortal = (route: string) => (event: React.MouseEvent) => {
+  public goToPortal = (route: string) => () => {
     navigate(route)
   }
 
@@ -151,12 +150,12 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   public render() {
     const { classes, location, width, data } = this.props
-    const { anchorEl, auth, showResults } = this.state
+    const { anchorEl, auth } = this.state
     const isMobile = width !== 'md' && width !== 'lg' && width !== 'xl'
     const currentApiVersion = data.allMdx.nodes[0].frontmatter.apiVersion
     let activeTab = 'docs'
     if (location && location.pathname) {
-      var partialPath = location.pathname.split('/')[1]
+      const partialPath = location.pathname.split('/')[1]
       if (!partialPath) return
       if (partialPath === 'blog' || partialPath === 'api-reference') {
         activeTab = partialPath
@@ -308,7 +307,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                                     className={classes.menuListDivider}
                                   />
                                   {MenuItems.AuthControls.map((item, index) => {
-                                    const { label, to } = item
+                                    const { label } = item
                                     return (
                                       <MenuItem
                                         key={index}
@@ -420,10 +419,18 @@ class Header extends React.Component<HeaderProps, HeaderState> {
           </Box>
           <List className={classes.mobileMenuList}>
             {MenuItems.MainNavigation.map(item => {
-              const { mobileMenu, authRequired, to, label, isPortalLink } = item
+              const {
+                value,
+                mobileMenu,
+                authRequired,
+                to,
+                label,
+                isPortalLink,
+              } = item
               if (isPortalLink) {
                 return (
                   <ListItem
+                    key={value}
                     onClick={
                       auth || !authRequired
                         ? this.goToPortal(to)
@@ -439,11 +446,15 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 !authRequired &&
                 to !== '/release-notes/v'
               ) {
-                return <ListItemLink to={to}>{label}</ListItemLink>
+                return (
+                  <ListItemLink to={to} key={value}>
+                    {label}
+                  </ListItemLink>
+                )
               }
               if (to === '/release-notes/v') {
                 return (
-                  <ListItemLink to={to + currentApiVersion}>
+                  <ListItemLink to={to + currentApiVersion} key={value}>
                     {label}
                   </ListItemLink>
                 )
@@ -464,7 +475,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     </MenuItem>
                   ))}
                   {MenuItems.AuthControls.map((item, index) => {
-                    const { label, to } = item
+                    const { label } = item
                     return (
                       <MenuItem key={index} className={classes.menuItem}>
                         {label}
@@ -560,7 +571,7 @@ const styles = (theme: Theme) =>
     },
     gravatarAvatar: {
       '& img': {
-      marginBottom: 0,
+        marginBottom: 0,
       },
     },
     mobileMenuList: {
@@ -581,6 +592,7 @@ const styles = (theme: Theme) =>
         margin: theme.spacing(0, 1),
       },
     },
+    // eslint-disable-next-line @typescript-eslint/camelcase
     menuItem__profile: {
       padding: '10px',
     },

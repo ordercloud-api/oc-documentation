@@ -1,5 +1,5 @@
 import { resolve } from 'path'
-import openApiService from './src/openapi.service'
+import openApiService from './src/services/openapi.service'
 import { GatsbyCreatePages } from './src/models/gatsby.models'
 
 export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
@@ -66,7 +66,7 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
         },
       })
     })
-    .catch(e => console.log('error initializing open API service'))
+    .catch(() => console.log('error initializing open API service'))
 
   return Promise.all([staticDocs, apiRef])
 }

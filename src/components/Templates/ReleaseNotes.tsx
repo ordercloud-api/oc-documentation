@@ -12,7 +12,7 @@ import { groupBy, map, sortBy } from 'lodash'
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { seafoam } from '../../theme/ocPalette.constants'
-import utility from '../../utility'
+import utility from '../../services/utility'
 import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
@@ -82,14 +82,20 @@ function ReleaseNotesComponent(props: any) {
   const [currentMonth, setCurrentMonth] = useState(release.frontmatter.month)
 
   const years = map(
-    groupBy(data.allMdx.edges.map(e => e.node), n => n.frontmatter.year),
+    groupBy(
+      data.allMdx.edges.map(e => e.node),
+      n => n.frontmatter.year
+    ),
     (nodes: any, y) => ({
       year: y,
       months: sortBy(
-        map(groupBy(nodes, n => n.frontmatter.month), (r, m) => ({
-          month: m,
-          releases: r,
-        })),
+        map(
+          groupBy(nodes, n => n.frontmatter.month),
+          (r, m) => ({
+            month: m,
+            releases: r,
+          })
+        ),
         m => Number(m.month) - 1
       ).reverse(),
     })

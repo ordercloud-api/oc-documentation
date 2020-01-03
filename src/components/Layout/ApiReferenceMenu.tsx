@@ -3,12 +3,18 @@ import { map as _map, findIndex as _findIndex } from 'lodash'
 import {
   Collapse,
   makeStyles,
-  Theme,
   createStyles,
   Typography,
+  Theme,
 } from '@material-ui/core'
-import OpenApi from '../../openapi.service'
+import OpenApi from '../../services/openapi.service'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
+import {
+  OrderCloudProps,
+  ApiOperation,
+  ApiResource,
+  ApiSection,
+} from '../../models/openapi.models'
 
 interface ApiReferenceProps {
   name: string
@@ -52,7 +58,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export default function ApiReferenceMenu(props) {
+interface ApiReferenceMenuProps {
+  sectionChange: (sectionIndex: number) => void
+  resourceChange: (resourceName: string) => void
+  operationChange: (operation: ApiOperation) => void
+  ocApi: OrderCloudProps
+  activeIndex: number
+  selectedOperation: ApiOperation
+}
+export default function ApiReferenceMenu(props: ApiReferenceMenuProps) {
   const {
     ocApi,
     sectionChange,
@@ -61,7 +75,6 @@ export default function ApiReferenceMenu(props) {
     activeIndex,
     selectedOperation,
   } = props
-  const classes = useStyles(props)
   return (
     <React.Fragment>
       {_map(ocApi.sections, (section, index) => {
@@ -82,7 +95,16 @@ export default function ApiReferenceMenu(props) {
   )
 }
 
-function Section(props) {
+interface SectionProps {
+  sectionChange: (sectionIndex: number) => void
+  resourceChange: (resourceName: string) => void
+  operationChange: (operation: ApiOperation) => void
+  section: ApiSection
+  ocApi: OrderCloudProps
+  activeIndex: number
+  selectedOperation: ApiOperation
+}
+function Section(props: SectionProps) {
   const {
     section,
     ocApi,
@@ -98,8 +120,8 @@ function Section(props) {
     ocApi.sections,
     sect => sect['x-id'] === section['x-id']
   )
-  const isActive = sectionIndex === activeIndex;
-  const [open, setOpen] = React.useState(isActive);
+  const isActive = sectionIndex === activeIndex
+  const [open, setOpen] = React.useState(isActive)
 
   const resources = ocApi.resources.filter(
     r => r['x-section-id'] == section['x-id']
@@ -136,25 +158,28 @@ function Section(props) {
   )
 }
 
-function Resource(props) {
-  const {
-    resource,
-    operationChange,
-    resourceChange,
-    selectedOperation
-  } = props;
+interface ResourceProps {
+  resource: ApiResource
+  resourceChange: (resourceName: string) => void
+  operationChange: (operation: ApiOperation) => void
+  selectedOperation: ApiOperation
+}
+function Resource(props: ResourceProps) {
+  const { resource, operationChange, resourceChange, selectedOperation } = props
 
   const classes = useStyles(props)
 
-  const isActive = selectedOperation ? selectedOperation.resource.name === resource.name : false;
+  const isActive = selectedOperation
+    ? selectedOperation.resource.name === resource.name
+    : false
   if (isActive) {
-    window.location.hash = selectedOperation.operationId;
+    window.location.hash = selectedOperation.operationId
   }
   const [open, setOpen] = React.useState(isActive)
 
   const operations = OpenApi.operationsByResource
     ? OpenApi.operationsByResource[resource.name]
-    : null;
+    : null
 
   function handleClick() {
     setOpen(!open)
@@ -170,24 +195,20 @@ function Resource(props) {
         onClick={handleClick}
       >
         {resource.name}
-        {open ? (
-          <ExpandLess />
-        ) : (
-            <ExpandMore />
-          )}
+        {open ? <ExpandLess /> : <ExpandMore />}
       </Typography>
       <Collapse in={isActive} timeout="auto" unmountOnExit>
         <ul className={classes.operations}>
           {operations && operations.length
             ? operations.map((o, index) => {
-              return (
-                <li key={index} onClick={() => operationChange(o)}>
-                  <a className={classes.operation} href={`#${o.operationId}`}>
-                    {o.summary.replace(/\./g, ' ')}
-                  </a>
-                </li>
-              )
-            })
+                return (
+                  <li key={index} onClick={() => operationChange(o)}>
+                    <a className={classes.operation} href={`#${o.operationId}`}>
+                      {o.summary.replace(/\./g, ' ')}
+                    </a>
+                  </li>
+                )
+              })
             : null}
         </ul>
       </Collapse>

@@ -38,9 +38,23 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+interface OrderCloudSearchBoxProps {
+  onClick: (event: any) => void
+  onChange: () => void
+  onClose: () => void
+  refine: (refineBy: string) => void
+  noPopper: boolean
+  expanded: boolean
+  darkMode: boolean
+  currentRefinement: string
+  placeholder: string
+  classes?: {
+    searchRoot: string
+    searchInput: string
+  }
+}
 const OrderCloudSearchBox = ({
   currentRefinement,
-  isSearchStalled,
   refine,
   onClick,
   onChange,
@@ -50,7 +64,7 @@ const OrderCloudSearchBox = ({
   placeholder,
   classes,
   noPopper,
-}) => {
+}: OrderCloudSearchBoxProps) => {
   const classesSelf = useStyles({ darkMode, expanded })
   const inputRef = useRef<HTMLInputElement | undefined>()
 
@@ -58,7 +72,7 @@ const OrderCloudSearchBox = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     refine(event.currentTarget.value)
-    onChange(event)
+    onChange()
   }
 
   const handleInputClick = (event: React.MouseEvent) => {
@@ -72,7 +86,7 @@ const OrderCloudSearchBox = ({
     event.preventDefault()
     event.stopPropagation()
     refine('')
-    onClose(event)
+    onClose()
   }
 
   return (

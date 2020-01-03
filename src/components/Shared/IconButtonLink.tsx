@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'gatsby'
 import IconButton, { IconButtonProps } from '@material-ui/core/IconButton'
 
 interface IconButtonLinkProps extends IconButtonProps {

@@ -1,69 +1,33 @@
 import SwaggerParser from 'swagger-parser'
-import SwaggerSpec from './openapi.json'
+import SwaggerSpec from '../openapi.json'
 import { groupBy, keyBy, mapValues, values, flatten } from 'lodash'
-import { initializeIndex } from './lunr.helper'
-import lunr from 'lunr'
-import { OutlinedInput } from '@material-ui/core'
-
-export interface Tag {
-  name: string
-  description: string
-}
-
-export interface ApiSection extends Tag {
-  'x-id': string
-}
-
-export interface ApiResource extends Tag {
-  'x-section-id': string
-}
-
-export interface ServerShape {
-  description: string
-  url: string
-}
-
-export interface OpenApiShape {
-  info: any
-  components: {
-    securitySchemes: any
-    schemas: any
-  }
-  openapi: string
-  paths: {
-    [path: string]: {
-      [operation: string]: any
-    }
-  }
-  servers: ServerShape[]
-  tags: (ApiSection | ApiResource)[]
-}
-
-export interface OrderCloudProps {
-  openapi: OpenApiShape
-  sections: ApiSection[]
-  resources: ApiResource[]
-  index: lunr.Index
-  operations: any[]
-  operationsById: {
-    [operationId: string]: any
-  }
-  operationsByResource: {
-    [resource: string]: any[]
-  }
-}
+import {
+  OrderCloudProps,
+  OpenApiShape,
+  ApiSection,
+  ApiResource,
+} from '../models/openapi.models.js'
 
 interface OpenApiResult {
   oc?: OrderCloudProps
 }
-
 const result: OpenApiResult = {
   oc: null,
 }
 
-export const Initialize = async () => {
-  if (!result.oc) {
-    const parsedSpec = await SwaggerParser.dereference(SwaggerSpec)
+export const Initialize = async (parsedSpec?: OrderCloudProps) => {
+  if (parsedSpec && !result.oc) {
+    return (result.oc = {
+      openapi: parsedSpec.openapi,
+      sections: parsedSpec.sections,
+      resources: parsedSpec.resources,
+      operations: parsedSpec.operations,
+      operationsById: parsedSpec.operationsById,
+      operationsByResource: parsedSpec.operationsByResource,
+    })
+  }
+  if (!parsedSpec && !result.oc) {
+    const parsedSpec: any = await SwaggerParser.dereference(SwaggerSpec as any)
     const resources = parsedSpec.tags
       .filter(tag => tag['x-section-id'])
       .concat(GetSubsectionsToAdd())
@@ -87,7 +51,6 @@ export const Initialize = async () => {
       sections: parsedSpec.tags.filter(tag => tag['x-id']),
       resources,
       operations,
-      index: initializeIndex(operations, resources),
       operationsById: keyBy(operations, 'operationId'),
       operationsByResource: groupBy(operations, o => {
         return o.tags[0]
@@ -96,10 +59,11 @@ export const Initialize = async () => {
   }
 }
 
-export class OpenApi {
+class OpenApi {
   get spec(): OpenApiShape {
     return result.oc.openapi
   }
+
   get sections(): ApiSection[] {
     return result.oc.sections
   }
@@ -110,10 +74,6 @@ export class OpenApi {
 
   get operations(): any[] {
     return result.oc.operations
-  }
-
-  get index(): lunr.Index {
-    return result.oc.index
   }
 
   get operationsById(): {
@@ -153,6 +113,7 @@ export class OpenApi {
             break
           case 'boolean':
             param.value = false
+            break
           default:
             break
         }
@@ -171,7 +132,7 @@ export class OpenApi {
 
 // This method is used to attach the correct subsection to routes.
 const GetSubSectionName = (path: string) => {
-  var sec = MeSubSections.find(sec => sec.paths.includes(path))
+  const sec = MeSubSections.find(sec => sec.paths.includes(path))
   return sec ? sec.name : null
 }
 

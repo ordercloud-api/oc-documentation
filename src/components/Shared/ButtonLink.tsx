@@ -6,11 +6,14 @@ interface ButtonLinkProps extends ButtonProps {
   to: string
 }
 
-const ButtonLink: React.FunctionComponent<ButtonLinkProps> = props => {
+const ButtonLink: React.FunctionComponent<ButtonLinkProps> = (
+  props: ButtonLinkProps
+) => {
+  const to = props.to
   return (
     <Button
-      component={React.forwardRef((props: any, ref: any) => {
-        return <Link {...props} to={props.to} ref={ref} />
+      component={React.forwardRef((linkProps: any, ref: any) => {
+        return <Link {...linkProps} to={to} ref={ref} />
       })}
       {...props}
     />

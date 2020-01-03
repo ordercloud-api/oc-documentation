@@ -20,7 +20,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
 import { mediumgrey, seafoam } from '../theme/ocPalette.constants'
-import utility from '../utility'
+import utility from '../services/utility'
 import Jumbotron from '../components/Shared/Jumbotron'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -170,7 +170,7 @@ export default function BlogListComponent(props: BlogListProps) {
       <Helmet title={`OrderCloud Blog`} />
       <Jumbotron
         heading="OrderCloud Blog"
-        text="Learn the platform like never before with these big thought blogs written by some of the best orderclouders in the world."
+        text="New feature announcements, tips & tricks, and best practices to help developers get the most out of the OrderCloud platform."
       />
       <Container className={classes.blogContainer}>
         <Grid container spacing={3}>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 })
@@ -77,6 +78,7 @@ const toExport = {
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-typescript`,
+    `gatsby-plugin-typescript-checker`,
     `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
