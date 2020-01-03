@@ -1,20 +1,20 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { sherpablue, seafoam, sizzlingred } from './ocPalette.constants'
-import CoreSansWoff from '../../src/assets/fonts/coresansd/coresansd-regular.woff'
-// import GeometriaWoff from '../../src/assets/fonts/geometria/geometria-bold.woff'
+import CoreSansWoff from '../assets/fonts/CoreSansD/coresansd-regular.woff'
+import GeometriaWoff from '../assets/fonts/Geometria/geometria-bold.woff'
 
-// const Geometria = {
-//   fontFamily: 'Geometria',
-//   fontStyle: 'normal',
-//   fontDisplay: 'swap' as 'swap',
-//   fontWeight: 600,
-//   src: `
-//     local('Geometria'),
-//     url(${GeometriaWoff}) format('woff')
-//   `,
-//   unicodeRange:
-//     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
-// }
+const Geometria = {
+  fontFamily: 'Geometria',
+  fontStyle: 'normal',
+  fontDisplay: 'swap' as 'swap',
+  fontWeight: 600,
+  src: `
+    local('Geometria'),
+    url(${GeometriaWoff}) format('woff')
+  `,
+  unicodeRange:
+    'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
+}
 
 const CoreSans = {
   fontFamily: 'Core Sans',
@@ -94,10 +94,7 @@ export default createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
-        '@font-face': CoreSans,
-        // TODO: uncomment below once type information on newer version of material-ui is resolved
-        // we should be able to load an array of font faces like we do in portal
-        // '@font-face': [CoreSans, Geometria],
+        '@font-face': [CoreSans, Geometria],
         a: {
           color: secondaryColor[900],
         },
