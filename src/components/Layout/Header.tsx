@@ -208,7 +208,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                             root: classes.tab,
                             selected: classes.navTabSelected,
                           }}
-                          component={Button}
                           onClick={
                             auth || !authRequired
                               ? this.goToPortal(to)
