@@ -1,7 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { sherpablue, seafoam, sizzlingred } from './ocPalette.constants'
-import CoreSansWoff from '../assets/fonts/CoreSansD/coresansd-regular.woff'
-import GeometriaWoff from '../assets/fonts/Geometria/geometria-bold.woff'
+import CoreSansWoff from '../../public/fonts/CoreSansD/coresansd-regular.woff'
+import GeometriaWoff from '../../public/fonts/Geometria/geometria-bold.woff'
 
 const Geometria = {
   fontFamily: 'Geometria',
