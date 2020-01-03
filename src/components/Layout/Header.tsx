@@ -346,7 +346,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            paddingRight="1rem"
+            paddingX="8px"
+            paddingTop="8px"
           >
             <IconButton
               aria-label="close"
@@ -364,12 +365,11 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 <Gravatar alt="User Image" size={40} email={this.state.email} />
               </Avatar>
             ) : (
-              <Box padding="1rem 0rem">
+              <div>
                 <Button
                   onClick={this.goToPortal('/login')}
                   variant="text"
                   color="inherit"
-                  size="small"
                 >
                   Login
                 </Button>
@@ -377,11 +377,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   onClick={this.goToPortal('/login')}
                   variant="outlined"
                   color="inherit"
-                  size="small"
                 >
                   Sign-Up
                 </Button>
-              </Box>
+              </div>
             )}
           </Box>
           <List className={classes.mobileMenuList}>
@@ -427,24 +426,23 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 )
               }
             })}
-            {auth ? (
-              <React.Fragment>
-                <Divider />
-                <MenuList>
-                  <ListSubheader component="div">
-                    Signed in as
-                    <strong> {this.state.username}</strong>
-                  </ListSubheader>
-                  {MenuItems.DropdownControls.map((item, index) => (
-                    <MenuItem key={index}>{item.label}</MenuItem>
-                  ))}
-                  <MenuItem onClick={this.handleLogout}>Sign Out</MenuItem>
-                </MenuList>
-              </React.Fragment>
-            ) : (
-              <React.Fragment></React.Fragment>
-            )}
           </List>
+          <Divider />
+          {auth && (
+            <List>
+              <ListSubheader
+                component="div"
+                className={classes.mobileMenuSubheader}
+              >
+                Signed in as
+                <strong> {this.state.username}</strong>
+              </ListSubheader>
+              {MenuItems.DropdownControls.map((item, index) => (
+                <ListItem key={index}>{item.label}</ListItem>
+              ))}
+              <ListItem onClick={this.handleLogout}>Sign Out</ListItem>
+            </List>
+          )}
         </Drawer>
       </React.Fragment>
     )
@@ -452,6 +450,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 }
 
 export const navHeight = ORDERCLOUD_THEME.spacing(10)
+export const navHeightMobile = ORDERCLOUD_THEME.spacing(8)
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -462,6 +461,8 @@ const styles = (theme: Theme) =>
       padding: theme.spacing(0.5, 1, 1),
       [theme.breakpoints.down('md')]: {
         marginRight: 'auto',
+        width: theme.spacing(5),
+        height: theme.spacing(5),
       },
     },
     tabs: {
@@ -504,7 +505,10 @@ const styles = (theme: Theme) =>
       },
     },
     toolbar: {
-      height: navHeight,
+      height: navHeightMobile,
+      [theme.breakpoints.up('md')]: {
+        height: navHeight,
+      },
     },
     mobileSearchBox: {
       marginRight: -theme.spacing(1),
@@ -556,7 +560,10 @@ const styles = (theme: Theme) =>
       width: '100vw',
       minHeight: '100vh',
       color: theme.palette.common.white,
-      fontSize: '1rem',
+      fontSize: '1.3rem',
+    },
+    mobileMenuSubheader: {
+      color: sherpablue[100],
     },
     mobileMenuLogo: {
       marginTop: theme.spacing(2),
