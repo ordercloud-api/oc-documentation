@@ -22,6 +22,7 @@ import {
   Box,
   ListItem,
   Theme,
+  ListSubheader,
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import { Menu as MenuIcon, Close as CloseIcon } from '@material-ui/icons'
@@ -192,7 +193,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   const {
                     mobileMenu,
                     authRequired,
-                    disableRipple,
                     value,
                     label,
                     to,
@@ -202,13 +202,13 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     if (isPortalLink) {
                       return (
                         <Tab
-                          disableRipple={disableRipple}
                           value={value}
                           label={label}
                           classes={{
                             root: classes.tab,
                             selected: classes.navTabSelected,
                           }}
+                          component={Button}
                           onClick={
                             auth || !authRequired
                               ? this.goToPortal(to)
@@ -220,7 +220,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     }
                     return (
                       <Tab
-                        disableRipple={disableRipple}
                         value={value}
                         label={label}
                         classes={{
@@ -245,21 +244,13 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 ></ChipLink>
                 {auth ? (
                   <React.Fragment>
-                    <Button
-                      color="inherit"
-                      onClick={this.goToPortal('/support')}
-                      variant="outlined"
-                      size="small"
-                    >
-                      Support
-                    </Button>
                     <IconButton
                       color="inherit"
                       onClick={this.handleMenu}
                       className={classes.iconButton}
                     >
                       <Avatar
-                        className={classes.gravatarAvatar}
+                        className={classes.iconButtonAvatar}
                         alt={this.state.username}
                       >
                         <Gravatar size={40} email={this.state.email} />
@@ -284,47 +275,27 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         >
                           <Paper>
                             <ClickAwayListener onClickAway={this.handleClose}>
-                              <div>
-                                <Box paddingX={2} paddingY={1}>
-                                  <Typography>
-                                    Signed in as
-                                    <br />
-                                    <strong>{this.state.username}</strong>
-                                  </Typography>
-                                </Box>
-                                <Divider />
-                                <MenuList className={classes.menuList}>
-                                  {MenuItems.OrgControls.map((item, index) => (
-                                    <MenuItem
-                                      key={index}
-                                      onClick={this.goToPortal('/profile')}
-                                      className={classes.menuItem}
-                                    >
-                                      {item.label}
-                                    </MenuItem>
-                                  ))}
-                                  <Divider
-                                    className={classes.menuListDivider}
-                                  />
-                                  {MenuItems.AuthControls.map((item, index) => {
-                                    const { label } = item
-                                    return (
+                              <MenuList>
+                                <ListSubheader component="div">
+                                  Signed in as
+                                  <strong> {this.state.username}</strong>
+                                </ListSubheader>
+                                <div className={classes.orgControls}>
+                                  {MenuItems.DropdownControls.map(
+                                    (item, index) => (
                                       <MenuItem
                                         key={index}
-                                        className={classes.menuItem}
+                                        onClick={this.goToPortal(item.to)}
                                       >
-                                        {label}
+                                        {item.label}
                                       </MenuItem>
                                     )
-                                  })}
-                                  <MenuItem
-                                    className={classes.menuItem}
-                                    onClick={this.handleLogout}
-                                  >
-                                    Sign Out
-                                  </MenuItem>
-                                </MenuList>
-                              </div>
+                                  )}
+                                </div>
+                                <MenuItem onClick={this.handleLogout}>
+                                  Sign Out
+                                </MenuItem>
+                              </MenuList>
                             </ClickAwayListener>
                           </Paper>
                         </Grow>
@@ -377,35 +348,31 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             alignItems="center"
             paddingRight="1rem"
           >
-            <Box>
-              <IconButton aria-label="close" color="inherit">
-                <CloseIcon
-                  fontSize="large"
-                  onClick={this.toggleNav(!this.state.mobileOpen)}
-                />
-              </IconButton>
-            </Box>
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              className={classes.mobileIconButon}
+              onClick={this.toggleNav(!this.state.mobileOpen)}
+            >
+              <CloseIcon fontSize="large" color="inherit" />
+            </IconButton>
             {auth ? (
-              <Box padding="1rem 0rem">
-                <Avatar
-                  className={classes.gravatarAvatar}
-                  alt={this.state.username}
-                >
-                  <Gravatar size={40} email={this.state.email} />
-                </Avatar>
-              </Box>
+              <Avatar
+                alt={this.state.username}
+                className={classes.iconButtonAvatar}
+              >
+                <Gravatar alt="User Image" size={40} email={this.state.email} />
+              </Avatar>
             ) : (
               <Box padding="1rem 0rem">
                 <Button
                   onClick={this.goToPortal('/login')}
                   variant="text"
                   color="inherit"
-                  className={classes.mr1}
                   size="small"
                 >
                   Login
                 </Button>
-
                 <Button
                   onClick={this.goToPortal('/login')}
                   variant="outlined"
@@ -463,31 +430,15 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             {auth ? (
               <React.Fragment>
                 <Divider />
-                <Box padding="1rem 0rem 0rem 1rem">
-                  <Typography variant="body1" className={classes.signedInAs}>
-                    Signed in as {this.state.username}
-                  </Typography>
-                </Box>
-                <MenuList className={classes.menuList}>
-                  {MenuItems.OrgControls.map((item, index) => (
-                    <MenuItem key={index} className={classes.menuItem}>
-                      {item.label}
-                    </MenuItem>
+                <MenuList>
+                  <ListSubheader component="div">
+                    Signed in as
+                    <strong> {this.state.username}</strong>
+                  </ListSubheader>
+                  {MenuItems.DropdownControls.map((item, index) => (
+                    <MenuItem key={index}>{item.label}</MenuItem>
                   ))}
-                  {MenuItems.AuthControls.map((item, index) => {
-                    const { label } = item
-                    return (
-                      <MenuItem key={index} className={classes.menuItem}>
-                        {label}
-                      </MenuItem>
-                    )
-                  })}
-                  <MenuItem
-                    className={classes.menuItem}
-                    onClick={this.handleLogout}
-                  >
-                    Sign Out
-                  </MenuItem>
+                  <MenuItem onClick={this.handleLogout}>Sign Out</MenuItem>
                 </MenuList>
               </React.Fragment>
             ) : (
@@ -569,20 +520,13 @@ const styles = (theme: Theme) =>
     iconButton: {
       padding: 0,
     },
-    gravatarAvatar: {
-      '& img': {
-        marginBottom: 0,
-      },
+    iconButtonAvatar: {
+      border: `2px solid ${theme.palette.primary.dark}`,
+      backgroundColor: 'transparent',
+      fontSize: '.8rem',
     },
     mobileMenuList: {
       marginBottom: 'auto',
-    },
-    menuListDivider: {
-      margin: theme.spacing(1, 0),
-    },
-    menuItem: {
-      minHeight: 0,
-      padding: theme.spacing(0.5, 2),
     },
     logoContainer: {
       boxSizing: 'content-box',
@@ -592,10 +536,6 @@ const styles = (theme: Theme) =>
         margin: theme.spacing(0, 1),
       },
     },
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    menuItem__profile: {
-      padding: '10px',
-    },
     search: {
       alignItems: 'flex-start',
     },
@@ -603,6 +543,10 @@ const styles = (theme: Theme) =>
       maxHeight: theme.spacing(25),
       overflowY: 'scroll',
       overflowX: 'auto',
+    },
+    orgControls: {
+      borderTop: `1px solid ${theme.palette.divider}`,
+      borderBottom: `1px solid ${theme.palette.divider}`,
     },
     drawerRoot: {
       zIndex: `${theme.zIndex.modal + 5} !important` as any,
@@ -620,11 +564,11 @@ const styles = (theme: Theme) =>
       marginRight: theme.spacing(2),
       width: theme.spacing(30),
     },
+    mobileIconButon: {
+      padding: 0,
+    },
     signedInAs: {
       fontWeight: 'bolder',
-    },
-    mr1: {
-      marginRight: theme.spacing(1),
     },
   })
 
