@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   makeStyles,
   Theme,
@@ -6,13 +6,16 @@ import {
   Hidden,
   Fab,
   Drawer,
+  Portal,
 } from '@material-ui/core'
 import { ChevronLeft, ChevronRight } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flex: '0 0 250px',
+      [theme.breakpoints.up('md')]: {
+        flex: '1 0 20%',
+      },
     },
     inner: {
       overflowY: 'auto',
@@ -31,12 +34,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     mobileFab: {
       position: 'fixed',
-      zIndex: 10000000,
       bottom: theme.spacing(4),
       right: theme.spacing(2),
+      zIndex: theme.zIndex.drawer + 201,
     },
     drawerPaper: {
-      width: '70vw',
+      width: '90vw',
     },
   })
 )
@@ -44,6 +47,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const LayoutMenu: React.FunctionComponent = (props: { children: any }) => {
   const classes = useStyles({})
   const [mobileOpen, setMobileOpen] = useState(false)
+  const mobileContainer = useRef(null)
+  const drawerContainer = useRef(null)
 
   const toggleMenu = () => {
     setMobileOpen(!mobileOpen)
@@ -52,22 +57,31 @@ const LayoutMenu: React.FunctionComponent = (props: { children: any }) => {
   return (
     <React.Fragment>
       <Hidden mdUp>
-        <Fab
-          color="primary"
-          classes={{ root: classes.mobileFab }}
-          onClick={toggleMenu}
-        >
-          {mobileOpen ? <ChevronRight /> : <ChevronLeft />}
-        </Fab>
-        <Drawer
-          anchor="right"
-          variant="temporary"
-          open={mobileOpen}
-          classes={{ paper: classes.drawerPaper }}
-          onClose={toggleMenu}
-        >
-          <div className={classes.content}>{props.children}</div>
-        </Drawer>
+        <div ref={mobileContainer}>
+          <Drawer
+            anchor="right"
+            variant="temporary"
+            open={mobileOpen}
+            classes={{ paper: classes.drawerPaper }}
+            onClose={toggleMenu}
+            ref={drawerContainer}
+          >
+            <div className={classes.content}>{props.children}</div>
+          </Drawer>
+          <Portal
+            container={
+              mobileOpen ? drawerContainer.current : mobileContainer.current
+            }
+          >
+            <Fab
+              color="primary"
+              classes={{ root: classes.mobileFab }}
+              onClick={toggleMenu}
+            >
+              {mobileOpen ? <ChevronRight /> : <ChevronLeft />}
+            </Fab>
+          </Portal>
+        </div>
       </Hidden>
       <Hidden smDown>
         <div className={classes.root}>

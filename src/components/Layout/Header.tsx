@@ -311,7 +311,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                       Login
                     </Button>
                     <Button
-                      onClick={this.goToPortal('/login')}
+                      onClick={this.goToPortal('/register')}
                       variant="outlined"
                       color="inherit"
                       size="small"
@@ -373,7 +373,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   Login
                 </Button>
                 <Button
-                  onClick={this.goToPortal('/login')}
+                  onClick={this.goToPortal('/register')}
                   variant="outlined"
                   color="inherit"
                 >
@@ -535,8 +535,9 @@ const styles = (theme: Theme) =>
       boxSizing: 'content-box',
     },
     navbarRight: {
-      '&>*': {
-        margin: theme.spacing(0, 1),
+      marginRight: theme.spacing(1),
+      '& > *': {
+        marginRight: theme.spacing(1),
       },
     },
     search: {
