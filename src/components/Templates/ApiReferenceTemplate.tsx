@@ -37,7 +37,6 @@ class ApiReference extends React.Component<any> {
 
   public async componentDidMount() {
     const ocApi = await Initialize(this.props.pageContext.OcApi)
-    console.log(this.state.ocApi, ocApi)
     this.setState({ ocApi })
     const selectedOperationId = window.location.hash.replace('#', '')
     this.initSelectedOperation(selectedOperationId)
