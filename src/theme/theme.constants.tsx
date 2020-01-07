@@ -1,18 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { sherpablue, seafoam, sizzlingred } from './ocPalette.constants'
-import CoreSansWoff from '../assets/fonts/CoreSansD/CoreSansD_400/3A0B9A_8_0.woff'
-import CoreSansWoff2 from '../assets/fonts/CoreSansD/CoreSansD_400/3A0B9A_8_0.woff2'
+import CoreSansDFonts from '../theme/theme.typography.coresansd'
 import GeometriaFonts from '../theme/theme.typography.geometria'
-
-const CoreSans = {
-  fontFamily: 'Core Sans',
-  fontStyle: 'normal',
-  fontDisplay: 'swap' as 'swap',
-  fontWeight: 400,
-  src: `url(${CoreSansWoff2}) format('woff2'), url(${CoreSansWoff}) format('woff')`,
-  unicodeRange:
-    'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
-}
 
 const defaultTheme = createMuiTheme()
 const primaryColor = sherpablue
@@ -32,7 +21,7 @@ const fontFamilies = [
   '"Segoe UI Symbol"',
 ]
 const headingFontFamilies = ['"Geometria"', ...fontFamilies].join(',')
-const bodyFontFamilies = ["'Core Sans'", ...fontFamilies].join(',')
+const bodyFontFamilies = ["'Core Sans D'", ...fontFamilies].join(',')
 export default createMuiTheme({
   typography: {
     h1: {
@@ -89,7 +78,7 @@ export default createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
-        '@font-face': [CoreSans, ...GeometriaFonts],
+        '@font-face': [...CoreSansDFonts, ...GeometriaFonts],
         a: {
           color: secondaryColor[900],
         },
