@@ -40,12 +40,18 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     section: {
+      cursor: 'pointer',
       display: 'flex',
       alignItems: 'center',
+      margin: theme.spacing(2, 0),
     },
     resource: {
       display: 'flex',
       alignItems: 'center',
+      cursor: 'pointer',
+    },
+    resourceActive: {
+      fontWeight: 'bold',
     },
     operations: {
       listStyle: 'none',
@@ -65,6 +71,7 @@ interface ApiReferenceMenuProps {
   ocApi: OrderCloudProps
   activeIndex: number
   selectedOperation: ApiOperation
+  selectedResource: ApiResource
 }
 export default function ApiReferenceMenu(props: ApiReferenceMenuProps) {
   const {
@@ -74,6 +81,7 @@ export default function ApiReferenceMenu(props: ApiReferenceMenuProps) {
     operationChange,
     activeIndex,
     selectedOperation,
+    selectedResource,
   } = props
   return (
     <React.Fragment>
@@ -88,6 +96,7 @@ export default function ApiReferenceMenu(props: ApiReferenceMenuProps) {
             operationChange={operationChange}
             activeIndex={activeIndex}
             selectedOperation={selectedOperation}
+            selectedResource={selectedResource}
           />
         )
       })}
@@ -103,6 +112,7 @@ interface SectionProps {
   ocApi: OrderCloudProps
   activeIndex: number
   selectedOperation: ApiOperation
+  selectedResource: ApiResource
 }
 function Section(props: SectionProps) {
   const {
@@ -113,6 +123,7 @@ function Section(props: SectionProps) {
     resourceChange,
     operationChange,
     selectedOperation,
+    selectedResource,
   } = props
 
   const classes = useStyles(props)
@@ -135,7 +146,7 @@ function Section(props: SectionProps) {
   return (
     <React.Fragment>
       <Typography
-        variant="h3"
+        variant="h4"
         display="block"
         className={classes.section}
         onClick={handleClick}
@@ -150,6 +161,14 @@ function Section(props: SectionProps) {
             resource={resource}
             operationChange={operationChange}
             resourceChange={resourceChange}
+            isActive={
+              resource.name ===
+              (selectedResource
+                ? selectedResource.name
+                : selectedOperation
+                ? selectedOperation.resource.name
+                : false)
+            }
             selectedOperation={selectedOperation}
           />
         ))}
@@ -163,18 +182,13 @@ interface ResourceProps {
   resourceChange: (resourceName: string) => void
   operationChange: (operation: ApiOperation) => void
   selectedOperation: ApiOperation
+  isActive: boolean
 }
 function Resource(props: ResourceProps) {
-  const { resource, operationChange, resourceChange, selectedOperation } = props
+  const { resource, operationChange, resourceChange, isActive } = props
 
   const classes = useStyles(props)
 
-  const isActive = selectedOperation
-    ? selectedOperation.resource.name === resource.name
-    : false
-  if (isActive) {
-    window.location.hash = selectedOperation.operationId
-  }
   const [open, setOpen] = React.useState(isActive)
 
   const operations = OpenApi.operationsByResource
@@ -191,7 +205,9 @@ function Resource(props: ResourceProps) {
       <Typography
         variant="button"
         display="block"
-        className={classes.resource}
+        className={`${classes.resource} ${
+          isActive ? classes.resourceActive : ''
+        }`}
         onClick={handleClick}
       >
         {resource.name}
