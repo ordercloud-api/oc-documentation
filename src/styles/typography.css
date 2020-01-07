@@ -1,0 +1,26 @@
+@font-face {
+	font-family: 'Geometria';
+	src: url('../assets/fonts/Geometria/Geometria_400/3A0B9A_27_0.woff') format('woff');
+	font-weight: 400;
+}
+@font-face {
+	font-family: 'Geometria';
+	src: url('../assets/fonts/Geometria/Geometria_500/3A0B9A_26_0.woff') format('woff');
+	font-weight: 500;
+}
+@font-face {
+	font-family: 'Geometria';
+	src: url('./assets/fonts/Geometria/Geometria_500/3A0B9A_26_0.woff') format('truetype');
+	font-weight: 600;
+}
+@font-face {
+	font-family: 'Geometria';
+	src: url('./assets/fonts/Geometria/Geometria_500/3A0B9A_26_0.woff') format('truetype');
+	font-weight: 700;
+}
+
+@font-face {
+	font-family: 'Geometria';
+	src: url('DroidSerif-BoldItalic-webfont.ttf') format('truetype');
+	font-weight: 800;
+}
