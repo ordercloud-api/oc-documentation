@@ -1,6 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles'
 import { sherpablue, seafoam, sizzlingred } from './ocPalette.constants'
-import CoreSansWoff from '../assets/fonts/CoreSansD/coresansd-regular.woff'
+import CoreSansWoff from '../assets/fonts/CoreSansD/CoreSansD_400/3A0B9A_8_0.woff'
+import CoreSansWoff2 from '../assets/fonts/CoreSansD/CoreSansD_400/3A0B9A_8_0.woff2'
 import GeometriaFonts from '../theme/theme.typography.geometria'
 
 const CoreSans = {
@@ -8,10 +9,7 @@ const CoreSans = {
   fontStyle: 'normal',
   fontDisplay: 'swap' as 'swap',
   fontWeight: 400,
-  src: `
-    local('Core Sans'),
-    url(${CoreSansWoff}) format('woff')
-  `,
+  src: `url(${CoreSansWoff2}) format('woff2'), url(${CoreSansWoff}) format('woff')`,
   unicodeRange:
     'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
 }
@@ -50,18 +48,27 @@ export default createMuiTheme({
     h3: {
       fontSize: '1.5rem',
       fontFamily: headingFontFamilies,
+      fontWeight: 600,
     },
     h4: {
       fontSize: '1.25rem',
       fontFamily: headingFontFamilies,
+      fontWeight: 500,
     },
     h5: {
       fontSize: '1.15rem',
       fontFamily: headingFontFamilies,
+      fontWeight: 500,
     },
     h6: {
       fontSize: '1rem',
       fontFamily: headingFontFamilies,
+      fontWeight: 500,
+    },
+    subtitle1: {
+      fontSize: '.875rem',
+      fontFamily: headingFontFamilies,
+      lineHeight: 1.5,
     },
     fontFamily: bodyFontFamilies,
   },

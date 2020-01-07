@@ -38,7 +38,7 @@ const fontFaces = fontAttributes.map(attribute => {
     fontStyle: 'normal',
     fontDisplay: 'swap' as 'swap',
     fontWeight: attribute.weight,
-    src: `local('Geometria'), url(${attribute.fonts[0]}) format('woff2'), url(${attribute.fonts[1]}) format('woff')`,
+    src: `url(${attribute.fonts[0]}) format('woff2'), url(${attribute.fonts[1]}) format('woff')`,
     unicodeRange: 'U+000-5FF',
   }
 })
