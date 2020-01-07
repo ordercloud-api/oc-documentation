@@ -44,6 +44,4 @@ const fontFaces = fontAttributes.map(attribute => {
   }
 })
 
-console.log(fontFaces)
-
 export default fontFaces
