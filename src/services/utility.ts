@@ -7,6 +7,13 @@ const service = {
   resolvePath,
 }
 
+const DOCS_SECTION_ORDER = [
+  'Getting Started',
+  'Main Concepts',
+  'Features',
+  'Guides',
+]
+
 function getSectionsFromDocsQuery(query: DocsQuery): Section[] {
   const sectionsWithGuides = groupBy(
     query.allMdx.edges,
@@ -22,7 +29,7 @@ function getSectionsFromDocsQuery(query: DocsQuery): Section[] {
     }
     sections = [...sections, formattedSection]
   })
-  return sections
+  return DOCS_SECTION_ORDER.map(s => sections.find(sec => sec.title === s))
 }
 
 /**
