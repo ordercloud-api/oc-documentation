@@ -26,6 +26,7 @@ export const Initialize = async (parsedSpec?: OrderCloudProps) => {
       operationsByResource: parsedSpec.operationsByResource,
     })
   }
+  if (result.oc) return result.oc
   if (!parsedSpec && !result.oc) {
     const parsedSpec: any = await SwaggerParser.dereference(SwaggerSpec as any)
     const resources = parsedSpec.tags
