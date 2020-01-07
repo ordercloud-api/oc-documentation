@@ -81,6 +81,7 @@ export default createMuiTheme({
         '@font-face': [...CoreSansDFonts, ...GeometriaFonts],
         a: {
           color: secondaryColor[900],
+          lineHeight: '1.5em',
         },
         code: {
           whiteSpace: 'pre-wrap',
@@ -99,6 +100,11 @@ export default createMuiTheme({
             defaultTheme.palette.background.paper
           ),
         },
+      },
+    },
+    MuiButton: {
+      label: {
+        paddingTop: 2,
       },
     },
     MuiTypography: {
