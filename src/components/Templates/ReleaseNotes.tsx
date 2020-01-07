@@ -130,7 +130,7 @@ function ReleaseNotesComponent(props: any) {
                 className={`${classes.year} ${
                   y.year === currentYear ? classes.yearActive : undefined
                 }`}
-                variant="h3"
+                variant="h4"
                 component="h5"
                 onClick={onYearClick(y.year, y.months[0].month)}
               >

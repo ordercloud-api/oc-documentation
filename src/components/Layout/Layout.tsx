@@ -28,11 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageWrapper: {
       backgroundColor: 'white',
-      marginTop: navHeightMobile, // spacing from top of page on mobile (due to horiz menu)
       minHeight: `calc(100vh - ${navHeight}px)`,
       [theme.breakpoints.up('md')]: {
         marginBottom: theme.spacing(52.25),
-        marginTop: navHeight,
       },
       '& img': {
         maxWidth: '100%',
