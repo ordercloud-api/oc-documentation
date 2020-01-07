@@ -81,7 +81,6 @@ export default createMuiTheme({
         '@font-face': [...CoreSansDFonts, ...GeometriaFonts],
         a: {
           color: secondaryColor[900],
-          lineHeight: '1.5em',
         },
         code: {
           whiteSpace: 'pre-wrap',
