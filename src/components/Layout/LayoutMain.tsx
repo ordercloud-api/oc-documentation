@@ -4,9 +4,14 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      flex: '1',
-      minHeight: '100vh',
-      padding: theme.spacing(0, 4, 4, 4),
+      [theme.breakpoints.up('sm')]: {},
+      [theme.breakpoints.up('md')]: {
+        flex: '1 1 80%',
+        minHeight: '100vh',
+        width: '80%',
+        padding: theme.spacing(0, 4, 4, 4),
+      },
+      [theme.breakpoints.up('lg')]: {},
     },
   })
 )

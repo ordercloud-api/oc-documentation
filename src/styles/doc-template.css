@@ -2,7 +2,15 @@ html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  margin-top:64px;
 }
+
+@media(min-width:960px) {
+  html {
+    margin-top:80px;
+  }
+}
+
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
