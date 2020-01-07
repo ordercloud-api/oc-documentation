@@ -13,11 +13,9 @@ import { ChevronLeft, ChevronRight } from '@material-ui/icons'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      [theme.breakpoints.up('sm')]: {},
       [theme.breakpoints.up('md')]: {
         flex: '1 0 20%',
       },
-      [theme.breakpoints.up('lg')]: {},
     },
     inner: {
       overflowY: 'auto',
