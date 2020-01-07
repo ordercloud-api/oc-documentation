@@ -61,9 +61,9 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = (
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Type</TableCell>
-            <TableCell>Description</TableCell>
+            <TableCell style={{ width: '50%' }}>Description</TableCell>
             <TableCell>
-              Fields <small>(descending by priority)</small>
+              Default <small>(ordered by priority)</small>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -76,7 +76,9 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = (
                   {param.schema.type}
                 </code>
               </TableCell>
-              <TableCell>{param.description}</TableCell>
+              <TableCell style={{ width: '50%' }}>
+                {param.description}
+              </TableCell>
               <TableCell>
                 {param.schema.items && param.schema.items.enum
                   ? param.schema.items.enum.map((e, i) => (

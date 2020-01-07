@@ -20,15 +20,7 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = (
 
   return (
     <React.Fragment>
-      <a
-        id={operation.operationId}
-        style={{
-          position: 'relative',
-          top: -60,
-          paddingBottom: 20,
-          display: 'block',
-        }}
-      />
+      <a id={operation.operationId} />
       <Typography variant="h3">
         {operation.summary.replace(/\./g, '')}
       </Typography>
