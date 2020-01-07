@@ -53,7 +53,7 @@ const styles = (theme: Theme) =>
       top: '-10vh',
       left: '45vw',
       opacity: 0.25,
-      minWidth: '55%',
+      width: '55%',
       mixBlendMode: 'exclusion',
       [theme.breakpoints.down('md')]: {
         minWidth: '150%',
