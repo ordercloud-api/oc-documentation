@@ -36,13 +36,16 @@ class ApiReference extends React.Component<any> {
   }
 
   public async componentDidMount() {
-    const ocApi = this.props.pageContext.OcApi
-    await Initialize(ocApi)
+    const ocApi = await Initialize(this.props.pageContext.OcApi)
+    console.log(this.state.ocApi, ocApi)
+    this.setState({ ocApi })
     const selectedOperationId = window.location.hash.replace('#', '')
-    this.initSelectedOperation(ocApi, selectedOperationId)
+    this.initSelectedOperation(selectedOperationId)
     if (selectedOperationId) {
       // TODO : would be 'dry'er to put in if(operId) statement in initSelectedOperation but it breaks
       document.getElementById(selectedOperationId).scrollIntoView()
+    } else {
+      window.scrollTo({ top: 0 })
     }
   }
 
@@ -53,7 +56,8 @@ class ApiReference extends React.Component<any> {
     }
   }
 
-  private initSelectedOperation = (ocApi: any, operId: string) => {
+  private initSelectedOperation = (operId: string) => {
+    const { ocApi } = this.state
     let selectedOperation
     let activeIndex = 0
     let resourceData
@@ -90,7 +94,7 @@ class ApiReference extends React.Component<any> {
   }
 
   public handleSectionChange = sectionIndex => {
-    const ocApi = this.props.pageContext.OcApi
+    const { ocApi } = this.state
     const listResources = ocApi.resources.filter(ref => {
       return ref['x-section-id'] === ocApi.sections[sectionIndex]['x-id']
     })
@@ -104,18 +108,12 @@ class ApiReference extends React.Component<any> {
 
   public handleResourceChange = (resourceName: string) => {
     const resourceData = this.getResourceData(resourceName)
-
-    const selectedOperation =
-      (this.state.selectedResource &&
-        resourceName != this.state.selectedResource.name) ||
-      !this.state.selectedOperation
-        ? resourceData['listOperations'][0]
-        : null
     this.setState({
       listOperations: resourceData['listOperations'],
       selectedResource: resourceData['selectedResource'],
-      selectedOperation,
+      selectedOperation: null,
     })
+    window.scrollTo({ top: 0 })
   }
 
   public handleOperationChange = (operation: ApiOperation) => {
@@ -123,8 +121,9 @@ class ApiReference extends React.Component<any> {
   }
 
   public render() {
-    const { pageContext, location } = this.props
-    return (
+    const { location } = this.props
+    const { ocApi } = this.state
+    return ocApi ? (
       <Layout location={location}>
         <LayoutContainer>
           <LayoutMain>
@@ -137,17 +136,18 @@ class ApiReference extends React.Component<any> {
           </LayoutMain>
           <LayoutMenu>
             <ApiReferenceMenu
-              ocApi={pageContext.OcApi}
+              ocApi={ocApi}
               activeIndex={this.state.activeIndex}
               sectionChange={this.handleSectionChange}
               resourceChange={this.handleResourceChange}
               operationChange={this.handleOperationChange}
+              selectedResource={this.state.selectedResource}
               selectedOperation={this.state.selectedOperation}
             />
           </LayoutMenu>
         </LayoutContainer>
       </Layout>
-    )
+    ) : null
   }
 }
 
