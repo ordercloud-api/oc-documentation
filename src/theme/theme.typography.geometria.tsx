@@ -3,6 +3,7 @@ import GeometriaWoff500 from '../assets/fonts/Geometria/Geometria_500/3A0B9A_26_
 import GeometriaWoff600 from '../assets/fonts/Geometria/Geometria_600/3A0B9A_21_0.woff'
 import GeometriaWoff700 from '../assets/fonts/Geometria/Geometria_700/3A0B9A_1C_0.woff'
 import GeometriaWoff800 from '../assets/fonts/Geometria/Geometria_800/3A0B9A_20_0.woff'
+
 import GeometriaWoff2400 from '../assets/fonts/Geometria/Geometria_400/3A0B9A_27_0.woff2'
 import GeometriaWoff2500 from '../assets/fonts/Geometria/Geometria_500/3A0B9A_26_0.woff2'
 import GeometriaWoff2600 from '../assets/fonts/Geometria/Geometria_600/3A0B9A_21_0.woff2'
@@ -42,6 +43,5 @@ const fontFaces = fontAttributes.map(attribute => {
     unicodeRange: 'U+000-5FF',
   }
 })
-console.log(fontFaces)
 
 export default fontFaces
