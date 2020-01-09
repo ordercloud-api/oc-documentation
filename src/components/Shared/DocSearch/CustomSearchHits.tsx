@@ -135,6 +135,23 @@ function HitItem(hit, classes) {
     </ListItemLink>
   )
 }
+
+function ReferenceHitItem(hit, classes) {
+  return (
+    <ListItemLink button to={hit.link} key={hit.objectID}>
+      <Box display="flex" flexDirection="column">
+        <ListItemText
+          primary={`${hit.summary}`}
+          classes={{
+            primary: classes.hitItemPrimary,
+            secondary: classes.hitItemSecondary,
+          }}
+          secondary={`${hit.verb} ${hit.path}`}
+        />
+      </Box>
+    </ListItemLink>
+  )
+}
 const OrderCloudSearchHits = ({
   hits,
   open,
@@ -184,7 +201,9 @@ const OrderCloudSearchHits = ({
                       {section === 'undefined' ? 'OrderCloud Blog' : section}
                     </ListSubheader>
                     {items.map(hit => {
-                      return HitItem(hit, classesSelf)
+                      return hit.verb
+                        ? ReferenceHitItem(hit, classesSelf)
+                        : HitItem(hit, classesSelf)
                     })}
                   </React.Fragment>
                 )

@@ -1,233 +1,173 @@
-import React from 'react'
-import { map as _map, findIndex as _findIndex } from 'lodash'
+import React, { FC, useMemo, useState, useCallback } from 'react'
 import {
-  Collapse,
-  makeStyles,
-  createStyles,
   Typography,
+  makeStyles,
   Theme,
+  createStyles,
+  Collapse,
+  Box,
+  IconButton,
 } from '@material-ui/core'
-import OpenApi from '../../services/openapi.service'
-import { ExpandLess, ExpandMore } from '@material-ui/icons'
-import {
-  OrderCloudProps,
-  ApiOperation,
-  ApiResource,
-  ApiSection,
-} from '../../models/openapi.models'
+import { Link } from 'gatsby'
+import { Folder, FolderOpen, ExpandLess, ExpandMore } from '@material-ui/icons'
 
-interface ApiReferenceProps {
+interface ApiReferenceMenuOperation {
   name: string
-  x_section_id: string
-  x_id: string
-  description: string
+  path: string
 }
 
-export const drawerWidthSpacingLg = 56
-export const drawerWidthSpacing = drawerWidthSpacingLg - 20
+interface ApiReferenceMenuResource extends ApiReferenceMenuOperation {
+  operations: ApiReferenceMenuOperation[]
+}
+
+interface ApiReferenceMenuSection extends ApiReferenceMenuOperation {
+  resources: ApiReferenceMenuResource[]
+}
+
+export type ApiReferenceMenuData = ApiReferenceMenuSection[]
+
+interface ApiReferenceMenuProps {
+  data: ApiReferenceMenuData
+  uri: string
+}
+
+const ApiReferenceMenu: FC<ApiReferenceMenuProps> = (
+  props: ApiReferenceMenuProps
+) => {
+  const { data, uri } = props
+  return (
+    <aside>
+      {data.map(s => (
+        <ApiReferenceMenuSection key={s.path} data={s} uri={uri} />
+      ))}
+    </aside>
+  )
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      width: '100%',
-      maxWidth: 360,
-      backgroundColor: theme.palette.background.paper,
-    },
-    drawer: {
-      [theme.breakpoints.up('lg')]: {
-        width: theme.spacing(drawerWidthSpacingLg),
-        flexShrink: 0,
-      },
-    },
-    section: {
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      margin: theme.spacing(2, 0),
-    },
-    resource: {
-      display: 'flex',
-      alignItems: 'center',
-      cursor: 'pointer',
-    },
-    resourceActive: {
-      fontWeight: 'bold',
-    },
-    operations: {
-      listStyle: 'none',
-      padding: 0,
-    },
-    operation: {
-      ...theme.typography.body1,
-      textDecoration: 'none',
+    linkItem: (props: any) => {
+      const typeStyles = (() => {
+        switch (props.type) {
+          case 'section':
+            return {
+              marginBottom: theme.spacing(1),
+              maxWidth: '80%',
+            }
+          case 'resource':
+            return {}
+          case 'operation':
+            return {
+              marginBottom: theme.spacing(0.5),
+            }
+          default:
+            return {}
+        }
+      })()
+      return {
+        color: theme.palette.getContrastText(theme.palette.background.paper),
+        textDecoration: 'none',
+        fontWeight: props.isActive ? 'bold' : undefined,
+        ...typeStyles,
+      }
     },
   })
 )
 
-interface ApiReferenceMenuProps {
-  sectionChange: (sectionIndex: number) => void
-  resourceChange: (resourceName: string) => void
-  operationChange: (operation: ApiOperation) => void
-  ocApi: OrderCloudProps
-  activeIndex: number
-  selectedOperation: ApiOperation
-  selectedResource: ApiResource
-}
-export default function ApiReferenceMenu(props: ApiReferenceMenuProps) {
-  const {
-    ocApi,
-    sectionChange,
-    resourceChange,
-    operationChange,
-    activeIndex,
-    selectedOperation,
-    selectedResource,
-  } = props
+const ApiReferenceMenuSection = (props: {
+  data: ApiReferenceMenuSection
+  uri: string
+}) => {
+  const { data, uri } = props
+  const isActive = useMemo(() => {
+    return uri.includes(data.path)
+  }, [uri])
+  const classes = useStyles({ isActive, type: 'section' })
   return (
-    <React.Fragment>
-      {_map(ocApi.sections, (section, index) => {
-        return (
-          <Section
-            key={index}
-            section={section}
-            ocApi={ocApi}
-            sectionChange={sectionChange}
-            resourceChange={resourceChange}
-            operationChange={operationChange}
-            activeIndex={activeIndex}
-            selectedOperation={selectedOperation}
-            selectedResource={selectedResource}
-          />
-        )
-      })}
-    </React.Fragment>
-  )
-}
-
-interface SectionProps {
-  sectionChange: (sectionIndex: number) => void
-  resourceChange: (resourceName: string) => void
-  operationChange: (operation: ApiOperation) => void
-  section: ApiSection
-  ocApi: OrderCloudProps
-  activeIndex: number
-  selectedOperation: ApiOperation
-  selectedResource: ApiResource
-}
-function Section(props: SectionProps) {
-  const {
-    section,
-    ocApi,
-    sectionChange,
-    activeIndex,
-    resourceChange,
-    operationChange,
-    selectedOperation,
-    selectedResource,
-  } = props
-
-  const classes = useStyles(props)
-  const sectionIndex = _findIndex(
-    ocApi.sections,
-    sect => sect['x-id'] === section['x-id']
-  )
-  const isActive = sectionIndex === activeIndex
-  const [open, setOpen] = React.useState(isActive)
-
-  const resources = ocApi.resources.filter(
-    r => r['x-section-id'] == section['x-id']
-  )
-
-  function handleClick() {
-    setOpen(!open)
-    sectionChange(sectionIndex)
-  }
-
-  return (
-    <React.Fragment>
+    <Box key={data.path} marginBottom={3}>
       <Typography
         variant="h4"
         display="block"
-        className={classes.section}
-        onClick={handleClick}
+        className={classes.linkItem}
+        component={Link}
+        to={data.path}
       >
-        {section.name}
-        {open ? <ExpandLess /> : <ExpandMore />}
+        {data.name}
       </Typography>
-      <Collapse in={isActive} timeout="auto" unmountOnExit>
-        {resources.map((resource, index) => (
-          <Resource
-            key={index}
-            resource={resource}
-            operationChange={operationChange}
-            resourceChange={resourceChange}
-            isActive={
-              resource.name ===
-              (selectedResource
-                ? selectedResource.name
-                : selectedOperation
-                ? selectedOperation.resource.name
-                : false)
-            }
-            selectedOperation={selectedOperation}
-          />
-        ))}
-      </Collapse>
-    </React.Fragment>
+      {data.resources.map(r => (
+        <ApiReferenceMenuResource key={r.path} data={r} uri={uri} />
+      ))}
+    </Box>
   )
 }
 
-interface ResourceProps {
-  resource: ApiResource
-  resourceChange: (resourceName: string) => void
-  operationChange: (operation: ApiOperation) => void
-  selectedOperation: ApiOperation
-  isActive: boolean
-}
-function Resource(props: ResourceProps) {
-  const { resource, operationChange, resourceChange, isActive } = props
+const ApiReferenceMenuResource = (props: {
+  data: ApiReferenceMenuResource
+  uri: string
+}) => {
+  const { data, uri } = props
+  const isActive = useMemo(() => {
+    return uri.includes(data.path)
+  }, [uri])
+  const [isExpanded, setExpand] = useState(isActive)
+  const classes = useStyles({ isActive, type: 'resource' })
 
-  const classes = useStyles(props)
-
-  const [open, setOpen] = React.useState(isActive)
-
-  const operations = OpenApi.operationsByResource
-    ? OpenApi.operationsByResource[resource.name]
-    : null
-
-  function handleClick() {
-    setOpen(!open)
-    resourceChange(resource.name)
-  }
+  const handleToggleExpand = useCallback(() => {
+    setExpand(!isExpanded)
+  }, [isExpanded])
 
   return (
-    <React.Fragment>
-      <Typography
-        variant="button"
-        display="block"
-        className={`${classes.resource} ${
-          isActive ? classes.resourceActive : ''
-        }`}
-        onClick={handleClick}
-      >
-        {resource.name}
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </Typography>
-      <Collapse in={isActive} timeout="auto" unmountOnExit>
-        <ul className={classes.operations}>
-          {operations && operations.length
-            ? operations.map((o, index) => {
-                return (
-                  <li key={index} onClick={() => operationChange(o)}>
-                    <a className={classes.operation} href={`#${o.operationId}`}>
-                      {o.summary.replace(/\./g, ' ')}
-                    </a>
-                  </li>
-                )
-              })
-            : null}
-        </ul>
+    <React.Fragment key={data.path}>
+      <Box display="inline-flex" marginLeft={-3}>
+        <IconButton size="small" onClick={handleToggleExpand}>
+          {isExpanded ? (
+            <ExpandLess fontSize="inherit" />
+          ) : (
+            <ExpandMore fontSize="inherit" />
+          )}
+        </IconButton>
+        <Typography
+          variant="button"
+          display="block"
+          className={classes.linkItem}
+          component={Link}
+          to={data.path}
+        >
+          {data.name}
+        </Typography>
+      </Box>
+      <Collapse in={isExpanded}>
+        <Box paddingTop={1} paddingBottom={2}>
+          {data.operations.map(o => (
+            <ApiReferenceMenuOperation key={o.path} data={o} uri={uri} />
+          ))}
+        </Box>
       </Collapse>
     </React.Fragment>
   )
 }
+
+const ApiReferenceMenuOperation = (props: {
+  data: ApiReferenceMenuOperation
+  uri: string
+}) => {
+  const { data, uri } = props
+  const isActive = useMemo(() => {
+    return uri === data.path
+  }, [uri])
+  const classes = useStyles({ isActive, type: 'operation' })
+  return (
+    <Typography
+      display="block"
+      variant="body1"
+      className={classes.linkItem}
+      component={Link}
+      to={data.path}
+      key={data.path}
+    >
+      {data.name}
+    </Typography>
+  )
+}
+
+export default ApiReferenceMenu

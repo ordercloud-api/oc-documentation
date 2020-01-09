@@ -4,7 +4,7 @@ import Prism from 'prismjs'
 
 interface ApiResponsesProps {
   responses?: {
-    [statusCode: string]: string
+    [statusCode: string]: any
   }
 }
 
@@ -18,12 +18,22 @@ const ApiResponses: React.FunctionComponent<ApiResponsesProps> = (
   const { responses } = props
   return responses ? (
     <React.Fragment>
-      <Typography variant="h4">Responses</Typography>
+      <Typography variant="h3">Response</Typography>
       {Object.entries(responses).map(([statusCode, response]) => {
         return (
-          <Typography key={response} variant="h5">
-            {statusCode}
-          </Typography>
+          <pre key={statusCode}>
+            <code className="language-json">
+              {response &&
+              response.content &&
+              response.content['application/json'].schema.example
+                ? JSON.stringify(
+                    response.content['application/json'].schema.example,
+                    null,
+                    2
+                  )
+                : null}
+            </code>
+          </pre>
         )
       })}
     </React.Fragment>
