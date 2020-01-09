@@ -5,7 +5,6 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Typography,
   makeStyles,
   Theme,
   createStyles,
@@ -19,6 +18,7 @@ import {
   sunset,
 } from '../../../theme/ocPalette.constants'
 import { OperationParameter } from '../../../models/openapi.models'
+import ApiHeading from './ApiHeading'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,7 +56,7 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = (
 
   return parameters ? (
     <React.Fragment>
-      <Typography variant="h2">Parameters</Typography>
+      <ApiHeading title="Parameters" variant="h2" />
       <Paper>
         <Table>
           <TableHead>

@@ -1,7 +1,10 @@
-import { createStyles, Theme, Typography } from '@material-ui/core'
+import { createStyles, Theme } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import { ApiOperation } from '../../../models/openapi.models'
+import Prism from 'prismjs'
+import { omit } from 'lodash'
+import ApiHeading from './ApiHeading'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,35 +16,87 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+function mapResponse([statusCode, response]) {
+  console.log(statusCode, response)
+
+  const exampleResponse = `Status Code ${statusCode} HTTP/1.1`
+  const exampleResponseBody =
+    response &&
+    response.content &&
+    response.content['application/json'].schema.example
+      ? `
+
+${JSON.stringify(response.content['application/json'].schema.example, null, 2)}`
+      : null
+
+  return (
+    <React.Fragment key={statusCode}>
+      <pre>
+        <code className="language-http">{exampleResponse}</code>
+        {exampleResponseBody && (
+          <code className="language-json">{exampleResponseBody}</code>
+        )}
+      </pre>
+    </React.Fragment>
+  )
+}
+
 const ApiExampleModel = (props: { operation: ApiOperation }) => {
   const classes = useStyles({})
   const { operation } = props
-  const operationExample = useMemo(() => {
-    if (!operation) return ''
-    const result = `${operation.verb.toUpperCase()} ${operation.path}
-Authorization Bearer XXXX...${
-      operation.requestBody
-        ? `
+  const exampleRequest = useMemo(() => {
+    if (operation) {
+      return `${operation.verb.toUpperCase()} ${operation.path} HTTP/1.1
+Authentication: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
+Content-Type: application/json; charset=UTF-8`
+    }
+  }, [operation])
+
+  const exampleRequestBody = useMemo(() => {
+    if (operation && operation.requestBody) {
+      return `
+
+//Request Body
 ${JSON.stringify(
-  operation.requestBody.content['application/json'].schema.allOf[0].example,
+  omit(
+    operation.requestBody.content['application/json'].schema.allOf[0].example,
+    Object.entries(
+      operation.requestBody.content['application/json'].schema.allOf[0]
+        .properties
+    )
+      .filter(([k, v]: [string, any]) => v.readOnly)
+      .map(([k, v]) => k)
+  ),
   null,
   2
-)}
-`
-        : undefined
-    }`
-    return result
+)}`
+    }
   }, [operation])
-  return operationExample ? (
-    <React.Fragment>
-      {operationExample && (
+
+  const exampleResponses = useMemo(() => {
+    if (operation && operation.responses) {
+      return (
         <React.Fragment>
-          <Typography variant="h2">Example</Typography>
-          <pre className={classes.pre}>
-            <code className="language-curl">{operationExample}</code>
-          </pre>
+          <ApiHeading title="Response" variant="h3" />
+          {Object.entries(operation.responses).map(mapResponse)}
         </React.Fragment>
-      )}
+      )
+    }
+  }, [operation])
+
+  useEffect(() => {
+    Prism.highlightAll()
+  }, [exampleRequest, exampleResponses])
+
+  return exampleRequest ? (
+    <React.Fragment>
+      <ApiHeading title="Example" variant="h2" />
+      <ApiHeading title="Request" variant="h3" />
+      <pre className={classes.pre}>
+        <code className="language-http">{exampleRequest}</code>
+        <code className="language-json">{exampleRequestBody}</code>
+      </pre>
+      {exampleResponses}
     </React.Fragment>
   ) : null
 }

@@ -9,7 +9,7 @@ import {
   IconButton,
 } from '@material-ui/core'
 import { Link } from 'gatsby'
-import { Folder, FolderOpen, ExpandLess, ExpandMore } from '@material-ui/icons'
+import { ExpandLess, ExpandMore } from '@material-ui/icons'
 
 interface ApiReferenceMenuOperation {
   name: string
@@ -47,25 +47,42 @@ const ApiReferenceMenu: FC<ApiReferenceMenuProps> = (
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     linkItem: (props: any) => {
+      const defaultColor = theme.palette.getContrastText(
+        theme.palette.background.paper
+      )
       const typeStyles = (() => {
         switch (props.type) {
           case 'section':
             return {
+              color: props.isActive
+                ? theme.palette.secondary.main
+                : defaultColor,
               marginBottom: theme.spacing(1),
               maxWidth: '80%',
             }
           case 'resource':
-            return {}
+            return {
+              color: defaultColor,
+            }
           case 'operation':
             return {
+              color: props.isActive ? defaultColor : theme.palette.grey[500],
               marginBottom: theme.spacing(0.5),
+              ...(props.isActive
+                ? {
+                    marginLeft: -theme.spacing(2.25),
+                    borderLeft: `${theme.spacing(0.5)}px solid ${
+                      theme.palette.secondary.light
+                    }`,
+                    paddingLeft: theme.spacing(1.75),
+                  }
+                : {}),
             }
           default:
             return {}
         }
       })()
       return {
-        color: theme.palette.getContrastText(theme.palette.background.paper),
         textDecoration: 'none',
         fontWeight: props.isActive ? 'bold' : undefined,
         ...typeStyles,

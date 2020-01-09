@@ -6,6 +6,7 @@ import {
   createStyles,
   Chip,
 } from '@material-ui/core'
+import ApiHeading from './ApiHeading'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,7 +32,7 @@ const ApiRoles: React.FunctionComponent<ApiRolesProps> = (
   const classes = useStyles({})
   return roles.length ? (
     <React.Fragment>
-      <Typography variant="h2">Roles</Typography>
+      <ApiHeading title="Roles" variant="h2" />
       <Typography>
         At least one of the roles below is required to access this endpoint
       </Typography>

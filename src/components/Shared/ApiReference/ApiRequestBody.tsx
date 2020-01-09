@@ -22,6 +22,7 @@ import {
   sherpablue,
   sunset,
 } from '../../../theme/ocPalette.constants'
+import ApiHeading from './ApiHeading'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -77,7 +78,7 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = (
     }
     return (
       <React.Fragment>
-        <Typography variant="h2">Request Body</Typography>
+        <ApiHeading title="Request Body" variant="h2" />
         {/** TODO: I have yet to see this appear; scrap or save for future use? */}
         {requestBody.description && (
           <Typography paragraph>{requestBody.description}</Typography>

@@ -4,9 +4,9 @@ import { ApiOperation as ApiOperationModel } from '../../../models/openapi.model
 import ApiExampleModel from './ApiExampleModel'
 import ApiParameters from './ApiParameters'
 import ApiRequestBody from './ApiRequestBody'
-import ApiResponses from './ApiResponses'
 import ApiRoles from './ApiRoles'
 import ApiRoute from './ApiRoute'
+import ApiHeading from './ApiHeading'
 
 interface ApiOperationProps {
   operation: ApiOperationModel
@@ -16,7 +16,6 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = (
   props: ApiOperationProps
 ) => {
   const { operation } = props
-
   return (
     <React.Fragment>
       <a id={operation.operationId} />
@@ -25,7 +24,12 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = (
       </Typography>
       <ApiRoute operation={operation}></ApiRoute>
 
-      <Typography>{operation.description}</Typography>
+      {operation.description && (
+        <React.Fragment>
+          <ApiHeading title="Description" variant="h2" />
+          <Typography paragraph>{operation.description}</Typography>
+        </React.Fragment>
+      )}
 
       <ApiRoles roles={operation.security[0].OAuth2}></ApiRoles>
 
@@ -34,8 +38,6 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = (
       <ApiRequestBody requestBody={operation.requestBody}></ApiRequestBody>
 
       <ApiExampleModel operation={operation} />
-
-      <ApiResponses responses={operation.responses}></ApiResponses>
     </React.Fragment>
   )
 }
