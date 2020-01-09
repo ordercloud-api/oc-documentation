@@ -9,6 +9,8 @@ import {
   makeStyles,
   Theme,
   Typography,
+  List,
+  Container,
 } from '@material-ui/core'
 import { RouteComponentProps } from '@reach/router'
 import Case from 'case'
@@ -28,6 +30,8 @@ import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
 import ApiOperationDisplay from '../Shared/ApiReference/ApiOperation'
+import Jumbotron from '../Shared/Jumbotron'
+import ListItemLink from '../Shared/ListItemLink'
 
 interface ApiReferenceProps extends RouteComponentProps {
   pageContext: {
@@ -46,6 +50,22 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     breadcrumbLink: {
       textDecoration: 'none',
+    },
+    paperList: {
+      flexGrow: 1,
+      [theme.breakpoints.up('md')]: {
+        columns: 2,
+      },
+    },
+    apiRefGrid: {
+      position: 'relative',
+      zIndex: 2,
+      marginTop: -theme.spacing(8),
+    },
+    apiRefCard: {
+      display: 'flex',
+      flexFlow: 'column nowrap',
+      height: '100%',
     },
   })
 )
@@ -98,6 +118,49 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
         title={pageInfo.title}
         description={pageInfo.description || defaultDescription}
       />
+      {!pageContext.section && (
+        <React.Fragment>
+          <Jumbotron heading="API Reference" text={defaultDescription} />
+          <Container>
+            <Grid container spacing={3} className={classes.apiRefGrid}>
+              {pageContext.menuData.map(s => (
+                <Grid key={s.path} item xs={12} sm={6} md={4}>
+                  <Card className={classes.apiRefCard}>
+                    <CardHeader
+                      title={
+                        <Typography style={{ paddingTop: 0 }} variant="h3">
+                          {s.name}
+                        </Typography>
+                      }
+                    />
+                    <List
+                      disablePadding={true}
+                      dense={true}
+                      className={classes.paperList}
+                    >
+                      {s.resources.map(r => (
+                        <ListItemLink key={r.path} to={r.path}>
+                          {r.name}
+                        </ListItemLink>
+                      ))}
+                    </List>
+                    <CardActions>
+                      <Button
+                        size="small"
+                        color="secondary"
+                        component={Link}
+                        to={s.path}
+                      >
+                        Learn More
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
+        </React.Fragment>
+      )}
       <LayoutContainer>
         <LayoutMain>
           {pageContext.section ? (
@@ -132,9 +195,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
                 </Typography>
               )}
             </Breadcrumbs>
-          ) : (
-            <Typography variant="h1">API Reference</Typography>
-          )}
+          ) : null}
           {!pageContext.resource && pageContext.section && (
             <React.Fragment>
               <Typography variant="h1">{pageContext.section.name}</Typography>
@@ -188,9 +249,11 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
             <ApiOperationDisplay operation={pageContext.operation} />
           )}
         </LayoutMain>
-        <LayoutMenu>
-          <ApiReferenceMenu data={pageContext.menuData} uri={uri} />
-        </LayoutMenu>
+        {pageContext.section && (
+          <LayoutMenu>
+            <ApiReferenceMenu data={pageContext.menuData} uri={uri} />
+          </LayoutMenu>
+        )}
       </LayoutContainer>
     </Layout>
   )
