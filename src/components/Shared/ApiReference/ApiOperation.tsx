@@ -1,43 +1,41 @@
-import React from 'react'
 import { Typography } from '@material-ui/core'
-import ApiRoute from './ApiRoute'
+import React from 'react'
+import { ApiOperation as ApiOperationModel } from '../../../models/openapi.models'
+import ApiExampleModel from './ApiExampleModel'
 import ApiParameters from './ApiParameters'
 import ApiRequestBody from './ApiRequestBody'
 import ApiResponses from './ApiResponses'
 import ApiRoles from './ApiRoles'
-import ApiExampleModel from './ApiExampleModel'
-import { ApiOperation as ApiOperationModel } from '../../../models/openapi.models'
+import ApiRoute from './ApiRoute'
 
 interface ApiOperationProps {
   operation: ApiOperationModel
-  example: string
 }
 
 const ApiOperation: React.FunctionComponent<ApiOperationProps> = (
   props: ApiOperationProps
 ) => {
-  const { operation, example } = props
+  const { operation } = props
 
   return (
     <React.Fragment>
       <a id={operation.operationId} />
-      <Typography variant="h3">
+      <Typography variant="h1">
         {operation.summary.replace(/\./g, '')}
       </Typography>
-
-      <Typography variant="body1">{operation.description}</Typography>
-
       <ApiRoute operation={operation}></ApiRoute>
+
+      <Typography>{operation.description}</Typography>
+
+      <ApiRoles roles={operation.security[0].OAuth2}></ApiRoles>
 
       <ApiParameters parameters={operation.parameters}></ApiParameters>
 
       <ApiRequestBody requestBody={operation.requestBody}></ApiRequestBody>
 
-      <ApiExampleModel example={example} />
+      <ApiExampleModel operation={operation} />
 
       <ApiResponses responses={operation.responses}></ApiResponses>
-      {/* <pre>{JSON.stringify(operation, null, 2)}</pre> */}
-      <ApiRoles roles={operation.security[0].OAuth2}></ApiRoles>
     </React.Fragment>
   )
 }

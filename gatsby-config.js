@@ -40,6 +40,32 @@ const blogQuery = `{
   }
 }`
 
+const apiRefQuery = `{
+  allSitePage(filter: {path: {glob: "/api-reference/*/*/*"}, context: {}}) {
+    nodes {
+      path
+      context {
+        operation {
+          operationId
+          summary
+          description
+          verb
+          path
+          security {
+            OAuth2
+          }
+          section {
+            name
+          }
+          resource {
+            name
+          }
+        }
+      }
+    }
+  }
+}`
+
 const flatten = arr => {
   return arr.map(({ node: { frontmatter, ...rest } }) => ({
     ...frontmatter,
@@ -63,6 +89,33 @@ const queries = [
     transformer: ({ data }) => flatten(data.blogs.edges),
     indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
     settings,
+  },
+  {
+    query: apiRefQuery,
+    transformer: ({ data }) =>
+      data.allSitePage.nodes.map(result => {
+        const {
+          section,
+          resource,
+          path,
+          operationId,
+          summary,
+          verb,
+          security,
+        } = result.context.operation
+        return {
+          objectID: operationId,
+          link: result.path,
+          path,
+          summary,
+          verb,
+          roles: security[0].OAuth2
+            ? security[0].OAuth2.filter(r => r !== 'FullAccess')
+            : [],
+          section: `API Reference / ${section.name} / ${resource.name}`,
+        }
+      }),
+    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
   },
 ]
 const toExport = {

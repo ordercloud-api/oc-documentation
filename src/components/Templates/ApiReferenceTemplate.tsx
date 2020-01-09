@@ -1,153 +1,145 @@
-import React from 'react'
+import React, { FC, useMemo } from 'react'
 import Layout from '../Layout/Layout'
-import OpenApi, { Initialize } from '../../services/openapi.service'
-import { withStyles, createStyles } from '@material-ui/core'
-import ApiReferenceMenu from '../Layout/ApiReferenceMenu'
-import { findIndex as _findIndex } from 'lodash'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
-import ApiResource from '../Shared/ApiReference/ApiResource'
-import { ApiOperation } from '../../models/openapi.models'
+import { RouteComponentProps } from '@reach/router'
+import { Helmet } from 'react-helmet'
+import {
+  ApiSection,
+  ApiResource,
+  ApiOperation,
+} from '../../models/openapi.models'
+import ApiReferenceMenu, {
+  ApiReferenceMenuData,
+} from '../Layout/ApiReferenceMenu'
+import {
+  Typography,
+  Breadcrumbs,
+  makeStyles,
+  Theme,
+  createStyles,
+} from '@material-ui/core'
+import ApiOperationDisplay from '../Shared/ApiReference/ApiOperation'
+import { Link } from 'gatsby'
+import Case from 'case'
 
-const styles = () =>
-  createStyles({
-    docContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      position: 'relative',
-      marginBlockStart: '2rem',
-      marginBlockEnd: '4rem',
-    },
-    operationsList: {
-      display: 'flex',
-      position: 'fixed',
-    },
-  })
-
-class ApiReference extends React.Component<any> {
-  public state = {
-    selectedResource: null,
-    selectedOperation: null,
-    listResources: [],
-    listOperations: [],
-    activeIndex: null,
-    ocApi: null,
-  }
-
-  public async componentDidMount() {
-    const ocApi = await Initialize(this.props.pageContext.OcApi)
-    this.setState({ ocApi })
-    const selectedOperationId = window.location.hash.replace('#', '')
-    this.initSelectedOperation(selectedOperationId)
-    if (selectedOperationId) {
-      // TODO : would be 'dry'er to put in if(operId) statement in initSelectedOperation but it breaks
-      document.getElementById(selectedOperationId).scrollIntoView()
-    } else {
-      window.scrollTo({ top: 0 })
-    }
-  }
-
-  private getResourceData = (resourceName: string) => {
-    return {
-      selectedResource: OpenApi.findResourceByName(resourceName),
-      listOperations: OpenApi.operationsByResource[resourceName],
-    }
-  }
-
-  private initSelectedOperation = (operId: string) => {
-    const { ocApi } = this.state
-    let selectedOperation
-    let activeIndex = 0
-    let resourceData
-    let listResources
-    if (operId) {
-      // bottom up (single operation to section)
-      selectedOperation = ocApi.operationsById[operId]
-
-      resourceData = this.getResourceData(selectedOperation.resource.name)
-
-      activeIndex = _findIndex(
-        ocApi.sections,
-        x => x['x-id'] === selectedOperation.resource['x-section-id']
-      )
-      listResources = ocApi.resources.filter(
-        ref => ref['x-section-id'] === ocApi.sections[activeIndex]['x-id']
-      )
-    } else {
-      // top down (section to single operation)
-      listResources = ocApi.resources.filter(
-        ref => ref['x-section-id'] === ocApi.sections[activeIndex]['x-id']
-      )
-      resourceData = this.getResourceData(listResources[activeIndex].name)
-      selectedOperation = resourceData['listOperations'][activeIndex]
-    }
-
-    this.setState({
-      activeIndex,
-      listResources,
-      selectedOperation,
-      selectedResource: resourceData['selectedResource'],
-      listOperations: resourceData['listOperations'],
-    })
-  }
-
-  public handleSectionChange = sectionIndex => {
-    const { ocApi } = this.state
-    const listResources = ocApi.resources.filter(ref => {
-      return ref['x-section-id'] === ocApi.sections[sectionIndex]['x-id']
-    })
-    const activeIndex =
-      sectionIndex === this.state.activeIndex ? -1 : sectionIndex
-    this.setState({
-      activeIndex,
-      listResources,
-    })
-  }
-
-  public handleResourceChange = (resourceName: string) => {
-    const resourceData = this.getResourceData(resourceName)
-    this.setState({
-      listOperations: resourceData['listOperations'],
-      selectedResource: resourceData['selectedResource'],
-      selectedOperation: null,
-    })
-    window.scrollTo({ top: 0 })
-  }
-
-  public handleOperationChange = (operation: ApiOperation) => {
-    this.setState({ selectedOperation: operation })
-  }
-
-  public render() {
-    const { location } = this.props
-    const { ocApi } = this.state
-    return ocApi ? (
-      <Layout location={location}>
-        <LayoutContainer>
-          <LayoutMain>
-            {this.state.selectedResource && (
-              <ApiResource
-                resource={this.state.selectedResource}
-                operations={this.state.listOperations}
-              />
-            )}
-          </LayoutMain>
-          <LayoutMenu>
-            <ApiReferenceMenu
-              ocApi={ocApi}
-              activeIndex={this.state.activeIndex}
-              sectionChange={this.handleSectionChange}
-              resourceChange={this.handleResourceChange}
-              operationChange={this.handleOperationChange}
-              selectedResource={this.state.selectedResource}
-              selectedOperation={this.state.selectedOperation}
-            />
-          </LayoutMenu>
-        </LayoutContainer>
-      </Layout>
-    ) : null
+interface ApiReferenceProps extends RouteComponentProps {
+  pageContext: {
+    menuData: ApiReferenceMenuData
+    section?: ApiSection
+    resource?: ApiResource
+    operation?: ApiOperation
   }
 }
 
-export default withStyles(styles)(ApiReference)
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    breadcrumbs: {
+      paddingTop: theme.spacing(1.5),
+      marginBottom: -theme.spacing(4.5),
+    },
+    breadcrumbLink: {
+      textDecoration: 'none',
+    },
+  })
+)
+
+const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
+  const { location, uri, pageContext } = props
+  const classes = useStyles({})
+  const defaultDescription =
+    'OrderCloud is a cloud-hosted B2B eCommerce platform exposed entirely via a RESTful API. It enables rapid development of custom, secure, and scalable B2B eCommerce solutions. Spin up a fully functional B2B app in minutes and customize it to limits of your imagination.'
+  const pageInfo = useMemo(() => {
+    const prefix = 'OrderCloud API'
+    const { section, resource, operation } = pageContext
+    if (operation) {
+      return {
+        title: `${prefix} | ${operation.summary}`,
+        description: resource.description,
+      }
+    }
+    if (resource) {
+      return {
+        title: `${prefix} | ${resource.name}`,
+        description: resource.description,
+      }
+    }
+    if (section) {
+      return {
+        title: `${prefix} | ${section.name}`,
+        description: section.description,
+      }
+    }
+    return {
+      title: `${prefix} Reference`,
+    }
+  }, [pageContext])
+  return (
+    <Layout location={location}>
+      <Helmet
+        title={pageInfo.title}
+        description={pageInfo.description || defaultDescription}
+      />
+      <LayoutContainer>
+        <LayoutMain>
+          {pageContext.section ? (
+            <Breadcrumbs className={classes.breadcrumbs}>
+              <Typography
+                className={classes.breadcrumbLink}
+                component={Link}
+                to="/api-reference"
+              >
+                API Reference
+              </Typography>
+              {pageContext.resource && (
+                <Typography
+                  className={classes.breadcrumbLink}
+                  component={Link}
+                  to={`/api-reference/${Case.kebab(
+                    pageContext.section['x-id']
+                  )}`}
+                >
+                  {pageContext.section.name}
+                </Typography>
+              )}
+              {pageContext.operation && pageContext.resource && (
+                <Typography
+                  className={classes.breadcrumbLink}
+                  component={Link}
+                  to={`/api-reference/${Case.kebab(
+                    pageContext.section['x-id']
+                  )}/${Case.kebab(pageContext.resource.name)}`}
+                >
+                  {pageContext.resource.name}
+                </Typography>
+              )}
+            </Breadcrumbs>
+          ) : (
+            <Typography variant="h1">API Reference</Typography>
+          )}
+          {!pageContext.resource && pageContext.section && (
+            <React.Fragment>
+              <Typography variant="h1">{pageContext.section.name}</Typography>
+              <Typography>{pageContext.section.description}</Typography>
+            </React.Fragment>
+          )}
+          {!pageContext.operation && pageContext.resource && (
+            <React.Fragment>
+              <Typography variant="h1">{pageContext.resource.name}</Typography>
+              <Typography>{pageContext.resource.description}</Typography>
+            </React.Fragment>
+          )}
+          {pageContext.operation && (
+            <ApiOperationDisplay operation={pageContext.operation} />
+          )}
+        </LayoutMain>
+        <LayoutMenu>
+          <ApiReferenceMenu data={pageContext.menuData} uri={uri} />
+        </LayoutMenu>
+      </LayoutContainer>
+    </Layout>
+  )
+}
+
+export default ApiReference
