@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles'
 import React, { useMemo, useEffect } from 'react'
 import { ApiOperation } from '../../../models/openapi.models'
 import Prism from 'prismjs'
-import { omit } from 'lodash'
+import { omit, keys } from 'lodash'
 import ApiHeading from './ApiHeading'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -54,22 +54,30 @@ Content-Type: application/json; charset=UTF-8`
 
   const exampleRequestBody = useMemo(() => {
     if (operation && operation.requestBody) {
+      const readOnlyFields = Object.entries(
+        operation.requestBody.content['application/json'].schema.allOf[0]
+          .properties
+      )
+        .filter(([k, v]: [string, any]) => v.readOnly)
+        .map(([k, v]) => k)
+      let body = omit(
+        operation.requestBody.content['application/json'].schema.allOf[0]
+          .example,
+        [
+          ...readOnlyFields,
+          ...(operation.verb === 'put' || operation.verb === 'patch'
+            ? ['ID', 'Password']
+            : []),
+        ]
+      )
+
+      if (operation.verb === 'patch') {
+        body = omit(body, keys(body).slice(3))
+      }
       return `
 
 //Request Body
-${JSON.stringify(
-  omit(
-    operation.requestBody.content['application/json'].schema.allOf[0].example,
-    Object.entries(
-      operation.requestBody.content['application/json'].schema.allOf[0]
-        .properties
-    )
-      .filter(([k, v]: [string, any]) => v.readOnly)
-      .map(([k, v]) => k)
-  ),
-  null,
-  2
-)}`
+${JSON.stringify(body, null, 2)}`
     }
   }, [operation])
 
