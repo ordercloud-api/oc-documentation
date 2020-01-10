@@ -32,9 +32,7 @@ Throughout a workflow an order undergoes various status changes:
 - Completed: Submitted and all the line items on the order have been shipped
 - Canceled: Order can no longer be submitted
 
-<sub>Note: Once and order is canceled, it is effectively DEAD and no further actions can be taken on it</sub>
-<br/>
-<br/>
+> Once and order is canceled, it is effectively DEAD and no further actions can be taken on it
 
 
 We've made it easy for you by tracking these changes as well as the time the status changes. A status is often time changed by the API automatically under certain conditions (e.g. all the quantities on all the lines are shipped so the platform changes the order status to 'Complete')
