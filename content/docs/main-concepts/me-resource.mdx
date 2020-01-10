@@ -5,15 +5,17 @@ priority: 3
 hidden: false
 ---
 
+import { Link } from 'gatsby'
+
 ## Me Resource
 
 Multi-tiered assignments make up a powerful mechanism for customizing the buyer experience down to the individual user. But once configured, the buyer (and developer for that matter) wants a fast and intuitive experience that's more concerned with what they see rather than how or why they see it.
 
 ## Easy Access to What the Currently Authenticated User is Assigned to or Owns
 
-OrderCloud provides the [Me resource](TODO:link-to-me-resource-in-api-reference) whose job it is to flatten these assignments for the currently authenticated user and just "show me what I can see" regardless at which level these assignments are made.
+OrderCloud provides the <Link to="/api-reference/me-and-my-stuff">Me Resource</Link> whose job it is to flatten these assignments for the currently authenticated user and just "show me what I can see" regardless at which level these assignments are made.
 
-For example let's say your buyer user is assigned an address at the buyer level, and another address at the usergroup level. Instead of listing assignments at both of those levels and manually resolving the addresses yourself, you can simply make a list call as that buyer user to [me/addresses](TODO:link-to-me-addresses) and quickly get the assigned addresses in one quick and fluid motion.
+For example let's say your buyer user is assigned an address at the buyer level, and another address at the usergroup level. Instead of listing assignments at both of those levels and manually resolving the addresses yourself, you can simply make a list call as that buyer user to <Link to="/api-reference/me-and-my-stuff/my-addresses">me/addresses</Link> and quickly get the assigned addresses in one quick and fluid motion.
 
 ## Ability to Admin Personal Resources
 
