@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react'
 import {
-  Typography,
+  createStyles,
+  makeStyles,
   Table,
+  TableBody,
+  TableCell,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  Tooltip,
-  makeStyles,
   Theme,
-  createStyles,
+  Tooltip,
+  Typography,
+  Paper,
 } from '@material-ui/core'
+import { VisibilityOutlined } from '@material-ui/icons'
 import Prism from 'prismjs'
-import { Lock } from '@material-ui/icons'
+import React, { useEffect } from 'react'
+import { OperationRequestBody } from '../../../models/openapi.models'
 import {
   flame,
   maroon,
@@ -20,7 +22,7 @@ import {
   sherpablue,
   sunset,
 } from '../../../theme/ocPalette.constants'
-import { OperationRequestBody } from '../../../models/openapi.models'
+import ApiHeading from './ApiHeading'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -76,50 +78,56 @@ const ApiRequestBody: React.FunctionComponent<ApiRequestBodyProps> = (
     }
     return (
       <React.Fragment>
-        <Typography variant="h4">Request Body Properties</Typography>
+        <ApiHeading title="Request Body" variant="h2" />
         {/** TODO: I have yet to see this appear; scrap or save for future use? */}
         {requestBody.description && (
           <Typography paragraph>{requestBody.description}</Typography>
         )}
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Property</TableCell>
-              <TableCell></TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell>Format</TableCell>
-              <TableCell>Max Length</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {Object.entries(schema.properties).map(
-              ([name, field]: [string, any]) => (
-                <TableRow key={name}>
-                  <TableCell>
-                    {name}{' '}
-                    {required && required.includes(name) ? '(required)' : null}
-                  </TableCell>
-                  <TableCell>
-                    {field.readOnly ? (
-                      <Tooltip title="Read Only" placement="top">
-                        <Lock />
-                      </Tooltip>
-                    ) : null}
-                  </TableCell>
-                  <TableCell>
-                    <code className={classes[field.type]}>
-                      {field.type || 'object'}
-                    </code>
-                  </TableCell>
-                  <TableCell>{field.format || '---'}</TableCell>
-                  <TableCell>
-                    {field.maxLength ? `${field.maxLength} characters` : '---'}
-                  </TableCell>
-                </TableRow>
-              )
-            )}
-          </TableBody>
-        </Table>
+        <Paper>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Property</TableCell>
+                <TableCell style={{ maxWidth: 40 }}></TableCell>
+                <TableCell style={{ width: 100 }}>Type</TableCell>
+                <TableCell>Format</TableCell>
+                <TableCell>Max Length</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Object.entries(schema.properties).map(
+                ([name, field]: [string, any]) => (
+                  <TableRow key={name}>
+                    <TableCell>
+                      {name}{' '}
+                      {required && required.includes(name)
+                        ? '(required)'
+                        : null}
+                    </TableCell>
+                    <TableCell style={{ maxWidth: 40 }}>
+                      {field.readOnly ? (
+                        <Tooltip title="Read Only" placement="top">
+                          <VisibilityOutlined />
+                        </Tooltip>
+                      ) : null}
+                    </TableCell>
+                    <TableCell style={{ width: 100 }}>
+                      <code className={classes[field.type]}>
+                        {field.type || 'object'}
+                      </code>
+                    </TableCell>
+                    <TableCell>{field.format || '---'}</TableCell>
+                    <TableCell>
+                      {field.maxLength
+                        ? `${field.maxLength} characters`
+                        : '---'}
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
+            </TableBody>
+          </Table>
+        </Paper>
       </React.Fragment>
     )
   }

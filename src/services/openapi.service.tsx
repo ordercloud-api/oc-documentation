@@ -1,5 +1,4 @@
 import SwaggerParser from 'swagger-parser'
-import SwaggerSpec from '../openapi.json'
 import { groupBy, keyBy, mapValues, values, flatten } from 'lodash'
 import {
   OrderCloudProps,
@@ -15,7 +14,9 @@ const result: OpenApiResult = {
   oc: null,
 }
 
-export const Initialize = async (parsedSpec?: OrderCloudProps) => {
+export const Initialize = async (
+  parsedSpec?: OrderCloudProps
+): Promise<OrderCloudProps> => {
   if (parsedSpec && !result.oc) {
     return (result.oc = {
       openapi: parsedSpec.openapi,
@@ -26,8 +27,12 @@ export const Initialize = async (parsedSpec?: OrderCloudProps) => {
       operationsByResource: parsedSpec.operationsByResource,
     })
   }
+  if (result.oc) return result.oc
   if (!parsedSpec && !result.oc) {
-    const parsedSpec: any = await SwaggerParser.dereference(SwaggerSpec as any)
+    const parsedSpec: any = await SwaggerParser.dereference(
+      'https://api.ordercloud.io/v1/openapi/v3'
+    )
+    const sections = parsedSpec.tags.filter(tag => tag['x-id'])
     const resources = parsedSpec.tags
       .filter(tag => tag['x-section-id'])
       .concat(GetSubsectionsToAdd())
@@ -39,7 +44,10 @@ export const Initialize = async (parsedSpec?: OrderCloudProps) => {
               const tags =
                 o.tags[0] === 'Me' ? [GetSubSectionName(path)] : o.tags
               const resource = resources.filter(r => r.name === tags[0])[0]
-              return { ...o, verb, path, tags, resource }
+              const section = sections.filter(
+                s => s['x-id'] === resource['x-section-id']
+              )[0]
+              return { ...o, verb, path, tags, resource, section }
             })
           )
         })
@@ -48,7 +56,7 @@ export const Initialize = async (parsedSpec?: OrderCloudProps) => {
 
     return (result.oc = {
       openapi: parsedSpec,
-      sections: parsedSpec.tags.filter(tag => tag['x-id']),
+      sections,
       resources,
       operations,
       operationsById: keyBy(operations, 'operationId'),
