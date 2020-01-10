@@ -10,7 +10,6 @@ export interface Guide {
   frontmatter: {
     section: string
     title: string
-    hidden?: boolean
   }
   headings: [
     {

@@ -22,7 +22,6 @@ export interface DocsQuery {
           frontmatter: {
             section: string
             title: string
-            hidden?: boolean
           }
         }
       }

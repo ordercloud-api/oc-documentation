@@ -115,7 +115,6 @@ const MainComponent: React.FunctionComponent = props => {
             frontmatter {
               section
               title
-              hidden
             }
           }
         }
@@ -176,42 +175,37 @@ const MainComponent: React.FunctionComponent = props => {
                 key={index}
                 className={classes.paperRoot}
               >
-                {section.guides.filter(c => !c.frontmatter.hidden).length >
-                0 ? (
-                  <Paper elevation={5}>
-                    <Box p={2} zIndex={1}>
-                      <div className={classes.paperCard}>
-                        <Typography
-                          className={classes.paperTitleHeading}
-                          variant="h3"
-                        >
-                          {section.title}
-                        </Typography>
-                        <Typography
-                          className={classes.paperTitleSubheading}
-                          variant="subtitle1"
-                        >
-                          {getSectionSubtitle(section.title)}
-                        </Typography>
-                        <List
-                          disablePadding={true}
-                          dense={true}
-                          className={classes.paperList}
-                        >
-                          {section.guides
-                            .filter(g => !g.frontmatter.hidden)
-                            .map(g => {
-                              return (
-                                <ListItemLink key={g.id} to={g.path}>
-                                  {g.frontmatter.title}
-                                </ListItemLink>
-                              )
-                            })}
-                        </List>
-                      </div>
-                    </Box>
-                  </Paper>
-                ) : null}
+                <Paper elevation={5}>
+                  <Box p={2} zIndex={1}>
+                    <div className={classes.paperCard}>
+                      <Typography
+                        className={classes.paperTitleHeading}
+                        variant="h3"
+                      >
+                        {section.title}
+                      </Typography>
+                      <Typography
+                        className={classes.paperTitleSubheading}
+                        variant="subtitle1"
+                      >
+                        {getSectionSubtitle(section.title)}
+                      </Typography>
+                      <List
+                        disablePadding={true}
+                        dense={true}
+                        className={classes.paperList}
+                      >
+                        {section.guides.map(g => {
+                          return (
+                            <ListItemLink key={g.id} to={g.path}>
+                              {g.frontmatter.title}
+                            </ListItemLink>
+                          )
+                        })}
+                      </List>
+                    </div>
+                  </Box>
+                </Paper>
               </Grid>
             ))}
         </Grid>

@@ -3,7 +3,7 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 const docsQuery = `{
-  docs: allMdx(sort: {order: ASC, fields: [frontmatter___priority]}, filter: {fileAbsolutePath: {glob: "**/content/docs/**/*.mdx"}}) {
+  docs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/docs/**/*.mdx"}}) {
     edges {
       node {
         objectID: id
@@ -11,7 +11,6 @@ const docsQuery = `{
         frontmatter {
           section
           title
-          hidden
           summary
           authors
         }
@@ -22,7 +21,7 @@ const docsQuery = `{
 }
 `
 const blogQuery = `{
-  blogs: allMdx(sort: {order: ASC, fields: [frontmatter___priority]}, filter: {fileAbsolutePath: {glob: "**/content/blog/*.mdx"}}) {
+  blogs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/blog/*.mdx"}}) {
     edges {
       node {
         objectID: id
