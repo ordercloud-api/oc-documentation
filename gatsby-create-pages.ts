@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import openApiService from './src/services/openapi.service'
 import { GatsbyCreatePages } from './src/models/gatsby.models'
+import Case from 'case'
 
 export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
   const { createPage } = actions
@@ -58,15 +59,81 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
   const apiRef = openApiService
     .initialize()
     .then(result => {
-      return createPage({
-        path: '/api-reference',
+      //create doc menu
+      const docMenu = []
+      const pages = []
+      const referencePath = '/api-reference'
+      pages.push({
+        path: referencePath,
         component: apiReferenceTemplate,
         context: {
-          OcApi: result,
+          type: 'reference',
         },
       })
+      result.sections.forEach(s => {
+        const sectionPath = `${referencePath}/${Case.kebab(s['x-id'])}`
+        const docMenuSection = {
+          name: s.name,
+          path: sectionPath,
+          resources: [],
+        }
+        pages.push({
+          path: sectionPath,
+          component: apiReferenceTemplate,
+          context: {
+            section: s,
+            type: 'reference',
+          },
+        })
+        result.resources
+          .filter(r => r['x-section-id'] === s['x-id'])
+          .forEach(r => {
+            const resourcePath = `${sectionPath}/${Case.kebab(r.name)}`
+            const docMenuResource = {
+              name: r.name,
+              path: resourcePath,
+              operations: [],
+            }
+            pages.push({
+              path: resourcePath,
+              component: apiReferenceTemplate,
+              context: {
+                section: s,
+                resource: r,
+                type: 'reference',
+              },
+            })
+            result.operationsByResource[r.name].forEach(o => {
+              const operationPath = `${resourcePath}/${Case.kebab(
+                o.operationId.split('.')[1]
+              )}`
+              docMenuResource.operations.push({
+                name: o.summary,
+                path: operationPath,
+              })
+              pages.push({
+                path: operationPath,
+                component: apiReferenceTemplate,
+                context: {
+                  section: s,
+                  resource: r,
+                  operation: o,
+                  type: 'reference',
+                },
+              })
+            })
+            docMenuSection.resources.push(docMenuResource)
+          })
+        docMenu.push(docMenuSection)
+        pages.forEach(p => {
+          createPage({ ...p, context: { ...p.context, menuData: docMenu } })
+        })
+      })
     })
-    .catch(() => console.log('error initializing open API service'))
+    .catch(ex => {
+      console.error('error initializing open API service')
+      throw ex
+    })
 
   return Promise.all([staticDocs, apiRef])
 }

@@ -66,7 +66,7 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const LayoutLink: React.FunctionComponent = (props: any) => {
+export const LayoutLink = (props: any) => {
   const classes = layoutLinkStyles({})
   if (!props.href) {
     console.error(

@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     guideActive: {
       fontWeight: 'bold',
-      marginLeft: -theme.spacing(2.5),
-      paddingLeft: theme.spacing(2),
+      marginLeft: -theme.spacing(2.25),
+      paddingLeft: theme.spacing(1.75),
       borderLeft: `${theme.spacing(0.5)}px solid ${seafoam[500]}`,
     },
     list: {
@@ -58,8 +58,8 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.getContrastText(theme.palette.background.default),
     },
     active: {
-      marginLeft: -theme.spacing(2.5),
-      paddingLeft: theme.spacing(2),
+      marginLeft: -theme.spacing(2.25),
+      paddingLeft: theme.spacing(1.75),
       borderLeft: `${theme.spacing(0.5)}px solid ${
         theme.palette.secondary.light
       }`,
