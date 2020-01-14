@@ -9,15 +9,14 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core/'
-import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
 import ocLogo from '../../assets/images/four51-logo-nopyramid--full-color.svg'
 import { darkgrey, mediumgrey, flame } from '../../theme/ocPalette.constants'
-import utility from '../../services/utility'
 import Jumbotron from '../Shared/Jumbotron'
 import ListItemLink from '../Shared/ListItemLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
 import { navHeight } from './Header'
+import { useDocsSections } from '../../hooks/useDocsSections'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -101,27 +100,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const MainComponent: React.FunctionComponent = props => {
   const classes = useStyles(props)
-  const data = useStaticQuery(graphql`
-    query {
-      allMdx(
-        sort: { order: ASC, fields: [frontmatter___priority] }
-        filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
-      ) {
-        totalCount
-        edges {
-          node {
-            id
-            fileAbsolutePath
-            frontmatter {
-              section
-              title
-            }
-          }
-        }
-      }
-    }
-  `)
-  const sections = utility.getSectionsFromDocsQuery(data)
+  const sections = useDocsSections()
   const getSectionSubtitle = title => {
     switch (title) {
       case 'Getting Started':

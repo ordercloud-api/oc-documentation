@@ -1,5 +1,5 @@
 import { Theme, Typography } from '@material-ui/core'
-import { graphql } from 'gatsby'
+import { graphql, useStaticQuery } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React from 'react'
 import { Helmet } from 'react-helmet'
@@ -12,41 +12,49 @@ import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
+import { useDocsSections } from '../../hooks/useDocsSections'
+import { RouteComponentProps } from '@reach/router'
 
-interface DocTemplateProps {
-  data: DocsQuery
-  location: any
+interface DocTemplateProps extends RouteComponentProps {
+  data: {
+    mdx: {
+      body: string
+      fileAbsolutePath: string
+      frontmatter: {
+        title: string
+      }
+    }
+  }
   theme: Theme
 }
 
-class Template extends React.Component<DocTemplateProps> {
-  public render() {
-    const { data: post, location } = this.props
-    const sections = utility.getSectionsFromDocsQuery(post)
-    return (
-      <Layout location={location}>
-        <Helmet
-          title={`${post.mdx.frontmatter.title} - OrderCloud Documentation`}
-        />
-        <LayoutContainer>
-          <LayoutMain>
-            <Typography variant="h1">{post.mdx.frontmatter.title}</Typography>
-            <MDXRenderer>{post.mdx.body}</MDXRenderer>
-            <DocFooter
-              contents={sections}
-              currentGuide={utility.resolvePath(post.mdx.fileAbsolutePath)}
-            />
-          </LayoutMain>
-          <LayoutMenu>
-            <DocMenu sections={sections} currentPath={location.pathname} />
-          </LayoutMenu>
-        </LayoutContainer>
-      </Layout>
-    )
-  }
+export default function Template(props: DocTemplateProps) {
+  const doc = props.data // data from page query
+  const sections = useDocsSections()
+
+  return (
+    <Layout location={props.location}>
+      <Helmet
+        title={`${doc.mdx.frontmatter.title} - OrderCloud Documentation`}
+      />
+      <LayoutContainer>
+        <LayoutMain>
+          <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
+          <MDXRenderer>{doc.mdx.body}</MDXRenderer>
+          <DocFooter
+            contents={sections}
+            currentGuide={utility.resolvePath(doc.mdx.fileAbsolutePath)}
+          />
+        </LayoutMain>
+        <LayoutMenu>
+          <DocMenu sections={sections} currentPath={location.pathname} />
+        </LayoutMenu>
+      </LayoutContainer>
+    </Layout>
+  )
 }
 
-export const pageQuery = graphql`
+export const query = graphql`
   query DocTemplateByPath($nodeID: String!) {
     mdx(id: { eq: $nodeID }) {
       body
@@ -55,27 +63,5 @@ export const pageQuery = graphql`
         title
       }
     }
-    allMdx(
-      sort: { order: ASC, fields: [frontmatter___priority] }
-      filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
-    ) {
-      totalCount
-      edges {
-        node {
-          id
-          fileAbsolutePath
-          headings {
-            value
-            depth
-          }
-          frontmatter {
-            section
-            title
-          }
-        }
-      }
-    }
   }
 `
-
-export default Template
