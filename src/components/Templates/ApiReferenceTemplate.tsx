@@ -35,6 +35,7 @@ import ListItemLink from '../Shared/ListItemLink'
 
 interface ApiReferenceProps extends RouteComponentProps {
   pageContext: {
+    currentPath: string
     menuData: ApiReferenceMenuData
     section?: ApiSection
     resource?: ApiResource
@@ -85,7 +86,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
     'OrderCloud is a cloud-hosted B2B eCommerce platform exposed entirely via a RESTful API. It enables rapid development of custom, secure, and scalable B2B eCommerce solutions. Spin up a fully functional B2B app in minutes and customize it to limits of your imagination.'
   const pageInfo = useMemo(() => {
     const prefix = 'OrderCloud API'
-    const { section, resource, operation, menuData } = pageContext
+    const { section, resource, operation, menuData, currentPath } = pageContext
     if (operation) {
       return {
         title: `${prefix} | ${operation.summary}`,
@@ -97,15 +98,15 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
         title: `${prefix} | ${resource.name}`,
         description: resource.description,
         operations: menuData
-          .find(s => uri.includes(s.path))
-          .resources.find(r => uri.includes(r.path)).operations,
+          .find(s => currentPath.includes(s.path))
+          .resources.find(r => currentPath.includes(r.path)).operations,
       }
     }
     if (section) {
       return {
         title: `${prefix} | ${section.name}`,
         description: section.description,
-        resources: menuData.find(s => uri.includes(s.path)).resources,
+        resources: menuData.find(s => currentPath.includes(s.path)).resources,
       }
     }
     return {
