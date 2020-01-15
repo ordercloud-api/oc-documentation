@@ -8,7 +8,6 @@ import {
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { Link, withPrefix } from 'gatsby'
 import React from 'react'
-import { grey } from '@material-ui/core/colors'
 import { Section } from '../../models/section.model'
 import { seafoam } from '../../theme/ocPalette.constants'
 

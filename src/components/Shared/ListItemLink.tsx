@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem'
-import { Theme, createStyles, makeStyles } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core'
 import { seafoam } from '../../theme/ocPalette.constants'
 
 interface ListItemLinkProps extends ListItemProps {
