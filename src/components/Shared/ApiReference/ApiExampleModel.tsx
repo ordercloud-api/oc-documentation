@@ -17,8 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 function mapResponse([statusCode, response]) {
-  console.log(statusCode, response)
-
   const exampleResponse = `Status Code ${statusCode} HTTP/1.1`
   const exampleResponseBody =
     response &&

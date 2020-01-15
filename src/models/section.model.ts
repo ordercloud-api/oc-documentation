@@ -10,12 +10,6 @@ export interface Guide {
   frontmatter: {
     section: string
     title: string
-    hidden?: boolean
+    priority?: string // only set on main-concepts and getting-started guides
   }
-  headings: [
-    {
-      depth: number
-      value: string
-    }
-  ]
 }

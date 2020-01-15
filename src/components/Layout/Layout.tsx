@@ -1,5 +1,5 @@
 import React from 'react'
-import Header, { navHeight, navHeightMobile } from './Header'
+import Header, { navHeight } from './Header'
 import { ThemeProvider } from '@material-ui/styles'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import {
@@ -15,14 +15,13 @@ import {
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
 import { MDXProvider } from '@mdx-js/react'
-import { useStaticQuery, graphql } from 'gatsby'
-import utility from '../../services/utility'
 import IconButtonLink from '../Shared/IconButtonLink'
 import { Helmet } from 'react-helmet'
 import Footer from './Footer'
 import { seafoam } from '../../theme/ocPalette.constants'
 import AlertContainer from '../Shared/Alert'
 import { RouteComponentProps } from '@reach/router'
+import { useDocsSections } from '../../hooks/useDocsSections'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -92,28 +91,7 @@ interface LayoutProps extends RouteComponentProps {
 }
 export default (props: LayoutProps) => {
   const classes = useStyles(props)
-  const data = useStaticQuery(graphql`
-    query {
-      allMdx(
-        sort: { order: ASC, fields: [frontmatter___priority] }
-        filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
-      ) {
-        totalCount
-        edges {
-          node {
-            id
-            fileAbsolutePath
-            frontmatter {
-              section
-              title
-              hidden
-            }
-          }
-        }
-      }
-    }
-  `)
-  const sections = utility.getSectionsFromDocsQuery(data)
+  const sections = useDocsSections()
   return (
     <ThemeProvider theme={ORDERCLOUD_THEME}>
       <Helmet

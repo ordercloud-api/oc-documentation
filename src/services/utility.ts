@@ -1,6 +1,6 @@
 import { DocsQuery } from '../models/docsQuery'
 import { groupBy, forEach } from 'lodash'
-import { Section } from '../models/section.model'
+import { Section, Guide } from '../models/section.model'
 
 const service = {
   getSectionsFromDocsQuery,
@@ -23,13 +23,36 @@ function getSectionsFromDocsQuery(query: DocsQuery): Section[] {
   forEach(sectionsWithGuides, (section, title) => {
     const formattedSection = {
       title,
-      guides: section.map(s => {
-        return { ...s.node, path: service.resolvePath(s.node.fileAbsolutePath) }
-      }),
+      guides: section
+        .map(s => {
+          return {
+            ...s.node,
+            path: service.resolvePath(s.node.fileAbsolutePath),
+          }
+        })
+        .sort(sortGuides(title)),
     }
     sections = [...sections, formattedSection]
   })
   return DOCS_SECTION_ORDER.map(s => sections.find(sec => sec.title === s))
+}
+
+const sortGuides = (sectionTitle: string) => (first: Guide, second: Guide) => {
+  if (sectionTitle === 'Main Concepts' || sectionTitle === 'Getting Started') {
+    // sort by priority
+    return (
+      parseInt(first.frontmatter.priority, 10) -
+      parseInt(second.frontmatter.priority, 10)
+    )
+  }
+  // sort alphabetically
+  if (first.frontmatter.title < second.frontmatter.title) {
+    return -1
+  }
+  if (first.frontmatter.title > second.frontmatter.title) {
+    return 1
+  }
+  return 0
 }
 
 /**

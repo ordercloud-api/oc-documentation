@@ -2,26 +2,20 @@
 title: 'Product Visibility'
 section: 'Main Concepts'
 priority: 8
-hidden: false
 ---
 
 Users access products in the API through two different routes: `/products` and `/me/products`. Typically seller or supplier users have `ProductAdmin` or `ProductReader` roles allowing them to view products through the `/products` route. The `/products` route will return all products regardless of assignments, including those with `Active` set to false.
 
 Buyer users on the other hand generally access products through the `/me/products` route. Making products appear for a Buyer user on the `/me/products` route requires carefully constructed catalog, price schedule, and product assignments. Below we will cover the different options for handling the `/me/products` visibility allowing for flexibility in the experience of different buyers.
 
+In this guide we will explore product visibility in three different ways, it's a complex concept, but an important one to understand well.
+- <a href="#visibility-rules-checklist">Visibility Rules Checklist</a>:  A quick and dirty checklist to double-check visibility is set up correctly
+- <a href="#components-of-product-visibility">Components of Product Visibility</a>: A conceptual deep-dive into each piece that determines visibility
+- <a href="#exploring-product-visibility-by-use-case">Exploring Product Visibility by Use case</a>
+
 You have many options to achieve product visibility, each with a unique purpose. The path you take depends on your business requirements. By the end of this guide you will be familiar enough with the available product visibility options to choose a method that works best for your organization.
 
-## Components of Product Visibility
-
-Buyer product visibility is powered completely via assignments. Recall that assignments are explicit meaning that, to start with, a user will have no assignments made to them and thus will not see any products.
-
-At a high level three types of assignments need to be made before a user can begin seeing products.
-
-- The product is assigned to the catalog
-- The user is assigned to the catalog
-- A price schedule is assigned to the product/user
-
-### Visibility Rules Checklist
+## Visibility Rules Checklist
 
 All of the following must be true for a Buyer User to see a Product (via me routes):
 
@@ -39,6 +33,16 @@ All of the following must be true for a Buyer User to see a Product (via me rout
       - Buyer, User, or Group matches the user
       - ViewAllProducts = true for first non-null setting up the tree
   - ProductAssignment exists for Buyer or any Group the user belongs to (PriceScheduleID not required)
+
+## Components of Product Visibility
+
+Buyer product visibility is powered completely via assignments. Recall that assignments are explicit meaning that, to start with, a user will have no assignments made to them and thus will not see any products.
+
+At a high level three types of assignments need to be made before a user can begin seeing products.
+
+- The product is assigned to the catalog
+- The user is assigned to the catalog
+- A price schedule is assigned to the product/user
 
 ### The product is assigned to the catalog
 

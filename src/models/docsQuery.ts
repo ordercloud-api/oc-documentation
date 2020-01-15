@@ -1,11 +1,4 @@
 export interface DocsQuery {
-  mdx: {
-    body: string
-    fileAbsolutePath: string
-    frontmatter: {
-      title: string
-    }
-  }
   allMdx: {
     totalCount: number
     edges: [
@@ -13,16 +6,9 @@ export interface DocsQuery {
         node: {
           id: string
           fileAbsolutePath: string
-          headings: [
-            {
-              value: string
-              depth: number
-            }
-          ]
           frontmatter: {
             section: string
             title: string
-            hidden?: boolean
           }
         }
       }

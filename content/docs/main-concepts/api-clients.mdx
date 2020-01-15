@@ -2,7 +2,6 @@
 title: 'API Clients'
 section: 'Main Concepts'
 priority: 4
-hidden: false
 ---
 
 import { Link } from 'gatsby'
@@ -48,7 +47,7 @@ Read more about Anonymous Shopping <Link to="/features/anonymous-shopping">here<
 ### Token Durations
 Once a party has the appropriate level of access to your organization - it's important to control _how long_ that access will last. This is controlled by two properties: `AccessTokenDuration` and `RefreshTokenDuration`. The most important of the two is `AccessTokenDuration` - this is how long an `access_token` acquired using a specific API Client ID will live (in minutes).
 
-Once the primary `access_token` expires, if the API Client is configured with a _longer lasting_ `RefreshTokenDuration`, the original OAuth response will return a corresponding `refresh_token`. This can be used to aquire a fresh set of tokens and maintain user authentication in perpetuity. Long lasting token durations are not recommended for systems with a high level of data access in your organization as shorter `access_token` TTLs are more secure.
+Once the primary `access_token` expires, if the API Client is configured with a _longer lasting_ `RefreshTokenDuration`, the original OAuth response will return a corresponding `refresh_token`. This can be used to aquire a fresh `access_token` and maintain user authentication until the `refresh_token` expires. Long lasting token durations are not recommended for systems with a high level of data access in your organization as shorter token durations are more secure.
 
 ## Using Multiple API Clients
 In general, we encourage creating a new API Client for each system or isolated piece of functionality. This allows for quicker identification of bottlenecks in your solution, as every authenticated request will have the API Client that was used embedded in the `Authorization` header.
