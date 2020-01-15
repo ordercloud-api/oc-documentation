@@ -68,6 +68,7 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
         component: apiReferenceTemplate,
         context: {
           type: 'reference',
+          currentPath: referencePath,
         },
       })
       result.sections.forEach(s => {
@@ -76,11 +77,15 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
           name: s.name,
           path: sectionPath,
           resources: [],
+          context: {
+            currentPath: sectionPath,
+          },
         }
         pages.push({
           path: sectionPath,
           component: apiReferenceTemplate,
           context: {
+            currentPath: sectionPath,
             section: s,
             type: 'reference',
           },
@@ -93,11 +98,15 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
               name: r.name,
               path: resourcePath,
               operations: [],
+              context: {
+                currentPath: resourcePath,
+              },
             }
             pages.push({
               path: resourcePath,
               component: apiReferenceTemplate,
               context: {
+                currentPath: resourcePath,
                 section: s,
                 resource: r,
                 type: 'reference',
@@ -110,11 +119,15 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
               docMenuResource.operations.push({
                 name: o.summary,
                 path: operationPath,
+                context: {
+                  currentPath: operationPath,
+                },
               })
               pages.push({
                 path: operationPath,
                 component: apiReferenceTemplate,
                 context: {
+                  currentPath: operationPath,
                   section: s,
                   resource: r,
                   operation: o,
