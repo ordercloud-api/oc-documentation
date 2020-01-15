@@ -1,9 +1,8 @@
 import { Theme, Typography } from '@material-ui/core'
-import { graphql, useStaticQuery } from 'gatsby'
+import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { DocsQuery } from '../../models/docsQuery'
 import '../../styles/doc-template.css'
 import utility from '../../services/utility'
 import DocFooter from '../Layout/DocFooter'
@@ -47,7 +46,7 @@ export default function Template(props: DocTemplateProps) {
           />
         </LayoutMain>
         <LayoutMenu>
-          <DocMenu sections={sections} currentPath={location.pathname} />
+          <DocMenu sections={sections} currentPath={props.location.pathname} />
         </LayoutMenu>
       </LayoutContainer>
     </Layout>
