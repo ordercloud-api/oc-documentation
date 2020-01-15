@@ -56,8 +56,8 @@ Content-Type: application/json; charset=UTF-8`
         operation.requestBody.content['application/json'].schema.allOf[0]
           .properties
       )
-        .filter(([k, v]: [string, any]) => v.readOnly)
-        .map(([k, v]) => k)
+        .filter(([, value]: [string, any]) => value.readOnly)
+        .map(([key]) => key)
       let body = omit(
         operation.requestBody.content['application/json'].schema.allOf[0]
           .example,
