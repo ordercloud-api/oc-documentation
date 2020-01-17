@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles, Theme, createStyles, Chip } from '@material-ui/core'
 import { mediumgrey } from '../../../theme/ocPalette.constants'
 import { ApiOperation } from '../../../models/openapi.models'
+import RestfulVerb from '../RestfulVerb'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,9 +39,7 @@ const ApiRoute: React.FunctionComponent<ApiRouteProps> = (
   const classes = useStyles({})
   return (
     <div className={classes.root}>
-      <div className={classes.verb}>
-        <Chip variant="outlined" label={operation.verb}></Chip>
-      </div>
+      <RestfulVerb verb={operation.verb} />
       <pre className={classes.path}>{operation.path}</pre>
     </div>
   )
