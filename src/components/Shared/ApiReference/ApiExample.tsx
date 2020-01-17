@@ -1,31 +1,52 @@
-import { createStyles, Theme } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
 import React, { useMemo, useEffect } from 'react'
 import { ApiOperation } from '../../../models/openapi.models'
 import Prism from 'prismjs'
 import { omit, keys } from 'lodash'
 import ApiHeading from './ApiHeading'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    pre: {
-      padding: theme.spacing(2),
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-  })
-)
-
 function mapResponse([statusCode, response]) {
   const exampleResponse = `Status Code ${statusCode} HTTP/1.1`
   const exampleResponseBody =
-    response &&
-    response.content &&
-    response.content['application/json'].schema.example
-      ? `
+    response && response.content
+      ? response.content['application/json'].schema.example
+        ? `
 
 ${JSON.stringify(response.content['application/json'].schema.example, null, 2)}`
-      : null
+        : response.content['application/json'].schema.properties.Items.items
+            .example
+        ? `
+{
+  "Meta": {
+    ${response.content['application/json'].schema.properties.Meta.properties
+      .Facets &&
+      `"Facets": [
+      {
+        "Name": "",
+        "XpPath": "",
+        "Values": [
+          {
+            "Value": "",
+            "Count": 0
+          }
+        ],
+        "xp": {}
+      }
+    ],`}
+    "Page": 1,
+    "PageSize": 20,
+    "TotalCount": 1,
+    "TotalPages": 1,
+    "ItemRange": [0, 1]
+  },
+  "Items": [${JSON.stringify(
+    response.content['application/json'].schema.properties.Items.items.example,
+    null,
+    4
+  )}]
+}`
+        : null
+      : `
+No Content`
 
   return (
     <React.Fragment key={statusCode}>
@@ -40,16 +61,20 @@ ${JSON.stringify(response.content['application/json'].schema.example, null, 2)}`
 }
 
 const ApiExampleModel = (props: { operation: ApiOperation }) => {
-  const classes = useStyles({})
   const { operation } = props
+
+  //HTTP 1.1 Example
   const exampleRequest = useMemo(() => {
     if (operation) {
-      return `${operation.verb.toUpperCase()} ${operation.path} HTTP/1.1
+      return `${operation.verb.toUpperCase()} https://api.ordercloud.io/v1${
+        operation.path
+      } HTTP/1.1
 Authentication: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
 Content-Type: application/json; charset=UTF-8`
     }
   }, [operation])
 
+  //Request Body Example in JSON format
   const exampleRequestBody = useMemo(() => {
     if (operation && operation.requestBody) {
       const readOnlyFields = Object.entries(
@@ -61,24 +86,20 @@ Content-Type: application/json; charset=UTF-8`
       let body = omit(
         operation.requestBody.content['application/json'].schema.allOf[0]
           .example,
-        [
-          ...readOnlyFields,
-          ...(operation.verb === 'put' || operation.verb === 'patch'
-            ? ['ID', 'Password']
-            : []),
-        ]
-      )
+        readOnlyFields
+      ) as any
 
       if (operation.verb === 'patch') {
+        body = omit(body, 'ID')
         body = omit(body, keys(body).slice(3))
       }
       return `
 
-//Request Body
 ${JSON.stringify(body, null, 2)}`
     }
   }, [operation])
 
+  //Each possible status code & response body
   const exampleResponses = useMemo(() => {
     if (operation && operation.responses) {
       return (
@@ -98,7 +119,7 @@ ${JSON.stringify(body, null, 2)}`
     <React.Fragment>
       <ApiHeading title="Example" variant="h2" />
       <ApiHeading title="Request" variant="h3" />
-      <pre className={classes.pre}>
+      <pre>
         <code className="language-http">{exampleRequest}</code>
         <code className="language-json">{exampleRequestBody}</code>
       </pre>

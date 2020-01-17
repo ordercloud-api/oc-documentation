@@ -1,12 +1,12 @@
 import { Typography } from '@material-ui/core'
 import React from 'react'
 import { ApiOperation as ApiOperationModel } from '../../../models/openapi.models'
-import ApiExampleModel from './ApiExampleModel'
 import ApiParameters from './ApiParameters'
 import ApiRequestBody from './ApiRequestBody'
 import ApiRoles from './ApiRoles'
 import ApiRoute from './ApiRoute'
 import ApiHeading from './ApiHeading'
+import ApiResponseBody from './ApiResponseBody'
 
 interface ApiOperationProps {
   operation: ApiOperationModel
@@ -37,7 +37,7 @@ const ApiOperation: React.FunctionComponent<ApiOperationProps> = (
 
       <ApiRequestBody requestBody={operation.requestBody}></ApiRequestBody>
 
-      <ApiExampleModel operation={operation} />
+      <ApiResponseBody operation={operation} />
     </React.Fragment>
   )
 }

@@ -211,7 +211,12 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
                     <Card>
                       <CardHeader title={r.name} />
                       <CardActions>
-                        <Button size="small" component={Link} to={r.path}>
+                        <Button
+                          size="small"
+                          component={Link}
+                          to={r.path}
+                          color="secondary"
+                        >
                           Learn More
                         </Button>
                       </CardActions>
@@ -236,7 +241,12 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
                     <Card>
                       <CardHeader title={o.name} />
                       <CardActions>
-                        <Button size="small" component={Link} to={o.path}>
+                        <Button
+                          size="small"
+                          component={Link}
+                          to={o.path}
+                          color="secondary"
+                        >
                           Learn More
                         </Button>
                       </CardActions>

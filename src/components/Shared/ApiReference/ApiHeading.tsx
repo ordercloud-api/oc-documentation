@@ -53,7 +53,7 @@ const ApiHeading = (props: ApiHeadingProps) => {
   const classes = useStyles(props)
   const { title } = props
   const hash = useMemo(() => {
-    return Case.title(props.title)
+    return Case.kebab(props.title)
   }, [title])
   return (
     <div className={classes.root}>
