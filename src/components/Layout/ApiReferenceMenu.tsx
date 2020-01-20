@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 : defaultColor,
               marginBottom: theme.spacing(1),
               maxWidth: '80%',
+              fontWeight: 'bold' as any,
             }
           case 'resource':
             return {
