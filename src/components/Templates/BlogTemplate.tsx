@@ -7,6 +7,7 @@ import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
+import Case from 'case'
 
 interface BlogComponentProps {
   location: any
@@ -26,6 +27,9 @@ interface BlogComponentProps {
 
 function BlogComponent(props: BlogComponentProps) {
   const { data, location } = props
+  const authorImage = `/images/blog/authors/${Case.kebab(
+    data.mdx.frontmatter.authors
+  )}.jpg`
   return (
     <Layout location={location}>
       <Helmet
@@ -43,9 +47,10 @@ function BlogComponent(props: BlogComponentProps) {
           <MDXRenderer>{data.mdx.body}</MDXRenderer>
         </LayoutMain>
         <LayoutMenu>
-          <Typography variant="h5">Related Articles</Typography>
+          <Typography variant="body2">{`Written by ${data.mdx.frontmatter.authors} on ${data.mdx.frontmatter.date}`}</Typography>
+          {/* <Typography variant="h5">Related Articles</Typography>
           <Typography variant="h5">Recent Articles</Typography>
-          <Typography variant="h5">Social Share</Typography>
+          <Typography variant="h5">Social Share</Typography> */}
         </LayoutMenu>
       </LayoutContainer>
     </Layout>
@@ -61,7 +66,7 @@ export const pageQuery = graphql`
         tags
         authors
         summary
-        date
+        date(formatString: "MMMM Do, YYYY")
       }
     }
   }
