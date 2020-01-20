@@ -103,7 +103,8 @@ export default createMuiTheme({
     },
     MuiButton: {
       label: {
-        paddingTop: 2,
+        fontFamily: headingFontFamilies,
+        // paddingTop: 2,
       },
     },
     MuiTypography: {

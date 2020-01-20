@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
   Theme,
+  Typography,
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -34,6 +35,11 @@ const useStyles = makeStyles((theme: Theme) =>
     requiredChip: {
       backgroundColor: red[500],
       color: 'white',
+    },
+    rowWithDescription: {
+      '& > td': {
+        borderBottom: 'none',
+      },
     },
     string: {
       color: flame[600],
@@ -109,7 +115,11 @@ const ApiSchemaTable = (props: ApiSchemaTableProps) => {
             const isExpanded = expanded.includes(name)
             return (
               <React.Fragment key={name}>
-                <TableRow>
+                <TableRow
+                  className={
+                    field.description ? classes.rowWithDescription : undefined
+                  }
+                >
                   <TableCell padding={hasSubSchema ? 'checkbox' : undefined}>
                     {hasSubSchema && (
                       <IconButton
@@ -148,6 +158,15 @@ const ApiSchemaTable = (props: ApiSchemaTableProps) => {
                     {field.maxLength ? `${field.maxLength} characters` : '---'}
                   </TableCell>
                 </TableRow>
+                {field.description && (
+                  <TableRow>
+                    <TableCell colSpan={5} style={{ paddingTop: 0 }}>
+                      <Typography variant="caption">
+                        {field.description}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                )}
                 {hasSubSchema && (
                   <TableRow>
                     <TableCell

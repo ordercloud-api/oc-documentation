@@ -167,7 +167,16 @@ export default function BlogListComponent(props: BlogListProps) {
   `)
   return (
     <Layout location={props.location}>
-      <Helmet title={`OrderCloud Blog`} />
+      <Helmet
+        title={`OrderCloud Blog`}
+        meta={[
+          {
+            name: 'description',
+            content:
+              'New feature announcements, tips & tricks, and best practices to help developers get the most out of the OrderCloud platform.',
+          },
+        ]}
+      />
       <Jumbotron
         heading="OrderCloud Blog"
         text="New feature announcements, tips & tricks, and best practices to help developers get the most out of the OrderCloud platform."

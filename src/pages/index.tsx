@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet'
 
 export default () => (
   <Layout>
-    <Helmet title={`OrderCloud Documentation`} />
+    <Helmet title={`Four51 OrderCloud`} />
     <Main />
   </Layout>
 )

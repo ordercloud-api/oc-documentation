@@ -152,6 +152,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     const { classes, location, width, data } = this.props
     const { anchorEl, auth } = this.state
     const isMobile = width !== 'md' && width !== 'lg' && width !== 'xl'
+    const isMedium = width !== 'lg' && width !== 'xl'
     const currentApiVersion = data.allMdx.nodes[0].frontmatter.apiVersion
     let activeTab = 'docs'
     if (location && location.pathname) {
@@ -325,10 +326,14 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               classes={{
                 searchBox: `${isMobile ? classes.mobileSearchBox : undefined}`,
                 searchBoxInput: `${
-                  isMobile ? classes.mobileSearchInput : undefined
+                  isMobile
+                    ? classes.mobileSearchInput
+                    : isMedium
+                    ? classes.mediumSearchInput
+                    : undefined
                 }`,
               }}
-              placeholder={isMobile && 'Search...'}
+              placeholder={isMedium && 'Search...'}
               darkMode={true}
               noPopper={isMobile}
             ></DocSearch>
@@ -480,6 +485,9 @@ const styles = (theme: Theme) =>
       backgroundColor: 'rgba(0, 0, 0, .1)',
     },
     tab: {
+      fontFamily: theme.typography.h1.fontFamily,
+      letterSpacing: 1,
+      fontWeight: 'normal',
       minWidth: 0,
       cursor: 'pointer',
       transition: 'background-color .5s',
@@ -510,6 +518,9 @@ const styles = (theme: Theme) =>
     },
     mobileSearchBox: {
       marginRight: -theme.spacing(1),
+    },
+    mediumSearchInput: {
+      width: 100,
     },
     mobileSearchInput: {
       paddingTop: theme.spacing(1),

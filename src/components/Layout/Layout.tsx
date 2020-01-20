@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: 'white',
       minHeight: `calc(100vh - ${navHeight}px)`,
       [theme.breakpoints.up('md')]: {
-        marginBottom: theme.spacing(52.25),
+        marginBottom: theme.spacing(51),
       },
       '& img': {
         maxWidth: '100%',
@@ -100,6 +100,11 @@ export default (props: LayoutProps) => {
             name: 'viewport',
             content:
               'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+          },
+          {
+            name: 'description',
+            content:
+              'OrderCloud powers custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and over $5 billion in revenue annually.',
           },
         ]}
       >

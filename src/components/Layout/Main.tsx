@@ -41,16 +41,16 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paperRoot: {
       zIndex: 1,
-      minHeight: '100%',
-      height: '100%',
+      flexGrow: 1,
     },
     paperCard: {
       position: 'relative',
       flexFlow: 'column nowrap',
       alignItems: 'center',
       maxWidth: '100vw',
+      padding: theme.spacing(2),
       [theme.breakpoints.up('md')]: {
-        minHeight: '30vh',
+        height: '100%',
       },
     },
     paperTitleHeading: {
@@ -121,7 +121,7 @@ const MainComponent: React.FunctionComponent = props => {
     <React.Fragment>
       <Jumbotron
         image={{ src: ocLogo, alt: 'Four51 OrderCloud Logo' }}
-        heading="A Next Generation Headless eCommerce Platform"
+        heading="A Next-Generation Headless eCommerce Platform"
         actions={[
           <CustomButtonLink
             color="#fff"
@@ -154,40 +154,58 @@ const MainComponent: React.FunctionComponent = props => {
                 key={index}
                 className={classes.paperRoot}
               >
-                <Paper elevation={5}>
-                  <Box p={2} zIndex={1}>
-                    <div className={classes.paperCard}>
-                      <Typography
-                        className={classes.paperTitleHeading}
-                        variant="h3"
-                      >
-                        {section.title}
-                      </Typography>
-                      <Typography
-                        className={classes.paperTitleSubheading}
-                        variant="subtitle1"
-                      >
-                        {getSectionSubtitle(section.title)}
-                      </Typography>
-                      <List
-                        disablePadding={true}
-                        dense={true}
-                        className={classes.paperList}
-                      >
-                        {section.guides.map(g => {
-                          return (
-                            <ListItemLink key={g.id} to={g.path}>
-                              {g.frontmatter.title}
-                            </ListItemLink>
-                          )
-                        })}
-                      </List>
-                    </div>
-                  </Box>
+                <Paper elevation={5} className={classes.paperCard}>
+                  <Typography
+                    className={classes.paperTitleHeading}
+                    variant="h3"
+                  >
+                    {section.title}
+                  </Typography>
+                  <Typography
+                    className={classes.paperTitleSubheading}
+                    variant="subtitle1"
+                  >
+                    {getSectionSubtitle(section.title)}
+                  </Typography>
+                  <List
+                    disablePadding={true}
+                    dense={true}
+                    className={classes.paperList}
+                  >
+                    {section.guides.map(g => {
+                      return (
+                        <ListItemLink key={g.id} to={g.path}>
+                          {g.frontmatter.title}
+                        </ListItemLink>
+                      )
+                    })}
+                  </List>
                 </Paper>
               </Grid>
             ))}
         </Grid>
+      </Container>
+      <Container maxWidth="md">
+        <Box paddingTop={7} paddingBottom={14}>
+          <Typography variant="h3">
+            Four51 OrderCloud™ is an API-first, headless eCommerce platform
+            offering nearly limitless customizations and endless freedom for
+            growth.
+          </Typography>
+          <Typography paragraph>
+            Your eCommerce data and infrastructure are available in the cloud as
+            building blocks via our RESTful API. Create best-of-breed commerce
+            applications that easily integrate with your back-end systems and
+            3rd party microservices. With OrderCloud, accelerate your commerce
+            transformation, increase your agility, and scale limitlessly.
+          </Typography>
+          <Typography>
+            OrderCloud powers custom eCommerce (B2B, B2C, B2X), order
+            management, and B2B marketplace applications for some of the world’s
+            most well-known brands - processing over 25 million transactions and
+            over $5 billion in revenue annually.
+          </Typography>
+        </Box>
       </Container>
     </React.Fragment>
   )
