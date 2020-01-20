@@ -46,8 +46,8 @@ interface ApiReferenceProps extends RouteComponentProps {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     breadcrumbs: {
-      paddingTop: theme.spacing(1.5),
-      marginBottom: -theme.spacing(4.5),
+      paddingTop: theme.spacing(5),
+      marginBottom: -theme.spacing(2.5),
     },
     breadcrumbLink: {
       textDecoration: 'none',
@@ -85,11 +85,11 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
   const defaultDescription =
     'OrderCloud is a cloud-hosted B2B eCommerce platform exposed entirely via a RESTful API. It enables rapid development of custom, secure, and scalable B2B eCommerce solutions. Spin up a fully functional B2B app in minutes and customize it to limits of your imagination.'
   const pageInfo = useMemo(() => {
-    const prefix = 'OrderCloud API'
+    const prefix = 'Four51 OrderCloud'
     const { section, resource, operation, menuData, currentPath } = pageContext
     if (operation) {
       return {
-        title: `${prefix} | ${operation.summary}`,
+        title: `${prefix} | ${operation.summary.replace(/\./g, '')}`,
         description: resource.description,
       }
     }
@@ -110,14 +110,19 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
       }
     }
     return {
-      title: `${prefix} Reference`,
+      title: `${prefix} | API Reference`,
     }
   }, [pageContext])
   return (
     <Layout location={location}>
       <Helmet
         title={pageInfo.title}
-        description={pageInfo.description || defaultDescription}
+        meta={[
+          {
+            name: 'description',
+            content: pageInfo.description || defaultDescription,
+          },
+        ]}
       />
       {!pageContext.section && (
         <React.Fragment>
@@ -168,6 +173,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
             <Breadcrumbs className={classes.breadcrumbs}>
               <Typography
                 className={classes.breadcrumbLink}
+                variant="body2"
                 component={Link}
                 to="/api-reference"
               >
@@ -176,6 +182,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
               {pageContext.resource && (
                 <Typography
                   className={classes.breadcrumbLink}
+                  variant="body2"
                   component={Link}
                   to={`/api-reference/${Case.kebab(
                     pageContext.section['x-id']
@@ -187,6 +194,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
               {pageContext.operation && pageContext.resource && (
                 <Typography
                   className={classes.breadcrumbLink}
+                  variant="body2"
                   component={Link}
                   to={`/api-reference/${Case.kebab(
                     pageContext.section['x-id']

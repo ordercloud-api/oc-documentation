@@ -28,7 +28,15 @@ function BlogComponent(props: BlogComponentProps) {
   const { data, location } = props
   return (
     <Layout location={location}>
-      <Helmet title={`${data.mdx.frontmatter.title} - OrderCloud Blog`} />
+      <Helmet
+        title={`OrderCloud Blog | ${data.mdx.frontmatter.title}`}
+        meta={[
+          {
+            name: 'description',
+            content: data.mdx.frontmatter.summary,
+          },
+        ]}
+      />
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h1">{data.mdx.frontmatter.title}</Typography>

@@ -33,9 +33,7 @@ export default function Template(props: DocTemplateProps) {
 
   return (
     <Layout location={props.location}>
-      <Helmet
-        title={`${doc.mdx.frontmatter.title} - OrderCloud Documentation`}
-      />
+      <Helmet title={`Four51 OrderCloud | ${doc.mdx.frontmatter.title}`} />
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
