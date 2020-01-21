@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) =>
         right: 0,
         bottom: 0,
         left: 0,
-        backgroundImage: `linear-gradient(120deg, #ffffff 25%, #1DAAAC 100%)`,
+        backgroundImage: `linear-gradient(120deg, #ffffff 35%, #1DAAAC 100%)`,
         opacity: 0.75,
       },
       '&::after': {
@@ -121,7 +121,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(3),
     },
     MuiCardActionsRoot: {
-      padding: `0 ${theme.spacing(3)}px`,
+      padding: theme.spacing(2, 3),
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -248,13 +248,6 @@ export default function BlogListComponent(props: BlogListProps) {
                     <Typography variant={'caption'}>
                       {edge.node.frontmatter.date}
                     </Typography>
-                    <div>
-                      <Tooltip title="Share" placement="top">
-                        <IconButton edge="end">
-                          <Share />
-                        </IconButton>
-                      </Tooltip>
-                    </div>
                   </CardActions>
                 </Card>
               </Grid>
