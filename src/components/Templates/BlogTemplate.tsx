@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import { Typography, Theme, Avatar, Box } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React from 'react'
@@ -8,6 +8,7 @@ import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
 import Case from 'case'
+import { makeStyles, createStyles } from '@material-ui/styles'
 
 interface BlogComponentProps {
   location: any
@@ -18,6 +19,7 @@ interface BlogComponentProps {
         title: string
         tags: string
         authors: string
+        jobTitle: string
         summary: string
         date: number
       }
@@ -25,7 +27,24 @@ interface BlogComponentProps {
   }
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    gutterBottom: {
+      marginBottom: '4rem',
+    },
+    cardAuthorWrapper: {
+      width: 70,
+      height: 70,
+      marginRight: '1rem',
+    },
+    cardAuthorImage: {
+      objectPosition: 'top',
+    },
+  })
+)
+
 function BlogComponent(props: BlogComponentProps) {
+  const classes = useStyles({})
   const { data, location } = props
   const authorImage = `/images/blog/authors/${Case.kebab(
     data.mdx.frontmatter.authors
@@ -44,13 +63,29 @@ function BlogComponent(props: BlogComponentProps) {
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h1">{data.mdx.frontmatter.title}</Typography>
+          <Typography className={classes.gutterBottom} color="textSecondary">
+            {data.mdx.frontmatter.date}
+          </Typography>
           <MDXRenderer>{data.mdx.body}</MDXRenderer>
         </LayoutMain>
         <LayoutMenu>
-          <Typography variant="body2">{`Written by ${data.mdx.frontmatter.authors} on ${data.mdx.frontmatter.date}`}</Typography>
-          {/* <Typography variant="h5">Related Articles</Typography>
-          <Typography variant="h5">Recent Articles</Typography>
-          <Typography variant="h5">Social Share</Typography> */}
+          <Box display="flex" alignItems="center">
+            <Avatar
+              className={classes.cardAuthorWrapper}
+              classes={{
+                img: classes.cardAuthorImage,
+              }}
+              src={authorImage}
+            />
+            <div>
+              <Typography variant="h4">
+                {data.mdx.frontmatter.authors}
+              </Typography>
+              <Typography variant="caption">
+                {data.mdx.frontmatter.jobTitle}
+              </Typography>
+            </div>
+          </Box>
         </LayoutMenu>
       </LayoutContainer>
     </Layout>
@@ -65,6 +100,7 @@ export const pageQuery = graphql`
         title
         tags
         authors
+        jobTitle
         summary
         date(formatString: "MMMM Do, YYYY")
       }
