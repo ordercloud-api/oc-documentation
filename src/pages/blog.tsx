@@ -59,6 +59,17 @@ const useStyles = makeStyles((theme: Theme) =>
     cardImg: {
       paddingTop: '56.25%',
       position: 'relative',
+
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        backgroundImage: `linear-gradient(120deg, #ffffff 25%, #1DAAAC 100%)`,
+        opacity: 0.75,
+      },
       '&::after': {
         content: '" "',
         position: 'absolute',
@@ -90,6 +101,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 48,
       height: 48,
       zIndex: 1,
+      boxShadow: theme.shadows[2],
       '&:after': {
         content: '" "',
         position: 'absolute',
@@ -131,6 +143,7 @@ interface PageData {
             date: string
             tags: string
             authors: string
+            jobTitle: string
             summary: string
           }
         }
@@ -139,7 +152,7 @@ interface PageData {
   }
 }
 
-const placeholderImg = '/images/blog/placeholder.jpg'
+const placeholderImg = '/images/blog/thumbnails/placeholder.jpg'
 
 interface BlogListProps {
   location: any
@@ -164,6 +177,7 @@ export default function BlogListComponent(props: BlogListProps) {
               date(formatString: "MMMM Do, YYYY")
               tags
               authors
+              jobTitle
               summary
             }
           }
