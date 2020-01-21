@@ -121,7 +121,7 @@ const toExport = {
   siteMetadata: {
     title: `OrderCloud Documentation`,
     description: `Documentation for OrderCloud's B2B eCommerce API`,
-    author: `@gatsbyjs`,
+    author: `OrderCloud`,
   },
   plugins: [
     `gatsby-plugin-catch-links`,

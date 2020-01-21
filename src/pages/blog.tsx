@@ -67,8 +67,8 @@ const useStyles = makeStyles((theme: Theme) =>
         right: 0,
         bottom: 0,
         left: 0,
-        backgroundImage: `linear-gradient(120deg, #ffffff 35%, #1DAAAC 100%)`,
-        opacity: 0.75,
+        backgroundImage: `linear-gradient(120deg, #ffffff 0, #bce6e6 100%)`,
+        opacity: 0.5,
       },
       '&::after': {
         content: '" "',
