@@ -14,6 +14,9 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
   const apiReferenceTemplate = resolve(
     'src/components/Templates/ApiReferenceTemplate.tsx'
   )
+  const portalReleaseNotesTemplate = resolve(
+    'src/components/Templates/PortalReleaseNotesTemplate.tsx'
+  )
 
   const staticDocs = graphql(`
     query CreatePagesQuery {
@@ -43,6 +46,8 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
         component = blogTemplate
       } else if (path.startsWith('/release-notes')) {
         component = releaseNotesTemplate
+      } else if (path.startsWith('/portal-release-notes')) {
+        component = portalReleaseNotesTemplate
       } else {
         throw new Error(`Can't resolve path ${edge.node.fileAbsolutePath}`)
       }

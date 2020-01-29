@@ -198,6 +198,12 @@ class Footer extends React.Component<any> {
                 >
                   API Release Notes
                 </Link>
+                <Link
+                  className={classes.footerLinks}
+                  to="/portal-release-notes/v1.0.0"
+                >
+                  Portal Release Notes
+                </Link>
                 <a
                   className={classes.footerLinks}
                   href="https://four51.io/privacy-policy/"
