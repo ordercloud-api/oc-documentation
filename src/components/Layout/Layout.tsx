@@ -42,9 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     heading: {
       position: 'relative',
-      top: -theme.spacing(10),
-      marginTop: theme.spacing(11),
-      marginBottom: -theme.spacing(8),
     },
     containerMain: {
       zIndex: 1,

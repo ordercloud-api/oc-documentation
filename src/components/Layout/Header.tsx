@@ -37,6 +37,7 @@ import ListItemLink from '../Shared/ListItemLink'
 import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import MenuItems from '../Shared/MenuItems.json'
+import openapiService from '../../services/openapi.service'
 
 function parseJwt(token: string) {
   if (!token) {
@@ -81,6 +82,7 @@ interface HeaderState {
   firstName: string
   email: string
   showResults: boolean
+  currentApiVersion: string
 }
 class Header extends React.Component<HeaderProps, HeaderState> {
   state = {
@@ -91,6 +93,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     firstName: '',
     email: '',
     showResults: false,
+    currentApiVersion: '',
   }
   private readonly autologin = true
   private readonly cookies = new Cookies()
@@ -99,6 +102,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     //TODO: NICE TO HAVE: Find out how to re-evaluate based on state change
     const token = this.cookies.get('DevCenter.token')
     const decoded = parseJwt(token)
+
     if (decoded) {
       this.setState({
         username: decoded.usr,
@@ -153,7 +157,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     const { anchorEl, auth } = this.state
     const isMobile = width !== 'md' && width !== 'lg' && width !== 'xl'
     const isMedium = width !== 'lg' && width !== 'xl'
-    const currentApiVersion = data.allMdx.nodes[0].frontmatter.apiVersion
+
+    //TODO: How should we get this dynamically??
+    const currentApiVersion = '1.0.137'
+    const latestReleaseNoteVersion = data.allMdx.nodes[0].frontmatter.apiVersion
     let activeTab = 'docs'
     if (location && location.pathname) {
       const partialPath = location.pathname.split('/')[1]
@@ -239,7 +246,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 <ChipLink
                   color="secondary"
                   label={`v${currentApiVersion}`}
-                  to={`/release-notes/v${currentApiVersion}`}
+                  to={`/release-notes/v${latestReleaseNoteVersion}`}
                 ></ChipLink>
                 {auth ? (
                   <React.Fragment>
@@ -423,7 +430,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               }
               if (to === '/release-notes/v') {
                 return (
-                  <ListItemLink to={to + currentApiVersion} key={value}>
+                  <ListItemLink to={to + latestReleaseNoteVersion} key={value}>
                     {label}
                   </ListItemLink>
                 )

@@ -32,16 +32,8 @@
       "isPortalLink": false
     },
     {
-      "value": "organizations",
-      "label": "Organizations",
-      "to": "/organizations",
-      "mobileMenu": false,
-      "authRequired": true,
-      "isPortalLink": true
-    },
-    {
-      "value": "console",
-      "label": "Console",
+      "value": "portal",
+      "label": "Portal",
       "to": "/",
       "mobileMenu": false,
       "authRequired": true,
