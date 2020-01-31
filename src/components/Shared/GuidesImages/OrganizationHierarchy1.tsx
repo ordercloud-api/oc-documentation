@@ -7,21 +7,21 @@ import {
   Paper,
   Chip,
 } from '@material-ui/core'
-import BusinessIcon from '@material-ui/icons/Business'
-import UserIcon from '@material-ui/icons/VerifiedUser'
-import { blackpearl, sherpablue } from '../../../theme/ocPalette.constants'
+import { Business, Group, Person } from '@material-ui/icons'
+import { sherpablue } from '../../../theme/ocPalette.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       margin: theme.spacing(8, 0, 16, 0),
       flexGrow: 1,
-      padding: theme.spacing(6, 3),
-      backgroundColor: sherpablue[50],
+      padding: theme.spacing(8, 3, 6, 3),
+      backgroundColor: sherpablue[100],
       position: 'relative',
     },
     chip: {
       padding: theme.spacing(2, 1),
+      border: `1px solid ${sherpablue[50]}`,
       borderRadius: theme.spacing(7),
       position: 'absolute',
       top: theme.spacing(-2),
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
     chipUser: {
       padding: theme.spacing(2, 1),
       borderRadius: theme.spacing(7),
+      border: `1px solid ${sherpablue[50]}`,
     },
     chipLabel: {
       fontFamily: theme.typography.h1.fontFamily,
@@ -41,10 +42,11 @@ const useStyles = makeStyles((theme: Theme) =>
     userGroup: {
       position: 'relative',
       padding: theme.spacing(6, 3),
-      backgroundColor: sherpablue[100],
+      backgroundColor: sherpablue[200],
     },
     ContainerChip: {
       position: 'relative',
+      textAlign: 'center',
     },
     paper: {
       padding: theme.spacing(2),
@@ -65,7 +67,7 @@ const OrgHierarchyImage1: React.FunctionComponent = () => {
           label: classes.chipLabel,
         }}
         className={classes.chip}
-        icon={<BusinessIcon />}
+        icon={<Business />}
         label="Company"
       />
       <Paper className={classes.userGroup}>
@@ -75,10 +77,10 @@ const OrgHierarchyImage1: React.FunctionComponent = () => {
             label: classes.chipLabel,
           }}
           className={classes.chip}
-          icon={<BusinessIcon />}
+          icon={<Group />}
           label="User Group"
         />
-        <Grid container spacing={3}>
+        <Grid container justify="center" spacing={2}>
           <Grid item sm className={classes.ContainerChip}>
             <Chip
               color="primary"
@@ -86,7 +88,7 @@ const OrgHierarchyImage1: React.FunctionComponent = () => {
                 label: classes.chipLabel,
               }}
               className={classes.chipUser}
-              icon={<UserIcon />}
+              icon={<Person />}
               label="User"
             />
           </Grid>
@@ -97,7 +99,7 @@ const OrgHierarchyImage1: React.FunctionComponent = () => {
                 label: classes.chipLabel,
               }}
               className={classes.chipUser}
-              icon={<UserIcon />}
+              icon={<Person />}
               label="User"
             />
           </Grid>
@@ -108,7 +110,7 @@ const OrgHierarchyImage1: React.FunctionComponent = () => {
                 label: classes.chipLabel,
               }}
               className={classes.chipUser}
-              icon={<UserIcon />}
+              icon={<Person />}
               label="User"
             />
           </Grid>
