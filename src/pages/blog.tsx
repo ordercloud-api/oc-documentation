@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     blogContainer: {
       marginTop: -theme.spacing(14),
+      paddingBottom: theme.spacing(16),
     },
     title: {
       marginBottom: theme.spacing(1),
@@ -59,6 +60,17 @@ const useStyles = makeStyles((theme: Theme) =>
     cardImg: {
       paddingTop: '56.25%',
       position: 'relative',
+
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        backgroundImage: `linear-gradient(120deg, #ffffff 0, #bce6e6 100%)`,
+        opacity: 0.5,
+      },
       '&::after': {
         content: '" "',
         position: 'absolute',
@@ -90,6 +102,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 48,
       height: 48,
       zIndex: 1,
+      boxShadow: theme.shadows[2],
       '&:after': {
         content: '" "',
         position: 'absolute',
@@ -109,7 +122,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(3),
     },
     MuiCardActionsRoot: {
-      padding: `0 ${theme.spacing(3)}px`,
+      padding: theme.spacing(2, 3),
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -131,6 +144,7 @@ interface PageData {
             date: string
             tags: string
             authors: string
+            jobTitle: string
             summary: string
           }
         }
@@ -139,7 +153,7 @@ interface PageData {
   }
 }
 
-const placeholderImg = '/images/blog/placeholder.jpg'
+const placeholderImg = '/images/blog/thumbnails/placeholder.jpg'
 
 interface BlogListProps {
   location: any
@@ -164,6 +178,7 @@ export default function BlogListComponent(props: BlogListProps) {
               date(formatString: "MMMM Do, YYYY")
               tags
               authors
+              jobTitle
               summary
             }
           }
@@ -234,13 +249,6 @@ export default function BlogListComponent(props: BlogListProps) {
                     <Typography variant={'caption'}>
                       {edge.node.frontmatter.date}
                     </Typography>
-                    <div>
-                      <Tooltip title="Share" placement="top">
-                        <IconButton edge="end">
-                          <Share />
-                        </IconButton>
-                      </Tooltip>
-                    </div>
                   </CardActions>
                 </Card>
               </Grid>
