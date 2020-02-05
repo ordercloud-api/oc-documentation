@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     blogContainer: {
       marginTop: -theme.spacing(14),
+      paddingBottom: theme.spacing(16),
     },
     title: {
       marginBottom: theme.spacing(1),

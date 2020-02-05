@@ -79,8 +79,6 @@ interface HeaderState {
   anchorEl?: HTMLElement
   mobileOpen: boolean
   username: string
-  firstName: string
-  email: string
   showResults: boolean
   currentApiVersion: string
 }
@@ -90,8 +88,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     anchorEl: null,
     mobileOpen: false,
     username: '',
-    firstName: '',
-    email: '',
     showResults: false,
     currentApiVersion: '',
   }
@@ -106,14 +102,11 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     if (decoded) {
       this.setState({
         username: decoded.usr,
-        firstName: this.cookies.get('DevCenter.firstName'),
-        email: this.cookies.get('DevCenter.email'),
         auth: !isTokenExpired(token),
       })
     } else {
       this.setState({
-        firstName: '',
-        email: '',
+        username: '',
         auth: null,
       })
     }
@@ -129,14 +122,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   public handleLogout = () => {
     this.setState({ anchorEl: null })
-    ;['DevCenter.token', 'DevCenter.firstName', 'DevCenter.email'].forEach(
-      cookieName => {
-        this.cookies.remove(cookieName, {
-          path: '/',
-          domain: window.location.hostname,
-        })
-      }
-    )
+    this.cookies.remove('DevCenter.token', {
+      path: '/',
+      domain: window.location.hostname,
+    })
     this.onInit()
   }
 
@@ -259,7 +248,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         className={classes.iconButtonAvatar}
                         alt={this.state.username}
                       >
-                        <Gravatar size={40} email={this.state.email} />
+                        <Gravatar size={40} email={this.state.username} />
                       </Avatar>
                     </IconButton>
                     <Popper
@@ -372,7 +361,11 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 alt={this.state.username}
                 className={classes.iconButtonAvatar}
               >
-                <Gravatar alt="User Image" size={40} email={this.state.email} />
+                <Gravatar
+                  alt="User Image"
+                  size={40}
+                  email={this.state.username}
+                />
               </Avatar>
             ) : (
               <div>
