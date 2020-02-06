@@ -107,7 +107,6 @@ const ApiSchemaTable = (props: ApiSchemaTableProps) => {
       <TableBody>
         {Object.entries(schemaRef.properties).map(
           ([name, field]: [string, any]) => {
-            console.log(field)
             const hasSubSchema =
               field.properties ||
               (field.allOf && field.allOf.length) ||
