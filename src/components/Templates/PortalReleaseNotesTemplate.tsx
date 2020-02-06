@@ -72,7 +72,6 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 function PortalReleaseNotesComponent(props: any) {
-  console.log(props)
   const { data, location } = props
   const classes = useStyles(props)
   const release = data.allMdx.edges.filter(
