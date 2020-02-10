@@ -82,6 +82,23 @@ interface HeaderState {
   showResults: boolean
   currentApiVersion: string
 }
+
+function getEnvironment() {
+  const hostname = window.location.hostname
+  switch (hostname) {
+    case 'localhost':
+      return 'local'
+    case 'oc-docs-test.azurewebsites.net':
+    case 'docs.ordercloud-qa.com':
+      return 'qa'
+    case 'oc-docs.azurewebsites.net':
+    case 'ordercloud.io':
+      return 'prod'
+    default:
+      return ''
+  }
+}
+
 class Header extends React.Component<HeaderProps, HeaderState> {
   state = {
     auth: false,
@@ -94,9 +111,13 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   private readonly autologin = true
   private readonly cookies = new Cookies()
 
+  get AUTH_TOKEN_KEY() {
+    return `DevCenter.${getEnvironment()}.token`
+  }
+
   public onInit() {
     //TODO: NICE TO HAVE: Find out how to re-evaluate based on state change
-    const token = this.cookies.get('DevCenter.token')
+    const token = this.cookies.get(this.AUTH_TOKEN_KEY)
     const decoded = parseJwt(token)
 
     if (decoded) {
@@ -122,9 +143,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   public handleLogout = () => {
     this.setState({ anchorEl: null })
-    this.cookies.remove('DevCenter.token', {
+    this.cookies.remove(this.AUTH_TOKEN_KEY, {
       path: '/',
-      domain: window.location.hostname,
     })
     this.onInit()
   }
