@@ -117,13 +117,16 @@ const queries = [
     indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
   },
 ]
+
 const toExport = {
   siteMetadata: {
+    siteUrl: 'https://ordercloud.io',
     title: `OrderCloud Documentation`,
     description: `Documentation for OrderCloud's B2B eCommerce API`,
     author: `OrderCloud`,
   },
   plugins: [
+    `gatsby-plugin-sitemap`,
     `gatsby-plugin-catch-links`,
     `gatsby-transformer-json`,
     `gatsby-plugin-material-ui`,
