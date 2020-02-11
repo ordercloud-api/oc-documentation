@@ -115,6 +115,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     if (hostname.includes('azurewebsites') || hostname === 'localhost') {
       return
     }
+    if (hostname === 'ordercloud.io') {
+      return `.${hostname}`
+    }
     return `.${hostname
       .split('.')
       .slice(1)
