@@ -31,6 +31,9 @@ const styles = (theme: Theme) =>
       '&>div': {
         zIndex: 1,
       },
+      [theme.breakpoints.down('xs')]: {
+        height: '75vh',
+      },
     },
     jumbotronSecondary: {
       backgroundColor: theme.palette.secondary.main,
@@ -69,9 +72,8 @@ const styles = (theme: Theme) =>
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-
-      [theme.breakpoints.down('md')]: {
-        padding: 20,
+      [theme.breakpoints.down('xs')]: {
+        marginBottom: theme.spacing(2),
       },
     },
     jumbotronLinkGroup: {
@@ -90,7 +92,7 @@ const styles = (theme: Theme) =>
       color: seafoam[50],
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
-        margin: '0 auto',
+        marginTop: 0,
       },
     },
     jumbotronText: {
