@@ -110,6 +110,16 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
   private readonly autologin = true
   private readonly cookies = new Cookies()
+  public getCookieDomain = () => {
+    const hostname = window.location.hostname
+    if (hostname.includes('azurewebsites') || hostname === 'localhost') {
+      return
+    }
+    return `.${hostname
+      .split('.')
+      .slice(1)
+      .join('.')}`
+  }
 
   get AUTH_TOKEN_KEY() {
     return `DevCenter.${getEnvironment()}.token`
@@ -142,11 +152,15 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   public handleLogout = () => {
-    this.setState({ anchorEl: null })
     this.cookies.remove(this.AUTH_TOKEN_KEY, {
       path: '/',
+      domain: this.getCookieDomain(),
     })
-    this.onInit()
+    this.setState({
+      username: '',
+      auth: null,
+      anchorEl: null,
+    })
   }
 
   public componentDidMount() {
