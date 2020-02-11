@@ -25,20 +25,6 @@ const useStyles = makeStyles((theme: Theme) =>
       top: theme.spacing(-2),
       width: 'max-content',
     },
-    chipUserBadge: {
-      height: theme.spacing(2),
-      width: theme.spacing(2),
-      padding: theme.spacing(2),
-      margin: theme.spacing(0.5),
-      borderRadius: theme.spacing(7),
-      border: `1px solid ${sherpablue[50]}`,
-      '& svg': {
-        margin: 0,
-      },
-      '& span': {
-        display: 'none' as 'none',
-      },
-    },
     chipLabel: {
       fontFamily: theme.typography.h1.fontFamily,
       fontSize: theme.typography.body2.fontSize,
