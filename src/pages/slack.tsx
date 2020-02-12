@@ -125,7 +125,7 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
                     fullWidth
                   />
                   <ReCAPTCHA
-                    sitekey="6LfC9dcUAAAAAGT3XYDSb-YCsfvi64pz2pBuot2_"
+                    sitekey="6Ld48NcUAAAAABIxlxLJsdnuhocogN2x8essEtbW"
                     onChange={setRecaptchaToken}
                   />
                   <Button
