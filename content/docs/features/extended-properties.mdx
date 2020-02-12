@@ -3,6 +3,8 @@ title: 'Extended Properties'
 section: 'Features'
 ---
 
+import { Link } from 'gatsby'
+
 ## Overview
 
 The reality of all enterprise platforms is the need to customize the data model. To accommodate this, OrderCloud designed a property called Extended Properties (XP) to allow enterprise customization of the OrderCloud data model. OrderCloud exposes the `{ xp: {} }` property on most resources allowing you to apply JSON objects. The JSON object can be as complex and deeply-nested as necessary. Additionally, the XP property is available for filtering, sorting and searching in all list endpoints. Extended Properties allows you to overcome platform rigidity. So, to optimize the use of our data model, and to help you fully implement your B2B scenarios, we created a schema-less solution with XP and exposed it on virtually every API resource. We may not have `Product.YourSpecialDataPoint`, but we do have `Product.xp.YourSpecialDataPoint`.
@@ -88,7 +90,7 @@ Content-Type: application/json; charset=UTF-8
 
 ## Deleting XP
 
-The only way to remove a specific xp from your resource is to use the Update (PUT) method. First GET the resource, then copy the response body returned, paste it into your PUT request and omit the xp key/value you wish to remove. Alternatively, if you don’t need it actually deleted, you are able to set any xp’s value to null. In the example below, we're removing the "Age" xp from this user.
+The only way to remove a specific xp from your resource is to use the Update (PUT) method. First GET the resource, then copy the response body returned, paste it into your PUT request and omit the xp key/value you wish to remove. Alternatively, if you don't need it actually deleted, you are able to set any xp's value to null. In the example below, we're removing the "Age" xp from this user.
 
 ```http
 GET https://api.ordercloud.io/buyers/newbuyer/users/userID HTTP/1.1
@@ -151,7 +153,7 @@ Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 ```
 
-Note how the dot (".") notation is used in the query string to filter on the specified deeply nested XP field. Check out the searching, filtering and sorting guides to learn more about querying.
+Note how the dot (".") notation is used in the query string to filter on the specified deeply nested XP field. Check out the <Link to="features/advanced-querying">advanced querying guide</Link> to learn more.
 
 ## Conclusion
 

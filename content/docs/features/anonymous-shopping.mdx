@@ -7,7 +7,7 @@ import { PortalLink } from 'components/Shared/PortalLink'
 
 ## Overview
 
-Anonymous Shopping, or Guest Checkout, is when a user is enabled to browse a catalog of products and/or checkout without registering themselves. Accomplishing this requires OrderCloud.io developers to pull together a lot of platform knowledge. We'll summarize that information here.
+Anonymous Shopping, or Guest Checkout, is when a user is enabled to browse a catalog of products and/or checkout without registering themselves. Accomplishing this requires OrderCloud developers to pull together a lot of platform knowledge. We'll summarize that information here.
 
 ## Configuring the Application
 
@@ -19,7 +19,7 @@ Once you have an active user, navigate to the <PortalLink to="/console">Console<
 
 ## Authenticating Anonymous Users
 
-Once your application is set up with a template user, we're ready to authenticate anonymously. Using the Client Credentials grant-type and only a client_id, make a request to the OrderCloud.io OAuth server:
+Once your application is set up with a template user, we're ready to authenticate anonymously. Using the Client Credentials grant-type and only a client_id, make a request to the OrderCloud OAuth server:
 
 ```http
 POST https://auth.ordercloud.io/oauth/token HTTP/1.1
