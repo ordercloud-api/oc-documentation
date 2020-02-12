@@ -18,6 +18,7 @@ import DevcenterMiddleware from '../services/devcenterMiddleware.service'
 import { Alert } from '../components/Shared/Alert'
 import { isEmail } from 'validator'
 import LoadingIndicator from '../components/Shared/LoadingIndicator'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 interface SlackCommunityProps {
   classes: any
@@ -28,6 +29,7 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
   const [email, setEmail] = React.useState('')
   const [errorText, setErrorText] = React.useState('')
   const [isLoading, setIsloading] = React.useState(false)
+  const [recaptchaToken, setRecaptchaToken] = React.useState('')
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const email = event.target.value
@@ -39,7 +41,13 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
   const handleSubmit = async () => {
     setIsloading(true)
     try {
-      await DevcenterMiddleware.Post('/api/slack/signup', {
+      if (!recaptchaToken) {
+        return Alert.error('Please verify that you are a human')
+      }
+      await DevcenterMiddleware.Post('/recaptcha/verify', {
+        Token: recaptchaToken,
+      })
+      await DevcenterMiddleware.Post('/slack/signup', {
         Email: email,
       })
       Alert.success('Please check your email for an invite')
@@ -48,6 +56,14 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
       if (e && e.status === 409) {
         Alert.warn('An email has already been sent, please check your inbox')
         setEmail('')
+      } else if (
+        e &&
+        e.data &&
+        e.data.Errors &&
+        e.data.Errors.length &&
+        e.data.Errors[0].ErrorCode === 'RecaptchaError'
+      ) {
+        Alert.error('Recaptcha validation failed')
       } else {
         Alert.error(
           'Whoops, an error occurred. Please make sure your email address is valid'
@@ -107,6 +123,10 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
                     type="email"
                     onChange={handleEmailChange}
                     fullWidth
+                  />
+                  <ReCAPTCHA
+                    sitekey="6LfC9dcUAAAAAGT3XYDSb-YCsfvi64pz2pBuot2_"
+                    onChange={setRecaptchaToken}
                   />
                   <Button
                     disabled={Boolean(errorText.length)}
