@@ -1,0 +1,67 @@
+---
+title: 'Impersonation'
+section: 'Features'
+---
+
+import { Link } from 'gatsby'
+
+## Overview
+
+In some instances, you may want to allow a user to order on behalf of another user. We see this use case a lot in Customer Service Desk and Call Center scenarios where customers will call their orders in and the service rep places the order on the customer’s behalf. This workflow preserves the reporting data, email notifications, and presents the catalog ordering rules the buyer is configured for.
+
+The OrderCloud API supports this capability by allowing certain users to make API calls on behalf of a buyer user, which we refer to as impersonation. If you're an admin user with the `BuyerImpersonation` role you can impersonate any buyer user under your organizational umbrella as long as an applicable Impersonation Config has been created. If you're a buyer user with the `BuyerImpersonation` role you can impersonate any other buyer user within the same buyer company as long as an applicable Impersonation Config has been created.
+
+## Creating an Impersonation Config
+
+An impersonation config is a contract that defines exactly who can impersonate who and for which application.
+
+`ImpersonationBuyerID`, `ImpersonationGroupID`, and `ImpersonationUserID` all reference the party you want to grant access to do the impersonating. While `BuyerID`, `GroupID`, `UserID` all reference the party who will be impersonated. The `SecurityProfileID` is the ID of the Security Profile you would like to grant the user doing the impersonating (only while they are impersonating). `ClientID` is the specific application impersonation will be allowed in, if you need to impersonate in multiple applications, you’ll need to set up multiple Impersonation Configs.
+
+API Reference: <Link to="/api-reference/authentication-and-authorization/impersonation-configs/create">Create an Impersonation Config</Link>
+
+```http
+POST https://api.ordercloud.io/v1/impersonationconfig HTTP/1.1
+Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Content-Type: application/json; charset=UTF-8
+
+  {
+    "ID": "",
+    "ImpersonationBuyerID": "",
+    "ImpersonationGroupID": "",
+    "ImpersonationUserID": "",
+    "BuyerID": "",
+    "GroupID": "",
+    "UserID": "",
+    "SecurityProfileID": "",
+    "ClientID": ""
+  }
+```
+
+## Retrieving the impersonation access token
+
+After you have successfully created an applicable Impersonation Config, the next step is to retrieve that buyer user's access token:
+
+API Reference: <Link to="/api-reference/buyers/users/get-access-token">Get a single user access token</Link>
+
+```http
+POST https://api.ordercloud.io/v1/buyers/{buyerID}/users/{userID}/accesstoken HTTP/1.1
+Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Content-Type: application/json; charset=UTF-8
+
+  {
+    "ClientID": "",
+    "Roles": [
+        "BuyerImpersonation"
+    ]
+  }
+```
+
+## Subsequent Requests
+
+The `access_token` from the response will need to be included for each and every API request in the Authorization header prefixed by `Bearer `
+
+```http
+GET https://api.ordercloud.io/v1/buyers HTTP/1.1
+Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Content-Type: application/json
+```
