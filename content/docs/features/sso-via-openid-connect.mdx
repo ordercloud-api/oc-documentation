@@ -53,7 +53,7 @@ Whether you are using a service like Google's API or you have written your own I
 The Client ID and especially the Client Secret should be private. The URLs can be public, for example, [Google's URLS](https://accounts.google.com/.well-known/openid-configuration). In turn, your identity provider will need a piece of information from OrderCloud called an Authorized Redirect URI. Use the value
 
 ```
-https://auth.OrderCloud.io/ocrpcode
+https://auth.ordercloud.io/ocrpcode
 ```
 
 This OrderCloud resource accepts the IDP's access token, converts it to an OrderCloud token, and then redirects users to the `AppStartUrl` you will specify in the next section.
@@ -64,13 +64,13 @@ This OrderCloud resource accepts the IDP's access token, converts it to an Order
 
 OrderCloud requires an existing user record for any user authenticating through a third party. Make sure the User ID matches that user's email as configured in the IDP. Resource permissions will be determined based on the intersection of the user's assigned roles and the requested roles just like normal OrderCloud authentication. Making these user records optional is a feature on the roadmap.
 
-API Reference: <Link to="/api-reference#Users.Create">Create a User</Link>
+API Reference: <Link to="/api-reference/buyers/users/create">Create a User</Link>
 
 #### Step 2 - Create Connection Configuration
 
 Each connection configuration enables user to authenticate to one Ordercloud ApiClient through one Identity Provider. The Ordercloud API supports normal CRUD operations on these configurations.
 
-API Reference: <Link to="/api-reference#OpenIdConnects.Create">Create an OpenID Connect Configuration</Link>
+API Reference: <Link to="/authentication-and-authorization/open-id-connects/create">Create an OpenID Connect Configuration</Link>
 
 ```http
 POST https://api.ordercloud.io/v1/openidconnects HTTP/1.1
