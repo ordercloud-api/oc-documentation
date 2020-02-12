@@ -9,12 +9,7 @@ import {
 } from '@material-ui/core'
 import { Business, People, Person } from '@material-ui/icons'
 import React from 'react'
-import {
-  blackpearl,
-  sherpablue,
-  seafoam,
-  sunset,
-} from '../../../theme/ocPalette.constants'
+import { sherpablue, seafoam, sunset } from '../../../theme/ocPalette.constants'
 import globalGraphicsStyles from './GlobalGraphicsStyles'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
     chipSpacing: {
       margin: theme.spacing(2, 0),
     },
-    chipDark: {
+    chipGold: {
       backgroundColor: sunset[500],
       color: '#fff',
       '& > svg': {
@@ -113,127 +108,125 @@ const useStyles = makeStyles((theme: Theme) =>
 const OrgHierarchyImage5: React.FunctionComponent = () => {
   const classes = useStyles({})
   return (
-    <React.Fragment>
-      <Paper className={classes.Paper}>
-        <Chip
-          color="primary"
-          classes={{
-            label: classes.chipLabel,
-          }}
-          className={classes.chip}
-          icon={<Business />}
-          label="Company"
-        />
-        <Grid container justify="space-evenly" spacing={4}>
-          <Grid item lg className={classes.gridContainerChip}>
-            <Chip
-              color="primary"
-              classes={{
-                label: classes.chipLabel,
-              }}
-              className={`${classes.chipUser} ${classes.chipSpacing}`}
-              icon={<People />}
-              label="User Group A"
-            />
+    <Paper className={classes.Paper}>
+      <Chip
+        color="primary"
+        classes={{
+          label: classes.chipLabel,
+        }}
+        className={classes.chip}
+        icon={<Business />}
+        label="Company"
+      />
+      <Grid container justify="space-evenly" spacing={4}>
+        <Grid item lg className={classes.gridContainerChip}>
+          <Chip
+            color="primary"
+            classes={{
+              label: classes.chipLabel,
+            }}
+            className={`${classes.chipUser} ${classes.chipSpacing}`}
+            icon={<People />}
+            label="User Group A"
+          />
 
-            <Chip
-              color="secondary"
-              classes={{
-                label: classes.chipLabel,
-              }}
-              className={`${classes.chipUser} ${classes.chipSpacing}`}
-              icon={<People />}
-              label="User Group B"
-            />
+          <Chip
+            color="secondary"
+            classes={{
+              label: classes.chipLabel,
+            }}
+            className={`${classes.chipUser} ${classes.chipSpacing}`}
+            icon={<People />}
+            label="User Group B"
+          />
 
-            <Chip
-              classes={{
-                label: classes.chipLabel,
-              }}
-              className={`${classes.chipUser} ${classes.chipSpacing} ${classes.chipDark}`}
-              icon={<People />}
-              label="User Group C"
-            />
-          </Grid>
-          <Grid item lg className={classes.gridContainerChip}>
-            <Grid
-              container
-              justify="center"
-              className={classes.gridContainerChip}
-              spacing={2}
-            >
-              <Grid item lg className={classes.containerChippers}>
-                <Chip
-                  color="primary"
-                  size="small"
-                  className={classes.chipUserBadge}
-                  icon={<Person />}
-                />
-                <Chip
-                  color="primary"
-                  size="small"
-                  className={`${classes.chipUserBadge} ${classes.chipUserBadgeC}`}
-                  icon={<Person />}
-                />
-                <Chip
-                  color="primary"
-                  size="small"
-                  className={`${classes.chipUserBadge} ${classes.chipUserBadgeB}`}
-                  icon={<Person />}
-                />
-              </Grid>
-              <Grid item lg className={classes.containerChippers}>
-                <Chip
-                  color="primary"
-                  size="small"
-                  className={`${classes.chipUserBadge} ${classes.chipUserBadgeA}`}
-                  icon={<Person />}
-                />
-                <Chip
-                  color="primary"
-                  size="small"
-                  className={classes.chipUserBadge}
-                  icon={<Person />}
-                />
-                <Chip
-                  color="primary"
-                  size="small"
-                  className={`${classes.chipUserBadge} ${classes.chipUserBadgeC}`}
-                  icon={<Person />}
-                />
-              </Grid>
-              <Grid item lg className={classes.containerChippers}>
-                <Chip
-                  color="primary"
-                  size="small"
-                  className={`${classes.chipUserBadge} ${classes.chipUserBadgeB}`}
-                  icon={<Person />}
-                />
-                <Chip
-                  color="primary"
-                  size="small"
-                  className={`${classes.chipUserBadge} ${classes.chipUserBadgeA}`}
-                  icon={<Person />}
-                />
-                <Chip
-                  color="primary"
-                  size="small"
-                  className={classes.chipUserBadge}
-                  icon={<Person />}
-                />
-              </Grid>
+          <Chip
+            classes={{
+              label: classes.chipLabel,
+            }}
+            className={`${classes.chipUser} ${classes.chipSpacing} ${classes.chipGold}`}
+            icon={<People />}
+            label="User Group C"
+          />
+        </Grid>
+        <Grid item lg className={classes.gridContainerChip}>
+          <Grid
+            container
+            justify="center"
+            className={classes.gridContainerChip}
+            spacing={2}
+          >
+            <Grid item lg className={classes.containerChippers}>
+              <Chip
+                color="primary"
+                size="small"
+                className={classes.chipUserBadge}
+                icon={<Person />}
+              />
+              <Chip
+                color="primary"
+                size="small"
+                className={`${classes.chipUserBadge} ${classes.chipUserBadgeC}`}
+                icon={<Person />}
+              />
+              <Chip
+                color="primary"
+                size="small"
+                className={`${classes.chipUserBadge} ${classes.chipUserBadgeB}`}
+                icon={<Person />}
+              />
+            </Grid>
+            <Grid item lg className={classes.containerChippers}>
+              <Chip
+                color="primary"
+                size="small"
+                className={`${classes.chipUserBadge} ${classes.chipUserBadgeA}`}
+                icon={<Person />}
+              />
+              <Chip
+                color="primary"
+                size="small"
+                className={classes.chipUserBadge}
+                icon={<Person />}
+              />
+              <Chip
+                color="primary"
+                size="small"
+                className={`${classes.chipUserBadge} ${classes.chipUserBadgeC}`}
+                icon={<Person />}
+              />
+            </Grid>
+            <Grid item lg className={classes.containerChippers}>
+              <Chip
+                color="primary"
+                size="small"
+                className={`${classes.chipUserBadge} ${classes.chipUserBadgeB}`}
+                icon={<Person />}
+              />
+              <Chip
+                color="primary"
+                size="small"
+                className={`${classes.chipUserBadge} ${classes.chipUserBadgeA}`}
+                icon={<Person />}
+              />
+              <Chip
+                color="primary"
+                size="small"
+                className={classes.chipUserBadge}
+                icon={<Person />}
+              />
             </Grid>
           </Grid>
         </Grid>
-        <Typography
-          className={classes.figureCaption}
-          color="textSecondary"
-          variant="caption"
-        >
-          users can be assigned to multiple user groups
-        </Typography>
-      </Paper>
-    </React.Fragment>
+      </Grid>
+      <Typography
+        className={classes.figureCaption}
+        color="textSecondary"
+        variant="caption"
+      >
+        users can be assigned to multiple user groups
+      </Typography>
+    </Paper>
   )
 }
 
