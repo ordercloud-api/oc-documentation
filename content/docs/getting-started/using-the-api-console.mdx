@@ -4,38 +4,58 @@ section: 'Getting Started'
 priority: 2
 hidden: true
 ---
+import { Link } from 'gatsby'
 
 ## Introduction
-
 The OrderCloud API Console provides instant access to your OrderCloud applications. It is extremely useful for rapidly spinning up some data to develop against or learning about all the different endpoints OrderCloud has to offer.
 
 ## Getting to the Console
+The console is available at [portal.ordercloud.io](https://portal.ordercloud.io) and can be accessed via the top navigation. You will be asked to log in or create a new account before you can access any functionality in the OrderCloud Portal. Once the console loads, you will notice a list of API Resources on your left, along with a prompt for you to "Select a Context".
 
-`TODO: Fix links`
-The console is available at <a ng-href="{{application.links.console}}">console.ordercloud.io</a> and can be navigated to via the top navigation or by clicking "Open API Console" when viewing an API Client in the <a ng-href="{{application.links.dashboard}}">dashboard</a>. If you navigate directly to the console via the top navigation, you will be prompted to choose a Seller Organization, then an API Client, and finally a user. The Available Users are based on which API Client you select and the Commerce Roles it has assigned. In general, you wil always be selecting a specific user when entering the Console.
+Every interaction with the OrderCloud API requires a user context. User context is defined by a combination of an API Client and level of data access defined by the participating user's Security Profile assignments. OrderCloud needs this information to securely interact with your Organizations data.
 
-## Current Context and User
+## Selecting a Context
+Click on the "Select a Context" button. This will open up a simple three step interface for selecting the Seller Organization, API Client, and User you wish act on behalf of while using the API Console. 
 
-When first opening the console, you will notice a black box in the top left that lets you know the user your are currently authenticated as, and the context in which the user lives within its Seller Organization. Along the right are buttons to copy the IDs of the respective property.
+Once a Seller Organization is selected, you will see a list of API Clients to choose from. This decision will directly affect which Users are available in the final step. This is because each API Client has a unique User Access summarized by the label on the right. Read more about API Clients and User Access <Link to="/main-concepts/api-clients#defining-user-access">here</Link>.
 
-![Console User Context](/images/docs/getting-started/using-the-api-console/buyer-current-user-console.png)
+After selecting an API Client, search for the user you wish to get access to. Each user in the list will have a label on the right telling you their type and company name. Keep in mind that your API Console context will be limited to the roles available to the user you select. Once you select a user the Context Selector will close and you can begin making requests. You can re-open the Context Selector at any time to choose a different user context and continue making requests.
 
-When clicking the arrow, a dropdown will display with options to copy the current user's authorization token, the ability to change users within the same API Client, or change the Seller Organization context.
+## Using Console Tabs
+Let's say you selected an Seller context and performed some updates that you want to validate from the Buyer Perspective. Instead of just switching your context to a Buyer User, you can start an entirely new Console Tab by clicking on the `+` icon to the right of your active tabs. With your new tab activated, you can select your desired Buyer User Context and perform requests from this perspective while keeping your previous Seller Context active.
 
-![Console User Context](/images/docs/getting-started/using-the-api-console/dropdown-console.png)
+To switch back to your previous seller context, simply click on that tab and begin making requests! These tabs and their selected endpoints are saved to your OrderCloud account so next time you sign in you can start making requests right away. Utilizing Console Tabs can help boost productivity when working with many different User Contexts.
 
-## Lockable Parameters
+## Basic Console Workflow
 
-Sometimes you will be making many successive requests with the same parameters. To make this easier for you, we included the ability to lock specific parameter values for the duration of your console session. If you know you'll always be working with the same buyer, enter the Buyer ID parameter once, click the lock button and forget about it!
+### Finding an Endpoint
+Now that your user context is defined, we can explore the API using the resource navigation on the left. Resources are broken up into relevant sections, and each resource has one or more endpoints you can interact with. Scroll to the "Me and My Stuff" section and select the "Me" resource. This will load the first endpoint in the resource which in this case is `GET /me`. Alternatively, you can click the search icon to the right of the Context Selector and search for "Get the currently authenticated user".
 
-![Lockable Params](/images/docs/getting-started/using-the-api-console/lockable-params.png)
+Now that a resource and endpoint is selected, you can click on the endpoint selector next to the Search icon to view all available endpoints under the selected resource. For now, let's stay on "Get the currently authenticated user".
 
-## Making Requests
+### Sending a Request
+This particular `GET` request is unique in that it doesn't have any request parameters. The only obvious course of action is to execute the request which can be done by clicking the blue "SEND" button to the right of the endpoint selector. Once the request completes, the response body will appear on the right with the request details and response status shown above in the Request History Menu.
 
-`TODO: Fix links`
-Making a request in the API Console is relatively simple. Begin by choosing a resource from the console menu on the left. Once the resource loads in the second pane, you can choose the method (endpoint) you would like to use. If you're not sure which endpoint to use, check out our <a ui-sref="api-reference">API Reference</a> for a full list. If you're following along with our <a ui-sref="platform-guides({sectionID: null, guideID: null, detailID: null})">guides</a>, each step will have a link to the specific endpoint being used.
+### Viewing Past Requests
+The Request History Menu keeps track of past requests made in a particular console tab. Do not rely on previous requests always being available to you for undoing certain changes. Request history is not persistent, meaning it will be cleared out each time you reload the API Console.
 
-Depending on the endpoint, you will be required to fill out some parameters and/or a request body. When all required parameters have been filled out, click "Send" and the successful response or error message will appear in the pane on the right. View previous responses by clicking on the response in the list above the active response body.
+### Preparing a Request Body
+Let's update the first and last name of the currently authenticated user (assuming the `AvailableRoles` in your `GET /me` response includes `FullAccess` or `MeAdmin`). Click on the active endpoint to the right of the search icon to open up the endpoint selector. You should see a `PATCH` request for "Patch the Currently Authenticated User" - click on it to select the endpoint.
+
+Being a `PATCH` request, the center portion of the console will load a form for filling out the Request Body. Add new values for the First Name and Last Name fields. See how the JSON input updates as you fill out the form; instead of filling out each field individually, you can paste JSON here from other sources to quickly fill out the form. As you may have noticed, none of these fields are actually **required**; if we were performing a `PUT` or `POST` request, required fields would be marked with an asterisk (`*`).
+
+Once the request body has both `FirstName` and `LastName` added, go ahead and click "SEND". This will add another item to your request history and display the `PATCH` response body. It should have the updated values for FirstName and LastName.
+
+### Preparing Request Parameters
+Find the "Get a list of buyers" endpoint. This request follows a similar parameter pattern as other List calls in the OrderCloud API. Available parameters are presented in the center of the console as a form field. If you were to fill out the "Search" field, you will see the active endpoint display reflect that change in the query string. The full request URL and query string can be copied by by clicking on the copy icon to the left of the "SEND" button.
+
+A lock icon on the right-hand side of a request parameter signifies that the value can be "locked", meaning as you navigate between resources and endpoints the locked value will persist wherever that parameter is presented. To lock or unlock a parameter, simply click the lock icon.
+
+Certain request parameters can recieve more than one value, such as `SearchOn` and `SortBy`. Possible values for these parameters vary from resource to resource. The order you click on each value determines their order in the query string.
+
+The "Add Filter" button allows you to filter your list calls by most resource properties or extended properties defined for the resource in question. You can filter on the same property key more than once to activate the "AND" filter functionality. Read more about how filters work in the OrderCloud API <Link to="/features/querying">here</Link>.
+
+While most request paramters are not required (usually query string paramters), route parameters are almost _always_ required. Required parameters will be flagged with an asterisk (`*`) next to the label.
 
 ## Conclusion
 
