@@ -126,6 +126,7 @@ const toExport = {
     author: `OrderCloud`,
   },
   plugins: [
+    `gatsby-ordercloud-version`,
     `gatsby-plugin-sitemap`,
     `gatsby-plugin-catch-links`,
     `gatsby-transformer-json`,

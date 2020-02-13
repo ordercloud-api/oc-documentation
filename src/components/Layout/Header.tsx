@@ -80,7 +80,6 @@ interface HeaderState {
   mobileOpen: boolean
   username: string
   showResults: boolean
-  currentApiVersion: string
 }
 
 function getEnvironment() {
@@ -106,7 +105,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     mobileOpen: false,
     username: '',
     showResults: false,
-    currentApiVersion: '',
   }
   private readonly autologin = true
   private readonly cookies = new Cookies()
@@ -184,8 +182,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     const isMobile = width !== 'md' && width !== 'lg' && width !== 'xl'
     const isMedium = width !== 'lg' && width !== 'xl'
 
-    //TODO: How should we get this dynamically??
-    const currentApiVersion = '1.0.137'
+    const currentApiVersion = data.orderCloudVersion.internal.content
     const latestReleaseNoteVersion = data.allMdx.nodes[0].frontmatter.apiVersion
     let activeTab = 'docs'
     if (location && location.pathname) {
@@ -650,6 +647,11 @@ class HeaderWithStaticQuery extends React.Component<
                 frontmatter {
                   apiVersion
                 }
+              }
+            }
+            orderCloudVersion {
+              internal {
+                content
               }
             }
           }
