@@ -14,6 +14,22 @@ const result: OpenApiResult = {
   oc: null,
 }
 
+async function tryGetParsedSpec() {
+  // downloading spec fails on occassion, try up to three times before cancelling
+  const MAX_RETRIES = 3
+  for (let index = 1; index <= MAX_RETRIES; index++) {
+    try {
+      return await SwaggerParser.dereference(
+        'https://api.ordercloud.io/v1/openapi/v3'
+      )
+    } catch (err) {
+      if (index === MAX_RETRIES) {
+        throw Error(`Failed to download spec after ${MAX_RETRIES} tries`)
+      }
+    }
+  }
+}
+
 export const Initialize = async (
   parsedSpec?: OrderCloudProps
 ): Promise<OrderCloudProps> => {
@@ -29,9 +45,7 @@ export const Initialize = async (
   }
   if (result.oc) return result.oc
   if (!parsedSpec && !result.oc) {
-    const parsedSpec: any = await SwaggerParser.dereference(
-      'https://api.ordercloud.io/v1/openapi/v3'
-    )
+    const parsedSpec: any = await tryGetParsedSpec()
     const sections = parsedSpec.tags.filter(tag => tag['x-id'])
     const resources = parsedSpec.tags
       .filter(tag => tag['x-section-id'])
