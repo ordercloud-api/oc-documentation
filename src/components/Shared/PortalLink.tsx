@@ -24,7 +24,7 @@ export function getBaseUrl() {
   if (hostname.includes('ordercloud-qa')) {
     return 'https://portal.ordercloud-qa.com'
   }
-  return 'https://portal.ordercloud.io'
+  return `${window.location.protocol}//portal.ordercloud.io`
 }
 
 function normalizePath(path) {
