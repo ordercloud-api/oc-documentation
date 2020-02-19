@@ -132,12 +132,12 @@ const MainComponent: React.FunctionComponent = props => {
             Introduction
           </CustomButtonLink>,
           <CustomButtonLink
-            key="quick-start-guide"
-            to="/getting-started/quick-start-guide"
+            key="main-concepts"
+            to="/main-concepts/organization-hierarchy"
             variant="contained"
             color={flame[600]}
           >
-            Quick Start
+            Main Concepts
           </CustomButtonLink>,
         ]}
       />

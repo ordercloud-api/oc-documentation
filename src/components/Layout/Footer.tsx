@@ -192,10 +192,7 @@ class Footer extends React.Component<any> {
                 >
                   More
                 </Typography>
-                <Link
-                  className={classes.footerLinks}
-                  to="/release-notes/v1.0.109"
-                >
+                <Link className={classes.footerLinks} to="/release-notes">
                   API Release Notes
                 </Link>
                 <Link
@@ -211,6 +208,17 @@ class Footer extends React.Component<any> {
                   rel="noopener noreferrer"
                 >
                   Privacy Policy
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <a
+                  className={classes.footerLinks}
+                  href="https://four51.io/contact-us"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Contact Us
                   <Box marginLeft={0.5} display="flex" alignItems="center">
                     <OpenInNewOutlined fontSize="inherit" />
                   </Box>

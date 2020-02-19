@@ -5,7 +5,7 @@ import {
   Typography,
   Theme,
 } from '@material-ui/core'
-import { ExpandLess, ExpandMore } from '@material-ui/icons'
+import { ExpandLess, ExpandMore, OpenInNew } from '@material-ui/icons'
 import { Link, withPrefix } from 'gatsby'
 import React from 'react'
 import { Section } from '../../models/section.model'
@@ -51,6 +51,11 @@ const useStyles = makeStyles((theme: Theme) =>
       lineHeight: 1.75,
       color: theme.palette.getContrastText(theme.palette.background.default),
       textDecoration: 'none',
+    },
+    linkIcon: {
+      marginLeft: theme.spacing(1),
+      fontSize: 'inherit',
+      color: theme.palette.text.hint,
     },
     activeSection: {
       fontWeight: 'bold',
@@ -128,6 +133,32 @@ export default function DocMenu(props: DocMenuProps) {
                   {guide.frontmatter.title}
                 </Typography>
               ))}
+              {section.title === 'Getting Started' && (
+                <React.Fragment>
+                  <Typography
+                    display="block"
+                    className={classes.guide}
+                    href="https://github.com/ordercloud-api/ordercloud-dotnet-sdk"
+                    target="_blank"
+                    variant="body1"
+                    component="a"
+                  >
+                    OrderCloud .NET SDK
+                    <OpenInNew className={classes.linkIcon} />
+                  </Typography>
+                  <Typography
+                    display="block"
+                    className={classes.guide}
+                    href="https://github.com/ordercloud-api/OrderCloud-JavaScript-SDK"
+                    target="_blank"
+                    variant="body1"
+                    component="a"
+                  >
+                    OrderCloud Javascript SDK
+                    <OpenInNew className={classes.linkIcon} />
+                  </Typography>
+                </React.Fragment>
+              )}
             </div>
           </Collapse>
         </React.Fragment>

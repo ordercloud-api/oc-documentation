@@ -12,6 +12,7 @@ import {
   TableRow,
   TableCell,
   CssBaseline,
+  Divider,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
 import { MDXProvider } from '@mdx-js/react'
@@ -193,6 +194,7 @@ export default (props: LayoutProps) => {
               td: tdProps => (
                 <TableCell variant="body">{tdProps.children}</TableCell>
               ),
+              hr: hrProps => <Divider {...hrProps} />,
             }}
           >
             {props.children}

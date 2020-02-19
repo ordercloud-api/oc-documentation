@@ -1,5 +1,5 @@
 ---
-title: 'Using the API Console'
+title: 'Using the Portal'
 section: 'Getting Started'
 priority: 2
 hidden: true
@@ -7,26 +7,39 @@ hidden: true
 import { Link } from 'gatsby'
 
 ## Introduction
+Upon registration and authentication, the Portal hompage will appear with two distinct widgets for the API Console and Seller Organizations you own or have access to.
+
+---
+
+## Managing Seller Organizations
+Create your first Seller Organization by clicking on "New Organization" within the widget. If you already have one available, feel free to skip this step and simply click on the organization you want to manage. When creating an organization you will be asked to provide a name, and some optional default user credentials. If you do not provide credentials, the default users will be created without a password. The reason for this is that the OrderCloud always requires a specific user context in order to interact with the API; therefore we make the first two users for you so you can use the API Console right away.
+
+### Organization Ownership and Collaboration
+The Portal user who initially created the Seller Organization will start out as the "Owner". Under each organization you can add other Portal users as "Contributors" using the email address they registered with. Contributor Access can be controlled by Owners and other contributors who have the Manage Contributor Access permission turned on. The "data access" is the limitations on which API Roles are available to the contributor when acting on behalf of various and users in the API Console under each Seller Organization.
+
+If your relationship with a Seller Organiztion changes, you can transfer ownership underneath the Settings tab. Ownership gives Portal Users exclusive access to rename, transfer or **delete** a Seller Organization.
+
+---
+
+## Using the API Console
 The OrderCloud API Console provides instant access to your OrderCloud applications. It is extremely useful for rapidly spinning up some data to develop against or learning about all the different endpoints OrderCloud has to offer.
 
-## Getting to the Console
-The console is available at [portal.ordercloud.io](https://portal.ordercloud.io) and can be accessed via the top navigation. You will be asked to log in or create a new account before you can access any functionality in the OrderCloud Portal. Once the console loads, you will notice a list of API Resources on your left, along with a prompt for you to "Select a Context".
+### Getting to the Console
+From the Portal homepage [portal.ordercloud.io](https://portal.ordercloud.io) you can get to the API console by selecting a recent tab or clicking on "New Tab" within the widget. Once the console loads, you will notice a list of API Resources on your left, along with a prompt for you to "Select a Context".
 
 Every interaction with the OrderCloud API requires a user context. User context is defined by a combination of an API Client and level of data access defined by the participating user's Security Profile assignments. OrderCloud needs this information to securely interact with your Organizations data.
 
-## Selecting a Context
+### Selecting a Context
 Click on the "Select a Context" button. This will open up a simple three step interface for selecting the Seller Organization, API Client, and User you wish act on behalf of while using the API Console. 
 
 Once a Seller Organization is selected, you will see a list of API Clients to choose from. This decision will directly affect which Users are available in the final step. This is because each API Client has a unique User Access summarized by the label on the right. Read more about API Clients and User Access <Link to="/main-concepts/api-clients#defining-user-access">here</Link>.
 
 After selecting an API Client, search for the user you wish to get access to. Each user in the list will have a label on the right telling you their type and company name. Keep in mind that your API Console context will be limited to the roles available to the user you select. Once you select a user the Context Selector will close and you can begin making requests. You can re-open the Context Selector at any time to choose a different user context and continue making requests.
 
-## Using Console Tabs
+### Using Console Tabs
 Let's say you selected an Seller context and performed some updates that you want to validate from the Buyer Perspective. Instead of just switching your context to a Buyer User, you can start an entirely new Console Tab by clicking on the `+` icon to the right of your active tabs. With your new tab activated, you can select your desired Buyer User Context and perform requests from this perspective while keeping your previous Seller Context active.
 
 To switch back to your previous seller context, simply click on that tab and begin making requests! These tabs and their selected endpoints are saved to your OrderCloud account so next time you sign in you can start making requests right away. Utilizing Console Tabs can help boost productivity when working with many different User Contexts.
-
-## Basic Console Workflow
 
 ### Finding an Endpoint
 Now that your user context is defined, we can explore the API using the resource navigation on the left. Resources are broken up into relevant sections, and each resource has one or more endpoints you can interact with. Scroll to the "Me and My Stuff" section and select the "Me" resource. This will load the first endpoint in the resource which in this case is `GET /me`. Alternatively, you can click the search icon to the right of the Context Selector and search for "Get the currently authenticated user".
@@ -57,6 +70,6 @@ The "Add Filter" button allows you to filter your list calls by most resource pr
 
 While most request paramters are not required (usually query string paramters), route parameters are almost _always_ required. Required parameters will be flagged with an asterisk (`*`) next to the label.
 
-## Conclusion
+### Conclusion
 
 The Console eliminates the headache of making authentication requests before using the OrderCloud API. Use it to dive into your data quickly and make rapid changes while developing your applications. We're always looking for ways to improve the experience, so any feedback or suggestions you have as a user of the platform are greatly appreciated!
