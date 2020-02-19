@@ -66,6 +66,9 @@ const styles = (theme: Theme) =>
       margin: theme.spacing(2, 0),
     },
     questionsText: {
+      maxWidth: 600,
+      marginLeft: 'auto',
+      marginRight: 'auto',
       marginBottom: theme.spacing(3),
     },
     questionsBtn: {
