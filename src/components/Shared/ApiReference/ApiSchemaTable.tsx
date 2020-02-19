@@ -98,7 +98,7 @@ const ApiSchemaTable = (props: ApiSchemaTableProps) => {
       <TableHead>
         <TableRow>
           <TableCell style={{ minWidth: 200 }}>Property</TableCell>
-          {!isResponse && <TableCell style={{ minWidth: 40 }}></TableCell>}
+          <TableCell style={{ minWidth: 40 }}></TableCell>
           <TableCell style={{ minWidth: 100 }}>Type</TableCell>
           <TableCell style={{ minWidth: 100 }}>Format</TableCell>
           <TableCell style={{ minWidth: 150 }}>Max Length</TableCell>
@@ -112,6 +112,9 @@ const ApiSchemaTable = (props: ApiSchemaTableProps) => {
               (field.allOf && field.allOf.length) ||
               (field.items && field.items.properties)
             const isExpanded = expanded.includes(name)
+            if (field.readOnly && !isResponse) {
+              return null
+            }
             return (
               <React.Fragment key={name}>
                 <TableRow
@@ -134,19 +137,19 @@ const ApiSchemaTable = (props: ApiSchemaTableProps) => {
                     )}
                     {name}
                   </TableCell>
-                  {!isResponse && (
-                    <TableCell padding="checkbox" align="center">
-                      {Boolean(required && required.includes(name)) && (
-                        <SmallChip
-                          className={classes.requiredChip}
-                          label="Required"
-                        />
-                      )}
-                      {Boolean(field.readOnly || readOnlyOverride) && (
-                        <SmallChip label="Read Only" />
-                      )}
-                    </TableCell>
-                  )}
+                  <TableCell padding="checkbox" align="center">
+                    {Boolean(
+                      !isResponse && required && required.includes(name)
+                    ) && (
+                      <SmallChip
+                        className={classes.requiredChip}
+                        label="Required"
+                      />
+                    )}
+                    {Boolean(field.readOnly || readOnlyOverride) && (
+                      <SmallChip label="Read Only" />
+                    )}
+                  </TableCell>
                   <TableCell style={{ width: 100 }}>
                     <code className={classes[field.type]}>
                       {field.type || 'object'}

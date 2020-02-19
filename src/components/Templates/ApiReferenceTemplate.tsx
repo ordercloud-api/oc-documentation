@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       zIndex: 2,
       marginTop: -theme.spacing(8),
+      paddingBottom: theme.spacing(8),
     },
     apiRefCard: {
       display: 'flex',
@@ -167,9 +168,9 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
           </Container>
         </React.Fragment>
       )}
-      <LayoutContainer>
-        <LayoutMain>
-          {pageContext.section ? (
+      {pageContext.section && (
+        <LayoutContainer>
+          <LayoutMain>
             <Breadcrumbs className={classes.breadcrumbs}>
               <Typography
                 className={classes.breadcrumbLink}
@@ -204,76 +205,76 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
                 </Typography>
               )}
             </Breadcrumbs>
-          ) : null}
-          {!pageContext.resource && pageContext.section && (
-            <React.Fragment>
-              <Typography variant="h1">{pageContext.section.name}</Typography>
-              {pageContext.section.description && (
-                <Typography paragraph>
-                  {pageContext.section.description}
+            {!pageContext.resource && pageContext.section && (
+              <React.Fragment>
+                <Typography variant="h1">{pageContext.section.name}</Typography>
+                {pageContext.section.description && (
+                  <Typography paragraph>
+                    {pageContext.section.description}
+                  </Typography>
+                )}
+                <Grid container spacing={2}>
+                  {pageInfo.resources.map(r => (
+                    <Grid key={r.path} item xs={12} md={6}>
+                      <Card>
+                        <CardHeader title={r.name} />
+                        <CardActions>
+                          <Button
+                            size="small"
+                            component={Link}
+                            to={r.path}
+                            color="secondary"
+                          >
+                            Learn More
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  ))}
+                  <Grid item></Grid>
+                </Grid>
+              </React.Fragment>
+            )}
+            {!pageContext.operation && pageContext.resource && (
+              <React.Fragment>
+                <Typography variant="h1">
+                  {pageContext.resource.name}
                 </Typography>
-              )}
-              <Grid container spacing={2}>
-                {pageInfo.resources.map(r => (
-                  <Grid key={r.path} item xs={12} md={6}>
-                    <Card>
-                      <CardHeader title={r.name} />
-                      <CardActions>
-                        <Button
-                          size="small"
-                          component={Link}
-                          to={r.path}
-                          color="secondary"
-                        >
-                          Learn More
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                ))}
-                <Grid item></Grid>
-              </Grid>
-            </React.Fragment>
-          )}
-          {!pageContext.operation && pageContext.resource && (
-            <React.Fragment>
-              <Typography variant="h1">{pageContext.resource.name}</Typography>
-              {pageContext.resource.description && (
-                <Typography paragraph>
-                  {pageContext.resource.description}
-                </Typography>
-              )}
-              <Grid container spacing={2}>
-                {pageInfo.operations.map(o => (
-                  <Grid key={o.path} item xs={12} md={6}>
-                    <Card>
-                      <CardHeader title={o.name} />
-                      <CardActions>
-                        <Button
-                          size="small"
-                          component={Link}
-                          to={o.path}
-                          color="secondary"
-                        >
-                          Learn More
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-            </React.Fragment>
-          )}
-          {pageContext.operation && (
-            <ApiOperationDisplay operation={pageContext.operation} />
-          )}
-        </LayoutMain>
-        {pageContext.section && (
+                {pageContext.resource.description && (
+                  <Typography paragraph>
+                    {pageContext.resource.description}
+                  </Typography>
+                )}
+                <Grid container spacing={2}>
+                  {pageInfo.operations.map(o => (
+                    <Grid key={o.path} item xs={12} md={6}>
+                      <Card>
+                        <CardHeader title={o.name} />
+                        <CardActions>
+                          <Button
+                            size="small"
+                            component={Link}
+                            to={o.path}
+                            color="secondary"
+                          >
+                            Learn More
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </React.Fragment>
+            )}
+            {pageContext.operation && (
+              <ApiOperationDisplay operation={pageContext.operation} />
+            )}
+          </LayoutMain>
           <LayoutMenu>
             <ApiReferenceMenu data={pageContext.menuData} uri={uri} />
           </LayoutMenu>
-        )}
-      </LayoutContainer>
+        </LayoutContainer>
+      )}
     </Layout>
   )
 }

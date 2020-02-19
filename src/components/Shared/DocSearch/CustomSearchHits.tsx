@@ -141,12 +141,11 @@ function ReferenceHitItem(hit, classes) {
     <ListItemLink button to={hit.link} key={hit.objectID}>
       <Box display="flex" flexDirection="column">
         <ListItemText
-          primary={`${hit.summary}`}
+          primary={<Snippet attribute="summary" hit={hit} tagName="mark" />}
           classes={{
             primary: classes.hitItemPrimary,
             secondary: classes.hitItemSecondary,
           }}
-          secondary={`${hit.verb} ${hit.path}`}
         />
       </Box>
     </ListItemLink>
