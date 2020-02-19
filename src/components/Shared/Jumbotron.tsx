@@ -114,7 +114,7 @@ class Jumbotron extends React.Component<any> {
     return (
       <div
         className={`${classes.jumbotron} ${
-          secondary ? classes.jumbotronSecondary : undefined
+          secondary ? classes.jumbotronSecondary : ''
         }`}
         style={{ height }}
       >
