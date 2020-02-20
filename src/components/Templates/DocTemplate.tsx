@@ -1,4 +1,4 @@
-import { Theme, Typography } from '@material-ui/core'
+import { Theme, Typography, Button } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React from 'react'
@@ -13,6 +13,8 @@ import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
 import { useDocsSections } from '../../hooks/useDocsSections'
 import { RouteComponentProps } from '@reach/router'
+import { EditOutlined } from '@material-ui/icons'
+import ButtonlinkExternal from '../Shared/ButtonlinkExternal'
 
 interface DocTemplateProps extends RouteComponentProps {
   data: {
@@ -30,18 +32,25 @@ interface DocTemplateProps extends RouteComponentProps {
 export default function Template(props: DocTemplateProps) {
   const doc = props.data // data from page query
   const sections = useDocsSections()
-
+  const repoUrl =
+    'https://github.com/ordercloud-api/oc-documentation/edit/development'
+  const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
   return (
     <Layout location={props.location}>
       <Helmet title={`Four51 OrderCloud | ${doc.mdx.frontmatter.title}`} />
       <LayoutContainer>
         <LayoutMain>
+          <ButtonlinkExternal
+            style={{ float: 'right', marginTop: 40 }}
+            variant="outlined"
+            size="small"
+            href={`${repoUrl}/content/docs${absolutePath}.mdx`}
+          >
+            <EditOutlined fontSize="inherit" /> Edit this doc
+          </ButtonlinkExternal>
           <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
-          <DocFooter
-            contents={sections}
-            currentGuide={utility.resolvePath(doc.mdx.fileAbsolutePath)}
-          />
+          <DocFooter contents={sections} currentGuide={absolutePath} />
         </LayoutMain>
         <LayoutMenu>
           <DocMenu sections={sections} currentPath={props.location.pathname} />

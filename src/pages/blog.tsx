@@ -8,13 +8,10 @@ import {
   Container,
   createStyles,
   Grid,
-  IconButton,
   makeStyles,
   Theme,
-  Tooltip,
   Typography,
 } from '@material-ui/core/'
-import { Share } from '@material-ui/icons'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
 import { Helmet } from 'react-helmet'
