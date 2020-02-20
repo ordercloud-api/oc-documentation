@@ -73,7 +73,7 @@ const flatten = arr => {
 }
 
 const settings = {
-  attributesToSnippet: [`excerpt:20`],
+  attributesToSnippet: [`excerpt:20`, `summary:20`],
 }
 
 const queries = [
