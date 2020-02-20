@@ -49,7 +49,7 @@ Let's examine a common scenario of filtering on an <Link to="/features/extended-
 We can use dot notation to access deeply nested values. The following call will return all buyers with team name "Tigers"
 
 ```http
-GET https://api.ordercloud.io/v1/buyers/xyz/users?xp.MoreInfo.TeamName=Tigers HTTP/1.1
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?xp.MoreInfo.TeamName=Tigers HTTP/1.1
 ```
 
 ### Fuzzy Searches
@@ -57,7 +57,7 @@ GET https://api.ordercloud.io/v1/buyers/xyz/users?xp.MoreInfo.TeamName=Tigers HT
 Fuzzy matches are supported using the `*` wildcard character.
 
 ```http
-GET https://api.ordercloud.io/v1/buyers/xyz/users?LastName=*Smith&FirstName=John* HTTP/1.1
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?LastName=*Smith&FirstName=John* HTTP/1.1
 ```
 
 This will return both "John Smith" and "Johnny McSmooth".
@@ -67,7 +67,7 @@ This will return both "John Smith" and "Johnny McSmooth".
 You can also use `|` as a logical OR.
 
 ```http
-GET https://api.ordercloud.io/v1/buyers/xyz/users?LastName=Smith|Jo*&FirstName=Johnny HTTP/1.1
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?LastName=Smith|Jo*&FirstName=Johnny HTTP/1.1
 ```
 
 This will return "John Smith", "Johnny Jones", and "John Johnson". Maybe you want "John Smith" but not "John Jones".
@@ -77,7 +77,7 @@ This will return "John Smith", "Johnny Jones", and "John Johnson". Maybe you wan
 You can negate your conditions by prefixing them with `!`, and logically `AND` them together by simply providing the same parameter multiple times.
 
 ```http
-GET https://api.ordercloud.io/v1/buyers/xyz/users?LastName=!Smith&LastName=!Jones HTTP/1.1
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?LastName=!Smith&LastName=!Jones HTTP/1.1
 ```
 
 This will return all users _except_ those with last name "Smith" or "Jones".
@@ -87,13 +87,13 @@ This will return all users _except_ those with last name "Smith" or "Jones".
 Dates and numeric values support `>` (greater than) and `<` (less than) prefixes.
 
 ```http
-GET https://api.ordercloud.io/v1/buyers/xyz/users?DateCreated=>2015-01-01 HTTP/1.1
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?DateCreated=>2015-01-01 HTTP/1.1
 ```
 
 For a more advanced example, let's say you want users whose ID is the range of 0 to 9 inclusive. Ranges are not directly supported, but you can use the existing features to achieve this.
 
 ```http
-GET https://api.ordercloud.io/v1/buyers/xyz/users?ID=0|1|2|3|4|5|6|7|8|9 HTTP/1.1
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?ID=0|1|2|3|4|5|6|7|8|9 HTTP/1.1
 ```
 
 Of course that's not going to be feasible if the range is very large or you're dealing with floating-point numbers. A better way would be to leverage `>` and `<`, but we want the range to be inclusive, and there are no `>=` or `<=` operators. We can however leverage the `!` operator.
@@ -101,7 +101,7 @@ Of course that's not going to be feasible if the range is very large or you're d
 Here we're saying "give me all users whose ID is not less than 0 and not greater than 9", which is effectively equivalent to our 0-9 range.
 
 ```http
-GET https://api.ordercloud.io/v1/buyers/xyz/users?ID=!<0&ID=!>9 HTTP/1.1
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?ID=!<0&ID=!>9 HTTP/1.1
 ```
 
 ### Absence of a value
@@ -113,6 +113,8 @@ GET https://api.ordercloud.io/v1/orders?xp.Billed=!* HTTP/1.1
 ```
 
 Here we're saying "give me all orders that haven't been billed (xp.Billed is undefined, null, or doesn't exist)"
+
+> Note: Searching on the absence of a value can be fairly expensive since we're using the wildcard filter `*`. Another (more performant) way to solve the same problem would be to initialize your field with some value that you define as being "null" and then simply filter on that value. Prefer this method when possible.
 
 ### Performance Considerations
 
@@ -134,7 +136,7 @@ GET https://api.ordercloud.io/v1/me/orders/incoming?sortBy=!LastName HTTP/1.1
 
 ## Combining Queries
 
-Searching, Filtering and Sorting can all be mixed and matched to give you ultimate control when defining what is in a list and how that list is presented to your users.
+Searching, filtering and sorting can all be mixed and matched to give you ultimate control when defining what is in a list and how that list is presented to your users.
 
 ## Pagination
 
@@ -156,4 +158,6 @@ Content-Type: application/json; charset=UTF-8
   }
 ```
 
-Lists default to 20 items per page, but you can set the `pageSize` up to 100. If you have more results than the page count, you will have multiple pages. You can use the `Page` and `PageSize` values from the `Meta` object to specify the page (starting at 1) and items per page. Note that unlike the page parameter, `ItemRange` values are zero-based.
+Lists default to 20 items per page, but you can set the `pageSize` up to 100. If you have more results than the page count, you will have multiple pages. You can use the `Page` and `PageSize` values from the `Meta` object to specify the page (starting at 1) and items per page.
+
+> Note: Unlike the page parameter, `ItemRange` values are zero-based.
