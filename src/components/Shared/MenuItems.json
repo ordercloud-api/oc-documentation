@@ -1,0 +1,55 @@
+{
+  "MainNavigation": [{
+      "value": "docs",
+      "label": "Home",
+      "to": "/",
+      "mobileMenu": false,
+      "authRequired": false,
+      "isPortalLink": false
+    },
+    {
+      "value": "rest",
+      "label": "Docs",
+      "to": "/main-concepts/organization-hierarchy",
+      "mobileMenu": false,
+      "authRequired": false,
+      "isPortalLink": false
+    },
+    {
+      "value": "blog",
+      "label": "Blog",
+      "to": "/blog",
+      "mobileMenu": false,
+      "authRequired": false,
+      "isPortalLink": false
+    },
+    {
+      "value": "api-reference",
+      "label": "Api Reference",
+      "to": "/api-reference",
+      "mobileMenu": false,
+      "authRequired": false,
+      "isPortalLink": false
+    },
+    {
+      "value": "portal",
+      "label": "Portal",
+      "to": "/",
+      "mobileMenu": false,
+      "authRequired": true,
+      "isPortalLink": true
+    },
+    {
+      "value": "release-notes",
+      "label": "Release Notes",
+      "to": "/release-notes/v",
+      "mobileMenu": true,
+      "authRequired": false,
+      "isPortalLink": false
+    }
+  ],
+  "DropdownControls": [{
+    "label": "My Profile",
+    "to": "/profile"
+  }]
+}

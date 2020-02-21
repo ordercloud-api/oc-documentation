@@ -1,0 +1,50 @@
+---
+apiVersion: 1.0.81
+date: 2018-08-24
+---
+
+Planned To Be Released To Production on August 27, 2018 at 8:00 PM CST.
+
+## Summary
+
+### Updates
+
+#### TLS 1.2 Enforced On All Traffic
+
+_What Is It?_
+
+A minimum of TLS 1.2 will be enforced on all _inbound_ traffic to OrderCloud, as well as on all _outbound_ traffic from OrderCloud, such as webhooks.
+
+_Why Is It Important?_
+
+TLS 1.2 is the latest and most secure standard for the cryptographic protocols that provide widespread communication security over a computer network. PCI compliance requires TLS 1.1 or better encryption, so this is likely something you already support. <sup>[1](#footnote1)</sup>
+
+_How Does This Affect Me?_
+
+All modern web browsers use TLS 1.2 which means calls made directly to OrderCloud from your client UIs will not be impacted. In the event that you have any custom middleware, such as Punchout, Back-office integrations, Single Sign-on, etc., please make any relevant changes. Ensure that any integrations you have set up to receive webhook payloads from OC will accept TLS 1.2.
+
+#### Premium Search
+
+_What Is It?_
+
+We've added a new type of search that can be used on the platform: **Premium Search**. This allows for more powerful, natural language search, as well as support for Faceted Navigation natively on the OrderCloud platform. Currently, Premium Search is only available for the `me/products` endpoint, although we plan on expanding to cover other areas soon.
+
+_Why Is It Important?_
+
+We know our customers want the most robust, sophisticated search capabilities available natively on the OrderCloud platform. That's why we've chosen ElasticSearch, an industry standard, to provide a powerful premium search experience.
+Premium Search will allow us to provide you and your users with improved Buyer-side catalog searching, and give you the ability to create faceted navigation natively, without the need to integrate with a third party tool.
+
+_How Do I Use This?_
+
+Currently this feature is **in Beta**, and while you may see the related endpoints in the DevCenter Console or API documentation, such as `v1/ProductFacets`, they will not be active for any organizations outside of our Beta program. We will be inviting some clients to take part in our Beta program in the near future.
+
+We expect Premium Search to be available to the public this Fall -- contact your account rep to discuss getting Premium Search set up.
+
+## Changelog
+
+- Premium Search added.
+- Outbound HTTP traffic required to use TLS 1.2.
+
+---
+
+<a name="footnote1">1</a>: [Forbes](https://www.forbes.com/sites/thesba/2018/05/30/changes-to-pci-compliance-are-coming-june-30-is-your-ecommerce-business-ready/#374005547408)

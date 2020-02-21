@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
+import Layout from '../components/Layout/Layout'
+import Main from '../components/Layout/Main'
+import { Helmet } from 'react-helmet'
 
-// import SEO from '../components/seo';
-import App from '../components/App/app';
-
-const IndexPage = () => (
-  <App />
+export default () => (
+  <Layout>
+    <Helmet title={`Four51 OrderCloud`} />
+    <Main />
+  </Layout>
 )
-
-export default IndexPage;

@@ -1,15 +1,14 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import {
-  Link,
   createStyles,
   Theme,
   withStyles,
   Typography,
   Paper,
-  Button,
+  Container,
 } from '@material-ui/core'
-import { Link as LinkyDinky } from 'gatsby'
-import Particles from 'react-particles-js'
+import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
+import ocPlatform from '../../assets/svg/Platform--Ordercloud.svg'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -20,93 +19,147 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       height: '50vh',
-      backgroundColor: 'transparent',
       borderRadius: 0,
       overflowY: 'hidden',
-      backgroundImage: `linear-gradient(62deg, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.light} 100%)`,
+      overflowX: 'hidden',
+      backgroundColor: sherpablue[500],
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      '-webkit-background-size': 'cover',
+      '-moz-background-size': 'cover',
+      '-o-background-size': 'cover',
+      '&>div': {
+        zIndex: 1,
+      },
+      [theme.breakpoints.down('xs')]: {
+        height: '75vh',
+      },
     },
-    jumbotronParticle: {
+    jumbotronSecondary: {
+      backgroundColor: theme.palette.secondary.main,
+    },
+    logo: {
+      maxWidth: '40rem',
+      width: theme.spacing(40),
+      marginBottom: theme.spacing(2),
+      '& path': {
+        fill: 'white',
+      },
+    },
+    hidden: {
       position: 'absolute',
-      backgroundColor: 'transparent',
       width: '100vw',
-      overflowY: 'hidden',
+      height: '100%',
+    },
+    jumbotronIcon: {
+      position: 'absolute',
+      top: '-10vh',
+      left: '45vw',
+      opacity: 0.25,
+      width: '55%',
+      mixBlendMode: 'exclusion',
+      [theme.breakpoints.down('md')]: {
+        minWidth: '150%',
+        left: '6vh',
+        top: 0,
+      },
+    },
+    buttonLink: {
+      textDecoration: 'none',
     },
     jumbotronContainer: {
       backgroundColor: 'transparent',
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'white',
-      zIndex: 1,
+      [theme.breakpoints.down('xs')]: {
+        marginBottom: theme.spacing(2),
+      },
     },
     jumbotronLinkGroup: {
       display: 'flex',
-      maxWidth: '75vw',
-      marginTop: theme.spacing(5),
+      marginTop: theme.spacing(3),
     },
     jumbotronLinkGroupLink: {
       '&:first-of-type': {
         marginRight: theme.spacing(3),
       },
     },
+    jumbotronHeading: {
+      padding: 0,
+      textTransform: 'uppercase',
+      marginTop: '.75rem',
+      color: seafoam[50],
+      [theme.breakpoints.down('md')]: {
+        fontSize: '2rem',
+        marginTop: 0,
+      },
+    },
+    jumbotronText: {
+      color: seafoam[100],
+    },
   })
 
 class Jumbotron extends React.Component<any> {
   public render() {
-    const { classes } = this.props
+    const {
+      classes,
+      image,
+      heading,
+      text,
+      actions,
+      height,
+      secondary,
+    } = this.props
     return (
-      <div className={classes.jumbotron}>
-        <Particles
-          className={classes.jumbotronParticle}
-          params={{
-            particles: {
-              number: {
-                value: 250,
-              },
-              size: {
-                value: 0.25,
-              },
-            },
-            interactivity: {
-              events: {
-                onhover: {
-                  enable: true,
-                  mode: 'repulse',
-                },
-              },
-            },
-          }}
+      <div
+        className={`${classes.jumbotron} ${
+          secondary ? classes.jumbotronSecondary : ''
+        }`}
+        style={{ height }}
+      >
+        <Container>
+          <Paper className={classes.jumbotronContainer}>
+            {image && (
+              <img className={classes.logo} src={image.src} alt={image.alt} />
+            )}
+            {heading && (
+              <Typography
+                className={classes.jumbotronHeading}
+                variant={image ? 'h2' : 'h1'}
+                component="h1"
+              >
+                {heading}
+              </Typography>
+            )}
+            {text && (
+              <Typography
+                className={classes.jumbotronText}
+                variant={image ? 'subtitle1' : 'h4'}
+                component="p"
+              >
+                {text}
+              </Typography>
+            )}
+            {actions && (
+              <div className={classes.jumbotronLinkGroup}>
+                {actions.map((a, index) => {
+                  return (
+                    <div className={classes.jumbotronLinkGroupLink} key={index}>
+                      {a}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </Paper>
+        </Container>
+        <img
+          className={classes.jumbotronIcon}
+          aria-hidden="true"
+          src={ocPlatform}
+          alt="OrderCloud Platform Icon"
         />
-        <Paper className={classes.jumbotronContainer}>
-          <Typography
-            className={classes.jumbotronHeading}
-            variant="h2"
-            component="h1"
-          >
-            OrderCloud Documentation
-          </Typography>
-          <div className={classes.jumbotronLinkGroup}>
-            <Button
-              size="large"
-              href="/herp"
-              variant="contained"
-              className={classes.jumbotronLinkGroupLink}
-            >
-              Herp!
-            </Button>
-            <Button
-              size="large"
-              color="secondary"
-              href="/derp"
-              variant="outlined"
-              className={classes.jumbotronLinkGroupLink}
-            >
-              Derp?
-            </Button>
-          </div>
-        </Paper>
       </div>
     )
   }

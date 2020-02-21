@@ -1,0 +1,55 @@
+---
+title: 'API Clients'
+section: 'Main Concepts'
+priority: 4
+---
+
+import { Link } from 'gatsby'
+
+### What are API Clients?
+OrderCloud uses the term API Clients to identify various access points to your organization's data. These access points have properties that control what parties can use it, how they can gain access, and for how long that access remains valid.
+
+## Creating API Clients
+Like anything else on the OrderCloud platform, API Clients can be managed via our RESTful API. Whenever a new organization is created on OrderCloud, a default API Client is created along with a Full Access Seller user. You can use this initial context to create anything else in OrderCloud, including more API Clients.
+
+### Naming Your API Client
+Choosing the right name for your API Client is important. By picking something descriptive, future developers will better understand when they should be utilized.
+
+### Defining User Access
+You can control which parties in your organization can access each of your API Clients using any combination of the following three properties:
+
+- `AllowSeller` - All Seller Users can use the API Client
+- `AllowAnySupplier` - Supplier Users in _any_ Supplier company can use the API Client
+- `AllowAnyBuyer` - Buyer Users in _any_ Buyer company can use the API Client
+
+In addition to the properties above, you can create API Client assignments to enable further control. For example, allowing a specific Buyer company access while blocking others. Each assignment references an API Client ID paired with a Buyer or Supplier ID. `AllowAnyBuyer` and `AllowAnySeller` will nullify direct assignments for their respective company type, so be sure set those properties to `false` if you need that level of control.
+
+### Client Secrets and OAuth
+Adding a Client Secret to an API Client changes how you'll interact with the OrderCloud OAuth server. If a Client Secret exists, it is required on all OAuth grant types (yes, even Password). 
+
+Normally this configuration is used for automated systems that require access to your OrderCloud data. This is because it enables the use of OAuth's **Client Credentials** grant type. 
+
+You will quickly realize that a Client Secret by itself is not sufficient enough for OrderCloud to grant you access to the API. Every user in OrderCloud can have their own unique level of data access. In order to know _what_ an authenticated party can read from or write to, every interaction must come from a **User Context**.
+
+The `DefaultContextUserName` property is for exactly that. It let's OrderCloud know what user context to provide when authentication occurs using the Client Credentials grant type. As far as OrderCloud knows, you *are* the default context user when using this grant type.
+
+Read more about supported OAuth workflows here <Link to="/main-concepts/authentication#ordercloud-workflows">here</Link>.
+
+### Anonymous Shopping (Guest Checkout)
+Now that you understand how to enable the Client Credentials grant type you may think that this is all you would need in order to enable Anonymous Shopping - or what some call "Guest Checkout". **This is incorrect**, as anonymous shoppers should **not** be treated as if they *are* the default context user. They need to be treated as a temporary "copy" of the default context user.
+
+This is where the `IsAnonBuyer` property comes in. When enabled, many of the Me Perspective features are limited so that details about the default context user, like email address, cannot be altered. Additionally, the `access_token` will be encoded with an `orderid` which provides the anonymous user access to that order *only*.
+
+> It is important to note that adding a Client Secret is not necessary to enable Anonymous Shopping. In fact, it is not recommended to require a Client Secret for any client-side application.
+
+Read more about Anonymous Shopping <Link to="/features/anonymous-shopping">here</Link>.
+
+### Token Durations
+Once a party has the appropriate level of access to your organization - it's important to control _how long_ that access will last. This is controlled by two properties: `AccessTokenDuration` and `RefreshTokenDuration`. The most important of the two is `AccessTokenDuration` - this is how long an `access_token` acquired using a specific API Client ID will live (in minutes).
+
+Once the primary `access_token` expires, if the API Client is configured with a _longer lasting_ `RefreshTokenDuration`, the original OAuth response will return a corresponding `refresh_token`. This can be used to aquire a fresh `access_token` and maintain user authentication until the `refresh_token` expires. Long lasting token durations are not recommended for systems with a high level of data access in your organization as shorter token durations are more secure.
+
+## Using Multiple API Clients
+In general, we encourage creating a new API Client for each system or isolated piece of functionality. This allows for quicker identification of bottlenecks in your solution, as every authenticated request will have the API Client that was used embedded in the `Authorization` header.
+
+Using API Clients like this also strengthens security. For example, if one system is compromised you can block access by deactivating its API Client or generating a new one without affecting availability of other systems in your solution.

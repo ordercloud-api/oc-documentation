@@ -1,31 +1,63 @@
 import { Link } from 'gatsby'
 import React from 'react'
 import {
-  Theme,
   createStyles,
   withStyles,
   Typography,
-  SvgIcon,
+  Grid,
+  Box,
+  Container,
+  Theme,
 } from '@material-ui/core'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import { mediumgrey } from '../../theme/ocPalette.constants'
+import { OpenInNewOutlined } from '@material-ui/icons'
+import { mediumgrey, sherpablue } from '../../theme/ocPalette.constants'
+import ocOrange from '../../../src/assets/images/four51-logo-geo--full-color-white.svg'
+
 const styles = (theme: Theme) =>
   createStyles({
-    ocFooter: {
-      backgroundColor: mediumgrey[50],
-      flexDirection: 'column',
-      alignItems: 'stretch',
-      display: 'flex',
+    root: {
+      position: 'relative',
+      zIndex: 0,
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(4),
+      [theme.breakpoints.up('md')]: {
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+      },
+      backgroundColor: theme.palette.primary.dark,
+      borderTop: '2px solid',
+      borderColor: mediumgrey[100],
+      ...theme.typography.body2,
     },
-    footerContainer: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(3, 1fr)',
-      justifyItems: 'center',
+    inner: {
+      display: 'flex',
+      flexFlow: 'row nowrap',
+    },
+    footerContent: {
+      flex: '1',
+    },
+    footerAside: {
+      [theme.breakpoints.up('md')]: {
+        flex: '0 0 350px',
+      },
+    },
+    logo: {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+      marginRight: theme.spacing(2),
+      width: theme.spacing(30),
     },
     Typography: {
-      color: mediumgrey[800],
+      color: mediumgrey[400],
       justifySelf: 'flex-start',
+    },
+    sectionTitle: {
+      textTransform: 'uppercase',
+      letterSpacing: theme.spacing(0.2),
+      fontWeight: 600,
+      color: sherpablue[300],
     },
     footerLogo: {
       maxWidth: 50,
@@ -39,47 +71,177 @@ const styles = (theme: Theme) =>
         fill: theme.palette.primary.main,
       },
     },
-    linkGroup: {
+    footerLinks: {
       display: 'flex',
-      justifySelf: 'flex-end',
-      '& > *': {
-        margin: '0 .5rem',
-        color: mediumgrey[800],
-        '&:hover': {
-          color: theme.palette.primary.main,
-        },
+      alignItems: 'center',
+      margin: `${theme.spacing(0.5)}px 0px`,
+      fontWeight: 300,
+      color: theme.palette.grey[200],
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
       },
     },
   })
 
 class Footer extends React.Component<any> {
   public render() {
-    const { siteTitle, classes } = this.props
+    const currentYear = new Date().getFullYear()
+    const { classes, sections } = this.props
     return (
-      <footer className={classes.ocFooter}>
-        <Toolbar className={classes.footerContainer}>
-          <Typography className={classes.Typography}>
-            © 2019 OrderCloud All rights reserved.
-          </Typography>
-          <Link className={classes.footerLogo} to="/">
-            <SvgIcon
-              className={classes.footerLogoSvg}
-              titleAccess={siteTitle}
-              viewBox="0 0 200 200"
-            >
-              <path d="M141.5 83.5c.3.5.1 1-.5 1.2l-10.8 4.9c-.6.3-1.1.1-1.4-.5-1.9-4.4-5.1-7.6-10.7-7.6-5.3 0-8.6 2.8-10.1 7.4-.8 2.5-1.1 4.9-1.1 14.5v2c-.1 8.6-.5 12.1-1.9 16.5-1.2 3.8-3.1 6.8-5.5 9.3-4.7 4.7-11.3 7.1-19.1 7.1-11.8 0-21.1-5.5-24.6-16.4-1.5-4.7-1.9-8.4-1.9-18.4 0-10 .4-13.8 1.9-18.4C59.4 74 68.7 68.5 80.5 68.5c4.8 0 9.2.9 13 2.8-2.8 3.2-5 7-6.5 11.5l-.1.4c-1.7-1.1-3.9-1.7-6.4-1.7-5.6 0-9.1 2.8-10.6 7.4-.8 2.4-1.1 5.7-1.1 14.5s.3 12.1 1.1 14.5c1.5 4.7 5.1 7.4 10.6 7.4 5.6 0 9.1-2.8 10.6-7.4.8-2.4 1.1-5.7 1.1-14.5v-2.2c.1-8.7.5-12 1.9-16 1.2-3.8 3.1-7 5.5-9.5 4.5-4.7 10.8-7.1 18.5-7.1 11.3-.1 19.7 5.5 23.4 14.9zm.4-19.6l-.1.5.1.1h1.3v4l.1.1h.5l.1-.1v-4h1.3l.1-.1V64l-.1-.1h-3.3zM141 122l-10.8-4.9c-.6-.3-1.1-.1-1.4.5-1.9 4.4-5.1 7.6-10.7 7.6-2.4 0-4.3-.6-5.9-1.6l-.1.4c-1.4 4.4-3.7 8.3-6.6 11.4 3.6 1.8 7.8 2.7 12.5 2.7 11.4 0 19.7-5.6 23.5-15 .3-.4.1-.9-.5-1.1zm43.5-22c0 23.3-9.5 44.5-24.7 59.8-15.3 15.3-36.4 24.8-59.8 24.7-23.3 0-44.5-9.5-59.8-24.7C25 144.5 15.5 123.3 15.5 100c0-23.3 9.5-44.5 24.7-59.8C55.5 25 76.7 15.5 100 15.5c23.3 0 44.5 9.5 59.8 24.7 15.2 15.3 24.7 36.5 24.7 59.8zm-13 0c0-19.8-8-37.6-20.9-50.6-13-12.9-30.8-20.9-50.6-20.9s-37.6 8-50.6 20.9c-12.9 13-20.9 30.8-20.9 50.6s8 37.6 20.9 50.6c13 12.9 30.8 20.9 50.6 20.9s37.6-8 50.6-20.9c12.9-13 20.9-30.8 20.9-50.6zm-22-36.1l-.1.1-1.4 3.2-1.4-3.2-.1-.1h-.5l-.1.1v4.5l.1.1h.4l.1-.1v-3.3l1.2 2.6.1.1h.3l.1-.1 1.2-2.6v3.3l.1.1h.4l.1-.1V64l-.1-.1h-.4z" />
-            </SvgIcon>
-          </Link>
-          <div className={classes.linkGroup}>
-            <Link to="/">Terms</Link>
-            <Link to="/">Privacy Policy</Link>
-            <Link to="/">Slack Community</Link>
-            <Link to="/">Four51</Link>
-          </div>
-        </Toolbar>
+      <footer className={classes.root}>
+        <Container className={classes.inner}>
+          <Grid
+            className={classes.footerContent}
+            container
+            spacing={3}
+            justify="space-between"
+            alignItems="flex-start"
+          >
+            <Grid item xs={12}>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-start"
+              >
+                <img className={classes.logo} src={ocOrange} alt="OC" />
+                {/* <Typography variant="h4">OrderCloud</Typography> */}
+              </Box>
+              <Typography variant="body2" className={classes.Typography}>
+                © {currentYear} OrderCloud All rights reserved.
+              </Typography>
+            </Grid>
+            <Grid item xs={6} md={4}>
+              {sections && (
+                <Box marginY={2} display="flex" flexDirection="column">
+                  <Typography
+                    className={classes.sectionTitle}
+                    component="h6"
+                    variant="h6"
+                  >
+                    Docs
+                  </Typography>
+                  {sections.map(section => (
+                    <Link
+                      className={classes.footerLinks}
+                      key={section.title}
+                      to={section.guides[0].path}
+                    >
+                      {section.title}
+                    </Link>
+                  ))}
+                  <Link className={classes.footerLinks} to="/api-reference">
+                    API Reference
+                  </Link>
+                </Box>
+              )}
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <Box display="flex" flexDirection="column" marginY={2}>
+                <Typography
+                  className={classes.sectionTitle}
+                  component="h6"
+                  variant="h6"
+                >
+                  Channels
+                </Typography>
+                <Link
+                  className={classes.footerLinks}
+                  to="/slack"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Slack Community
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </Link>
+                <a
+                  className={classes.footerLinks}
+                  href="https://stackoverflow.com/questions/tagged/ordercloud"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Stack Overflow
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <a
+                  className={classes.footerLinks}
+                  href="https://twitter.com/Four51ecommerce"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Twitter
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <Link className={classes.footerLinks} to="/blog">
+                  Blog
+                </Link>
+              </Box>
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <Box display="flex" flexDirection="column" marginY={2}>
+                <Typography
+                  className={classes.sectionTitle}
+                  component="h6"
+                  variant="h6"
+                >
+                  More
+                </Typography>
+                <Link className={classes.footerLinks} to="/release-notes">
+                  API Release Notes
+                </Link>
+                <Link
+                  className={classes.footerLinks}
+                  to="/portal-release-notes/v1.0.23"
+                >
+                  Portal Release Notes
+                </Link>
+                <a
+                  className={classes.footerLinks}
+                  href="https://four51.io/privacy-policy/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Privacy Policy
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <a
+                  className={classes.footerLinks}
+                  href="https://four51.io/contact-us"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Contact Us
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <a
+                  className={classes.footerLinks}
+                  href="https://four51.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Four51
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+              </Box>
+            </Grid>
+          </Grid>
+          <div className={classes.footerAside}></div>
+        </Container>
       </footer>
     )
   }
 }
 
-export default withStyles(styles)(Footer)
+export default withStyles(styles, { withTheme: true })(Footer)
