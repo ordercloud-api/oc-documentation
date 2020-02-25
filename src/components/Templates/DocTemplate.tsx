@@ -1,7 +1,7 @@
 import { Theme, Typography, Button } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import '../../styles/doc-template.css'
 import utility from '../../services/utility'
@@ -35,6 +35,14 @@ export default function Template(props: DocTemplateProps) {
   const repoUrl =
     'https://github.com/ordercloud-api/oc-documentation/edit/development'
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
+
+  useLayoutEffect(() => {
+    if (!props.location.hash) return
+    const el = document.getElementById(props.location.hash.split('#')[1])
+    if (!el) return
+    window.scrollTo(0, el.offsetTop)
+  }, [props.location.hash])
+
   return (
     <Layout location={props.location}>
       <Helmet title={`Four51 OrderCloud | ${doc.mdx.frontmatter.title}`} />

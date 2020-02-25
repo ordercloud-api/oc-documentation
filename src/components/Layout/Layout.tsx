@@ -185,7 +185,7 @@ export default (props: LayoutProps) => {
                   <ul {...ulProps} />
                 </Typography>
               ),
-              a: LayoutLink,
+              a: aProps => <LayoutLink {...aProps} />,
               table: tableProps => <Table {...tableProps} />,
               tr: trProps => <TableRow {...trProps} />,
               th: thProps => (

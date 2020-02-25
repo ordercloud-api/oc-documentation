@@ -1,7 +1,7 @@
 import { Typography, Theme, Avatar, Box } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
@@ -49,6 +49,14 @@ function BlogComponent(props: BlogComponentProps) {
   const authorImage = `/images/blog/authors/${Case.kebab(
     data.mdx.frontmatter.authors
   )}.jpg`
+
+  useLayoutEffect(() => {
+    if (!props.location.hash) return
+    const el = document.getElementById(props.location.hash.split('#')[1])
+    if (!el) return
+    window.scrollTo(0, el.offsetTop)
+  }, [props.location.hash])
+
   return (
     <Layout location={location}>
       <Helmet

@@ -80,7 +80,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
     if (!props.location.hash) return
     const el = document.getElementById(props.location.hash.split('#')[1])
     if (!el) return
-    el.scrollIntoView()
+    window.scrollTo(0, el.offsetTop)
   }, [props.location.hash])
 
   const defaultDescription =
