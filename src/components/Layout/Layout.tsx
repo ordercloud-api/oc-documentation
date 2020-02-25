@@ -72,7 +72,7 @@ export const LayoutLink = (props: any) => {
     )
     return <Typography variant="button">[BAD LINK] {props.children}</Typography>
   }
-  if (props.className === 'anchor') {
+  if (props.className === 'anchor' || props.href.indexOf('#') === 0) {
     return (
       <div className={classes.root}>
         <IconButtonLink {...props} to={props.href}>
