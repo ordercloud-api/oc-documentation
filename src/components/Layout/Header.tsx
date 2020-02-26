@@ -79,6 +79,7 @@ interface HeaderState {
   anchorEl?: HTMLElement
   mobileOpen: boolean
   username: string
+  email: string
   showResults: boolean
 }
 
@@ -104,6 +105,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     anchorEl: null,
     mobileOpen: false,
     username: '',
+    email: '',
     showResults: false,
   }
   private readonly autologin = true
@@ -121,24 +123,35 @@ class Header extends React.Component<HeaderProps, HeaderState> {
       .slice(1)
       .join('.')}`
   }
+  public cookieOptions = {
+    path: '/',
+    domain: this.getCookieDomain(),
+  }
 
   get AUTH_TOKEN_KEY() {
     return `DevCenter.${getEnvironment()}.token`
   }
 
+  get AUTH_EMAIL_KEY() {
+    return `DevCenter.${getEnvironment()}.email`
+  }
+
   public onInit() {
     //TODO: NICE TO HAVE: Find out how to re-evaluate based on state change
     const token = this.cookies.get(this.AUTH_TOKEN_KEY)
+    const email = this.cookies.get(this.AUTH_EMAIL_KEY)
     const decoded = parseJwt(token)
 
     if (decoded) {
       this.setState({
         username: decoded.usr,
+        email,
         auth: !isTokenExpired(token),
       })
     } else {
       this.setState({
         username: '',
+        email: '',
         auth: null,
       })
     }
@@ -153,10 +166,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   public handleLogout = () => {
-    this.cookies.remove(this.AUTH_TOKEN_KEY, {
-      path: '/',
-      domain: this.getCookieDomain(),
-    })
+    this.cookies.remove(this.AUTH_TOKEN_KEY, this.cookieOptions)
+    this.cookies.remove(this.AUTH_EMAIL_KEY, this.cookieOptions)
     this.setState({
       username: '',
       auth: null,
@@ -282,7 +293,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         className={classes.iconButtonAvatar}
                         alt={this.state.username}
                       >
-                        <Gravatar size={40} email={this.state.username} />
+                        <Gravatar size={40} email={this.state.email} />
                       </Avatar>
                     </IconButton>
                     <Popper
@@ -395,11 +406,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 alt={this.state.username}
                 className={classes.iconButtonAvatar}
               >
-                <Gravatar
-                  alt="User Image"
-                  size={40}
-                  email={this.state.username}
-                />
+                <Gravatar alt="User Image" size={40} email={this.state.email} />
               </Avatar>
             ) : (
               <div>
