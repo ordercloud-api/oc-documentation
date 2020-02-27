@@ -37,7 +37,6 @@ import ListItemLink from '../Shared/ListItemLink'
 import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import MenuItems from '../Shared/MenuItems.json'
-import openapiService from '../../services/openapi.service'
 
 function parseJwt(token: string) {
   if (!token) {
