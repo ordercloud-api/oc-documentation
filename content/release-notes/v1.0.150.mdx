@@ -1,0 +1,12 @@
+---
+apiVersion: 1.0.150
+date: 2020-03-19
+---
+
+Released on Thursday, March 19th, 2020 at 1:30pm CST.
+
+- **New endpoint:** GET `v1/orders/{direciton}/{orderID}/shipments`. Use to list shipments for a given order. Prefer over GET `v1/shipments?orderID={orderID}`, especially from a Seller perspective, due to explicit support for incoming and outgoing orders.
+- Added `PriceMarkupType` and `PriceMarkup` properties (both nullable) to objects returned in `LineItem.Specs` collection.
+- Added read-only Specs collection to `Variant` model, mirroring the shape of `LineItem.Specs`.
+- Bug fix: Order Approval succeeded when there were insufficient Spending Account funds.
+- Various non-breaking enhancements to the [OpenAPI 3 spec](https://api.ordercloud.io/v1/openapi/v3).
