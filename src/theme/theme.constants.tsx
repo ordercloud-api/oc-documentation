@@ -104,11 +104,11 @@ export default createMuiTheme({
         },
       },
     },
-    MuiButton: {
-      label: {
-        paddingTop: navigator.appVersion.includes('Mac') ? 2 : undefined,
-      },
-    },
+    // MuiButton: {
+    //   label: {
+    //     paddingTop: navigator.appVersion.includes('Mac') ? 2 : undefined,
+    //   },
+    // },
     MuiTypography: {
       h1: {
         paddingTop: '2rem',
