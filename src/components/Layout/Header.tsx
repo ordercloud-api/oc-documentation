@@ -314,27 +314,36 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         >
                           <Paper>
                             <ClickAwayListener onClickAway={this.handleClose}>
-                              <MenuList>
-                                <ListSubheader component="div">
-                                  Signed in as
-                                  <strong> {this.state.username}</strong>
-                                </ListSubheader>
-                                <div className={classes.orgControls}>
-                                  {MenuItems.DropdownControls.map(
-                                    (item, index) => (
-                                      <MenuItem
-                                        key={index}
-                                        onClick={this.goToPortal(item.to)}
-                                      >
-                                        {item.label}
-                                      </MenuItem>
-                                    )
-                                  )}
-                                </div>
-                                <MenuItem onClick={this.handleLogout}>
-                                  Sign Out
-                                </MenuItem>
-                              </MenuList>
+                              <div>
+                                <List>
+                                  <ListSubheader
+                                    component="div"
+                                    className={classes.dropdownHeader}
+                                  >
+                                    Signed in as
+                                    <strong> {this.state.username}</strong>
+                                  </ListSubheader>
+                                  <div className={classes.orgControls}>
+                                    {MenuItems.DropdownControls.map(
+                                      (item, index) => (
+                                        <ListItem
+                                          button
+                                          key={index}
+                                          onClick={this.goToPortal(item.to)}
+                                        >
+                                          {item.label}
+                                        </ListItem>
+                                      )
+                                    )}
+                                  </div>
+                                </List>
+                                <Divider />
+                                <List>
+                                  <ListItem button onClick={this.handleLogout}>
+                                    Sign Out
+                                  </ListItem>
+                                </List>
+                              </div>
                             </ClickAwayListener>
                           </Paper>
                         </Grow>
@@ -492,15 +501,15 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 }
 
-export const navHeight = ORDERCLOUD_THEME.spacing(10)
-export const navHeightMobile = ORDERCLOUD_THEME.spacing(8)
+export const navHeight = ORDERCLOUD_THEME.spacing(8)
+export const navHeightMobile = ORDERCLOUD_THEME.spacing(7)
 
 const styles = (theme: Theme) =>
   createStyles({
     logo: {
       marginRight: theme.spacing(2),
-      width: theme.spacing(7),
-      height: theme.spacing(7),
+      width: theme.spacing(5),
+      height: theme.spacing(5),
       padding: theme.spacing(0.5, 1, 1),
       [theme.breakpoints.down('md')]: {
         marginRight: 'auto',
@@ -529,26 +538,15 @@ const styles = (theme: Theme) =>
       letterSpacing: 1,
       fontWeight: 'normal',
       minWidth: 0,
-      cursor: 'pointer',
-      transition: 'background-color .5s',
-      '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, .05)',
-      },
+      color: seafoam[50],
+      textDecoration: 'none',
     },
     root: {
+      backgroundColor: sherpablue[500],
       width: '100vw',
       left: 0,
       top: 0,
-      backgroundColor: sherpablue[500],
-      '&:after': {
-        content: '""',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: -1,
-        height: theme.spacing(0.25),
-      },
+      zIndex: theme.zIndex.appBar + 1,
     },
     toolbar: {
       height: navHeightMobile,
@@ -598,9 +596,12 @@ const styles = (theme: Theme) =>
       overflowY: 'scroll',
       overflowX: 'auto',
     },
+    dropdownHeader: {
+      textAlign: 'center',
+    },
     orgControls: {
-      borderTop: `1px solid ${theme.palette.divider}`,
-      borderBottom: `1px solid ${theme.palette.divider}`,
+      // borderTop: `1px solid ${theme.palette.divider}`,
+      // borderBottom: `1px solid ${theme.palette.divider}`,
     },
     drawerRoot: {
       zIndex: `${theme.zIndex.modal + 5} !important` as any,
