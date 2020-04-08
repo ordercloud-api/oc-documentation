@@ -49,7 +49,19 @@
     }
   ],
   "DropdownControls": [{
+    "label": "Dashboard",
+    "to": "/"
+  },
+  {
+    "label": "Organizations",
+    "to": "/organizations"
+  },
+  {
+    "label": "API Console",
+    "to": "/console"
+  },
+  {
     "label": "My Profile",
-    "to": "/profile"
+    "to": "/settings/profile"
   }]
 }
