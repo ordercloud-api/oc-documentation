@@ -490,7 +490,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 <strong> {this.state.username}</strong>
               </ListSubheader>
               {MenuItems.DropdownControls.map((item, index) => (
-                <ListItem key={index}>{item.label}</ListItem>
+                <ListItem key={index} onClick={this.goToPortal(item.to)}>
+                  {item.label}
+                </ListItem>
               ))}
               <ListItem onClick={this.handleLogout}>Sign Out</ListItem>
             </List>
