@@ -611,7 +611,7 @@ const styles = (theme: Theme) =>
     drawerPaper: {
       backgroundColor: theme.palette.primary.main,
       width: '100vw',
-      minHeight: '100vh',
+      height: '100%',
       color: theme.palette.common.white,
       fontSize: '1.3rem',
     },
