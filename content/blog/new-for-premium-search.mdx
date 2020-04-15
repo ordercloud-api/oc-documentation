@@ -19,6 +19,9 @@ Like we did with the "me" endpoint, we're rolling out the admin side gradually, 
 2. Transition a few select clients/partners individually (many done or in progress).
 3. Transition all orgs that we can easily identify as "Test" or "Dev" orgs (Friday April 3, 2020).
 4. Transition _all_ remaining orgs (Monday April 20, 2020).
+5. Remove all xp indexes defined on Product, and disallow creating new ones* (TBD, soon after everyone is transitioned and confirmed stable).
+
+\* With Premium Search, all xp fields are searchable/sortable/filterable automaticlaly, so there is no need for explicit indexes.
 
 ### Look out for this potential "gotcha"
 
