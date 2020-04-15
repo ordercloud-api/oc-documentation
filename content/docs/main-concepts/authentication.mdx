@@ -2,7 +2,6 @@
 title: 'Authentication'
 section: 'Main Concepts'
 priority: 5
-hidden: false
 ---
 
 import { Link } from 'gatsby'
@@ -13,7 +12,7 @@ Access tokens are what gives you _access_ to parts of the API and must be append
 
 ## OrderCloud Workflows
 
-OrderCloud's authentication system is built on top of an open authorization standard called [OAuth2](https://oauth.net/2/) which is increasingly becoming an industry standard for security and permission-based application experiences. OAuth2 provides five different workflows (ways of getting an access token). Additionally, OrderCloud has support for OpenID connect which is an authorization standard built on top of OAuth2 which enables single-sign-on and brings our grand tally up to 6 workflows (or ways of getting an access token).
+OrderCloud's authentication system is built on top of an open authorization standard called [OAuth2](https://oauth.net/2/) which is increasingly becoming an industry standard for security and permission-based application experiences. OAuth2 provides five different workflows (ways of getting an access token). Additionally, OrderCloud has support for OpenID connect which is an authorization standard built on top of OAuth2 which enables single-sign-on and brings our grand tally up to 6 workflows.
 
 ### Password Grant Type Workflow
 
@@ -125,4 +124,4 @@ Content-Type: application/json; charset=UTF-8
 
 ## Conclusion
 
-As you can see there are many different ways that you can obtain an access token to _give_ someone access to your organization but what about _limiting_ access to your organization? OrderCloud has a built-in way of handling access to your organization via Security Profiles which we'll talk about next.
+As you can see there are many different ways that you can obtain an access token to _give_ someone access to your organization but what about _limiting_ access within your organization? OrderCloud has a built-in way of handling access within your organization via Security Profiles which we'll talk about next.

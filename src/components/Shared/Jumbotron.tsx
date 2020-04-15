@@ -18,7 +18,7 @@ const styles = (theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '50vh',
+      height: 400,
       borderRadius: 0,
       overflowY: 'hidden',
       overflowX: 'hidden',
@@ -30,6 +30,9 @@ const styles = (theme: Theme) =>
       '-o-background-size': 'cover',
       '&>div': {
         zIndex: 1,
+      },
+      [theme.breakpoints.down('xs')]: {
+        height: '75vh',
       },
     },
     jumbotronSecondary: {
@@ -53,7 +56,7 @@ const styles = (theme: Theme) =>
       top: '-10vh',
       left: '45vw',
       opacity: 0.25,
-      minWidth: '55%',
+      width: '55%',
       mixBlendMode: 'exclusion',
       [theme.breakpoints.down('md')]: {
         minWidth: '150%',
@@ -69,9 +72,8 @@ const styles = (theme: Theme) =>
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-
-      [theme.breakpoints.down('md')]: {
-        padding: 20,
+      [theme.breakpoints.down('xs')]: {
+        marginBottom: theme.spacing(2),
       },
     },
     jumbotronLinkGroup: {
@@ -90,7 +92,7 @@ const styles = (theme: Theme) =>
       color: seafoam[50],
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
-        margin: '0 auto',
+        marginTop: 0,
       },
     },
     jumbotronText: {
@@ -112,7 +114,7 @@ class Jumbotron extends React.Component<any> {
     return (
       <div
         className={`${classes.jumbotron} ${
-          secondary ? classes.jumbotronSecondary : undefined
+          secondary ? classes.jumbotronSecondary : ''
         }`}
         style={{ height }}
       >

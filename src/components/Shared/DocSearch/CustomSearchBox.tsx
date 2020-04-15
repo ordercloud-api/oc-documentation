@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
         : theme.palette.grey[200],
     }),
     input: (props: any) => ({
+      fontFamily: theme.typography.h1.fontFamily,
       padding: theme.spacing(2, 1, 2, 0),
       width: 200,
       transition: theme.transitions.create('width', {

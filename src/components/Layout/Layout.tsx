@@ -1,5 +1,5 @@
 import React from 'react'
-import Header, { navHeight } from './Header'
+import Header, { navHeight, navHeightMobile } from './Header'
 import { ThemeProvider } from '@material-ui/styles'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import {
@@ -12,26 +12,26 @@ import {
   TableRow,
   TableCell,
   CssBaseline,
+  Divider,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
 import { MDXProvider } from '@mdx-js/react'
-import { useStaticQuery, graphql } from 'gatsby'
-import utility from '../../services/utility'
 import IconButtonLink from '../Shared/IconButtonLink'
 import { Helmet } from 'react-helmet'
 import Footer from './Footer'
 import { seafoam } from '../../theme/ocPalette.constants'
 import AlertContainer from '../Shared/Alert'
 import { RouteComponentProps } from '@reach/router'
+import { useDocsSections } from '../../hooks/useDocsSections'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageWrapper: {
       backgroundColor: 'white',
-      marginTop: navHeight, // spacing from top of page on mobile (due to horiz menu)
-      minHeight: `calc(100vh - ${navHeight}px)`,
+      minHeight: `calc(100vh - ${navHeightMobile}px)`,
       [theme.breakpoints.up('md')]: {
-        marginBottom: theme.spacing(52.25),
+        marginBottom: theme.spacing(51),
+        minHeight: `calc(100vh - ${navHeight}px)`,
       },
       '& img': {
         maxWidth: '100%',
@@ -44,9 +44,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     heading: {
       position: 'relative',
-      top: -theme.spacing(10),
-      marginTop: theme.spacing(11),
-      marginBottom: -theme.spacing(8),
     },
     containerMain: {
       zIndex: 1,
@@ -67,7 +64,7 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const LayoutLink: React.FunctionComponent = (props: any) => {
+export const LayoutLink = (props: any) => {
   const classes = layoutLinkStyles({})
   if (!props.href) {
     console.error(
@@ -76,7 +73,7 @@ const LayoutLink: React.FunctionComponent = (props: any) => {
     )
     return <Typography variant="button">[BAD LINK] {props.children}</Typography>
   }
-  if (props.className === 'anchor') {
+  if (props.className === 'anchor' || props.href.indexOf('#') === 0) {
     return (
       <div className={classes.root}>
         <IconButtonLink {...props} to={props.href}>
@@ -93,36 +90,24 @@ interface LayoutProps extends RouteComponentProps {
 }
 export default (props: LayoutProps) => {
   const classes = useStyles(props)
-  const data = useStaticQuery(graphql`
-    query {
-      allMdx(
-        sort: { order: ASC, fields: [frontmatter___priority] }
-        filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
-      ) {
-        totalCount
-        edges {
-          node {
-            id
-            fileAbsolutePath
-            frontmatter {
-              section
-              title
-              hidden
-            }
-          }
-        }
-      }
-    }
-  `)
-  const sections = utility.getSectionsFromDocsQuery(data)
+  const sections = useDocsSections()
   return (
     <ThemeProvider theme={ORDERCLOUD_THEME}>
       <Helmet
         meta={[
           {
+            property: 'og:image',
+            content: '/images/meta/meta_thumbnail.jpg',
+          },
+          {
             name: 'viewport',
             content:
               'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+          },
+          {
+            name: 'description',
+            content:
+              'OrderCloud powers custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and over $5 billion in revenue annually.',
           },
         ]}
       >
@@ -201,7 +186,7 @@ export default (props: LayoutProps) => {
                   <ul {...ulProps} />
                 </Typography>
               ),
-              a: LayoutLink,
+              a: aProps => <LayoutLink {...aProps} />,
               table: tableProps => <Table {...tableProps} />,
               tr: trProps => <TableRow {...trProps} />,
               th: thProps => (
@@ -210,6 +195,7 @@ export default (props: LayoutProps) => {
               td: tdProps => (
                 <TableCell variant="body">{tdProps.children}</TableCell>
               ),
+              hr: hrProps => <Divider {...hrProps} />,
             }}
           >
             {props.children}

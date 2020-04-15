@@ -2,7 +2,6 @@
 title: 'Security Profiles'
 section: 'Main Concepts'
 priority: 6
-hidden: false
 ---
 
 ​
@@ -10,7 +9,6 @@ hidden: false
 ## Overview
 
 Security profiles are groups of roles (permissions), each of which grant users access to specific API endpoints and functionality. This lets you lock down access to your organization at the _API_ level which is very powerful. If a request is made by a user without sufficient roles, they will receive a 403 Forbidden response.
-​
 
 ## Roles
 
@@ -20,38 +18,24 @@ Most Ordercloud roles fall into one of two categories: Admin and Reader. An **Ad
 ​
 For example, a user that is assigned a security profile that has the role `PromotionReader` will be able to List, or Get Promotions but will not be able to modify a promotion by calling Create, Patch, Save, or Delete endpoints.
 
-<!-- TODO:
-add image for all security profile roles here, see if we can pull in dynamically from spec so its always current
-would be particularly siq if we can make a react component so people can filter them, its probably also pretty easy to
-generate a short description for them based on the format of thier name
--->
+### Shopper Role
+
+This special role grants a user read access to all of the `/me` endpoints as well as the ability to create an order, lineitems, and payments. In short, it provides the minimum set of access a user needs to be able to "shop". If your needs are simple enough, this may be the only role you need to assign your buyer user!
+
+### Me Roles
+
+The Shopper role enables read access to the `/me` endpoints however there are various permissions that define write access to their own data. For example a user with `MeCreditCardAdmin` would allow that user to create/edit/delete any of their own personal credit cards.
 
 ### Override Roles
 
 Some properties in OrderCloud's data model have been deemed important enough to require a special role in addition to the Admin role for the resource.
-
-<!-- TODO: can we put this in a prettier table? html is valid in markdown and we could even do a react component since we have mdx files -->
 
 | Role                | Effect on assigning the role to a user                 |
 | ------------------- | ------------------------------------------------------ |
 | `OverrideShipping`  | allows a user to update the `ShippingCost` on an order |
 | `OverrideTax`       | allows a user to update the `TaxCost` on an order      |
 | `OverrideUnitPrice` | allows a user to update the `UnitPrice` on a line item |
-
 ​
-
-### Me Roles
-
-An astute observer may have noticed that the Me resource has Admin roles but no Reader roles. It is possible to lock down some of the Admin capabilities such as `MeCreditCardAdmin` which would prevent a user from creating personal credit cards however there is no role that would disallow a user from reading anything that is assigned to them. That user would still be able to read any of their own _personal_ credit cards.
-​
-
-### DevcenterImpersonate role
-
-In order to make it easier for developers to get in and start testing applications we made a unique role called `DevCenterImpersonate`. This role allows you to log into your application with your DevCenter username and password so you don't have to go through the trouble of creating a user first.
-​
-To take advantage of this feature simply include the role `DevCenterImpersonate` in the scope of your authentication request
-​
-
 ### Custom Roles
 
 Custom roles let you lock down access to your app's custom features using Ordercloud's security profiles.

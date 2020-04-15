@@ -2,7 +2,6 @@
   "MainNavigation": [{
       "value": "docs",
       "label": "Home",
-      "disableRipple": true,
       "to": "/",
       "mobileMenu": false,
       "authRequired": false,
@@ -11,7 +10,6 @@
     {
       "value": "rest",
       "label": "Docs",
-      "disableRipple": true,
       "to": "/main-concepts/organization-hierarchy",
       "mobileMenu": false,
       "authRequired": false,
@@ -20,7 +18,6 @@
     {
       "value": "blog",
       "label": "Blog",
-      "disableRipple": true,
       "to": "/blog",
       "mobileMenu": false,
       "authRequired": false,
@@ -29,52 +26,42 @@
     {
       "value": "api-reference",
       "label": "Api Reference",
-      "disableRipple": true,
       "to": "/api-reference",
       "mobileMenu": false,
       "authRequired": false,
       "isPortalLink": false
     },
     {
-      "value": "support",
-      "label": "Support",
-      "disableRipple": true,
+      "value": "portal",
+      "label": "Portal",
       "to": "/",
-      "mobileMenu": true,
-      "authRequired": false,
+      "mobileMenu": false,
+      "authRequired": true,
       "isPortalLink": true
     },
     {
       "value": "release-notes",
       "label": "Release Notes",
-      "disableRipple": true,
       "to": "/release-notes/v",
       "mobileMenu": true,
       "authRequired": false,
       "isPortalLink": false
-    },
-    {
-      "value": "organizations",
-      "label": "Organizations",
-      "disableRipple": true,
-      "to": "/organizations",
-      "mobileMenu": false,
-      "authRequired": true,
-      "isPortalLink": true
-    },
-    {
-      "value": "console",
-      "label": "Console",
-      "disableRipple": true,
-      "to": "/",
-      "mobileMenu": false,
-      "authRequired": true,
-      "isPortalLink": true
     }
   ],
-  "OrgControls": [{
-    "label": "Profile",
-    "to": ""
-  }],
-  "AuthControls": []
+  "DropdownControls": [{
+    "label": "Dashboard",
+    "to": "/"
+  },
+  {
+    "label": "Organizations",
+    "to": "/organizations"
+  },
+  {
+    "label": "API Console",
+    "to": "/console"
+  },
+  {
+    "label": "My Profile",
+    "to": "/settings/profile"
+  }]
 }

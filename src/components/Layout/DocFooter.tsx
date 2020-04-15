@@ -14,6 +14,7 @@ import { Link } from 'gatsby'
 import { flatten as _flatten } from 'lodash'
 import React from 'react'
 import { isWidthDown } from '@material-ui/core/withWidth'
+import ButtonLink from '../Shared/ButtonLink'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -65,6 +66,9 @@ const styles = (theme: Theme) =>
       margin: theme.spacing(2, 0),
     },
     questionsText: {
+      maxWidth: 600,
+      marginLeft: 'auto',
+      marginRight: 'auto',
       marginBottom: theme.spacing(3),
     },
     questionsBtn: {
@@ -177,9 +181,13 @@ class DocFooter extends React.Component<any> {
             <strong>ordercloud</strong>&quot;.
           </Typography>
 
-          <Button variant="outlined" className={classes.questionsBtn}>
+          <ButtonLink
+            variant="outlined"
+            className={classes.questionsBtn}
+            to="/slack"
+          >
             Join Our Community
-          </Button>
+          </ButtonLink>
 
           <Button
             variant="outlined"

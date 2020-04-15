@@ -5,6 +5,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       [theme.breakpoints.up('md')]: {
+        paddingLeft: 0,
         display: 'flex',
         flexFlow: 'row nowrap',
       },

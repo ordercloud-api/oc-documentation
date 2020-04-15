@@ -9,15 +9,14 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core/'
-import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
 import ocLogo from '../../assets/images/four51-logo-nopyramid--full-color.svg'
 import { darkgrey, mediumgrey, flame } from '../../theme/ocPalette.constants'
-import utility from '../../services/utility'
 import Jumbotron from '../Shared/Jumbotron'
 import ListItemLink from '../Shared/ListItemLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
-import { navHeight } from './Header'
+import { navHeight, navHeightMobile } from './Header'
+import { useDocsSections } from '../../hooks/useDocsSections'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -35,23 +34,23 @@ const useStyles = makeStyles((theme: Theme) =>
       top: theme.spacing(3),
     },
     root: {
-      minHeight: `calc(100vh - ${navHeight}px)`,
+      minHeight: `calc(100vh - ${navHeightMobile}px)`,
       [theme.breakpoints.up('md')]: {
         minHeight: `calc(100vh - ${navHeight}px)`,
       },
     },
     paperRoot: {
       zIndex: 1,
-      minHeight: '100%',
-      height: '100%',
+      flexGrow: 1,
     },
     paperCard: {
       position: 'relative',
       flexFlow: 'column nowrap',
       alignItems: 'center',
       maxWidth: '100vw',
+      padding: theme.spacing(2),
       [theme.breakpoints.up('md')]: {
-        minHeight: '30vh',
+        height: '100%',
       },
     },
     paperTitleHeading: {
@@ -101,28 +100,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const MainComponent: React.FunctionComponent = props => {
   const classes = useStyles(props)
-  const data = useStaticQuery(graphql`
-    query {
-      allMdx(
-        sort: { order: ASC, fields: [frontmatter___priority] }
-        filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
-      ) {
-        totalCount
-        edges {
-          node {
-            id
-            fileAbsolutePath
-            frontmatter {
-              section
-              title
-              hidden
-            }
-          }
-        }
-      }
-    }
-  `)
-  const sections = utility.getSectionsFromDocsQuery(data)
+  const sections = useDocsSections()
   const getSectionSubtitle = title => {
     switch (title) {
       case 'Getting Started':
@@ -143,7 +121,7 @@ const MainComponent: React.FunctionComponent = props => {
     <React.Fragment>
       <Jumbotron
         image={{ src: ocLogo, alt: 'Four51 OrderCloud Logo' }}
-        heading="A Next Generation Headless eCommerce Platform"
+        heading="A Next-Generation Headless eCommerce Platform"
         actions={[
           <CustomButtonLink
             color="#fff"
@@ -154,12 +132,12 @@ const MainComponent: React.FunctionComponent = props => {
             Introduction
           </CustomButtonLink>,
           <CustomButtonLink
-            key="quick-start-guide"
-            to="/getting-started/quick-start-guide"
+            key="main-concepts"
+            to="/main-concepts/organization-hierarchy"
             variant="contained"
             color={flame[600]}
           >
-            Quick Start
+            Main Concepts
           </CustomButtonLink>,
         ]}
       />
@@ -176,45 +154,58 @@ const MainComponent: React.FunctionComponent = props => {
                 key={index}
                 className={classes.paperRoot}
               >
-                {section.guides.filter(c => !c.frontmatter.hidden).length >
-                0 ? (
-                  <Paper elevation={5}>
-                    <Box p={2} zIndex={1}>
-                      <div className={classes.paperCard}>
-                        <Typography
-                          className={classes.paperTitleHeading}
-                          variant="h3"
-                        >
-                          {section.title}
-                        </Typography>
-                        <Typography
-                          className={classes.paperTitleSubheading}
-                          variant="subtitle1"
-                        >
-                          {getSectionSubtitle(section.title)}
-                        </Typography>
-                        <List
-                          disablePadding={true}
-                          dense={true}
-                          className={classes.paperList}
-                        >
-                          {section.guides
-                            .filter(g => !g.frontmatter.hidden)
-                            .map(g => {
-                              return (
-                                <ListItemLink key={g.id} to={g.path}>
-                                  {g.frontmatter.title}
-                                </ListItemLink>
-                              )
-                            })}
-                        </List>
-                      </div>
-                    </Box>
-                  </Paper>
-                ) : null}
+                <Paper elevation={5} className={classes.paperCard}>
+                  <Typography
+                    className={classes.paperTitleHeading}
+                    variant="h3"
+                  >
+                    {section.title}
+                  </Typography>
+                  <Typography
+                    className={classes.paperTitleSubheading}
+                    variant="subtitle1"
+                  >
+                    {getSectionSubtitle(section.title)}
+                  </Typography>
+                  <List
+                    disablePadding={true}
+                    dense={true}
+                    className={classes.paperList}
+                  >
+                    {section.guides.map(g => {
+                      return (
+                        <ListItemLink key={g.id} to={g.path}>
+                          {g.frontmatter.title}
+                        </ListItemLink>
+                      )
+                    })}
+                  </List>
+                </Paper>
               </Grid>
             ))}
         </Grid>
+      </Container>
+      <Container maxWidth="md">
+        <Box paddingTop={7} paddingBottom={14}>
+          <Typography variant="h3">
+            Four51 OrderCloud™ is an API-first, headless eCommerce platform
+            offering nearly limitless customizations and endless freedom for
+            growth.
+          </Typography>
+          <Typography paragraph>
+            Your eCommerce data and infrastructure are available in the cloud as
+            building blocks via our RESTful API. Create best-of-breed commerce
+            applications that easily integrate with your back-end systems and
+            3rd party microservices. With OrderCloud, accelerate your commerce
+            transformation, increase your agility, and scale limitlessly.
+          </Typography>
+          <Typography>
+            OrderCloud powers custom eCommerce (B2B, B2C, B2X), order
+            management, and B2B marketplace applications for some of the world’s
+            most well-known brands - processing over 25 million transactions and
+            over $5 billion in revenue annually.
+          </Typography>
+        </Box>
       </Container>
     </React.Fragment>
   )

@@ -2,8 +2,9 @@
 title: 'Me Resource'
 section: 'Main Concepts'
 priority: 3
-hidden: false
 ---
+
+import { Link } from 'gatsby'
 
 ## Me Resource
 
@@ -11,15 +12,13 @@ Multi-tiered assignments make up a powerful mechanism for customizing the buyer 
 
 ## Easy Access to What the Currently Authenticated User is Assigned to or Owns
 
-OrderCloud provides the [Me resource](TODO:link-to-me-resource-in-api-reference) whose job it is to flatten these assignments for the currently authenticated user and just "show me what I can see" regardless at which level these assignments are made.
+OrderCloud provides the <Link to="/api-reference/me-and-my-stuff">Me Resource</Link> whose job it is to flatten these assignments for the currently authenticated user and just "show me what I can see" regardless at which level these assignments are made.
 
-For example let's say your buyer user is assigned an address at the buyer level, and another address at the usergroup level. Instead of listing assignments at both of those levels and manually resolving the addresses yourself, you can simply make a list call as that buyer user to [me/addresses](TODO:link-to-me-addresses) and quickly get the assigned addresses in one quick and fluid motion.
+For example let's say your buyer user is assigned an address at the buyer level, and another address at the usergroup level. Instead of listing assignments at both of those levels and manually resolving the addresses yourself, you can simply make a list call as that buyer user to <Link to="/api-reference/me-and-my-stuff/my-addresses">me/addresses</Link> and quickly get the assigned addresses in one quick and fluid motion.
 
 ## Ability to Admin Personal Resources
 
-In addition to being able to quickly get information about the currently authenticated user, the Me resource provides a set of admin endpoints for personal resources (Credit Cards and Addresses) that only that user can see. Not even admins have access to viewing the data created by these users without something like impersonation.
-
-<!-- TODO: once impersonation guide has been written link it here -->
+In addition to being able to quickly get information about the currently authenticated user, the Me resource provides a set of admin endpoints for personal resources (Credit Cards and Addresses) that only that user can see. Not even admins have access to viewing the data created by these users without something like <Link to="/features/impersonation">impersonation</Link>.
 
 ## Conclusion
 

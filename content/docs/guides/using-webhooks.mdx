@@ -1,9 +1,9 @@
 ---
 title: 'Using Webhooks'
 section: 'Guides'
-priority: 4
-hidden: false
 ---
+
+import { PortalLink } from 'components/Shared/PortalLink'
 
 The OrderCloud API supports user-defined HTTP callbacks, known as webhooks. Webhooks are easy to register for your entire organization or on an application specific level. You can choose exactly which OrderCloud API endpoints will trigger your hook, the roles to be passed onto the configured Base URL, and any additional configuration data OrderCloud may need to authenticate into 3rd party systems.
 
@@ -19,15 +19,17 @@ Once logged in to your Zapier account, click the "Make a Zap" button at the top 
 
 ## Register Your Hook with OrderCloud
 
-Back in your OrderCloud dashboard, select any of your OrderCloud applications. Click "default access," and scroll down to the Webhooks section. Click "Create new Webhook" (you will need the Admin Webhooks permission).
+Back in the <PortalLink to="/console">OrderCloud Console</PortalLink> create a new webhook
+
+![create_webhook](/images/docs/guides/using-webhooks/create_webhook.png)
 
 ### Webhook Info
 				
-Name, description and shared key can be whatever you like. Use the recently copied Zap URL as the Base URL. 
+Name, Description and Secret can be whatever you like. Use the recently copied Zap URL for Url.
 
-### Webhook Routes	
+### Trigger Events	
 
-This tells OrderCloud to trigger our Zap whenever the route(s) of choice is called from this application. For this example, we'll be triggering the CreateNewUser route. This means that everytime a user is created, we'll use our webhook to follow that up with another action. To let Zapier know this is our intention, simply select Users from the drop down list as the Resource and Create New User as the endpoint.
+This tells OrderCloud to trigger our Zap whenever the route(s) of choice are called from this application. For this example, we'll be triggering the "Create a new user" route. This means that everytime a user is created, we'll use our webhook to follow that up with another action. To let Zapier know this is our intention, simply select Users from the drop down list as the Resource and Create New User as the endpoint.
 			
 ### Elevated Roles
 				

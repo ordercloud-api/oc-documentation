@@ -22,12 +22,12 @@ import DocSearchFooter from './DocSearchFooter'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      zIndex: 1,
+      zIndex: theme.zIndex.appBar + 3,
     },
     caret: (props: any) => ({
       display: props.noPopper ? 'none' : undefined,
       position: 'absolute',
-      zIndex: 3,
+      zIndex: theme.zIndex.appBar + 1,
       color: props.darkMode
         ? theme.palette.primary.dark
         : theme.palette.background.paper,
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme: Theme) =>
     caretBackground: (props: any) => ({
       display: props.noPopper ? 'none' : undefined,
       position: 'absolute',
-      zIndex: 3,
+      zIndex: theme.zIndex.appBar + 1,
       color: 'rgba(0,0,0,0.1)',
       right: theme.spacing(3),
       fontSize: '4rem',
@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme: Theme) =>
       }
     },
     paper: (props: any) => ({
-      zIndex: 2,
+      zIndex: theme.zIndex.appBar + 1,
       top: theme.spacing(2),
       position: 'relative',
       background: props.darkMode
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
     }),
     searchResultsScrollbar: {
-      zIndex: 3,
+      zIndex: theme.zIndex.appBar + 1,
       left: 'auto',
       right: 0,
       top: 0,
@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexFlow: 'column nowrap',
     },
     subheader: (props: any) => ({
+      // padding: theme.spacing(2),
       color: props.darkMode ? theme.palette.common.white : undefined,
       background: props.darkMode
         ? theme.palette.primary.dark
@@ -105,7 +106,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: props.darkMode ? theme.palette.common.white : undefined,
     }),
     hitItemSecondary: (props: any) => ({
-      color: props.darkMode ? theme.palette.primary.dark : undefined,
+      color: props.darkMode ? theme.palette.grey[400] : undefined,
     }),
   })
 )
@@ -134,16 +135,31 @@ function HitItem(hit, classes) {
     </ListItemLink>
   )
 }
+
+function ReferenceHitItem(hit, classes) {
+  return (
+    <ListItemLink button to={hit.link} key={hit.objectID}>
+      <Box display="flex" flexDirection="column">
+        <ListItemText
+          primary={<Snippet attribute="summary" hit={hit} tagName="mark" />}
+          classes={{
+            primary: classes.hitItemPrimary,
+            secondary: classes.hitItemSecondary,
+          }}
+        />
+      </Box>
+    </ListItemLink>
+  )
+}
 const OrderCloudSearchHits = ({
   hits,
   open,
   anchorEl,
   container,
-  darkMode,
   noPopper,
   classes,
 }) => {
-  const classesSelf = useStyles({ darkMode, noPopper })
+  const classesSelf = useStyles({ darkMode: false, noPopper })
   const sections = groupBy(hits, 'section')
   const inner = (
     <div className={`${classesSelf.inner} ${classes.searchHits}`}>
@@ -184,7 +200,9 @@ const OrderCloudSearchHits = ({
                       {section === 'undefined' ? 'OrderCloud Blog' : section}
                     </ListSubheader>
                     {items.map(hit => {
-                      return HitItem(hit, classesSelf)
+                      return hit.verb
+                        ? ReferenceHitItem(hit, classesSelf)
+                        : HitItem(hit, classesSelf)
                     })}
                   </React.Fragment>
                 )

@@ -5,11 +5,11 @@ import {
   Typography,
   Theme,
 } from '@material-ui/core'
-import { ExpandLess, ExpandMore } from '@material-ui/icons'
+import { ExpandLess, ExpandMore, OpenInNew } from '@material-ui/icons'
 import { Link, withPrefix } from 'gatsby'
 import React from 'react'
-import { grey } from '@material-ui/core/colors'
 import { Section } from '../../models/section.model'
+import { seafoam } from '../../theme/ocPalette.constants'
 
 export const drawerWidthSpacingLg = 56
 export const drawerWidthSpacing = drawerWidthSpacingLg - 20
@@ -17,14 +17,30 @@ export const drawerWidthSpacing = drawerWidthSpacingLg - 20
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     section: {
-      marginBottom: theme.spacing(3),
-    },
-    sectionButton: {
-      ...theme.typography.button,
-      color: grey[500],
       cursor: 'pointer',
+      color: theme.palette.grey[500],
       display: 'flex',
       alignItems: 'center',
+      marginBottom: theme.spacing(2),
+    },
+    sectionActive: {
+      marginBottom: 0,
+      color: theme.palette.getContrastText(theme.palette.background.paper),
+    },
+    guides: {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+    },
+    guide: {
+      lineHeight: 1.75,
+      textDecoration: 'none',
+      color: theme.palette.getContrastText(theme.palette.background.paper),
+    },
+    guideActive: {
+      fontWeight: 'bold',
+      marginLeft: -theme.spacing(2.25),
+      paddingLeft: theme.spacing(1.75),
+      borderLeft: `${theme.spacing(0.5)}px solid ${seafoam[500]}`,
     },
     list: {
       margin: theme.spacing(3, 4, 0, 4),
@@ -36,13 +52,18 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.getContrastText(theme.palette.background.default),
       textDecoration: 'none',
     },
+    linkIcon: {
+      marginLeft: theme.spacing(1),
+      fontSize: 'inherit',
+      color: theme.palette.text.hint,
+    },
     activeSection: {
       fontWeight: 'bold',
       color: theme.palette.getContrastText(theme.palette.background.default),
     },
     active: {
-      marginLeft: -theme.spacing(2.5),
-      paddingLeft: theme.spacing(2),
+      marginLeft: -theme.spacing(2.25),
+      paddingLeft: theme.spacing(1.75),
       borderLeft: `${theme.spacing(0.5)}px solid ${
         theme.palette.secondary.light
       }`,
@@ -82,37 +103,65 @@ export default function DocMenu(props: DocMenuProps) {
   return (
     <nav>
       {sections.map((section, sindex) => (
-        <div className={classes.section} key={sindex}>
-          <div
-            className={`${classes.sectionButton} ${
-              activeIndex === sindex ? classes.activeSection : undefined
+        <React.Fragment key={sindex}>
+          <Typography
+            className={`${classes.section} ${
+              activeIndex === sindex ? classes.sectionActive : undefined
             }`}
+            variant="h4"
+            component="h5"
             onClick={handleSetActiveIndex(sindex)}
           >
             {`${section.title} `}
             {activeIndex === sindex ? <ExpandLess /> : <ExpandMore />}
-          </div>
+          </Typography>
           <Collapse in={activeIndex === sindex} timeout="auto" unmountOnExit>
-            <ul className={classes.list}>
+            <div className={classes.guides}>
               {section.guides.map((guide, gindex) => (
-                <li
+                <Typography
+                  display="block"
                   key={`${sindex}_${gindex}`}
-                  className={`${
+                  className={`${classes.guide} ${
                     currentPath.includes(guide.path)
-                      ? classes.active
+                      ? classes.guideActive
                       : undefined
                   }`}
+                  to={guide.path}
+                  variant="body1"
+                  component={Link}
                 >
-                  <Link className={classes.listItemLink} to={guide.path}>
-                    <Typography variant="body2">
-                      {guide.frontmatter.title}
-                    </Typography>
-                  </Link>
-                </li>
+                  {guide.frontmatter.title}
+                </Typography>
               ))}
-            </ul>
+              {section.title === 'Getting Started' && (
+                <React.Fragment>
+                  <Typography
+                    display="block"
+                    className={classes.guide}
+                    href="https://github.com/ordercloud-api/ordercloud-dotnet-sdk"
+                    target="_blank"
+                    variant="body1"
+                    component="a"
+                  >
+                    OrderCloud .NET SDK
+                    <OpenInNew className={classes.linkIcon} />
+                  </Typography>
+                  <Typography
+                    display="block"
+                    className={classes.guide}
+                    href="https://github.com/ordercloud-api/OrderCloud-JavaScript-SDK"
+                    target="_blank"
+                    variant="body1"
+                    component="a"
+                  >
+                    OrderCloud Javascript SDK
+                    <OpenInNew className={classes.linkIcon} />
+                  </Typography>
+                </React.Fragment>
+              )}
+            </div>
           </Collapse>
-        </div>
+        </React.Fragment>
       ))}
     </nav>
   )

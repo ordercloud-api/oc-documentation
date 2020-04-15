@@ -18,10 +18,10 @@ import {
   Grow,
   Popper,
   Divider,
-  Typography,
   Box,
   ListItem,
   Theme,
+  ListSubheader,
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import { Menu as MenuIcon, Close as CloseIcon } from '@material-ui/icons'
@@ -78,37 +78,78 @@ interface HeaderState {
   anchorEl?: HTMLElement
   mobileOpen: boolean
   username: string
-  firstName: string
   email: string
   showResults: boolean
 }
+
+function getEnvironment() {
+  const hostname = window.location.hostname
+  switch (hostname) {
+    case 'localhost':
+      return 'local'
+    case 'oc-docs-test.azurewebsites.net':
+    case 'docs.ordercloud-qa.com':
+      return 'qa'
+    case 'oc-docs.azurewebsites.net':
+    case 'ordercloud.io':
+      return 'prod'
+    default:
+      return ''
+  }
+}
+
 class Header extends React.Component<HeaderProps, HeaderState> {
   state = {
     auth: false,
     anchorEl: null,
     mobileOpen: false,
     username: '',
-    firstName: '',
     email: '',
     showResults: false,
   }
   private readonly autologin = true
   private readonly cookies = new Cookies()
+  public getCookieDomain = () => {
+    const hostname = window.location.hostname
+    if (hostname.includes('azurewebsites') || hostname === 'localhost') {
+      return
+    }
+    if (hostname === 'ordercloud.io') {
+      return `.${hostname}`
+    }
+    return `.${hostname
+      .split('.')
+      .slice(1)
+      .join('.')}`
+  }
+  public cookieOptions = {
+    path: '/',
+    domain: this.getCookieDomain(),
+  }
+
+  get AUTH_TOKEN_KEY() {
+    return `DevCenter.${getEnvironment()}.token`
+  }
+
+  get AUTH_EMAIL_KEY() {
+    return `DevCenter.${getEnvironment()}.email`
+  }
 
   public onInit() {
     //TODO: NICE TO HAVE: Find out how to re-evaluate based on state change
-    const token = this.cookies.get('DevCenter.token')
+    const token = this.cookies.get(this.AUTH_TOKEN_KEY)
+    const email = this.cookies.get(this.AUTH_EMAIL_KEY)
     const decoded = parseJwt(token)
+
     if (decoded) {
       this.setState({
         username: decoded.usr,
-        firstName: this.cookies.get('DevCenter.firstName'),
-        email: this.cookies.get('DevCenter.email'),
+        email,
         auth: !isTokenExpired(token),
       })
     } else {
       this.setState({
-        firstName: '',
+        username: '',
         email: '',
         auth: null,
       })
@@ -124,16 +165,13 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   public handleLogout = () => {
-    this.setState({ anchorEl: null })
-    ;['DevCenter.token', 'DevCenter.firstName', 'DevCenter.email'].forEach(
-      cookieName => {
-        this.cookies.remove(cookieName, {
-          path: '/',
-          domain: window.location.hostname,
-        })
-      }
-    )
-    this.onInit()
+    this.cookies.remove(this.AUTH_TOKEN_KEY, this.cookieOptions)
+    this.cookies.remove(this.AUTH_EMAIL_KEY, this.cookieOptions)
+    this.setState({
+      username: '',
+      auth: null,
+      anchorEl: null,
+    })
   }
 
   public componentDidMount() {
@@ -152,7 +190,10 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     const { classes, location, width, data } = this.props
     const { anchorEl, auth } = this.state
     const isMobile = width !== 'md' && width !== 'lg' && width !== 'xl'
-    const currentApiVersion = data.allMdx.nodes[0].frontmatter.apiVersion
+    const isMedium = width !== 'lg' && width !== 'xl'
+
+    const currentApiVersion = data.orderCloudVersion.internal.content
+    const latestReleaseNoteVersion = data.allMdx.nodes[0].frontmatter.apiVersion
     let activeTab = 'docs'
     if (location && location.pathname) {
       const partialPath = location.pathname.split('/')[1]
@@ -192,7 +233,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                   const {
                     mobileMenu,
                     authRequired,
-                    disableRipple,
                     value,
                     label,
                     to,
@@ -202,7 +242,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     if (isPortalLink) {
                       return (
                         <Tab
-                          disableRipple={disableRipple}
                           value={value}
                           label={label}
                           classes={{
@@ -220,7 +259,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     }
                     return (
                       <Tab
-                        disableRipple={disableRipple}
                         value={value}
                         label={label}
                         classes={{
@@ -241,25 +279,17 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 <ChipLink
                   color="secondary"
                   label={`v${currentApiVersion}`}
-                  to={`/release-notes/v${currentApiVersion}`}
+                  to={`/release-notes/v${latestReleaseNoteVersion}`}
                 ></ChipLink>
                 {auth ? (
                   <React.Fragment>
-                    <Button
-                      color="inherit"
-                      onClick={this.goToPortal('/support')}
-                      variant="outlined"
-                      size="small"
-                    >
-                      Support
-                    </Button>
                     <IconButton
                       color="inherit"
                       onClick={this.handleMenu}
                       className={classes.iconButton}
                     >
                       <Avatar
-                        className={classes.gravatarAvatar}
+                        className={classes.iconButtonAvatar}
                         alt={this.state.username}
                       >
                         <Gravatar size={40} email={this.state.email} />
@@ -285,45 +315,34 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                           <Paper>
                             <ClickAwayListener onClickAway={this.handleClose}>
                               <div>
-                                <Box paddingX={2} paddingY={1}>
-                                  <Typography>
-                                    Signed in as
-                                    <br />
-                                    <strong>{this.state.username}</strong>
-                                  </Typography>
-                                </Box>
-                                <Divider />
-                                <MenuList className={classes.menuList}>
-                                  {MenuItems.OrgControls.map((item, index) => (
-                                    <MenuItem
-                                      key={index}
-                                      onClick={this.goToPortal('/profile')}
-                                      className={classes.menuItem}
-                                    >
-                                      {item.label}
-                                    </MenuItem>
-                                  ))}
-                                  <Divider
-                                    className={classes.menuListDivider}
-                                  />
-                                  {MenuItems.AuthControls.map((item, index) => {
-                                    const { label } = item
-                                    return (
-                                      <MenuItem
-                                        key={index}
-                                        className={classes.menuItem}
-                                      >
-                                        {label}
-                                      </MenuItem>
-                                    )
-                                  })}
-                                  <MenuItem
-                                    className={classes.menuItem}
-                                    onClick={this.handleLogout}
+                                <List>
+                                  <ListSubheader
+                                    component="div"
+                                    className={classes.dropdownHeader}
                                   >
+                                    Signed in as
+                                    <strong> {this.state.username}</strong>
+                                  </ListSubheader>
+                                  <div className={classes.orgControls}>
+                                    {MenuItems.DropdownControls.map(
+                                      (item, index) => (
+                                        <ListItem
+                                          button
+                                          key={index}
+                                          onClick={this.goToPortal(item.to)}
+                                        >
+                                          {item.label}
+                                        </ListItem>
+                                      )
+                                    )}
+                                  </div>
+                                </List>
+                                <Divider />
+                                <List>
+                                  <ListItem button onClick={this.handleLogout}>
                                     Sign Out
-                                  </MenuItem>
-                                </MenuList>
+                                  </ListItem>
+                                </List>
                               </div>
                             </ClickAwayListener>
                           </Paper>
@@ -341,7 +360,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                       Login
                     </Button>
                     <Button
-                      onClick={this.goToPortal('/login')}
+                      onClick={this.goToPortal('/register')}
                       variant="outlined"
                       color="inherit"
                       size="small"
@@ -356,10 +375,14 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               classes={{
                 searchBox: `${isMobile ? classes.mobileSearchBox : undefined}`,
                 searchBoxInput: `${
-                  isMobile ? classes.mobileSearchInput : undefined
+                  isMobile
+                    ? classes.mobileSearchInput
+                    : isMedium
+                    ? classes.mediumSearchInput
+                    : undefined
                 }`,
               }}
-              placeholder={isMobile && 'Search...'}
+              placeholder={isMedium && 'Search...'}
               darkMode={true}
               noPopper={isMobile}
             ></DocSearch>
@@ -375,46 +398,41 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            paddingRight="1rem"
+            paddingX="8px"
+            paddingTop="8px"
           >
-            <Box>
-              <IconButton aria-label="close" color="inherit">
-                <CloseIcon
-                  fontSize="large"
-                  onClick={this.toggleNav(!this.state.mobileOpen)}
-                />
-              </IconButton>
-            </Box>
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              className={classes.mobileIconButon}
+              onClick={this.toggleNav(!this.state.mobileOpen)}
+            >
+              <CloseIcon fontSize="large" color="inherit" />
+            </IconButton>
             {auth ? (
-              <Box padding="1rem 0rem">
-                <Avatar
-                  className={classes.gravatarAvatar}
-                  alt={this.state.username}
-                >
-                  <Gravatar size={40} email={this.state.email} />
-                </Avatar>
-              </Box>
+              <Avatar
+                alt={this.state.username}
+                className={classes.iconButtonAvatar}
+              >
+                <Gravatar alt="User Image" size={40} email={this.state.email} />
+              </Avatar>
             ) : (
-              <Box padding="1rem 0rem">
+              <div>
                 <Button
                   onClick={this.goToPortal('/login')}
                   variant="text"
                   color="inherit"
-                  className={classes.mr1}
-                  size="small"
                 >
                   Login
                 </Button>
-
                 <Button
-                  onClick={this.goToPortal('/login')}
+                  onClick={this.goToPortal('/register')}
                   variant="outlined"
                   color="inherit"
-                  size="small"
                 >
                   Sign-Up
                 </Button>
-              </Box>
+              </div>
             )}
           </Box>
           <List className={classes.mobileMenuList}>
@@ -454,63 +472,51 @@ class Header extends React.Component<HeaderProps, HeaderState> {
               }
               if (to === '/release-notes/v') {
                 return (
-                  <ListItemLink to={to + currentApiVersion} key={value}>
+                  <ListItemLink to={to + latestReleaseNoteVersion} key={value}>
                     {label}
                   </ListItemLink>
                 )
               }
             })}
-            {auth ? (
-              <React.Fragment>
-                <Divider />
-                <Box padding="1rem 0rem 0rem 1rem">
-                  <Typography variant="body1" className={classes.signedInAs}>
-                    Signed in as {this.state.username}
-                  </Typography>
-                </Box>
-                <MenuList className={classes.menuList}>
-                  {MenuItems.OrgControls.map((item, index) => (
-                    <MenuItem key={index} className={classes.menuItem}>
-                      {item.label}
-                    </MenuItem>
-                  ))}
-                  {MenuItems.AuthControls.map((item, index) => {
-                    const { label } = item
-                    return (
-                      <MenuItem key={index} className={classes.menuItem}>
-                        {label}
-                      </MenuItem>
-                    )
-                  })}
-                  <MenuItem
-                    className={classes.menuItem}
-                    onClick={this.handleLogout}
-                  >
-                    Sign Out
-                  </MenuItem>
-                </MenuList>
-              </React.Fragment>
-            ) : (
-              <React.Fragment></React.Fragment>
-            )}
           </List>
+          <Divider />
+          {auth && (
+            <List>
+              <ListSubheader
+                component="div"
+                className={classes.mobileMenuSubheader}
+              >
+                Signed in as
+                <strong> {this.state.username}</strong>
+              </ListSubheader>
+              {MenuItems.DropdownControls.map((item, index) => (
+                <ListItem key={index} onClick={this.goToPortal(item.to)}>
+                  {item.label}
+                </ListItem>
+              ))}
+              <ListItem onClick={this.handleLogout}>Sign Out</ListItem>
+            </List>
+          )}
         </Drawer>
       </React.Fragment>
     )
   }
 }
 
-export const navHeight = ORDERCLOUD_THEME.spacing(10)
+export const navHeight = ORDERCLOUD_THEME.spacing(8)
+export const navHeightMobile = ORDERCLOUD_THEME.spacing(7)
 
 const styles = (theme: Theme) =>
   createStyles({
     logo: {
       marginRight: theme.spacing(2),
-      width: theme.spacing(7),
-      height: theme.spacing(7),
+      width: theme.spacing(5),
+      height: theme.spacing(5),
       padding: theme.spacing(0.5, 1, 1),
       [theme.breakpoints.down('md')]: {
         marginRight: 'auto',
+        width: theme.spacing(5),
+        height: theme.spacing(5),
       },
     },
     tabs: {
@@ -530,33 +536,31 @@ const styles = (theme: Theme) =>
       backgroundColor: 'rgba(0, 0, 0, .1)',
     },
     tab: {
+      fontFamily: theme.typography.h1.fontFamily,
+      letterSpacing: 1,
+      fontWeight: 'normal',
       minWidth: 0,
-      cursor: 'pointer',
-      transition: 'background-color .5s',
-      '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, .05)',
-      },
+      color: seafoam[50],
+      textDecoration: 'none',
     },
     root: {
+      backgroundColor: sherpablue[500],
       width: '100vw',
       left: 0,
       top: 0,
-      backgroundColor: sherpablue[500],
-      '&:after': {
-        content: '""',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: -1,
-        height: theme.spacing(0.25),
-      },
+      zIndex: theme.zIndex.appBar + 1,
     },
     toolbar: {
-      height: navHeight,
+      height: navHeightMobile,
+      [theme.breakpoints.up('md')]: {
+        height: navHeight,
+      },
     },
     mobileSearchBox: {
       marginRight: -theme.spacing(1),
+    },
+    mediumSearchInput: {
+      width: 100,
     },
     mobileSearchInput: {
       paddingTop: theme.spacing(1),
@@ -569,32 +573,22 @@ const styles = (theme: Theme) =>
     iconButton: {
       padding: 0,
     },
-    gravatarAvatar: {
-      '& img': {
-        marginBottom: 0,
-      },
+    iconButtonAvatar: {
+      border: `2px solid ${theme.palette.primary.dark}`,
+      backgroundColor: 'transparent',
+      fontSize: '.8rem',
     },
     mobileMenuList: {
       marginBottom: 'auto',
-    },
-    menuListDivider: {
-      margin: theme.spacing(1, 0),
-    },
-    menuItem: {
-      minHeight: 0,
-      padding: theme.spacing(0.5, 2),
     },
     logoContainer: {
       boxSizing: 'content-box',
     },
     navbarRight: {
-      '&>*': {
-        margin: theme.spacing(0, 1),
+      marginRight: theme.spacing(1),
+      '& > *': {
+        marginRight: theme.spacing(1),
       },
-    },
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    menuItem__profile: {
-      padding: '10px',
     },
     search: {
       alignItems: 'flex-start',
@@ -604,15 +598,25 @@ const styles = (theme: Theme) =>
       overflowY: 'scroll',
       overflowX: 'auto',
     },
+    dropdownHeader: {
+      textAlign: 'center',
+    },
+    orgControls: {
+      // borderTop: `1px solid ${theme.palette.divider}`,
+      // borderBottom: `1px solid ${theme.palette.divider}`,
+    },
     drawerRoot: {
       zIndex: `${theme.zIndex.modal + 5} !important` as any,
     },
     drawerPaper: {
       backgroundColor: theme.palette.primary.main,
       width: '100vw',
-      minHeight: '100vh',
+      height: '100%',
       color: theme.palette.common.white,
-      fontSize: '1rem',
+      fontSize: '1.3rem',
+    },
+    mobileMenuSubheader: {
+      color: sherpablue[100],
     },
     mobileMenuLogo: {
       marginTop: theme.spacing(2),
@@ -620,11 +624,11 @@ const styles = (theme: Theme) =>
       marginRight: theme.spacing(2),
       width: theme.spacing(30),
     },
+    mobileIconButon: {
+      padding: 0,
+    },
     signedInAs: {
       fontWeight: 'bolder',
-    },
-    mr1: {
-      marginRight: theme.spacing(1),
     },
   })
 
@@ -652,6 +656,11 @@ class HeaderWithStaticQuery extends React.Component<
                 frontmatter {
                   apiVersion
                 }
+              }
+            }
+            orderCloudVersion {
+              internal {
+                content
               }
             }
           }

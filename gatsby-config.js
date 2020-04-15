@@ -3,7 +3,7 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 const docsQuery = `{
-  docs: allMdx(sort: {order: ASC, fields: [frontmatter___priority]}, filter: {fileAbsolutePath: {glob: "**/content/docs/**/*.mdx"}}) {
+  docs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/docs/**/*.mdx"}}) {
     edges {
       node {
         objectID: id
@@ -11,7 +11,6 @@ const docsQuery = `{
         frontmatter {
           section
           title
-          hidden
           summary
           authors
         }
@@ -22,7 +21,7 @@ const docsQuery = `{
 }
 `
 const blogQuery = `{
-  blogs: allMdx(sort: {order: ASC, fields: [frontmatter___priority]}, filter: {fileAbsolutePath: {glob: "**/content/blog/*.mdx"}}) {
+  blogs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/blog/*.mdx"}}) {
     edges {
       node {
         objectID: id
@@ -40,6 +39,32 @@ const blogQuery = `{
   }
 }`
 
+const apiRefQuery = `{
+  allSitePage(filter: {path: {glob: "/api-reference/*/*/*"}, context: {}}) {
+    nodes {
+      path
+      context {
+        operation {
+          operationId
+          summary
+          description
+          verb
+          path
+          security {
+            OAuth2
+          }
+          section {
+            name
+          }
+          resource {
+            name
+          }
+        }
+      }
+    }
+  }
+}`
+
 const flatten = arr => {
   return arr.map(({ node: { frontmatter, ...rest } }) => ({
     ...frontmatter,
@@ -48,7 +73,7 @@ const flatten = arr => {
 }
 
 const settings = {
-  attributesToSnippet: [`excerpt:20`],
+  attributesToSnippet: [`excerpt:20`, `summary:20`],
 }
 
 const queries = [
@@ -64,14 +89,55 @@ const queries = [
     indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
     settings,
   },
+  {
+    query: apiRefQuery,
+    transformer: ({ data }) =>
+      data.allSitePage.nodes.map(result => {
+        const {
+          section,
+          resource,
+          path,
+          operationId,
+          summary,
+          verb,
+          security,
+        } = result.context.operation
+        return {
+          objectID: operationId,
+          link: result.path,
+          path,
+          summary,
+          verb,
+          roles: security[0].OAuth2
+            ? security[0].OAuth2.filter(r => r !== 'FullAccess')
+            : [],
+          section: `API Reference / ${section.name} / ${resource.name}`,
+        }
+      }),
+    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
+  },
 ]
+
 const toExport = {
   siteMetadata: {
+    siteUrl: 'https://ordercloud.io',
     title: `OrderCloud Documentation`,
     description: `Documentation for OrderCloud's B2B eCommerce API`,
-    author: `@gatsbyjs`,
+    author: `OrderCloud`,
   },
   plugins: [
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        // The property ID; the tracking code won't be generated without it
+        trackingId: 'UA-82258138-1',
+        // Defines where to place the tracking script - `true` in the head and `false` in the body
+        head: true,
+        cookieDomain: 'ordercloud.io',
+      },
+    },
+    `gatsby-ordercloud-version`,
+    `gatsby-plugin-sitemap`,
     `gatsby-plugin-catch-links`,
     `gatsby-transformer-json`,
     `gatsby-plugin-material-ui`,
@@ -127,11 +193,9 @@ const toExport = {
         gatsbyRemarkPlugins: [
           {
             resolve: `gatsby-remark-autolink-headers`,
-            //  TODO: we may want to consider these design options below to add our own icon or class
-            //  options: {
-            //    icon: `<svg aria-hidden="true" height="20" version="1.1" viewBox="0 0 16 16" width="20"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>`,
-            //    className: `custom-class`
-            //  }
+            options: {
+              className: 'anchor',
+            },
           },
           `gatsby-remark-prismjs`,
           {

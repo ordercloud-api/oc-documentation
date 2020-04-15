@@ -5,10 +5,10 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Typography,
   makeStyles,
   Theme,
   createStyles,
+  Paper,
 } from '@material-ui/core'
 import {
   flame,
@@ -18,6 +18,7 @@ import {
   sunset,
 } from '../../../theme/ocPalette.constants'
 import { OperationParameter } from '../../../models/openapi.models'
+import ApiHeading from './ApiHeading'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,41 +56,47 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = (
 
   return parameters ? (
     <React.Fragment>
-      <Typography variant="h4">Parameters</Typography>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Type</TableCell>
-            <TableCell>Description</TableCell>
-            <TableCell>
-              Fields <small>(descending by priority)</small>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {parameters.map((param, index) => (
-            <TableRow key={index}>
-              <TableCell>{param.name}</TableCell>
+      <ApiHeading title="Parameters" variant="h2" />
+      <Paper>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell style={{ width: 100 }}>Type</TableCell>
+              <TableCell>Description</TableCell>
               <TableCell>
-                <code className={classes[param.schema.type]}>
-                  {param.schema.type}
-                </code>
-              </TableCell>
-              <TableCell>{param.description}</TableCell>
-              <TableCell>
-                {param.schema.items && param.schema.items.enum
-                  ? param.schema.items.enum.map((e, i) => (
-                      <span key={i}>
-                        {param.schema.items.enum.length - 1 == i ? e : `${e},`}{' '}
-                      </span>
-                    ))
-                  : '---'}
+                Default <small>(ordered by priority)</small>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {parameters.map((param, index) => (
+              <TableRow key={index}>
+                <TableCell>{param.name}</TableCell>
+                <TableCell style={{ width: 100 }}>
+                  <code className={classes[param.schema.type]}>
+                    {param.schema.type}
+                  </code>
+                </TableCell>
+                <TableCell style={{ width: '50%' }}>
+                  {param.description}
+                </TableCell>
+                <TableCell>
+                  {param.schema.items && param.schema.items.enum
+                    ? param.schema.items.enum.map((e, i) => (
+                        <span key={i}>
+                          {param.schema.items.enum.length - 1 == i
+                            ? e
+                            : `${e},`}{' '}
+                        </span>
+                      ))
+                    : '---'}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
     </React.Fragment>
   ) : null
 }

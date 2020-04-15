@@ -21,7 +21,10 @@ export function getBaseUrl() {
     }
     return 'https://oc-portal.azurewebsites.net'
   }
-  return 'https://portal.ordercloud.io'
+  if (hostname.includes('ordercloud-qa')) {
+    return 'https://portal.ordercloud-qa.com'
+  }
+  return `https://portal.ordercloud.io`
 }
 
 function normalizePath(path) {

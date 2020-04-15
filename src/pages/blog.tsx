@@ -8,13 +8,10 @@ import {
   Container,
   createStyles,
   Grid,
-  IconButton,
   makeStyles,
   Theme,
-  Tooltip,
   Typography,
 } from '@material-ui/core/'
-import { Share } from '@material-ui/icons'
 import { graphql, useStaticQuery } from 'gatsby'
 import React from 'react'
 import { Helmet } from 'react-helmet'
@@ -22,6 +19,7 @@ import Layout from '../components/Layout/Layout'
 import { mediumgrey, seafoam } from '../theme/ocPalette.constants'
 import utility from '../services/utility'
 import Jumbotron from '../components/Shared/Jumbotron'
+import Case from 'case'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     blogContainer: {
       marginTop: -theme.spacing(14),
+      paddingBottom: theme.spacing(16),
     },
     title: {
       marginBottom: theme.spacing(1),
@@ -58,6 +57,17 @@ const useStyles = makeStyles((theme: Theme) =>
     cardImg: {
       paddingTop: '56.25%',
       position: 'relative',
+
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        backgroundImage: `linear-gradient(120deg, #ffffff 0, #bce6e6 100%)`,
+        opacity: 0.5,
+      },
       '&::after': {
         content: '" "',
         position: 'absolute',
@@ -89,6 +99,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 48,
       height: 48,
       zIndex: 1,
+      boxShadow: theme.shadows[2],
       '&:after': {
         content: '" "',
         position: 'absolute',
@@ -96,6 +107,9 @@ const useStyles = makeStyles((theme: Theme) =>
         bottom: 0,
         width: '100%',
       },
+    },
+    cardAuthorImage: {
+      objectPosition: 'top',
     },
     cardTitle: {
       lineHeight: '1.4',
@@ -105,7 +119,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(3),
     },
     MuiCardActionsRoot: {
-      padding: `0 ${theme.spacing(3)}px`,
+      padding: theme.spacing(2, 3),
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -122,10 +136,12 @@ interface PageData {
           id: string
           fileAbsolutePath: string
           frontmatter: {
+            featuredImage: string
             title: string
             date: string
             tags: string
             authors: string
+            jobTitle: string
             summary: string
           }
         }
@@ -134,7 +150,7 @@ interface PageData {
   }
 }
 
-const placeholderImg = '/images/blog/placeholder.jpg'
+const placeholderImg = '/images/blog/thumbnails/placeholder.jpg'
 
 interface BlogListProps {
   location: any
@@ -154,10 +170,12 @@ export default function BlogListComponent(props: BlogListProps) {
             id
             fileAbsolutePath
             frontmatter {
+              featuredImage
               title
-              date(formatString: "dddd MMMM Do, YYYY")
+              date(formatString: "MMMM Do, YYYY")
               tags
               authors
+              jobTitle
               summary
             }
           }
@@ -167,7 +185,16 @@ export default function BlogListComponent(props: BlogListProps) {
   `)
   return (
     <Layout location={props.location}>
-      <Helmet title={`OrderCloud Blog`} />
+      <Helmet
+        title={`OrderCloud Blog`}
+        meta={[
+          {
+            name: 'description',
+            content:
+              'New feature announcements, tips & tricks, and best practices to help developers get the most out of the OrderCloud platform.',
+          },
+        ]}
+      />
       <Jumbotron
         heading="OrderCloud Blog"
         text="New feature announcements, tips & tricks, and best practices to help developers get the most out of the OrderCloud platform."
@@ -175,6 +202,9 @@ export default function BlogListComponent(props: BlogListProps) {
       <Container className={classes.blogContainer}>
         <Grid container spacing={3}>
           {data.allMdx.edges.map(edge => {
+            const authorImage = `/images/blog/authors/${Case.kebab(
+              edge.node.frontmatter.authors
+            )}.jpg`
             return (
               <Grid item sm={6} md={4} lg={3} key={edge.node.id}>
                 <Card className={classes.cardBase}>
@@ -184,13 +214,16 @@ export default function BlogListComponent(props: BlogListProps) {
                   >
                     <CardMedia
                       className={classes.cardImg}
-                      image={placeholderImg}
+                      image={
+                        edge.node.frontmatter.featuredImage || placeholderImg
+                      }
                     >
                       <Avatar
+                        classes={{
+                          img: classes.cardAuthorImage,
+                        }}
                         className={classes.cardAuthor}
-                        src={
-                          'https://images.unsplash.com/photo-1541364983171-a8ba01e95cfc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80'
-                        }
+                        src={authorImage}
                       />
                     </CardMedia>
                     <CardContent className={classes.MuiCardContentRoot}>
@@ -213,13 +246,6 @@ export default function BlogListComponent(props: BlogListProps) {
                     <Typography variant={'caption'}>
                       {edge.node.frontmatter.date}
                     </Typography>
-                    <div>
-                      <Tooltip title="Share" placement="top">
-                        <IconButton edge="end">
-                          <Share />
-                        </IconButton>
-                      </Tooltip>
-                    </div>
                   </CardActions>
                 </Card>
               </Grid>
