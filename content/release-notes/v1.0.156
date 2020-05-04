@@ -1,0 +1,9 @@
+---
+apiVersion: 1.0.158
+date: 2020-05-4
+---
+
+Released to Production on 5/4/2020 at 1:15 PM.
+
+- New `DateCreated` property on Buyer and Supplier models.
+- Creating xp indexes on Product will no longer be allowed, and will fail with a 400 error.
