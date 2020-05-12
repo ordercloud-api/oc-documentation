@@ -1,0 +1,20 @@
+---
+apiVersion: 1.0.157
+date: 2020-05-12
+---
+
+Released on Monday, May 12th, 2020 at 9:00 PM.
+
+This release enforces some limitations on route access based on user type. Currently accessing these routes as the wrong user type can lead to unexpected/unintended results. Some of these limitations already exist today; however, all of them are listed below to provide a full overview. Please reach out in our Slack Community with any questions!
+
+- Buyer and Supplier users will be able to **read** Seller owned resources (users, addresses, groups) with the proper role(s).
+- Buyer and Supplier users will **NOT** be able to **admin** Seller owned resources regardless of role(s).
+- Buyer and Supplier users will **NOT** be able to delete or create any Buyer or Supplier orgs regardless of role(s).
+- Buyer users will be able to **read** Supplier orgs, users, addresses, or groups with the proper role(s).
+- Buyer users will **NOT** be able to **admin** Supplier orgs, users, addresses, or groups regardless of role(s).
+- Buyer users will **NOT** be able to **read** or **admin** other Buyer orgs, users, addresses, or groups regardless of role(s).
+- Buyer users will be able to **read** and **admin** their OWN Buyer (deletion will be prohibited as outlined above) with the proper role(s).
+- Supplier users will be able to **read** Buyer orgs, users, addresses or groups with the proper role(s).
+- Supplier users will **NOT** be able to **admin** Buyer orgs, users, addresses, or groups regardless of role(s).
+- Supplier users will **NOT** be able to **read** or **admin** other Supplier orgs, users, addresses, or groups regardless of role(s).
+- Supplier users will be able to **read** and **admin** their OWN Supplier (deletion will be prohibited as outlined above) with the proper role(s).
