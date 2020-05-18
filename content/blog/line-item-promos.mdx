@@ -36,4 +36,12 @@ Now the discount will be tied unambiguously to lines item(s) containing product 
 
 For line item-level promos, `item` is required in `EligibleExpression` and optional in `ValueExpression`. For order-level promos, it's not allowed for either.
 
+## What about ValueExpression?
+
+Kudos and bonus points if you already thought it through this far, but let's take our example over the finish line by specifying the `ValueExpression`. Here we can use our `item` token, which has already "selected" product Y, and just specify the price of one of them. Easy enough:
+
+```
+item.UnitPrice
+```
+
 Questions? Feedback? Let us know what you think in our [Slack community](https://ordercloud.io/slack).
