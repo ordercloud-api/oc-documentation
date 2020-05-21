@@ -21,7 +21,7 @@ This is the most common, a user logs in with their username and password.
 A successful authentication request with this workflow requires the following information:
 
 - ClientID
-- Scope (list of roles being requested)
+- Scope (space delimited list of roles being requested)
 - Username
 - Password
 - Grant Type (set to `password`)
@@ -41,7 +41,7 @@ A successful authentication request with this workflow requires the following in
 
 - ClientID
 - Client Secret
-- Scope (list of roles being requested)
+- Scope (space delimited list of roles being requested)
 - Grant Type (set to `client_credentials`)
 
 ```http
@@ -81,7 +81,7 @@ When security really matters. This is the same as the [password grant type workf
 A successful authentication request with this workflow requires the following information:
 
 - ClientID
-- Scope (list of roles being requested)
+- Scope (space delimited list of roles being requested)
 - Username
 - Password
 - ClientSecret (set on api client)
