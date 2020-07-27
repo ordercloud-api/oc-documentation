@@ -37,7 +37,6 @@ import ListItemLink from '../Shared/ListItemLink'
 import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import MenuItems from '../Shared/MenuItems.json'
-import openapiService from '../../services/openapi.service'
 
 function parseJwt(token: string) {
   if (!token) {
@@ -79,6 +78,7 @@ interface HeaderState {
   anchorEl?: HTMLElement
   mobileOpen: boolean
   username: string
+  email: string
   showResults: boolean
 }
 
@@ -104,6 +104,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     anchorEl: null,
     mobileOpen: false,
     username: '',
+    email: '',
     showResults: false,
   }
   private readonly autologin = true
@@ -121,24 +122,35 @@ class Header extends React.Component<HeaderProps, HeaderState> {
       .slice(1)
       .join('.')}`
   }
+  public cookieOptions = {
+    path: '/',
+    domain: this.getCookieDomain(),
+  }
 
   get AUTH_TOKEN_KEY() {
     return `DevCenter.${getEnvironment()}.token`
   }
 
+  get AUTH_EMAIL_KEY() {
+    return `DevCenter.${getEnvironment()}.email`
+  }
+
   public onInit() {
     //TODO: NICE TO HAVE: Find out how to re-evaluate based on state change
     const token = this.cookies.get(this.AUTH_TOKEN_KEY)
+    const email = this.cookies.get(this.AUTH_EMAIL_KEY)
     const decoded = parseJwt(token)
 
     if (decoded) {
       this.setState({
         username: decoded.usr,
+        email,
         auth: !isTokenExpired(token),
       })
     } else {
       this.setState({
         username: '',
+        email: '',
         auth: null,
       })
     }
@@ -153,10 +165,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 
   public handleLogout = () => {
-    this.cookies.remove(this.AUTH_TOKEN_KEY, {
-      path: '/',
-      domain: this.getCookieDomain(),
-    })
+    this.cookies.remove(this.AUTH_TOKEN_KEY, this.cookieOptions)
+    this.cookies.remove(this.AUTH_EMAIL_KEY, this.cookieOptions)
     this.setState({
       username: '',
       auth: null,
@@ -282,7 +292,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         className={classes.iconButtonAvatar}
                         alt={this.state.username}
                       >
-                        <Gravatar size={40} email={this.state.username} />
+                        <Gravatar size={40} email={this.state.email} />
                       </Avatar>
                     </IconButton>
                     <Popper
@@ -304,27 +314,36 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         >
                           <Paper>
                             <ClickAwayListener onClickAway={this.handleClose}>
-                              <MenuList>
-                                <ListSubheader component="div">
-                                  Signed in as
-                                  <strong> {this.state.username}</strong>
-                                </ListSubheader>
-                                <div className={classes.orgControls}>
-                                  {MenuItems.DropdownControls.map(
-                                    (item, index) => (
-                                      <MenuItem
-                                        key={index}
-                                        onClick={this.goToPortal(item.to)}
-                                      >
-                                        {item.label}
-                                      </MenuItem>
-                                    )
-                                  )}
-                                </div>
-                                <MenuItem onClick={this.handleLogout}>
-                                  Sign Out
-                                </MenuItem>
-                              </MenuList>
+                              <div>
+                                <List>
+                                  <ListSubheader
+                                    component="div"
+                                    className={classes.dropdownHeader}
+                                  >
+                                    Signed in as
+                                    <strong> {this.state.username}</strong>
+                                  </ListSubheader>
+                                  <div className={classes.orgControls}>
+                                    {MenuItems.DropdownControls.map(
+                                      (item, index) => (
+                                        <ListItem
+                                          button
+                                          key={index}
+                                          onClick={this.goToPortal(item.to)}
+                                        >
+                                          {item.label}
+                                        </ListItem>
+                                      )
+                                    )}
+                                  </div>
+                                </List>
+                                <Divider />
+                                <List>
+                                  <ListItem button onClick={this.handleLogout}>
+                                    Sign Out
+                                  </ListItem>
+                                </List>
+                              </div>
                             </ClickAwayListener>
                           </Paper>
                         </Grow>
@@ -395,11 +414,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 alt={this.state.username}
                 className={classes.iconButtonAvatar}
               >
-                <Gravatar
-                  alt="User Image"
-                  size={40}
-                  email={this.state.username}
-                />
+                <Gravatar alt="User Image" size={40} email={this.state.email} />
               </Avatar>
             ) : (
               <div>
@@ -475,7 +490,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                 <strong> {this.state.username}</strong>
               </ListSubheader>
               {MenuItems.DropdownControls.map((item, index) => (
-                <ListItem key={index}>{item.label}</ListItem>
+                <ListItem key={index} onClick={this.goToPortal(item.to)}>
+                  {item.label}
+                </ListItem>
               ))}
               <ListItem onClick={this.handleLogout}>Sign Out</ListItem>
             </List>
@@ -486,15 +503,15 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   }
 }
 
-export const navHeight = ORDERCLOUD_THEME.spacing(10)
-export const navHeightMobile = ORDERCLOUD_THEME.spacing(8)
+export const navHeight = ORDERCLOUD_THEME.spacing(8)
+export const navHeightMobile = ORDERCLOUD_THEME.spacing(7)
 
 const styles = (theme: Theme) =>
   createStyles({
     logo: {
       marginRight: theme.spacing(2),
-      width: theme.spacing(7),
-      height: theme.spacing(7),
+      width: theme.spacing(5),
+      height: theme.spacing(5),
       padding: theme.spacing(0.5, 1, 1),
       [theme.breakpoints.down('md')]: {
         marginRight: 'auto',
@@ -523,26 +540,15 @@ const styles = (theme: Theme) =>
       letterSpacing: 1,
       fontWeight: 'normal',
       minWidth: 0,
-      cursor: 'pointer',
-      transition: 'background-color .5s',
-      '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, .05)',
-      },
+      color: seafoam[50],
+      textDecoration: 'none',
     },
     root: {
+      backgroundColor: sherpablue[500],
       width: '100vw',
       left: 0,
       top: 0,
-      backgroundColor: sherpablue[500],
-      '&:after': {
-        content: '""',
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: -1,
-        height: theme.spacing(0.25),
-      },
+      zIndex: theme.zIndex.appBar + 1,
     },
     toolbar: {
       height: navHeightMobile,
@@ -592,9 +598,12 @@ const styles = (theme: Theme) =>
       overflowY: 'scroll',
       overflowX: 'auto',
     },
+    dropdownHeader: {
+      textAlign: 'center',
+    },
     orgControls: {
-      borderTop: `1px solid ${theme.palette.divider}`,
-      borderBottom: `1px solid ${theme.palette.divider}`,
+      // borderTop: `1px solid ${theme.palette.divider}`,
+      // borderBottom: `1px solid ${theme.palette.divider}`,
     },
     drawerRoot: {
       zIndex: `${theme.zIndex.modal + 5} !important` as any,
@@ -602,7 +611,7 @@ const styles = (theme: Theme) =>
     drawerPaper: {
       backgroundColor: theme.palette.primary.main,
       width: '100vw',
-      minHeight: '100vh',
+      height: '100%',
       color: theme.palette.common.white,
       fontSize: '1.3rem',
     },

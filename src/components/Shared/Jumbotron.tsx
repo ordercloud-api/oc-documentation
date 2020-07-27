@@ -18,7 +18,7 @@ const styles = (theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      height: '50vh',
+      height: 400,
       borderRadius: 0,
       overflowY: 'hidden',
       overflowX: 'hidden',

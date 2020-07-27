@@ -79,8 +79,8 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
   useLayoutEffect(() => {
     if (!props.location.hash) return
     const el = document.getElementById(props.location.hash.split('#')[1])
-    if (!el) return
-    el.scrollIntoView()
+    if (!(el && el.offsetParent)) return
+    window.scrollTo(0, (el.offsetParent as HTMLElement).offsetTop)
   }, [props.location.hash])
 
   const defaultDescription =

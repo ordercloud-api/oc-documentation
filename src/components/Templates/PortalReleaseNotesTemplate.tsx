@@ -9,7 +9,7 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import { groupBy, map, sortBy } from 'lodash'
-import React, { useState } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { seafoam } from '../../theme/ocPalette.constants'
 import utility from '../../services/utility'
@@ -79,6 +79,13 @@ function PortalReleaseNotesComponent(props: any) {
   )[0].node
   const [currentYear, setCurrentYear] = useState(release.frontmatter.year)
   const [currentMonth, setCurrentMonth] = useState(release.frontmatter.month)
+
+  useLayoutEffect(() => {
+    if (!props.location.hash) return
+    const el = document.getElementById(props.location.hash.split('#')[1])
+    if (!el) return
+    window.scrollTo(0, el.offsetTop)
+  }, [props.location.hash])
 
   const years = map(
     groupBy(

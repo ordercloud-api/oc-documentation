@@ -15,7 +15,7 @@ import { darkgrey, mediumgrey, flame } from '../../theme/ocPalette.constants'
 import Jumbotron from '../Shared/Jumbotron'
 import ListItemLink from '../Shared/ListItemLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
-import { navHeight } from './Header'
+import { navHeight, navHeightMobile } from './Header'
 import { useDocsSections } from '../../hooks/useDocsSections'
 
 if (typeof window !== 'undefined') {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
       top: theme.spacing(3),
     },
     root: {
-      minHeight: `calc(100vh - ${navHeight}px)`,
+      minHeight: `calc(100vh - ${navHeightMobile}px)`,
       [theme.breakpoints.up('md')]: {
         minHeight: `calc(100vh - ${navHeight}px)`,
       },

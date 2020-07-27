@@ -1,5 +1,5 @@
 import React from 'react'
-import Header, { navHeight } from './Header'
+import Header, { navHeight, navHeightMobile } from './Header'
 import { ThemeProvider } from '@material-ui/styles'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import {
@@ -28,9 +28,10 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageWrapper: {
       backgroundColor: 'white',
-      minHeight: `calc(100vh - ${navHeight}px)`,
+      minHeight: `calc(100vh - ${navHeightMobile}px)`,
       [theme.breakpoints.up('md')]: {
         marginBottom: theme.spacing(51),
+        minHeight: `calc(100vh - ${navHeight}px)`,
       },
       '& img': {
         maxWidth: '100%',
@@ -72,7 +73,7 @@ export const LayoutLink = (props: any) => {
     )
     return <Typography variant="button">[BAD LINK] {props.children}</Typography>
   }
-  if (props.className === 'anchor') {
+  if (props.className === 'anchor' || props.href.indexOf('#') === 0) {
     return (
       <div className={classes.root}>
         <IconButtonLink {...props} to={props.href}>
@@ -185,7 +186,7 @@ export default (props: LayoutProps) => {
                   <ul {...ulProps} />
                 </Typography>
               ),
-              a: LayoutLink,
+              a: aProps => <LayoutLink {...aProps} />,
               table: tableProps => <Table {...tableProps} />,
               tr: trProps => <TableRow {...trProps} />,
               th: thProps => (

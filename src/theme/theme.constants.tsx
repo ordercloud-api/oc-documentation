@@ -26,40 +26,44 @@ export default createMuiTheme({
   typography: {
     h1: {
       fontSize: '3.5rem',
-      fontFamily: headingFontFamilies,
       fontWeight: 700,
     },
     h2: {
       fontSize: '2rem',
-      fontFamily: headingFontFamilies,
       fontWeight: 600,
     },
     h3: {
       fontSize: '1.5rem',
-      fontFamily: headingFontFamilies,
       fontWeight: 600,
     },
     h4: {
       fontSize: '1.25rem',
-      fontFamily: headingFontFamilies,
       fontWeight: 500,
     },
     h5: {
       fontSize: '1.15rem',
-      fontFamily: headingFontFamilies,
       fontWeight: 500,
     },
     h6: {
       fontSize: '1rem',
-      fontFamily: headingFontFamilies,
       fontWeight: 500,
     },
     subtitle1: {
       fontSize: '.875rem',
-      fontFamily: headingFontFamilies,
       lineHeight: 1.5,
     },
-    fontFamily: bodyFontFamilies,
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
   },
   palette: {
     primary: {
@@ -78,7 +82,6 @@ export default createMuiTheme({
   overrides: {
     MuiCssBaseline: {
       '@global': {
-        '@font-face': [...CoreSansDFonts, ...GeometriaFonts],
         a: {
           color: secondaryColor[900],
         },
@@ -101,11 +104,11 @@ export default createMuiTheme({
         },
       },
     },
-    MuiButton: {
-      label: {
-        fontFamily: headingFontFamilies,
-      },
-    },
+    // MuiButton: {
+    //   label: {
+    //     paddingTop: navigator.appVersion.includes('Mac') ? 2 : undefined,
+    //   },
+    // },
     MuiTypography: {
       h1: {
         paddingTop: '2rem',
