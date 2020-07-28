@@ -161,7 +161,7 @@ export default function BlogListComponent(props: BlogListProps) {
   const data: PageData = useStaticQuery(graphql`
     query {
       allMdx(
-        sort: { order: DESC, fields: [frontmatter___date] }
+        sort: { order: DESC, fields: [frontmatter___publishDate] }
         filter: { fileAbsolutePath: { glob: "**/content/blog/**/*.mdx" } }
       ) {
         totalCount
@@ -172,7 +172,7 @@ export default function BlogListComponent(props: BlogListProps) {
             frontmatter {
               featuredImage
               title
-              date(formatString: "MMMM Do, YYYY")
+              publishDate(formatString: "MMMM Do, YYYY")
               tags
               authors
               jobTitle

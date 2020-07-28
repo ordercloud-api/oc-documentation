@@ -23,6 +23,7 @@ interface DocTemplateProps extends RouteComponentProps {
       fileAbsolutePath: string
       frontmatter: {
         title: string
+        updatedOnDate: number
       }
     }
   }
@@ -57,6 +58,12 @@ export default function Template(props: DocTemplateProps) {
             <EditOutlined fontSize="inherit" /> Edit this doc
           </ButtonlinkExternal>
           <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
+          { 
+            doc.mdx.frontmatter.updatedOnDate && 
+            <Typography color="textSecondary" variant="caption">
+              Last Updated {doc.mdx.frontmatter.updatedOnDate}
+            </Typography> 
+          }
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
           <DocFooter contents={sections} currentGuide={absolutePath} />
         </LayoutMain>
@@ -75,6 +82,7 @@ export const query = graphql`
       fileAbsolutePath
       frontmatter {
         title
+        updatedOnDate(formatString: "MMMM Do, YYYY")
       }
     }
   }
