@@ -3,7 +3,8 @@ title: The Rules Engine Has Arrived, and It'll Do for Behavior What XP Did for D
 tags: Development, Rules Engine, Orders, Order Approvals
 authors: Todd Menier
 jobTitle: Chief Architect
-date: 2016-06-13
+publishDate: 2016-06-13
+updatedOnDate: 2020-07-28
 featuredImage: /images/blog/thumbnails/rules_engine.jpg
 summary: Extend platform behavior using a system of rules similar to XP allowing you to extend the data model.
 ---
@@ -58,11 +59,12 @@ The condition inside the function (called a filter) can be more complex and cont
 "items.quantity(ProductID = 'P1' or ProductID = 'P2') > 5"
 ```
 
-`items` supports a total of 4 functions:
+`items` supports the following functions:
 
 - `items.any` (true if any item matches filter)
 - `items.all` (true if all items match filter)
-- `items.quantity` (compare result to a number)
+- `items.quantity()`(returns sum of line item quantities matching your specified condition)
+- `items.count()`(returns number of line items on the order matching your specified condition)
 - `items.total` (compare result to a dollar amount)
 
 Speaking of functions, there is one defined on order:
@@ -81,7 +83,7 @@ There's nothing to stop you from using `and` or `or` in conjunction with multipl
 
 Rules are easy to write and very powerful, but can be tricky to debug when they don't work quite like you thought they would. While you can write very complex expressions, don't get more fancy with them than you need to. In some cases it might make sense to break a complex rule into 2 or more simpler rules. As always, we're here to help if you need guidance.
 
-##What else can I do with this?
+## What else can I do with this?
 
 Now that you have a better understanding of the power of rules, you might be wondering what other areas of the platform might we apply them to. Here are a few ideas currently being kicked around:
 
