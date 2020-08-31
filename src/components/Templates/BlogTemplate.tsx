@@ -74,14 +74,13 @@ function BlogComponent(props: BlogComponentProps) {
           <Typography variant="h1">{data.mdx.frontmatter.title}</Typography>
           <div className={classes.gutterBottom}>
             <Typography color="textSecondary">
-                {data.mdx.frontmatter.publishDate}
+              {data.mdx.frontmatter.publishDate}
             </Typography>
-            { 
-            data.mdx.frontmatter.updatedOnDate && 
-            <Typography color="textSecondary" variant="caption">
-              Updated On {data.mdx.frontmatter.updatedOnDate}
-            </Typography> 
-            }
+            {data.mdx.frontmatter.updatedOnDate && (
+              <Typography color="textSecondary" variant="caption">
+                Updated On {data.mdx.frontmatter.updatedOnDate}
+              </Typography>
+            )}
           </div>
           <MDXRenderer>{data.mdx.body}</MDXRenderer>
         </LayoutMain>
