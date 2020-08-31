@@ -138,7 +138,8 @@ interface PageData {
           frontmatter: {
             featuredImage: string
             title: string
-            date: string
+            publishDate: string
+            updatedOnDate: string
             tags: string
             authors: string
             jobTitle: string
@@ -244,7 +245,7 @@ export default function BlogListComponent(props: BlogListProps) {
                   </CardActionArea>
                   <CardActions className={classes.MuiCardActionsRoot}>
                     <Typography variant={'caption'}>
-                      {edge.node.frontmatter.date}
+                      {edge.node.frontmatter.publishDate}
                     </Typography>
                   </CardActions>
                 </Card>
