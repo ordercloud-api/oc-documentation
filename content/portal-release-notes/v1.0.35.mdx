@@ -1,0 +1,44 @@
+---
+apiVersion: 1.0.35
+date: 2020-09-08
+---
+Released on Tuesday, September 8th, 2020 at 9 PM CST
+
+> The Portal was unavailable between 9 PM and 10:30 PM due to complications during the release. This in no way affected the OrderCloud API.
+
+### Support for OrderCloud Environments
+The Portal now allows users to access organizations from OrderCloud Sandbox, Staging, and Production in a single user interface. [Read more](/blog/introducing-ordercloud-environments)
+
+### Authentication with Github and/or Google accounts
+- Existing Portal Users can now link their account to GitHub and/or Google from their Profile > Authenication settings
+- New Users can now alternatively register for the Portal with their GitHub or Google account
+
+### Portal Username
+- Upon first signing into the updated Portal, you will be asked to provide a new Username (something other than your email address)
+- Other portal users will be able to search for you by Name or Username when inviting new Contributors
+
+### Organizations
+- Organizations created after this release are automatically tied to the OrderCloud **Sandbox** environment, Production Organizations can be created upon request
+- New Organizations no longer need a default API client, security profile, or inital seller/buyer user to be accessed in the API Console
+- Transferring and Deleting Organizations are actions that now require 2FA (two-factor authentication), users will need to retrieve a confirmation code from their email to complete these requests
+- Organization Admins now have the ability to modify the Organization Name in addition to managing Contributors
+- Staging Organizations are restored from Production every Sunday
+- Staging Organizations have a new **[BETA]** Staging Restore Webhook config that can be used to automate re-creating webhook and integration assignments after each Staging restore
+
+### Contributors
+- New contributors will now recieve an invitation to join an organization before it shows up in their organization list
+- Contributors with the old Manage Contributors permission now have access to Organization Admin, detailed in the Organization section
+- There are three new permissions meant to provide more granular control over which types of users a given contributor can impersonate in the API Console
+
+### API Console
+- Portal Users are now able to access the entire API Console using only a Seller Organization as context (no need to select API Client or User)
+- When using this simplified context, the roles that are granted will match the Contributor data access exactly
+- You can still impersonate specific seller, supplier, or buyer users by opening the context selector again (as long as you have the necessary permissions)
+
+### Bug Fixes
+- There is no longer a delay when applying filters in the API Console
+- API Conosle number fields that should be able to be set to `0` will now accept `0` as an input
+- Expired tokens in the API Console will now be properly refreshed before allowing portal users to make API calls
+- The API Client Enhanced UI now allows portal users to clear out client secrets
+- The API Client Enhanced UI now properly saves changes to `OrderCloudIntegrationEventID`
+- The Webhooks API Client assignment list will no longer remain stale after modifying API Clients

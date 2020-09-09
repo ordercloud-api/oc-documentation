@@ -4,10 +4,11 @@ tags:
 authors: Rob Watt
 jobTitle: OrderCloud Portal, Lead Developer
 publishDate: 2020-08-31
+updatedOnDate: 2020-09-08
 featuredImage: /images/blog/thumbnails/placeholder.jpg
-summary: In an upcoming release, currently scheduled for Tuesday, September 8th, 2020, the Portal will be getting an update that will allow users to access organizations from OrderCloud Sandbox, Staging, and Production in a single user interface.
+summary: The Portal allows users to access organizations from OrderCloud Sandbox, Staging, and Production in a single user interface.
 ---
-In an upcoming release, currently scheduled for Tuesday, September 8th, 2020, the Portal will be getting an update that will allow users to access organizations from OrderCloud Sandbox, Staging, and Production in a single user interface. These environments have been available for some time; however, OrderCloud customers haven't yet been able to utilize them in a meaningful way. Each environment has a unique purpose, which is detailed below.
+The Portal allows users to access organizations from OrderCloud Sandbox, Staging, and Production in a single user interface. These environments have been available for some time; however, OrderCloud customers haven't yet been able to utilize them in a meaningful way. Each environment has a unique purpose, which is detailed below.
 
 ## What is an Environment?
 
@@ -15,7 +16,7 @@ An environment is an isolated, independent instance of the OrderCloud API provis
 
 Providing access to additional "environments" means that you can test experimental app code, and even unreleased API features, without consuming resources dedicated to your production application(s). Each environment has its own API URL, purpose, and behavior outlined below.
 
-## What Environments will OrderCloud offer?
+## What Environments does OrderCloud offer?
 
 ### Production
 `https://api.ordercloud.io`
@@ -32,10 +33,5 @@ If you have live apps deployed to production and want a place to test code chang
 
 If you're building a new app that does not have a production equivalent, or you have a need to test against long-lived "fake" data that is never overwritten, Sandbox is the right choice. Although this might seem like the most seamless transition for those "test" and "dev" orgs currently in production, we would strongly encourage you to consider transitioning to Staging first. If you can live with the caveat of weekly data overwrites, then eliminating the need to do your own data synchronization should be a no-brainer.
 
-## Planning for the Environments Release
-As mentioned earlier, this release is expected to happen on Tuesday, September 8th, 2020 around 9 PM CST. There will be roughly 5-7 minutes of downtime as we convert some of our data from the Core API to the new Portal API (specifically Portal User permissions & access to current production organizations and cleanup of non-production organizations from the Production environment). We will be making a pre-release announcement with the official date and time of the release soon and customers of Four51 can expect some direct communication regarding how we will handle the aforementioned downtime and transition of current "test" organizations.
-
-If you currently own some personal organizations that were created for learning purposes and they aren't recognized as a Four51 customer we will be notifying you via email that your Production organization will be moved to Sandbox about a week before the release. This should give you plenty of time to change your base API URL to the Sandbox environment so that your applications remain usable after the release.
-
 ## Conclusion
-You can expect this blog post to improve over time - with more detail on exactly how to take advantage of these new environments in the Portal after the release. If you have any questions or concerns, please don't hesitate to reach out in the [OrderCloud Slack Community](https://ordercloud.io/slack).
+You can expect this blog post to improve over time - with more detail on exactly how to take advantage of these new environments in the Portal coming soon. If you have any questions or concerns, please don't hesitate to reach out in the [OrderCloud Slack Community](https://ordercloud.io/slack).
