@@ -197,7 +197,7 @@ class Footer extends React.Component<any> {
                 </Link>
                 <Link
                   className={classes.footerLinks}
-                  to="/portal-release-notes/v1.0.35"
+                  to="/portal-release-notes/v1.0.37"
                 >
                   Portal Release Notes
                 </Link>
