@@ -201,6 +201,8 @@ const MeSubSections = [
       '/me/products/{productID}',
       '/me/products/{productID}/specs',
       '/me/products/{productID}/specs/{specID}',
+      '/me/products/{productID}/variants',
+      '/me/products/{productID}/variants/{variantID}',
     ],
   },
   {
