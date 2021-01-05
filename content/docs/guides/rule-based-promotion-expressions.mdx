@@ -1,5 +1,6 @@
 ---
 title: 'Rules-Based Promotion Expressions'
+updatedOnDate: 2020-07-28
 section: 'Guides'
 ---
 
@@ -15,16 +16,21 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
 
 **There are several properties that you can include in both expressions to build your custom promotion:**
 `order` supports the same properties as the Order model returned from `v1/orders` API endpoints, including xp.
-`items` supports a total of four functions:
+`items` supports the following functions:
  - `items.any()` (true if any item on the order matches filter)
- - `items.all()` (true if all item matches filter)
- - `items.quantity()`(compare result to a number)
+ - `items.all()` (true if all items match filter)
+ - `items.quantity()`(returns sum of line item quantities matching your specified condition)
+ - `items.count()`(returns number of line items on the order matching your specified condition)
  - `items.total()` (compare result to a dollar amount)
 
 **The following operators are all supported in rule engine expressions:**
 -  Comparison: `=` ,  `<` ,  `>`,  `<=`,  `>=`  
 -  Logical: `and`,  `or`  and  `not`
 -  Mathematical:`+`,  `-`,`*`, `/` and `%` 
+
+**Additionally, you can wrap any of your expressions in these functions:**
+- `min(...)` (returns the smaller of the two arguments)
+- `max(...)` (returns the larger of the two arguments)
 
 ##  Can you give me some examples?
 
@@ -45,12 +51,12 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
 `ValueExpression`: *"5"*
 
 **15% off all line items with a product assigned to a given CategoryID:**    
-`EligibleExpression`: *"items.any(product.incategory('Bikes'))"*  
-`ValueExpression`: *"items.total(product.incategory('Bikes')) \* .15"*
+`EligibleExpression`: *"item.product.incategory('Bikes')"*  
+`ValueExpression`: *"item.Subtotal \* .15"*
 
-**10% when all products are on sale (utilizing product xp):**  
+**10% off when all products are on sale with a maximum promotion discount of $20 (utilizing product xp):**  
 `EligibleExpression`: *"items.all(Product.xp.OnSale = true)"*  
-`ValueExpression`: *"order.Subtotal \* .1"*
+`ValueExpression`: *"min(order.Subtotal \* .1, 20)"*
 
 **30% off when you buy 10 or more products assigned to a given CategoryID:**  
 `EligibleExpression`: *"items.quantity(product.incategory('GuitarAccessories')) >= 10"*  
@@ -64,6 +70,10 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
 `EligibleExpression`: *"items.total(product.incategory('Kitchen')) + items.total(product.incategory('Bedding')) + items.total(product.incategory('Bathroom')) > 200"*  
 `ValueExpression`: *"order.Subtotal \* .1"*
 
+**$50 off line items from a given supplier when you spend more than $100 on that supplier's products:**  
+`EligibleExpression`: *"item.SupplierID = '123' and items.total(SupplierID = '123') >= 100"*  
+`ValueExpression`: *"50 / items.count(SupplierID = '123')"*
+
 **25% off a user's first order (utilizing user xp):**  
 `EligibleExpression`: *"order.FromUser.xp.FirstOrder = true"*  
 `ValueExpression`: *"order.Subtotal \* .25"*
@@ -76,11 +86,13 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
 
 **Considerations**
  - Both `EligibleExpression` and `ValueExpression` are limited to 400 characters each. Use them wisely. If you're bumping up against the character limit, there's a good chance you could optimize your promo expressions in some way. 
-  - Promotion eligibility is evaluated by the api at the time the promotion is applied, and then again on order submit.
+ - Promotion eligibility is evaluated by the api at the time the promotion is applied, and then again on order submit.
 
-**Roadmap**
- - Line item level promotions (coming March 2020)
+**Enhancements Roadmap**
+ - <Link to="/blog/line-item-promos">Line item level promotions</Link> (<Link to="/release-notes/v1.0.158">released in v1.0.158</Link>)
+  - `v1/orders/{direction}/{orderID}/validate` <Link to="/api-reference/orders-and-fulfillment/orders/validate">endpoint</Link> that will check validity of an order in it's current state, including, but not limited to, applied promotions (<Link to="/release-notes/v1.0.131">released in v1.0.131</Link>)
+ - Support for `min(...)` and `max(...)` functions (<Link to="/release-notes/v1.0.165">released in v1.0.165</Link>)
  - `product.inparentcategory()` - the current function `product.incategory()` only recognizes direct assignments, the new function will look for products assigned to any child categories of the parent that is passed in.
- - Promotion.MaxValue (discount the ValueExpression or MaxValue, whichever is less)
- - Promotion.AutoApply (automatically apply the promotion to any qualifying order)
- - `v1/orders/{direction}/{orderID}/validate` endpoint that will check validity of an order in it's current state, including, but not limited to, applied promotions (<Link to="/api-reference/orders-and-fulfillment/orders/validate">released in v1.0.131</Link>)
+
+**Other Resources**
+- <Link to="/blog/rules-engine-has-arrived">Rules Engine Introduction</Link>

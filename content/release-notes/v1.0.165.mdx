@@ -1,0 +1,12 @@
+---
+apiVersion: 1.0.165
+date: 2020-07-27
+---
+
+Released on Monday, July 27th, 2020 at 9:00pm CST.
+
+- New `items.count(...)` function in the rules engine. Returns number of line items on the order matching your specified condition.
+- Support for `min(...)` and `max(...)` functions in the rules engine.
+- New property `OpenIdConnect.CallSyncUserIntegrationEvent`. When set to true, the platform will call another integration event step during the Open Id Connect log in process to allow a middle-ware to sync information from the Identity Provider's user token.
+- Bug fix: Readonly `DateCreated` property on Buyer is no longer updated when changes are made to the Buyer.
+- Bug fix: Prohibit adding variant product to a line item when the variant is inactive.

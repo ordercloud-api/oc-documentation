@@ -138,7 +138,8 @@ interface PageData {
           frontmatter: {
             featuredImage: string
             title: string
-            date: string
+            publishDate: string
+            updatedOnDate: string
             tags: string
             authors: string
             jobTitle: string
@@ -161,7 +162,7 @@ export default function BlogListComponent(props: BlogListProps) {
   const data: PageData = useStaticQuery(graphql`
     query {
       allMdx(
-        sort: { order: DESC, fields: [frontmatter___date] }
+        sort: { order: DESC, fields: [frontmatter___publishDate] }
         filter: { fileAbsolutePath: { glob: "**/content/blog/**/*.mdx" } }
       ) {
         totalCount
@@ -172,7 +173,7 @@ export default function BlogListComponent(props: BlogListProps) {
             frontmatter {
               featuredImage
               title
-              date(formatString: "MMMM Do, YYYY")
+              publishDate(formatString: "MMMM Do, YYYY")
               tags
               authors
               jobTitle
@@ -244,7 +245,7 @@ export default function BlogListComponent(props: BlogListProps) {
                   </CardActionArea>
                   <CardActions className={classes.MuiCardActionsRoot}>
                     <Typography variant={'caption'}>
-                      {edge.node.frontmatter.date}
+                      {edge.node.frontmatter.publishDate}
                     </Typography>
                   </CardActions>
                 </Card>

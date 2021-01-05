@@ -21,7 +21,8 @@ interface BlogComponentProps {
         authors: string
         jobTitle: string
         summary: string
-        date: number
+        publishDate: number
+        updatedOnDate: number
       }
     }
   }
@@ -71,9 +72,14 @@ function BlogComponent(props: BlogComponentProps) {
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h1">{data.mdx.frontmatter.title}</Typography>
-          <Typography className={classes.gutterBottom} color="textSecondary">
-            {data.mdx.frontmatter.date}
+          <Typography color="textSecondary">
+            {data.mdx.frontmatter.publishDate}
           </Typography>
+          {data.mdx.frontmatter.updatedOnDate && (
+            <Typography color="textSecondary" variant="caption">
+              Updated On {data.mdx.frontmatter.updatedOnDate}
+            </Typography>
+          )}
           <MDXRenderer>{data.mdx.body}</MDXRenderer>
         </LayoutMain>
         <LayoutMenu>
@@ -110,7 +116,8 @@ export const pageQuery = graphql`
         authors
         jobTitle
         summary
-        date(formatString: "MMMM Do, YYYY")
+        publishDate(formatString: "MMMM Do, YYYY")
+        updatedOnDate(formatString: "MMMM Do, YYYY")
       }
     }
   }
