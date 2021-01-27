@@ -39,7 +39,10 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
         .replace('.mdx', '')
 
       let component
-      if (path.startsWith('/docs')) {
+      if (path.startsWith('/discover')) {
+        path = path.replace('/d', '') // served from root
+        component = docTemplate
+      } else if (path.startsWith('/docs')) {
         path = path.replace('/docs', '') // served from root
         component = docTemplate
       } else if (path.startsWith('/blog')) {

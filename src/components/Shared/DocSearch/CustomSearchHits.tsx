@@ -21,9 +21,10 @@ import DocSearchFooter from './DocSearchFooter'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
+    root: (props: any) => ({
+      pointerEvents: props.open ? 'all' : 'none',
       zIndex: theme.zIndex.appBar + 3,
-    },
+    }),
     caret: (props: any) => ({
       display: props.noPopper ? 'none' : undefined,
       position: 'absolute',
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
         : theme.palette.background.paper,
       right: theme.spacing(3),
       fontSize: '4rem',
-      top: -theme.spacing(2.5),
+      top: -theme.spacing(10.5),
     }),
     caretBackground: (props: any) => ({
       display: props.noPopper ? 'none' : undefined,
@@ -42,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: 'rgba(0,0,0,0.1)',
       right: theme.spacing(3),
       fontSize: '4rem',
-      top: -theme.spacing(2.6),
+      top: -theme.spacing(10.6),
     }),
     inner: (props: any) => {
       const noPopperStyles: CSSProperties = {
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: (props: any) => ({
       zIndex: theme.zIndex.appBar + 1,
-      top: theme.spacing(2),
+      top: -theme.spacing(6),
       position: 'relative',
       background: props.darkMode
         ? theme.palette.primary.dark
@@ -159,7 +160,7 @@ const OrderCloudSearchHits = ({
   noPopper,
   classes,
 }) => {
-  const classesSelf = useStyles({ darkMode: false, noPopper })
+  const classesSelf = useStyles({ darkMode: false, noPopper, open })
   const sections = groupBy(hits, 'section')
   const inner = (
     <div className={`${classesSelf.inner} ${classes.searchHits}`}>

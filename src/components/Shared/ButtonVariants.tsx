@@ -8,6 +8,8 @@ import { Link } from 'gatsby'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: (props: any) => {
+      const contrastColor = theme.palette.getContrastText(props.color)
+      console.log('cc', contrastColor)
       return {
         backgroundColor: `${
           props.variant === 'contained' ? props.color : undefined
@@ -15,23 +17,18 @@ const useStyles = makeStyles((theme: Theme) =>
         borderColor: `${
           props.variant === 'outlined' ? props.color : undefined
         }`,
-        color: `${
-          props.variant === 'contained'
-            ? theme.palette.getContrastText(props.color)
-            : props.color
-        }`,
+        color: `${props.variant === 'contained' ? contrastColor : props.color}`,
         transition: theme.transitions.create(['color', 'background', 'border']),
         '&:hover': {
           backgroundColor: `${
             props.variant === 'contained'
-              ? darken(props.color, theme.palette.tonalOffset)
-              : fade(lighten(props.color, theme.palette.tonalOffset), 0.5)
+              ? darken(
+                  props.color,
+                  theme.palette.tonalOffset.valueOf() as number
+                )
+              : props.color
           }`,
-          color: `${
-            props.variant === 'outlined'
-              ? theme.palette.getContrastText(props.color)
-              : undefined
-          }`,
+          color: `${props.variant === 'outlined' ? contrastColor : undefined}`,
         },
       }
     },

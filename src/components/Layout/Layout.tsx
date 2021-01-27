@@ -1,5 +1,5 @@
 import React from 'react'
-import Header, { navHeight, navHeightMobile } from './Header'
+import Header, { navHeight, navHeightMobile } from './Header2'
 import { ThemeProvider } from '@material-ui/styles'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import {
@@ -117,7 +117,8 @@ export default (props: LayoutProps) => {
       <CssBaseline />
       <AlertContainer />
       <div className={classes.containerMain}>
-        <Header location={props.location} />
+        <Header />
+        {/* <Header location={props.location} /> */}
         <div className={classes.pageWrapper}>
           <MDXProvider
             components={{
