@@ -127,7 +127,11 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
       />
       {!pageContext.section && (
         <React.Fragment>
-          <Jumbotron heading="API Reference" text={defaultDescription} />
+          <Jumbotron
+            overlayed={true}
+            heading="API Reference"
+            text={defaultDescription}
+          />
           <Container>
             <Grid container spacing={3} className={classes.apiRefGrid}>
               {pageContext.menuData.map(s => (
