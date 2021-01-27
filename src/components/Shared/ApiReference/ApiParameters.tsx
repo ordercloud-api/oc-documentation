@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import {
   Table,
   TableHead,
@@ -54,6 +54,11 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = (
   const { parameters } = props
   const classes = useStyles({})
 
+  const mapEnumValues = useCallback(
+    l => (e, i) => <span key={i}>{l - 1 == i ? e : `${e}, `}</span>,
+    []
+  )
+
   return parameters ? (
     <React.Fragment>
       <ApiHeading title="Parameters" variant="h2" />
@@ -64,9 +69,7 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = (
               <TableCell>Name</TableCell>
               <TableCell style={{ width: 100 }}>Type</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>
-                Default <small>(ordered by priority)</small>
-              </TableCell>
+              <TableCell>Possible Values</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -82,14 +85,17 @@ const ApiParameters: React.FunctionComponent<ApiParametersProps> = (
                   {param.description}
                 </TableCell>
                 <TableCell>
-                  {param.schema.items && param.schema.items.enum
-                    ? param.schema.items.enum.map((e, i) => (
-                        <span key={i}>
-                          {param.schema.items.enum.length - 1 == i
-                            ? e
-                            : `${e},`}{' '}
-                        </span>
-                      ))
+                  {/* <pre>{JSON.stringify(param, null, 2)}</pre> */}
+                  {param.schema.items &&
+                  param.schema.items.enum &&
+                  param.schema.items.enum.length
+                    ? param.schema.items.enum.map(
+                        mapEnumValues(param.schema.items.enum.length)
+                      )
+                    : param.schema.enum && param.schema.enum.length
+                    ? param.schema.enum.map(
+                        mapEnumValues(param.schema.enum.length)
+                      )
                     : '---'}
                 </TableCell>
               </TableRow>
