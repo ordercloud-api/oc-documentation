@@ -54,6 +54,7 @@ export interface OperationParameter {
   value?: any // added by us in openapi.service.tsx
   schema: {
     type: 'string' | 'integer' | 'boolean'
+    enum?: any[]
     items?: {
       type: string
       enum?: string[]
