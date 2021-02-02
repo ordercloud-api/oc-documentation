@@ -13,6 +13,8 @@ import {
   TableCell,
   CssBaseline,
   Divider,
+  TableContainer,
+  Paper,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
 import { MDXProvider } from '@mdx-js/react'
@@ -48,6 +50,9 @@ const useStyles = makeStyles((theme: Theme) =>
     containerMain: {
       zIndex: 1,
       position: 'relative',
+    },
+    tableContainer: {
+      marginBottom: theme.spacing(3),
     },
   })
 )
@@ -188,7 +193,14 @@ export default (props: LayoutProps) => {
                 </Typography>
               ),
               a: aProps => <LayoutLink {...aProps} />,
-              table: tableProps => <Table {...tableProps} />,
+              table: tableProps => (
+                <TableContainer
+                  component={Paper}
+                  className={classes.tableContainer}
+                >
+                  <Table {...tableProps} />
+                </TableContainer>
+              ),
               tr: trProps => <TableRow {...trProps} />,
               th: thProps => (
                 <TableCell variant="head">{thProps.children}</TableCell>

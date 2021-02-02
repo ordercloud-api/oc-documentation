@@ -1,0 +1,113 @@
+---
+title: 'Platform Overview'
+priority: 0
+description: 'OrderCloud is a B2B-first commerce and marketplace development platform, OrderCloud delivers cloud-based, API-first, headless eCommerce architecture. Limitless customizations and endless freedom for growth to support your complete commerce strategy.'
+---
+
+OrderCloud is a B2B-first commerce and marketplace development platform, OrderCloud delivers cloud-based, API-first, headless eCommerce architecture. Limitless customizations and endless freedom for growth to support your complete commerce strategy.
+
+Wherever your business needs to go tomorrow, you’re ready to lead the way.
+
+[[INSERT IMAGE]]
+
+## Why We’re Different
+For large, complex, and highly distributed businesses who want to sell online and/or extend online selling capabilities across their supply chain, OrderCloud provides a reliable platform for developing custom online commerce solutions that go far beyond a simple shopping cart. Whether you’re selling B2C, B2B, or B2B2X, connect your products, services, and information to your infinite different buyer-types.
+
+[[INSERT DIAGRAM]]
+
+OrderCloud is ideal for organizations who know the complexity of doing business should be modernized and managed and delivered through multiple experiences, no matter the persona of the buyer, seller, or supplier.  While there are many options out there, you want to pick a platform that mirrors the make-up of your business so as you customize and extend, you work with the domain of your business, not just part of it.
+
+## Developer Friendly
+OrderCloud is language agnostic and API-first.  This means you can access all of the domain through an Open API specification by using any of our SDKs or by generating your own clients with your preferred development stack.
+
+Developers want to be in the driver's seat and focus on building value.  OrderCloud is extensible by allowing you to delegate to your own services or connect to other 3rd party systems, such as your ERP or other SaaS offerings.  Not to mention our JavaScript SDK is agnostic to your UI framework of choice, may it be React, Angular, Vue, or Node-- if you’re on the server-side.
+
+OrderCloud also provides an online developer portal to test and interact with the APIs with form-based inputs and validation to support non-developers.  The API-first nature of OrderCloud also supports using versioned code and scripts to provision and manage all your applications of the platform.
+
+## Key Features
+OrderCloud was created to solve the most complex B2B operations, but enterprises can simply pick to implement a subset of capabilities out of the gate, knowing OrderCloud can handle the complexities as your business grows internally and in the market.
+
+### Define Your Own marketplace
+- Complex Buyer and User Group Setup
+- 100% Extensible Model for Business Segmentation
+- Anonymous Shopping or Secure Behind a Login
+- Mirror Your Sales and CRM Processes
+- Custom Properties to Target Different User Personas
+- Support Customer Service with Impersonation
+- Tiered Approval Rules
+- Supplier Management and Workflows
+
+### Personalized shopping
+- Segmented, Multi-Supplier Catalogs
+- Faceted Keyword Search
+- Buyer and Buyer Group Product Visibility
+- Promotion Configuration
+- Product Variants and Specifications
+- Customized Price Rules
+- Price Breaks based on Quantity Ordered
+
+### Fulfillment Automation
+- Supplier Order Management
+- Various Order Types (Quote, CPQ)
+- Advanced Payment Methods
+- Email Notifications
+- OMS Integration
+
+## Omni-Channel Integration
+OrderCloud is meant to be the backbone of your commerce operations as an API-first, headless platform.  This means that you can build and connect any number of application experiences on top of OrderCloud, may they be the buyer shopping experience, administration of orders from another 3rd party tool, or standing up a portal for your suppliers or franchises to manage orders.
+
+There are two main concepts to manage and customize the use of OrderCloud by client systems and users which are API Clients and Experience-focused, Me Resources.
+
+### Connecting Multiple solutions
+To support an eco-system of applications and 3rd party systems accessing your marketplace on OrderCloud, we have the concept of API Clients which represents an application client.  You can set up any number of API Clients to secure access to data as your shopping website vs. a supplier order management portal vs. an administrative tool.  API Clients are also used for automated system to system integrations, so you can control what 3rd party systems have access to what parts of your OrderCloud instance.
+
+[[INSERT DIAGRAM]]
+
+Additionally, if you offer unique branded experiences to different buyer organizations or franchises, you can set up an API Client per personalized site which gives you the freedom to configure individual extensions (webhooks and integration events) to manage the unique needs of multiple applications scenarios, while running off of one OrderCloud organization for your business.
+
+### Experience-Focused Resources
+With OrderCloud, not only can you access and work with any resource directly, but the platform also offers a set of APIs for ‘Me’ which represents an authenticated user.  This means any of your client applications can call any of the ‘Me’ endpoints to guarantee a personalized experience around product search, getting the right pricing, and access only the order history configured for them to see.
+
+This keeps your client applications simple and intuitive in not having to deal with any growing complexity or details of the organization, may it be a simple B2C-like setup, or a complex B2B organization with different buyer configurations-- the ‘Me’ APIs all work exactly the same.
+
+[[INSERT DIAGRAM]]
+
+Lastly, the ‘Me’ resources provide access to administer things just about themselves.  This also keeps your user access model and permissions secure, while allowing you to selectively offer impersonation capabilities as the owner to support users of your marketplace.
+
+## Platform Extensibility
+Complex eCommerce applications have expectations of functionality outside of the scope of OrderCloud’s services. These actions may include publishing information to search engines or merchant services for product indexing, shipping estimation services, tax calculation services, content delivery networks for digital assets, and many others. OrderCloud’s integration layer allows third-party microservices to be integrated quickly, allowing you to utilize functionality you already have or to build a virtual suite of best-in-class functionality.
+
+To facilitate extensibility, OrderCloud relies on a couple of key approaches:
+- **Webhooks** - These are user-defined HTTP callbacks.  You can easily register them for your entire organization or on an application-specific level, selectively configuring them for any API endpoint as a callback.  When someone calls an API on OrderCloud, it will call your Webhook, along with the same request body that was sent to OrderCloud, allowing you to modify or simply get a copy of each API call.
+- **Integration Events** - These are specific areas in OrderCloud where the logic can be extended or delegated around business processes, like determining shipping options.  Not everything needs to be pre-configured or managed within OrderCloud, and these integration events are a great way to delegate externally.
+
+[[INSERT DIAGRAM]]
+
+Just a few sample scenarios to consider:
+- **Realtime Pricing and Inventory** - Instead of storing estimated inventory or loading a current price into OrderCloud, you can delegate to your ERP, WMS, or pricing system through middleware or a serverless function to mediate with your clients.
+- **Custom Order Notifications** - While there are out of the box messaging integrations, you can attach your own service listener to communicate out to your customers about events or changes to their orders.
+- **Custom Shipping and Routing Logic** - OrderCloud offers an integration event specific to shipping logic.  When an order goes through checkout, OrderCloud can call out to another HTTP service to securely handle generating shipping options relative to the products in the cart.
+
+## Enterprise Readiness
+With OrderCloud, both software development and delivery are exclusively cloud-native. OrderCloud is built to handle high performance and scales automatically to guarantee availability. It runs on Microsoft Azure - one of the most advanced, safe, and secure platforms available, in some of the most secure data centers
+around the world, so all data and processes maintain the highest levels of safety and security.
+
+With the ability to scale up, diversify, and backup data to multiple facilities data is protected and reliability high. As of July 2019, Azure’s core compute services have run at a 99.995% average across its global infrastructure.
+
+### World-Class Security
+OrderCloud is annually audited for SOC 2 Type 2 with HIPAA controls, is compliant with GDPR and CCPA, and supports your PCI compliance initiatives.
+
+### Multi-Environment
+With OrderCloud, you can stand up any number of sandbox instances to support parallel development, separate from production.  In addition, we manage a staging environment for you with weekly data refreshes which can take a ton of time off your staff in environment management.
+
+### Infrastructure as Code
+Because OrderCloud is API-first, all extension points and configuration is managed through APIs-- not just the data.  This means you can set up your own scripts to refresh and manage various environments, security, and policies-- not just seeding data.
+
+### Headless Architecture
+With the front-end completely decoupled from the backend, you have limitless freedom to customize your ordering experiences without performance risk. Easily extend your ordering capabilities to new devices, channels, applications, and more, as your buyer preferences evolve over time.
+
+### Cloud-Native
+Infrastructure Both software development and delivery are entirely cloud-based. Built for high performance, OrderCloud scales automatically. Unlike on-premise solutions, server infrastructure and data security are taken care of for you. Start small and scale up only as your business usage grows.
+
+### Microservices
+OrderCloud plays nicely with other similarly architected services. We are entering the age of microservices, where best-of-breed solutions are not built from scratch. Rather, they are assembled from the best parts. Our “part” is B2B eCommerce and Order Management, a complex domain in which we have building and refining an incredibly rich and flexible model around with OrderCloud.

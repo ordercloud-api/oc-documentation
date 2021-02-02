@@ -6,6 +6,9 @@ import Case from 'case'
 export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
+  const discoverTemplate = resolve(
+    'src/components/Templates/DiscoverTemplate.tsx'
+  )
   const docTemplate = resolve('src/components/Templates/DocTemplate.tsx')
   const blogTemplate = resolve('src/components/Templates/BlogTemplate.tsx')
   const releaseNotesTemplate = resolve(
@@ -40,8 +43,7 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
 
       let component
       if (path.startsWith('/discover')) {
-        path = path.replace('/d', '') // served from root
-        component = docTemplate
+        component = discoverTemplate
       } else if (path.startsWith('/docs')) {
         path = path.replace('/docs', '') // served from root
         component = docTemplate

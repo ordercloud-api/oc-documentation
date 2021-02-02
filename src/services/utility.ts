@@ -1,9 +1,12 @@
 import { DocsQuery } from '../models/docsQuery'
+import { DiscoverQuery } from '../models/discoverQuery'
 import { groupBy, forEach } from 'lodash'
+import { Article, Heading } from '../models/tableOfContents.model'
 import { Section, Guide } from '../models/section.model'
 
 const service = {
   getSectionsFromDocsQuery,
+  getArticlesFromDiscoverQuery,
   resolvePath,
 }
 
@@ -13,6 +16,18 @@ const DOCS_SECTION_ORDER = [
   'Features',
   'Guides',
 ]
+
+function getArticlesFromDiscoverQuery(query: DiscoverQuery): Article[] {
+  return query.allMdx.edges
+    .sort((a, b) => a.node.frontmatter.priority - b.node.frontmatter.priority)
+    .map(e => {
+      return {
+        title: e.node.frontmatter.title,
+        path: service.resolvePath(e.node.fileAbsolutePath),
+        headings: e.node.headings.filter(h => h.depth === 2),
+      }
+    })
+}
 
 function getSectionsFromDocsQuery(query: DocsQuery): Section[] {
   const sectionsWithGuides = groupBy(

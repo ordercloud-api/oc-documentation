@@ -2,7 +2,7 @@
     "presets": ["babel-preset-gatsby"],
     "plugins": [
       ["prismjs", {
-        "languages": ["http", "json"],
+        "languages": ["http", "json", "typescript"],
         "theme": "tomorrow",
         "css": true
       }]

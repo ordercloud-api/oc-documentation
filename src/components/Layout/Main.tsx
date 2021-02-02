@@ -28,7 +28,7 @@ import {
   PlaylistAddCheckTwoTone,
   StyleTwoTone,
 } from '@material-ui/icons'
-import React from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import {
   darkgrey,
   flame,
@@ -41,6 +41,7 @@ import { CustomButtonLink } from '../Shared/ButtonVariants'
 import Jumbotron from '../Shared/Jumbotron'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
+import Prism from 'prismjs'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -113,6 +114,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const MainComponent: React.FunctionComponent = props => {
   const classes = useStyles(props)
+
+  useLayoutEffect(() => {
+    Prism.highlightAll()
+  }, [])
+
   return (
     <React.Fragment>
       <Jumbotron
@@ -123,7 +129,7 @@ const MainComponent: React.FunctionComponent = props => {
           <CustomButtonLink
             color="#fff"
             key="intro-to-ordercloud"
-            to="/getting-started/intro-to-ordercloud"
+            to="/discover/platform-overview"
             variant="contained"
           >
             Platform Overview
@@ -379,8 +385,8 @@ const MainComponent: React.FunctionComponent = props => {
             <Typography variant="h5">
               OrderCloud’s proven architecture has enabled developers from
               around the world to bring powerful B2B applications to life. We
-              aim to provide unmatched interopability by using standardized WTC
-              web conventions, extensible data models, and rich feature-sets.
+              aim to provide unmatched interopability by using standardized W3C
+              web standards, extensible data models, and rich feature-sets.
             </Typography>
             <Box
               display="flex"
@@ -414,7 +420,30 @@ const MainComponent: React.FunctionComponent = props => {
         <Box height="100px"></Box>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>
-            <Box bgcolor={mediumgrey[500]} width="100%" height="100%"></Box>
+            <Paper elevation={5}>
+              <Box
+                component="pre"
+                padding={1}
+                borderRadius={3}
+                bgcolor={mediumgrey[900]}
+                width="100%"
+              >
+                <code className="language-typescript">
+                  {`import { Me, Orders, LineItems } from "ordercloud-javascript-sdk";
+
+let myself = await Me.Get();
+let order = await Orders.Create("Outgoing", {});
+let products = await Me.ListProducts();
+
+let lineItem = await LineItems.Create("Outgoing", order.ID, {
+  ProductID: products.Items[0].ID,
+  Quantity: 2
+});
+
+await Orders.Submit("Outgoing", order.ID);`}
+                </code>
+              </Box>
+            </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Typography
