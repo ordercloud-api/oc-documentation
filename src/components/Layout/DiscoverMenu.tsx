@@ -5,12 +5,14 @@ import {
   Typography,
   Theme,
 } from '@material-ui/core'
-import { ExpandLess, ExpandMore, OpenInNew } from '@material-ui/icons'
-import { Link, withPrefix } from 'gatsby'
+import { ExpandLess, ExpandMore } from '@material-ui/icons'
+import { Link } from 'gatsby'
+import rsc from 'replace-special-characters'
 import React from 'react'
 import { Article } from '../../models/tableOfContents.model'
 import { seafoam } from '../../theme/ocPalette.constants'
 import Case from 'case'
+import useActiveId from '../../hooks/useActiveId'
 
 export const drawerWidthSpacingLg = 56
 export const drawerWidthSpacing = drawerWidthSpacingLg - 20
@@ -23,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       marginBottom: theme.spacing(2),
+      textDecoration: 'none',
     },
     sectionActive: {
       marginBottom: 0,
@@ -81,26 +84,33 @@ interface DiscoverMenuProps {
 }
 
 const findActiveArticle = (articles: Article[], path: string) => {
-  return 0
-  // return articles.findIndex(s => {
-  //   return (
-  //     s.guides.filter(g => {
-  //       return withPrefix(g.path) === path || `${withPrefix(g.path)}/` === path
-  //     }).length > 0
-  //   )
-  // })
+  return articles.findIndex(a => a.path === path)
+}
+
+const stripSpecialChars = (string: string) => {
+  return string.replace(/[’]/gi, '')
+}
+
+const transformHeadingToId = (string: string) => {
+  return Case.kebab(rsc(stripSpecialChars(string)))
 }
 
 export default function DiscoverMenu(props: DiscoverMenuProps) {
   const { articles, currentPath } = props
-  // const { container, mobileOpen, onMobileClose } = props
+
   const classes = useStyles(props)
-  const [activeIndex, setActiveIndex] = React.useState(
-    findActiveArticle(articles, currentPath)
-  )
-  const handleSetActiveIndex = (i: number) => () => {
-    setActiveIndex(activeIndex === i ? -1 : i)
-  }
+
+  const activeIndex = React.useMemo(() => {
+    return findActiveArticle(articles, currentPath)
+  }, [articles, currentPath])
+
+  const activeArticleHeadings = React.useMemo(() => {
+    return articles[activeIndex].headings.map(h =>
+      transformHeadingToId(h.value)
+    )
+  }, [articles, activeIndex])
+
+  const activeId = useActiveId(activeArticleHeadings)
 
   return (
     <nav>
@@ -108,34 +118,38 @@ export default function DiscoverMenu(props: DiscoverMenuProps) {
         <React.Fragment key={aindex}>
           <Typography
             className={`${classes.section} ${
-              activeIndex === aindex ? classes.sectionActive : undefined
+              activeIndex === aindex ? classes.sectionActive : ''
             }`}
             variant="h4"
-            component="h5"
-            onClick={handleSetActiveIndex(aindex)}
+            to={article.path}
+            component={Link}
           >
-            {`${article.title} `}
-            {activeIndex === aindex ? <ExpandLess /> : <ExpandMore />}
+            {article.title}
           </Typography>
           <Collapse in={activeIndex === aindex} timeout="auto" unmountOnExit>
             <div className={classes.guides}>
-              {article.headings.map((heading, hindex) => (
-                <Typography
-                  display="block"
-                  key={`${aindex}_${hindex}`}
-                  className={`${classes.guide}`}
-                  // ${
-                  //     currentPath.includes(guide.path)
-                  //     ? classes.guideActive
-                  //     : undefined
-                  // }`}
-                  to={`${article.path}#${Case.kebab(heading.value)}`}
-                  variant="body1"
-                  component={Link}
-                >
-                  {heading.value}
-                </Typography>
-              ))}
+              {article.headings.map((heading, hindex) => {
+                const headingId = transformHeadingToId(heading.value)
+                return (
+                  <Typography
+                    display="block"
+                    key={`${aindex}_${hindex}`}
+                    className={`${classes.guide} ${
+                      activeId === headingId ? classes.guideActive : ''
+                    }`}
+                    // ${
+                    //     currentPath.includes(guide.path)
+                    //     ? classes.guideActive
+                    //     : undefined
+                    // }`}
+                    to={`${article.path}#${headingId}`}
+                    variant="body1"
+                    component={Link}
+                  >
+                    {heading.value}
+                  </Typography>
+                )
+              })}
             </div>
           </Collapse>
         </React.Fragment>

@@ -50,6 +50,7 @@
     "react-loading-overlay": "^1.0.1",
     "react-particles-js": "^2.7.0",
     "react-spinners": "^0.7.1",
+    "replace-special-characters": "^1.0.2",
     "smooth-scroll": "^16.1.0",
     "swagger-parser": "8.0.3",
     "universal-cookie": "^4.0.2"

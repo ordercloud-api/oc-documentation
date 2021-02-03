@@ -12728,6 +12728,11 @@
   "resolved" "https://registry.npmjs.org/replace-ext/-/replace-ext-1.0.0.tgz"
   "version" "1.0.0"
 
+"replace-special-characters@^1.0.2":
+  "integrity" "sha512-J92WjoHye+NH3wMi2Y9KVD2BlJ242u1qMGaZpjlxT6QQaCYCssA0RRa8D3wd3V9Y5GII1cFW0P0R0jlqy6MWRg=="
+  "resolved" "https://registry.npmjs.org/replace-special-characters/-/replace-special-characters-1.0.2.tgz"
+  "version" "1.0.2"
+
 "request-promise-core@1.1.2":
   "integrity" "sha512-UHYyq1MO8GsefGEt7EprS8UrXsm1TxEvFUX1IMTuSLU2Rh7fTIdFtl8xD7JiEYiWU2dl+NYAjCTksTehQUxPag=="
   "resolved" "https://registry.npmjs.org/request-promise-core/-/request-promise-core-1.1.2.tgz"
