@@ -5,7 +5,7 @@ import React, { useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import '../../styles/doc-template.css'
 import utility from '../../services/utility'
-import DocFooter from '../Layout/DocFooter'
+// import DocFooter from '../Layout/DocFooter'
 import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
@@ -57,7 +57,7 @@ export default function Template(props: DiscoverTemplateProps) {
     if (!props.location.hash) return
     const el = document.getElementById(props.location.hash.split('#')[1])
     if (!el) return
-    window.scrollTo(0, el.offsetTop)
+    window.scrollTo(0, el.offsetTop - 120)
   }, [props.location.hash])
 
   return (

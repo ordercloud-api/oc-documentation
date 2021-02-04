@@ -2,14 +2,8 @@ html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  margin-top:96px;
 }
 
-@media(min-width:960px) {
-  html {
-    margin-top:104px;
-  }
-}
 
 body {
   margin: 0;

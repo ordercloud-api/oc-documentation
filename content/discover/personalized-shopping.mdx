@@ -1,0 +1,128 @@
+---
+title: 'Personalized Shopping'
+priority: 2
+description: 'In order to support different kinds of marketplaces, OrderCloud offers a good deal of versatility in managing products, pricing, and catalog taxonomy.'
+---
+
+In order to support different kinds of marketplaces, OrderCloud offers a good deal of versatility in managing products, pricing, and catalog taxonomy.  This means you can manage one master set of products, but depending on the buyer, you can offer unique catalogs with varying pricing-- or offer one catalog of products with one base price to all buyers.
+
+Product configuration includes the ability to populate any number of product attributes but also supports guiding users through selecting product specifications, such as color or material in the buying process.  All of this and more can be captured and stored as part of your orders for processing on OrderCloud.
+
+## Custom Catalogs
+OrderCloud supports any number of catalogs within your organization which can be shared among any number of buyers.  This means that if you have specific products you only want to offer to some customers, but not all, you can do so on OrderCloud through the assignment of catalogs.
+
+Products can be assigned to any number of catalogs, and subsequently organized into any depth of category hierarchy.  The combination of catalog and category assignments can provide a great deal of customization to meet your particular business requirements across buyers.
+
+<ContentLink to="/ordercloud-basics/building-blocks" subtitle="Developer Guide" type="education">Catalog Assignments & Visibility Rules</ContentLink>
+
+[[INSERT DIAGRAM]]
+
+### Searching Catalogs
+OrderCloud has the capability to power rich search experiences, including faceted navigation, versatile sorting, ad-hoc filtering, and type ahead-searching.  Searches are usually done as an authenticated user through the ‘Me’ endpoints, which handle all of the nuances of catalog and product visibility rules assigned.  Specific features you should be familiar with include:
+
+- **Keyword Search** - Allows multiple search types based on how users search, which allows variations of matching all terms entered, exact phrases, or loser options for any term matching.  Search also takes care of stemming, synonyms, and intelligent ranking.
+- **Faceted Navigation** - Searches for products will return implicit faceted attributes for you, including any custom properties you assign to your products.
+- **Filtering** - You can pass specific conditions to filter on any product attribute, including any custom properties you assign to your products.
+- **Sorting** - You can sort by one or more fields, including custom fields you have on your products.  When you sort over multiple fields, you can specify sort priority such as ascending or descending.
+
+<ContentLink to="/api-reference/me-and-my-stuff/products/list" subtitle="API Reference" type="bookmark">Me and My Stuff: Product List</ContentLink>
+
+### Versitile Taxonomies
+Categories are a way to define your product hierarchy, which can be of arbitrary depth.  Thinking in terms of a large retail store, you may have top-level categories like Home Goods, Grocery, Electronics, Clothing, and Toys-- with subsequent subcategories to help guide users through the browsing process.
+
+If you just sell clothing, then your category hierarchy might be by gender or clothing type.  You can additionally put those same products in seasonal category buckets at the same time.
+
+<ContentLink to="/api-reference/categories" subtitle="API Reference" type="bookmark">OrderCloud Categories</ContentLink>
+
+[[INSERT DIAGRAM]]
+
+## Product Configuration
+Products are housed globally for the whole organization and configured to be visible based on the setup of catalogs.  This creates a lot of versatility in how your market and deliver catalogs to multiple channels and buyers.
+
+[[INSERT IMAGE]]
+
+A product can represent a physical, digital, or abstract good that you want to allow buyers to order, including the specific variant (color, size, material, etc).  OrderCloud supports very complex use cases, such as populating multiple inputs from the buyer to produce a custom, printed sign or business card-- or even the specifications for buying a car.
+
+As part of a marketplace, products may have one or more suppliers that may be able to fulfill that product.  This is especially useful for distribution-oriented marketplaces where the suppliers you use may change over time and you need a platform that can manage and track multiple supplier sourcing opportunities.
+
+<ContentLink to="/api-reference/products" subtitle="API Reference" type="bookmark">OrderCloud Products</ContentLink>
+
+### Product Attributes
+OrderCloud supports populating any number of attributes on a product.  These attributes can be used not only to help display any customized attribute of your products but as noted with searching, those attributes can be used to search, filter, and sort.  As with most eCommerce search engines, these product attributes are also implicitly used as facets to power your left-navigation menu to filter into specific products.
+
+Not only can you assign products to any number of catalogs unique to the markets and customers you serve, assigning custom product attributes allows you to handle scenarios such as:
+
+- Colors, Materials, clothing size, etc
+- Designate country of origin to support government purchase programs
+- Temporary promotional messaging
+- UNSPSC coding and category assignments
+- Supplemental images to use or links to product manuals
+
+[[INSERT IMAGE]]
+
+<ContentLink to="/api-reference/products" subtitle="Developer Guide" type="education">Creating Facets Using Product XP</ContentLink>
+
+### Product Specs and Variants
+You can use the concept of parent and child products to support variations, like shopping for a pair of slacks and you offer different sizes and colors to the buyer, with individual inventory levels.  Additionally, you can maintain specs that are used for free text entry as part of data capture for manufactured products you might sell. 
+
+OrderCloud can represent this through two key concepts:
+
+- **Product Specs** - Represent what choices or combinations and options you offer for your product, such as multiple colors and sizes; and additionally, you can offer an option of open text which can be required as part of ordering. 
+- **Product Variants** - Represent the specific SKU or product number tied to a combination of specs.  So if you have 3 different colors and 3 sizes, then 9 variants can be generated.
+
+Based on product specs, OrderCloud can both automatically generate variants for you and select the right variant automatically based on a buyer's selection of specifications.
+
+[[INSERT IMAGE]]
+
+### Product suppliers
+Products can be offered by multiple suppliers in the marketplace.  Products have a default supplier assigned that offers the product, but you can associate a product to multiple suppliers at a time.
+
+When a buyer builds an order, you can specify which supplier should be used for that specific product.  The supplier designated is that tied to the order line so you can later determine which lines go to which supplier to fulfill as part of your marketplace operations.
+
+You can also use this as a store designation, so different stores supply the same product and the buyer may pick the closest store/supplier to fulfill from when they build their order.
+
+<ContentLink to="/api-reference/products" subtitle="Developer Guide" type="education">Splitting Orders with Supplier Products</ContentLink>
+
+## Variable Pricing
+OrderCloud supports offering different prices for the same product.  You can offer one price for a laptop to an educational buyer-organization and another price to a regular consumer.  While this might seem elaborate for a basic, B2C web site; OrderCloud will automatically use the right price in your shopping website based on the user logged in.  _In other words, it’s no problem to start simple and add more price complexity later without having to re-engineer your shopping website._
+
+<ContentLink to="/api-reference/me-and-my-stuff/products" subtitle="API Reference" type="bookmark">Me and My Stuff: Products</ContentLink>
+
+### Price Schedules
+A price schedule is a price assigned to the combination of a product and a buyer or group of users.    This means OrderCloud will automatically include the right price for the shopper as they use your website, depending on which buyer or user group they are part of.  With price schedules, you can also store tax, shipping applicability, and quantity breaks; along with custom attributes specific to your business operations.
+
+To read through specific implementation scenarios with our API, check out **LINK**.  As with the flexibility of OrderCloud to compose and extend, if the use of pre-loaded price schedules doesn’t work for you, you can read about how to support dynamic pricing **LINK**.
+
+### Price Breaks
+As part of customizing price schedules, you can customize pricing relative to the quantity ordered.  So if you buy 9 or less, the price may be $4 each, but if you buy 10 or more, the price becomes $3 each.  Between price schedules and price breaks, OrderCloud will automatically set the correct price on the buyer’s order.  Going a step further, price breaks can be set up to be used on a per order line basis, or cumulatively for the total quantity ordered of that product across multiple lines; which is ideal for certain B2B buyers.
+
+<ContentLink to="/api-reference/price-schedules/save-price-break" subtitle="API Reference" type="bookmark">OrderCloud Price Breaks</ContentLink>
+
+### Price Markups
+Relative to product variants and specs, you can assign specific markups or adjustments to the total price of the product.  An example might be charging more for the gold leaf option vs. matte finish, or allowing the buyer to choose the upgraded vehicle sound system as part of the ordering process.
+
+<ContentLink to="/" subtitle="Developer Guide" type="education">Price Markups Using Product Specs</ContentLink>
+
+### Targeted Promotions
+OrderCloud offers rule-based promotions with quite a bit of flexibility to handle the creation of promotions.  Before talking about the details, some use cases you can implement with promotions are:
+
+- $5 dollars off orders totaling over $50 dollars
+- 10% off promotional products
+- 20% off when you buy a set of specific products
+- Buy 3, get the 4th free
+- Free or reduced shipping based on order size
+- 20% off a customer’s first order
+- And many more… 
+
+Defining promotions in OrderCloud is done through a simple expression language, no different than writing one line of JavaScript.  Some customers have built visual tools to generate these expressions, but you shouldn’t need to worry about being able to create the promotion you desire.  If there’s other information you want to capture with that promotion, as with almost all concepts on OrderCloud, you can store additional attributes right on that promotion for use with your web site.
+
+<ContentLink to="/guides/rule-based-promotion-expressions" subtitle="Developer Guide" type="education">Rules-Based Promotion Expressions</ContentLink>
+
+### Promotion Redemption
+All promotions require a code to be applied as part of the order.  Just as expressive in setting up the promotion’s behavior, you can manage who can redeem the promotion in the following ways:
+
+- **You can specifically assign a promotion to a buyer or user group**, to control targeted merchandising campaigns to just buyers you’ve identified that have slowed purchasing and you want to incentivize them to place their next order, but not offer it to the general public
+- **You can set a date range for when the promotion is allowed**, which allows you to stage your campaigns weeks ahead as part of multi-channel initiatives and have the promotion allowed only after a targeted date.
+- **You can restrict how often a promotion is used**, by setting a quantity limit for the promotion usage in total or set a limit of one per user to avoid abuse.
+
+If you are looking for a promotion to be automatically assigned, you can craft customizations on top of OrderCloud to do so.  The other option is if the promotion is straightforward savings relative to a quantity ordered savings, you may just want to do so within price schedules which are covered above.

@@ -15,6 +15,7 @@ import {
   Divider,
   TableContainer,
   Paper,
+  TypographyVariant,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
 import { MDXProvider } from '@mdx-js/react'
@@ -48,6 +49,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     heading: {
       position: 'relative',
+    },
+    headingSpan: {
+      display: 'block',
+      marginTop: -120,
+      paddingBottom: 120,
     },
     containerMain: {
       zIndex: 1,
@@ -95,9 +101,18 @@ export const LayoutLink = (props: any) => {
 interface LayoutProps extends RouteComponentProps {
   children: any
 }
+
 export default (props: LayoutProps) => {
   const classes = useStyles(props)
   const sections = useDocsSections()
+  const buildHeader = (variant: TypographyVariant) => (hProps: any) => {
+    return (
+      <Typography className={classes.heading} variant={variant}>
+        <span id={hProps.id} className={classes.headingSpan}></span>
+        {hProps.children}
+      </Typography>
+    )
+  }
   return (
     <ThemeProvider theme={ORDERCLOUD_THEME}>
       <Helmet
@@ -131,48 +146,12 @@ export default (props: LayoutProps) => {
             components={{
               ContentLink,
               CodeExample,
-              h1: h1Props => (
-                <Typography
-                  {...h1Props}
-                  className={classes.heading}
-                  variant="h1"
-                />
-              ),
-              h2: h2Props => (
-                <Typography
-                  {...h2Props}
-                  className={classes.heading}
-                  variant="h2"
-                />
-              ),
-              h3: h3Props => (
-                <Typography
-                  {...h3Props}
-                  className={classes.heading}
-                  variant="h3"
-                />
-              ),
-              h4: h4Props => (
-                <Typography
-                  {...h4Props}
-                  className={classes.heading}
-                  variant="h4"
-                />
-              ),
-              h5: h5Props => (
-                <Typography
-                  {...h5Props}
-                  className={classes.heading}
-                  variant="h5"
-                />
-              ),
-              h6: h6Props => (
-                <Typography
-                  {...h6Props}
-                  className={classes.heading}
-                  variant="h6"
-                />
-              ),
+              h1: buildHeader('h1'),
+              h2: buildHeader('h2'),
+              h3: buildHeader('h3'),
+              h4: buildHeader('h4'),
+              h5: buildHeader('h5'),
+              h6: buildHeader('h6'),
               blockquote: blockquoteProps => (
                 <Box
                   paddingX={2}

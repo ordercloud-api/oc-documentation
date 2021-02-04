@@ -29,7 +29,7 @@ export const navHeightMobile =
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      position: 'fixed',
+      position: 'sticky',
       top: 0,
       left: 0,
       right: 0,

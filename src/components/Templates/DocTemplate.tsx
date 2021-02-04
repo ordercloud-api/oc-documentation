@@ -56,7 +56,7 @@ export default function Template(props: DocTemplateProps) {
     if (!props.location.hash) return
     const el = document.getElementById(props.location.hash.split('#')[1])
     if (!el) return
-    window.scrollTo(0, el.offsetTop)
+    window.scrollTo(0, el.offsetTop - 120)
   }, [props.location.hash])
 
   return (

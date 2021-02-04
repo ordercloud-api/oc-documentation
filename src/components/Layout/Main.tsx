@@ -16,7 +16,6 @@ import {
   Typography,
 } from '@material-ui/core/'
 import {
-  Bookmark,
   AccountBalanceTwoTone,
   AttachMoneyTwoTone,
   BusinessTwoTone,
@@ -29,14 +28,14 @@ import {
   PeopleTwoTone,
   PlaylistAddCheckTwoTone,
   StyleTwoTone,
-  MenuBookOutlined,
 } from '@material-ui/icons'
-import React, { useEffect, useLayoutEffect } from 'react'
+import { Link } from 'gatsby'
+import Prism from 'prismjs'
+import React, { useLayoutEffect } from 'react'
 import {
   darkgrey,
   flame,
   mediumgrey,
-  seafoam,
   sherpablue,
 } from '../../theme/ocPalette.constants'
 import themeConstants from '../../theme/theme.constants'
@@ -44,10 +43,6 @@ import { CustomButtonLink } from '../Shared/ButtonVariants'
 import Jumbotron from '../Shared/Jumbotron'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
-import Prism from 'prismjs'
-import ContentLink from '../Shared/ContentLink'
-import CodeExample, { MOCK_CONTENT } from '../Shared/CodeExample'
-import { Link } from 'gatsby'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -219,7 +214,7 @@ const MainComponent: React.FunctionComponent = props => {
             <ButtonBase
               className={classes.buttonBase}
               component={Link}
-              to="/getting-started/intro-to-ordercloud"
+              to="/discover/personalized-shopping"
             >
               <Paper elevation={5} className={classes.paperCard}>
                 <Typography
@@ -227,9 +222,9 @@ const MainComponent: React.FunctionComponent = props => {
                   variant="h4"
                   component="h2"
                 >
-                  Optimize Product
+                  Personalized
                   <br />
-                  Catalogs
+                  Shopping
                 </Typography>
                 <Typography
                   className={classes.paperTitleSubheading}
@@ -267,8 +262,7 @@ const MainComponent: React.FunctionComponent = props => {
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}
-                  key="intro-to-ordercloud"
-                  to="/getting-started/intro-to-ordercloud"
+                  to="/discover/personalized-shopping"
                   variant="outlined"
                 >
                   Read More
@@ -452,16 +446,13 @@ const MainComponent: React.FunctionComponent = props => {
         <Box height="100px"></Box>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>
-            <Paper elevation={5}>
-              <Box
-                component="pre"
-                padding={1}
-                borderRadius={3}
-                bgcolor={mediumgrey[900]}
-                width="100%"
-              >
-                <code className="language-typescript">
-                  {`import { Me, Orders, LineItems } from "ordercloud-javascript-sdk";
+            <Paper
+              elevation={5}
+              component="pre"
+              className="language-typescript"
+            >
+              <code className="language-typescript">
+                {`import { Me, Orders, LineItems } from "ordercloud-javascript-sdk";
 
 let myself = await Me.Get();
 let order = await Orders.Create("Outgoing", {});
@@ -473,8 +464,7 @@ let lineItem = await LineItems.Create("Outgoing", order.ID, {
 });
 
 await Orders.Submit("Outgoing", order.ID);`}
-                </code>
-              </Box>
+              </code>
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>

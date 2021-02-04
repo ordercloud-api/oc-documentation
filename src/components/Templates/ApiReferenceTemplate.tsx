@@ -80,7 +80,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
     if (!props.location.hash) return
     const el = document.getElementById(props.location.hash.split('#')[1])
     if (!(el && el.offsetParent)) return
-    window.scrollTo(0, (el.offsetParent as HTMLElement).offsetTop)
+    window.scrollTo(0, (el.offsetParent as HTMLElement).offsetTop - 100)
   }, [props.location.hash])
 
   const defaultDescription =
