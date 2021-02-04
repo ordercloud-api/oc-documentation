@@ -5,6 +5,7 @@ import { Article, Heading } from '../models/tableOfContents.model'
 import { Section, Guide } from '../models/section.model'
 
 const service = {
+  getOffsetTop,
   getSectionsFromDocsQuery,
   getArticlesFromDiscoverQuery,
   resolvePath,
@@ -16,6 +17,15 @@ const DOCS_SECTION_ORDER = [
   'Features',
   'Guides',
 ]
+
+function getOffsetTop(element) {
+  let offsetTop = 0
+  while (element) {
+    offsetTop += element.offsetTop
+    element = element.offsetParent
+  }
+  return offsetTop
+}
 
 function getArticlesFromDiscoverQuery(query: DiscoverQuery): Article[] {
   return query.allMdx.edges

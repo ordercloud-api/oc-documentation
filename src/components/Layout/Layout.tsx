@@ -166,12 +166,22 @@ export default (props: LayoutProps) => {
               ),
               p: pProps => <Typography {...pProps} paragraph variant="body1" />,
               ol: olProps => (
-                <Typography paragraph variant="body1" component="span">
+                <Typography
+                  paragraph
+                  variant="body1"
+                  component="span"
+                  display="block"
+                >
                   <ol {...olProps} />
                 </Typography>
               ),
               ul: ulProps => (
-                <Typography paragraph variant="body1" component="span">
+                <Typography
+                  paragraph
+                  variant="body1"
+                  component="span"
+                  display="block"
+                >
                   <ul {...ulProps} />
                 </Typography>
               ),

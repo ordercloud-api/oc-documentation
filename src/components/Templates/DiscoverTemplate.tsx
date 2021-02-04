@@ -55,9 +55,11 @@ export default function Template(props: DiscoverTemplateProps) {
 
   useLayoutEffect(() => {
     if (!props.location.hash) return
-    const el = document.getElementById(props.location.hash.split('#')[1])
-    if (!el) return
-    window.scrollTo(0, el.offsetTop - 120)
+    setTimeout(() => {
+      const el = document.getElementById(props.location.hash.split('#')[1])
+      if (!el) return
+      window.scrollTo(0, utility.getOffsetTop(el))
+    }, 300)
   }, [props.location.hash])
 
   return (

@@ -43,13 +43,11 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      display: 'flex',
-      //   justifyContent: 'center',
+      paddingTop: '1rem',
+      marginBottom: '1.5rem',
     },
     button: {
       justifyContent: 'stretch',
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(3),
       borderRadius: theme.shape.borderRadius,
       border: `1px solid ${theme.palette.grey[400]}`,
     },
