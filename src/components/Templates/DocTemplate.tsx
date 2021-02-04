@@ -1,4 +1,4 @@
-import { Theme, Typography, Button } from '@material-ui/core'
+import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React, { useLayoutEffect } from 'react'
@@ -30,9 +30,24 @@ interface DocTemplateProps extends RouteComponentProps {
   theme: Theme
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    pageTitle: {
+      marginBottom: theme.spacing(3),
+    },
+    editButton: {
+      marginBottom: theme.spacing(3),
+    },
+    editButtonIcon: {
+      marignRight: theme.spacing(1),
+    },
+  })
+)
+
 export default function Template(props: DocTemplateProps) {
   const doc = props.data // data from page query
   const sections = useDocsSections()
+  const classes = useStyles()
   const repoUrl =
     'https://github.com/ordercloud-api/oc-documentation/edit/development'
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
@@ -49,15 +64,21 @@ export default function Template(props: DocTemplateProps) {
       <Helmet title={`Four51 OrderCloud | ${doc.mdx.frontmatter.title}`} />
       <LayoutContainer>
         <LayoutMain>
+          <Typography variant="h1" className={classes.pageTitle}>
+            {doc.mdx.frontmatter.title}
+          </Typography>
           <ButtonlinkExternal
-            style={{ float: 'right', marginTop: 40 }}
+            className={classes.editButton}
             variant="outlined"
             size="small"
             href={`${repoUrl}/content/docs${absolutePath}.mdx`}
           >
-            <EditOutlined fontSize="inherit" /> Edit this doc
+            <EditOutlined
+              fontSize="inherit"
+              className={classes.editButtonIcon}
+            />
+            Edit this doc
           </ButtonlinkExternal>
-          <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
           {doc.mdx.frontmatter.updatedOnDate && (
             <Typography color="textSecondary" variant="caption">
               Last Updated {doc.mdx.frontmatter.updatedOnDate}

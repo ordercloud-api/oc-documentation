@@ -24,16 +24,14 @@ const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.grey[500],
       display: 'flex',
       alignItems: 'center',
-      marginBottom: theme.spacing(2),
       textDecoration: 'none',
     },
     sectionActive: {
-      marginBottom: 0,
       color: theme.palette.getContrastText(theme.palette.background.paper),
     },
     guides: {
-      marginTop: theme.spacing(2),
-      marginBottom: theme.spacing(2),
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(3),
     },
     guide: {
       lineHeight: 1.75,
@@ -126,32 +124,27 @@ export default function DiscoverMenu(props: DiscoverMenuProps) {
           >
             {article.title}
           </Typography>
-          <Collapse in={activeIndex === aindex} timeout="auto" unmountOnExit>
-            <div className={classes.guides}>
-              {article.headings.map((heading, hindex) => {
-                const headingId = transformHeadingToId(heading.value)
-                return (
-                  <Typography
-                    display="block"
-                    key={`${aindex}_${hindex}`}
-                    className={`${classes.guide} ${
-                      activeId === headingId ? classes.guideActive : ''
-                    }`}
-                    // ${
-                    //     currentPath.includes(guide.path)
-                    //     ? classes.guideActive
-                    //     : undefined
-                    // }`}
-                    to={`${article.path}#${headingId}`}
-                    variant="body1"
-                    component={Link}
-                  >
-                    {heading.value}
-                  </Typography>
-                )
-              })}
-            </div>
-          </Collapse>
+          <div className={classes.guides}>
+            {article.headings.map((heading, hindex) => {
+              const headingId = transformHeadingToId(heading.value)
+              return (
+                <Typography
+                  display="block"
+                  key={`${aindex}_${hindex}`}
+                  className={`${classes.guide} ${
+                    activeIndex === aindex && activeId === headingId
+                      ? classes.guideActive
+                      : ''
+                  }`}
+                  to={`${article.path}#${headingId}`}
+                  variant="body1"
+                  component={Link}
+                >
+                  {heading.value}
+                </Typography>
+              )
+            })}
+          </div>
         </React.Fragment>
       ))}
     </nav>

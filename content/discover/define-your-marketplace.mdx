@@ -19,6 +19,8 @@ OrderCloud has a very robust model for supporting the most complex organizations
 - **Product Catalogs** - OrderCloud supports publishing any number of variations of your product catalog out to buyers and users.  May it be to offer customized products for sub-segments of your market, or to centrally manage catalogs that mirror your global supply chain.
 - **Suppliers** - Suppliers are a third, optional type of organization used in indirect supply chain scenarios. Like the Seller, they contain Users and Groups. Once established, Products can be configured to auto-forward to Suppliers when ordered. This will automatically create a new PO, notify the Supplier, and track costs and profit margins if configured.
 
+<ContentLink to="/ordercloud-basics/building-blocks" subtitle="Developer Reading">OrderCloud Basics: Building Blocks</ContentLink>
+
 ## Commerce Strategies
 OrderCloud has a very robust model for supporting the most complex organizations.  Instead of being shackled by an overly basic eCommerce platform with only one catalog and a single definition of a user, OrderCloud is ready to mirror the organizational makeup you actually need.
 
@@ -225,7 +227,7 @@ With OrderCloud, you can manage your customers in your CRM system and dynamicall
 </table>
 
 
-This may get stored on your Buyer in OrderCloud using XP [link to XP documentation] with any number of custom properties.
+This may get stored on your Buyer in OrderCloud using XP with any number of custom properties.
 
 ```json
 {
@@ -239,13 +241,34 @@ This may get stored on your Buyer in OrderCloud using XP [link to XP documentati
 }
 ```
 
-These extensible properties are available for you to use in the websites you develop, and much like your CRM, you can easily query for all Buyers by any extensible properties you defined.  The example below will return all your Buyers who are in your ‘USNW’ sales region.
+<ContentLink to="/blog/leverage-xp" subtitle="Developer Reading">Leveraging XP</ContentLink>
 
-```http
-GET https://api.ordercloud.io/buyers?filters=xp.MySalesRegion=USNW HTTP/1.1
+These extensible properties are available for you to use in the websites you develop, and much like your CRM, you can easily query for all Buyers by any extensible properties you defined.
+
+<CodeExample
+  title="Filtering Buyers using XP"
+  description="This example will return all your Buyers who are in your ‘USNW’ sales region"
+  content={{
+    http: `GET https://api.ordercloud.io/buyers?filters=xp.MySalesRegion=USNW HTTP/1.1
 Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
-Content-Type: application/json; charset=UTF-8
-```
+Content-Type: application/json; charset=UTF-8`,
+javascript: `import { Buyers } from "ordercloud-javascript-sdk";\n
+Buyers.List({ filters: { 'xp.MySalesRegion': 'USNW' } })
+    .then( buyerList => {
+        console.log(buyerList);
+    });`,
+typescript: `import { ListPage, Buyer, Buyers } from "ordercloud-javascript-sdk";\n
+Buyers.List({ filters: { 'xp.MySalesRegion': 'USNW' } })
+    .then( (response: ListPage<Buyers>) => {
+        console.log(response);
+    });`,
+csharp: `using OrderCloud.SDK;\n
+var ocClient = new OrderCloudClient(...);\n
+ListPage<Buyer> response = await ocClient.Buyers.ListAsync(filters: new {
+    "xp.MySalesRegion" = "USNW" 
+});`
+}}
+/>
 
 ### Bridging Headless Technology
 Being able to unify your segmentation and persona strategy across headless technology is extremely important.  It also simplifies the way you manage personalized campaigns across systems. 

@@ -1,4 +1,4 @@
-import { Theme, Typography } from '@material-ui/core'
+import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React, { useLayoutEffect } from 'react'
@@ -16,13 +16,14 @@ import { EditOutlined } from '@material-ui/icons'
 import ButtonlinkExternal from '../Shared/ButtonlinkExternal'
 import DiscoverMenu from '../Layout/DiscoverMenu'
 
-interface DocTemplateProps extends RouteComponentProps {
+interface DiscoverTemplateProps extends RouteComponentProps {
   data: {
     mdx: {
       body: string
       fileAbsolutePath: string
       frontmatter: {
         title: string
+        description: string
         updatedOnDate: number
       }
     }
@@ -30,9 +31,24 @@ interface DocTemplateProps extends RouteComponentProps {
   theme: Theme
 }
 
-export default function Template(props: DocTemplateProps) {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    pageTitle: {
+      marginBottom: theme.spacing(3),
+    },
+    editButton: {
+      marginBottom: theme.spacing(3),
+    },
+    editButtonIcon: {
+      marginRight: theme.spacing(0.5),
+    },
+  })
+)
+
+export default function Template(props: DiscoverTemplateProps) {
   const doc = props.data // data from page query
   const articles = useDiscoverSections()
+  const classes = useStyles()
   const repoUrl =
     'https://github.com/ordercloud-api/oc-documentation/edit/development'
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
@@ -46,23 +62,33 @@ export default function Template(props: DocTemplateProps) {
 
   return (
     <Layout location={props.location}>
-      <Helmet title={`Four51 OrderCloud | ${doc.mdx.frontmatter.title}`} />
+      <Helmet
+        title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`}
+        description={doc.mdx.frontmatter.description}
+      />
       <LayoutContainer>
         <LayoutMain>
+          <Typography variant="h1" className={classes.pageTitle}>
+            {doc.mdx.frontmatter.title}
+          </Typography>
           <ButtonlinkExternal
-            style={{ float: 'right', marginTop: 40 }}
+            className={classes.editButton}
             variant="outlined"
             size="small"
-            href={`${repoUrl}/content/discover${absolutePath}.mdx`}
+            href={`${repoUrl}/content/${absolutePath}.mdx`}
           >
-            <EditOutlined fontSize="inherit" /> Edit this doc
+            <EditOutlined
+              fontSize="inherit"
+              className={classes.editButtonIcon}
+            />
+            Edit this doc
           </ButtonlinkExternal>
-          <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
           {doc.mdx.frontmatter.updatedOnDate && (
             <Typography color="textSecondary" variant="caption">
               Last Updated {doc.mdx.frontmatter.updatedOnDate}
             </Typography>
           )}
+
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
           {/* <DocFooter contents={sections} currentGuide={absolutePath} /> */}
         </LayoutMain>
@@ -84,6 +110,7 @@ export const query = graphql`
       fileAbsolutePath
       frontmatter {
         title
+        description
         updatedOnDate(formatString: "MMMM Do, YYYY")
       }
     }

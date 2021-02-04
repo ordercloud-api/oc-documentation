@@ -25,6 +25,8 @@ import { seafoam } from '../../theme/ocPalette.constants'
 import AlertContainer from '../Shared/Alert'
 import { RouteComponentProps } from '@reach/router'
 import { useDocsSections } from '../../hooks/useDocsSections'
+import ContentLink from '../Shared/ContentLink'
+import CodeExample from '../Shared/CodeExample'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -127,6 +129,8 @@ export default (props: LayoutProps) => {
         <div className={classes.pageWrapper}>
           <MDXProvider
             components={{
+              ContentLink,
+              CodeExample,
               h1: h1Props => (
                 <Typography
                   {...h1Props}
@@ -183,7 +187,7 @@ export default (props: LayoutProps) => {
               ),
               p: pProps => <Typography {...pProps} paragraph variant="body1" />,
               ol: olProps => (
-                <Typography paragraph variant="body1">
+                <Typography paragraph variant="body1" component="span">
                   <ol {...olProps} />
                 </Typography>
               ),

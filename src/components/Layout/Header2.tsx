@@ -184,7 +184,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
                 <Link to="/discover/platform-overview">Discover</Link>
                 <Link to="/">Learn</Link>
                 <Link to="/resources">Resources</Link>
-                <Link to="/">API Reference</Link>
+                <Link to="/api-reference">API Reference</Link>
                 <Link to="/">Community</Link>
                 <div className={classes.grow} />
                 <Link className={classes.registerCta} to="/">

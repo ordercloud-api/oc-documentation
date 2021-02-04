@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  ButtonBase,
   Container,
   createStyles,
   Divider,
@@ -15,6 +16,7 @@ import {
   Typography,
 } from '@material-ui/core/'
 import {
+  Bookmark,
   AccountBalanceTwoTone,
   AttachMoneyTwoTone,
   BusinessTwoTone,
@@ -27,6 +29,7 @@ import {
   PeopleTwoTone,
   PlaylistAddCheckTwoTone,
   StyleTwoTone,
+  MenuBookOutlined,
 } from '@material-ui/icons'
 import React, { useEffect, useLayoutEffect } from 'react'
 import {
@@ -42,6 +45,9 @@ import Jumbotron from '../Shared/Jumbotron'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
 import Prism from 'prismjs'
+import ContentLink from '../Shared/ContentLink'
+import CodeExample, { MOCK_CONTENT } from '../Shared/CodeExample'
+import { Link } from 'gatsby'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -69,6 +75,9 @@ const useStyles = makeStyles((theme: Theme) =>
     paperRoot: {
       zIndex: 1,
       flexGrow: 1,
+    },
+    buttonBase: {
+      borderRadius: theme.shape.borderRadius,
     },
     paperCard: {
       position: 'relative',
@@ -147,224 +156,247 @@ const MainComponent: React.FunctionComponent = props => {
       <Container maxWidth="lg">
         <Grid container className={classes.cardWrapper} spacing={3}>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
-            <Paper elevation={5} className={classes.paperCard}>
-              <Typography
-                className={classes.paperTitleHeading}
-                variant="h4"
-                component="h2"
-              >
-                Discover Your
-                <br />
-                Marketplace
-              </Typography>
-              <Typography
-                className={classes.paperTitleSubheading}
-                variant="subtitle1"
-              >
-                Mirror your unique business using our flexible modeling tools
-                and access controls
-              </Typography>
-              <List>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <LockTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Administrative Roles" />
-                </ListItem>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <PeopleTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Buyers & User Groups" />
-                </ListItem>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <BusinessTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Supplier Management" />
-                </ListItem>
-              </List>
-              <CustomButtonLink
-                fullWidth
-                color={themeConstants.palette.secondary.main}
-                key="intro-to-ordercloud"
-                to="/getting-started/intro-to-ordercloud"
-                variant="outlined"
-              >
-                Read More
-              </CustomButtonLink>
-            </Paper>
+            <ButtonBase
+              className={classes.buttonBase}
+              component={Link}
+              to="/discover/define-your-marketplace"
+            >
+              <Paper elevation={5} className={classes.paperCard}>
+                <Typography
+                  className={classes.paperTitleHeading}
+                  variant="h4"
+                  component="h2"
+                >
+                  Define Your
+                  <br />
+                  Marketplace
+                </Typography>
+                <Typography
+                  className={classes.paperTitleSubheading}
+                  variant="subtitle1"
+                >
+                  Mirror your unique business using our flexible modeling tools
+                  and access controls
+                </Typography>
+                <List>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <LockTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Administrative Roles" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <PeopleTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Buyers & User Groups" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <BusinessTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Supplier Management" />
+                  </ListItem>
+                </List>
+                <CustomButtonLink
+                  fullWidth
+                  color={themeConstants.palette.secondary.main}
+                  to="/discover/define-your-marketplace"
+                  variant="outlined"
+                >
+                  Read More
+                </CustomButtonLink>
+              </Paper>
+            </ButtonBase>
           </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
-            <Paper elevation={5} className={classes.paperCard}>
-              <Typography
-                className={classes.paperTitleHeading}
-                variant="h4"
-                component="h2"
-              >
-                Optimize Product
-                <br />
-                Catalogs
-              </Typography>
-              <Typography
-                className={classes.paperTitleSubheading}
-                variant="subtitle1"
-              >
-                Our robust catalog management system empowers virtually
-                limitless shopping experiences
-              </Typography>
-              <List>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <AttachMoneyTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Personalized Pricing" />
-                </ListItem>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <CategoryTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="PIM Integrations" />
-                </ListItem>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <StyleTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Variable Products" />
-                </ListItem>
-              </List>
-              <CustomButtonLink
-                fullWidth
-                color={themeConstants.palette.secondary.main}
-                key="intro-to-ordercloud"
-                to="/getting-started/intro-to-ordercloud"
-                variant="outlined"
-              >
-                Read More
-              </CustomButtonLink>
-            </Paper>
+            <ButtonBase
+              className={classes.buttonBase}
+              component={Link}
+              to="/getting-started/intro-to-ordercloud"
+            >
+              <Paper elevation={5} className={classes.paperCard}>
+                <Typography
+                  className={classes.paperTitleHeading}
+                  variant="h4"
+                  component="h2"
+                >
+                  Optimize Product
+                  <br />
+                  Catalogs
+                </Typography>
+                <Typography
+                  className={classes.paperTitleSubheading}
+                  variant="subtitle1"
+                >
+                  Our robust catalog management system empowers virtually
+                  limitless shopping experiences
+                </Typography>
+                <List>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <AttachMoneyTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Personalized Pricing" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <CategoryTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="PIM Integrations" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <StyleTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Variable Products" />
+                  </ListItem>
+                </List>
+                <CustomButtonLink
+                  fullWidth
+                  color={themeConstants.palette.secondary.main}
+                  key="intro-to-ordercloud"
+                  to="/getting-started/intro-to-ordercloud"
+                  variant="outlined"
+                >
+                  Read More
+                </CustomButtonLink>
+              </Paper>
+            </ButtonBase>
           </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
-            <Paper elevation={5} className={classes.paperCard}>
-              <Typography
-                className={classes.paperTitleHeading}
-                variant="h4"
-                component="h2"
-              >
-                Integrate Your
-                <br />
-                Checkout
-              </Typography>
-              <Typography
-                className={classes.paperTitleSubheading}
-                variant="subtitle1"
-              >
-                OrderCloud’s event system allows integrating with all major
-                service providers
-              </Typography>
-              <List>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <LocalShippingTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Shipping Estimates" />
-                </ListItem>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <AccountBalanceTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Tax Calculation" />
-                </ListItem>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <CreditCardTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Payments & Promotions" />
-                </ListItem>
-              </List>
-              <CustomButtonLink
-                fullWidth
-                color={themeConstants.palette.secondary.main}
-                key="intro-to-ordercloud"
-                to="/getting-started/intro-to-ordercloud"
-                variant="outlined"
-              >
-                Read More
-              </CustomButtonLink>
-            </Paper>
+            <ButtonBase
+              className={classes.buttonBase}
+              component={Link}
+              to="/getting-started/intro-to-ordercloud"
+            >
+              <Paper elevation={5} className={classes.paperCard}>
+                <Typography
+                  className={classes.paperTitleHeading}
+                  variant="h4"
+                  component="h2"
+                >
+                  Integrate Your
+                  <br />
+                  Checkout
+                </Typography>
+                <Typography
+                  className={classes.paperTitleSubheading}
+                  variant="subtitle1"
+                >
+                  OrderCloud’s event system allows integrating with all major
+                  service providers
+                </Typography>
+                <List>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <LocalShippingTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Shipping Estimates" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <AccountBalanceTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Tax Calculation" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <CreditCardTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Payments & Promotions" />
+                  </ListItem>
+                </List>
+                <CustomButtonLink
+                  fullWidth
+                  color={themeConstants.palette.secondary.main}
+                  key="intro-to-ordercloud"
+                  to="/getting-started/intro-to-ordercloud"
+                  variant="outlined"
+                >
+                  Read More
+                </CustomButtonLink>
+              </Paper>
+            </ButtonBase>
           </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
-            <Paper elevation={5} className={classes.paperCard}>
-              <Typography
-                className={classes.paperTitleHeading}
-                variant="h4"
-                component="h2"
-              >
-                Automate Fullfillment
-                <br />
-                Workflows
-              </Typography>
-              <Typography
-                className={classes.paperTitleSubheading}
-                variant="subtitle1"
-              >
-                Powerful marketplace tools enable automating end-to-end order
-                fulfillment
-              </Typography>
-              <List>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <PlaylistAddCheckTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Approval Rules" />
-                </ListItem>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <ForwardTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Order Forwarding" />
-                </ListItem>
-                <ListItem disableGutters>
-                  <ListItemAvatar>
-                    <Avatar className={classes.avatar} variant="rounded">
-                      <FindInPageTwoTone color="primary" />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Shipment Tracking" />
-                </ListItem>
-              </List>
-              <CustomButtonLink
-                fullWidth
-                color={themeConstants.palette.secondary.main}
-                key="intro-to-ordercloud"
-                to="/getting-started/intro-to-ordercloud"
-                variant="outlined"
-              >
-                Read More
-              </CustomButtonLink>
-            </Paper>
+            <ButtonBase
+              className={classes.buttonBase}
+              component={Link}
+              to="/getting-started/intro-to-ordercloud"
+            >
+              <Paper elevation={5} className={classes.paperCard}>
+                <Typography
+                  className={classes.paperTitleHeading}
+                  variant="h4"
+                  component="h2"
+                >
+                  Automate Fullfillment
+                  <br />
+                  Workflows
+                </Typography>
+                <Typography
+                  className={classes.paperTitleSubheading}
+                  variant="subtitle1"
+                >
+                  Powerful marketplace tools enable automating end-to-end order
+                  fulfillment
+                </Typography>
+                <List>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <PlaylistAddCheckTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Approval Rules" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <ForwardTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Order Forwarding" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <FindInPageTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Shipment Tracking" />
+                  </ListItem>
+                </List>
+                <CustomButtonLink
+                  fullWidth
+                  color={themeConstants.palette.secondary.main}
+                  key="intro-to-ordercloud"
+                  to="/getting-started/intro-to-ordercloud"
+                  variant="outlined"
+                >
+                  Read More
+                </CustomButtonLink>
+              </Paper>
+            </ButtonBase>
           </Grid>
         </Grid>
       </Container>
