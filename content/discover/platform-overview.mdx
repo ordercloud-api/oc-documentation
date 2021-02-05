@@ -8,12 +8,12 @@ OrderCloud is a B2B-first commerce and marketplace development platform, OrderCl
 
 Wherever your business needs to go tomorrow, you’re ready to lead the way.
 
-[[INSERT IMAGE]]
+![Infrastructure Architecture](/images/discover/792_oc_platform_overview-1.png)
 
 ## Why We’re Different
 For large, complex, and highly distributed businesses who want to sell online and/or extend online selling capabilities across their supply chain, OrderCloud provides a reliable platform for developing custom online commerce solutions that go far beyond a simple shopping cart. Whether you’re selling B2C, B2B, or B2B2X, connect your products, services, and information to your infinite different buyer-types.
 
-[[INSERT DIAGRAM]]
+![Modeling Your Business on OrderCloud vs. B2C-Only Platforms](/images/discover/792_oc_platform_overview-2.png)
 
 OrderCloud is ideal for organizations who know the complexity of doing business should be modernized and managed and delivered through multiple experiences, no matter the persona of the buyer, seller, or supplier.  While there are many options out there, you want to pick a platform that mirrors the make-up of your business so as you customize and extend, you work with the domain of your business, not just part of it.
 
@@ -71,7 +71,7 @@ There are two main concepts to manage and customize the use of OrderCloud by cli
 ### Connecting Multiple solutions
 To support an eco-system of applications and 3rd party systems accessing your marketplace on OrderCloud, we have the concept of API Clients which represents an application client.  You can set up any number of API Clients to secure access to data as your shopping website vs. a supplier order management portal vs. an administrative tool.  API Clients are also used for automated system to system integrations, so you can control what 3rd party systems have access to what parts of your OrderCloud instance.
 
-[[INSERT DIAGRAM]]
+![OrderCloud Omni-Channel Integration with API Clients](/images/discover/792_oc_platform_overview-3.png)
 
 Additionally, if you offer unique branded experiences to different buyer organizations or franchises, you can set up an API Client per personalized site which gives you the freedom to configure individual extensions (webhooks and integration events) to manage the unique needs of multiple applications scenarios, while running off of one OrderCloud organization for your business.
 
@@ -80,7 +80,7 @@ With OrderCloud, not only can you access and work with any resource directly, bu
 
 This keeps your client applications simple and intuitive in not having to deal with any growing complexity or details of the organization, may it be a simple B2C-like setup, or a complex B2B organization with different buyer configurations-- the ‘Me’ APIs all work exactly the same.
 
-[[INSERT DIAGRAM]]
+![OrderCloud Experience API 'Me' Endpoints](/images/discover/792_oc_platform_overview-4.png)
 
 Lastly, the ‘Me’ resources provide access to administer things just about themselves.  This also keeps your user access model and permissions secure, while allowing you to selectively offer impersonation capabilities as the owner to support users of your marketplace.
 
@@ -93,7 +93,7 @@ To facilitate extensibility, OrderCloud relies on a couple of key approaches:
 - **Webhooks** - These are user-defined HTTP callbacks.  You can easily register them for your entire organization or on an application-specific level, selectively configuring them for any API endpoint as a callback.  When someone calls an API on OrderCloud, it will call your Webhook, along with the same request body that was sent to OrderCloud, allowing you to modify or simply get a copy of each API call.
 - **Integration Events** - These are specific areas in OrderCloud where the logic can be extended or delegated around business processes, like determining shipping options.  Not everything needs to be pre-configured or managed within OrderCloud, and these integration events are a great way to delegate externally.
 
-[[INSERT DIAGRAM]]
+![OrderCloud Integration for External Business Logic](/images/discover/792_oc_platform_overview-5.png)
 
 Just a few sample scenarios to consider:
 - **Realtime Pricing and Inventory** - Instead of storing estimated inventory or loading a current price into OrderCloud, you can delegate to your ERP, WMS, or pricing system through middleware or a serverless function to mediate with your clients.

@@ -23,7 +23,9 @@ interface DocTemplateProps extends RouteComponentProps {
       fileAbsolutePath: string
       frontmatter: {
         title: string
-        updatedOnDate: number
+        section: string
+        description: string
+        priority: number
       }
     }
   }
@@ -32,8 +34,20 @@ interface DocTemplateProps extends RouteComponentProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    pageSection: {
+      paddingTop: '1.75rem',
+      color: theme.palette.grey[500],
+    },
     pageTitle: {
+      paddingTop: 0,
       marginBottom: theme.spacing(3),
+    },
+    pageDescription: {
+      fontWeight: 'bold',
+      marginBottom: theme.spacing(3),
+      // fontSize: theme.typography.h6.fontSize,
+      fontStyle: 'italic',
+      color: theme.palette.grey[700],
     },
     editButton: {
       marginBottom: theme.spacing(3),
@@ -63,11 +77,17 @@ export default function Template(props: DocTemplateProps) {
 
   return (
     <Layout location={props.location}>
-      <Helmet title={`Four51 OrderCloud | ${doc.mdx.frontmatter.title}`} />
+      <Helmet title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`} />
       <LayoutContainer>
         <LayoutMain>
+          <Typography variant="h5" className={classes.pageSection}>
+            {doc.mdx.frontmatter.section}
+          </Typography>
           <Typography variant="h1" className={classes.pageTitle}>
             {doc.mdx.frontmatter.title}
+          </Typography>
+          <Typography className={classes.pageDescription}>
+            {doc.mdx.frontmatter.description}
           </Typography>
           <ButtonlinkExternal
             className={classes.editButton}
@@ -81,11 +101,11 @@ export default function Template(props: DocTemplateProps) {
             />
             Edit this doc
           </ButtonlinkExternal>
-          {doc.mdx.frontmatter.updatedOnDate && (
+          {/* {doc.mdx.frontmatter.updatedOnDate && (
             <Typography color="textSecondary" variant="caption">
               Last Updated {doc.mdx.frontmatter.updatedOnDate}
             </Typography>
-          )}
+          )} */}
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
           <DocFooter contents={sections} currentGuide={absolutePath} />
         </LayoutMain>
@@ -103,8 +123,10 @@ export const query = graphql`
       body
       fileAbsolutePath
       frontmatter {
+        section
         title
-        updatedOnDate(formatString: "MMMM Do, YYYY")
+        description
+        priority
       }
     }
   }

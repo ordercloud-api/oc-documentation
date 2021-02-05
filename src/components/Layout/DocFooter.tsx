@@ -45,8 +45,13 @@ const styles = (theme: Theme) =>
     },
     btnNavigation: {
       display: 'flex',
-      justifyContent: 'center',
       width: '100%',
+      '&-Previous': {
+        justifyContent: 'flex-start',
+      },
+      '&-Next': {
+        justifyContent: 'flex-end',
+      },
     },
     typographyMain: {
       marginBlockEnd: '1rem;',
@@ -92,9 +97,9 @@ class DocFooter extends React.Component<any> {
     const directionalButton = direction => {
       const newGuideIndex =
         direction === 'Previous' ? guideIndex - 1 : guideIndex + 1
-      return newGuideIndex > 0 && newGuideIndex < flatContents.length - 1 ? (
+      return newGuideIndex >= 0 && newGuideIndex <= flatContents.length - 1 ? (
         <Button
-          className={classes.btnNavigation}
+          className={`${classes.btnNavigation} ${classes.btnNavigation}-${direction}`}
           size="small"
           color="primary"
           component={buildDirectionLink(flatContents[newGuideIndex].path)}

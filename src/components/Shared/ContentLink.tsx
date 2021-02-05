@@ -30,6 +30,7 @@ import React, {
   ReactElement,
   useMemo,
 } from 'react'
+import { flame } from '../../theme/ocPalette.constants'
 
 interface ContentLinkProps {
   icon?: ReactElement
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
       border: `1px solid ${theme.palette.grey[400]}`,
     },
     avatar: {
-      backgroundColor: theme.palette.secondary.light,
+      backgroundColor: flame[400],
     },
     link: {
       textDecoration: 'none',

@@ -3,7 +3,7 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 const docsQuery = `{
-  docs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/docs/**/*.mdx"}}) {
+  docs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/learn/**/*.mdx"}}) {
     edges {
       node {
         objectID: id
@@ -11,8 +11,8 @@ const docsQuery = `{
         frontmatter {
           section
           title
-          summary
-          authors
+          description
+          priority
         }
         excerpt(pruneLength:5000)
       }

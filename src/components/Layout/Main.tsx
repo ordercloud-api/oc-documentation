@@ -132,15 +132,15 @@ const MainComponent: React.FunctionComponent = props => {
         actions={[
           <CustomButtonLink
             color="#fff"
-            key="intro-to-ordercloud"
+            key="platform-overview"
             to="/discover/platform-overview"
             variant="contained"
           >
             Platform Overview
           </CustomButtonLink>,
           <CustomButtonLink
-            key="main-concepts"
-            to="/resources"
+            key="developers"
+            to="/ordercloud-basics/architecture"
             variant="contained"
             color={flame[600]}
           >

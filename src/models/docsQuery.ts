@@ -9,6 +9,8 @@ export interface DocsQuery {
           frontmatter: {
             section: string
             title: string
+            description: string
+            priority: number
           }
         }
       }

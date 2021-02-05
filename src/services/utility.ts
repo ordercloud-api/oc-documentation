@@ -12,10 +12,11 @@ const service = {
 }
 
 const DOCS_SECTION_ORDER = [
+  'OrderCloud Basics',
   'Getting Started',
-  'Main Concepts',
-  'Features',
-  'Guides',
+  'Product Catalogs',
+  'Buyer Perspective',
+  'Order Fulfillment',
 ]
 
 function getOffsetTop(element) {
@@ -63,21 +64,7 @@ function getSectionsFromDocsQuery(query: DocsQuery): Section[] {
 }
 
 const sortGuides = (sectionTitle: string) => (first: Guide, second: Guide) => {
-  if (sectionTitle === 'Main Concepts' || sectionTitle === 'Getting Started') {
-    // sort by priority
-    return (
-      parseInt(first.frontmatter.priority, 10) -
-      parseInt(second.frontmatter.priority, 10)
-    )
-  }
-  // sort alphabetically
-  if (first.frontmatter.title < second.frontmatter.title) {
-    return -1
-  }
-  if (first.frontmatter.title > second.frontmatter.title) {
-    return 1
-  }
-  return 0
+  return first.frontmatter.priority - second.frontmatter.priority
 }
 
 /**
@@ -85,8 +72,8 @@ const sortGuides = (sectionTitle: string) => (first: Guide, second: Guide) => {
  */
 function resolvePath(fileAbsolutePath: string): string {
   const path = fileAbsolutePath.split('/content')[1].replace('.mdx', '')
-  if (path.startsWith('/docs')) {
-    return path.replace('/docs', '') // served from root
+  if (path.startsWith('/learn')) {
+    return path.replace('/learn', '') // served from root
   }
   return path
 }
