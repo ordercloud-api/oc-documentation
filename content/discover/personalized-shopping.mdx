@@ -15,7 +15,7 @@ Products can be assigned to any number of catalogs, and subsequently organized i
 
 <ContentLink to="/ordercloud-basics/building-blocks" subtitle="Developer Guide" type="education">Catalog Assignments & Visibility Rules</ContentLink>
 
-[[INSERT DIAGRAM]]
+![Catalog Visibility Rules](/images/discover/792_oc_personalized_shopping.png)
 
 ### Searching Catalogs
 OrderCloud has the capability to power rich search experiences, including faceted navigation, versatile sorting, ad-hoc filtering, and type ahead-searching.  Searches are usually done as an authenticated user through the ‘Me’ endpoints, which handle all of the nuances of catalog and product visibility rules assigned.  Specific features you should be familiar with include:
@@ -30,16 +30,14 @@ OrderCloud has the capability to power rich search experiences, including facete
 ### Versitile Taxonomies
 Categories are a way to define your product hierarchy, which can be of arbitrary depth.  Thinking in terms of a large retail store, you may have top-level categories like Home Goods, Grocery, Electronics, Clothing, and Toys-- with subsequent subcategories to help guide users through the browsing process.
 
-If you just sell clothing, then your category hierarchy might be by gender or clothing type.  You can additionally put those same products in seasonal category buckets at the same time.
+If you just sell clothing, then your category hierarchy might be by color or clothing type.  You can additionally put those same products in seasonal category buckets at the same time.
 
 <ContentLink to="/api-reference/product-catalogs/categories" subtitle="API Reference" type="bookmark">OrderCloud Categories</ContentLink>
 
-[[INSERT DIAGRAM]]
+![Example Category Taxonomies](/images/discover/792_oc_personalized_shopping2.png)
 
 ## Product Configuration
 Products are housed globally for the whole organization and configured to be visible based on the setup of catalogs.  This creates a lot of versatility in how your market and deliver catalogs to multiple channels and buyers.
-
-[[INSERT IMAGE]]
 
 A product can represent a physical, digital, or abstract good that you want to allow buyers to order, including the specific variant (color, size, material, etc).  OrderCloud supports very complex use cases, such as populating multiple inputs from the buyer to produce a custom, printed sign or business card-- or even the specifications for buying a car.
 
@@ -58,8 +56,6 @@ Not only can you assign products to any number of catalogs unique to the markets
 - UNSPSC coding and category assignments
 - Supplemental images to use or links to product manuals
 
-[[INSERT IMAGE]]
-
 <ContentLink to="/api-reference/product-catalogs" subtitle="Developer Guide" type="education">Creating Facets Using Product XP</ContentLink>
 
 ### Product Specs and Variants
@@ -71,8 +67,6 @@ OrderCloud can represent this through two key concepts:
 - **Product Variants** - Represent the specific SKU or product number tied to a combination of specs.  So if you have 3 different colors and 3 sizes, then 9 variants can be generated.
 
 Based on product specs, OrderCloud can both automatically generate variants for you and select the right variant automatically based on a buyer's selection of specifications.
-
-[[INSERT IMAGE]]
 
 ### Product suppliers
 Products can be offered by multiple suppliers in the marketplace.  Products have a default supplier assigned that offers the product, but you can associate a product to multiple suppliers at a time.

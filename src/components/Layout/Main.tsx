@@ -17,10 +17,13 @@ import {
 } from '@material-ui/core/'
 import {
   AccountBalanceTwoTone,
+  AccountTree,
   AttachMoneyTwoTone,
   BusinessTwoTone,
   CategoryTwoTone,
+  Code,
   CreditCardTwoTone,
+  Extension,
   FindInPageTwoTone,
   ForwardTwoTone,
   LocalShippingTwoTone,
@@ -130,14 +133,14 @@ const MainComponent: React.FunctionComponent = props => {
         heading="A B2B-First Marketplace Platform"
         text="Build your own marketplace with an API-first, cloud native platform ready to create your own best-of-breed experience with unbounded scalability. We already power custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
         actions={[
-          <CustomButtonLink
-            color="#fff"
-            key="platform-overview"
-            to="/discover/platform-overview"
-            variant="contained"
-          >
-            Platform Overview
-          </CustomButtonLink>,
+          // <CustomButtonLink
+          //   color="#fff"
+          //   key="platform-overview"
+          //   to="/discover/platform-overview"
+          //   variant="contained"
+          // >
+          //   Platform Overview
+          // </CustomButtonLink>,
           <CustomButtonLink
             key="developers"
             to="/ordercloud-basics/architecture"
@@ -150,6 +153,66 @@ const MainComponent: React.FunctionComponent = props => {
       />
       <Container maxWidth="lg">
         <Grid container className={classes.cardWrapper} spacing={3}>
+          <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
+            <ButtonBase
+              className={classes.buttonBase}
+              component={Link}
+              to="/discover/platform-overview"
+            >
+              <Paper elevation={5} className={classes.paperCard}>
+                <Typography
+                  className={classes.paperTitleHeading}
+                  variant="h4"
+                  component="h2"
+                >
+                  Platform
+                  <br />
+                  Overview
+                </Typography>
+                <Typography
+                  className={classes.paperTitleSubheading}
+                  variant="subtitle1"
+                >
+                  Wherever your business needs to go tomorrow, you’re ready to
+                  lead the way.
+                </Typography>
+                <List>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <Code color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Developer Friendly" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <AccountTree color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Omni-Channel Integration" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <Extension color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Platform Extensibility" />
+                  </ListItem>
+                </List>
+                <CustomButtonLink
+                  fullWidth
+                  color={themeConstants.palette.secondary.main}
+                  to="/discover/define-your-marketplace"
+                  variant="outlined"
+                >
+                  Read More
+                </CustomButtonLink>
+              </Paper>
+            </ButtonBase>
+          </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
             <ButtonBase
               className={classes.buttonBase}
@@ -274,7 +337,7 @@ const MainComponent: React.FunctionComponent = props => {
             <ButtonBase
               className={classes.buttonBase}
               component={Link}
-              to="/getting-started/intro-to-ordercloud"
+              to="/discover/flexible-fulfillment"
             >
               <Paper elevation={5} className={classes.paperCard}>
                 <Typography
@@ -282,68 +345,7 @@ const MainComponent: React.FunctionComponent = props => {
                   variant="h4"
                   component="h2"
                 >
-                  Integrate Your
-                  <br />
-                  Checkout
-                </Typography>
-                <Typography
-                  className={classes.paperTitleSubheading}
-                  variant="subtitle1"
-                >
-                  OrderCloud’s event system allows integrating with all major
-                  service providers
-                </Typography>
-                <List>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <LocalShippingTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Shipping Estimates" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <AccountBalanceTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Tax Calculation" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <CreditCardTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Payments & Promotions" />
-                  </ListItem>
-                </List>
-                <CustomButtonLink
-                  fullWidth
-                  color={themeConstants.palette.secondary.main}
-                  key="intro-to-ordercloud"
-                  to="/getting-started/intro-to-ordercloud"
-                  variant="outlined"
-                >
-                  Read More
-                </CustomButtonLink>
-              </Paper>
-            </ButtonBase>
-          </Grid>
-          <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
-            <ButtonBase
-              className={classes.buttonBase}
-              component={Link}
-              to="/getting-started/intro-to-ordercloud"
-            >
-              <Paper elevation={5} className={classes.paperCard}>
-                <Typography
-                  className={classes.paperTitleHeading}
-                  variant="h4"
-                  component="h2"
-                >
-                  Automate Fullfillment
+                  Flexible Fullfillment
                   <br />
                   Workflows
                 </Typography>
@@ -383,8 +385,7 @@ const MainComponent: React.FunctionComponent = props => {
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}
-                  key="intro-to-ordercloud"
-                  to="/getting-started/intro-to-ordercloud"
+                  to="/discover/flexible-fulfillment"
                   variant="outlined"
                 >
                   Read More

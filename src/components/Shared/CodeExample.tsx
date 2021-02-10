@@ -49,6 +49,19 @@ const useStyles = makeStyles((theme: Theme) =>
     grow: {
       flexGrow: 1,
     },
+    contentContainer: {
+      position: 'relative',
+      '&:hover > $copyButton': {
+        opacity: 1,
+      },
+    },
+    copyButton: {
+      opacity: 0,
+      position: 'absolute',
+      right: theme.spacing(1),
+      top: theme.spacing(1),
+      color: theme.palette.common.white,
+    },
   })
 )
 
@@ -148,16 +161,19 @@ const CodeExample: FunctionComponent<CodeExampleProps> = (
             </ToggleButton>
           )}
         </ToggleButtonGroup>
-        <div className={classes.grow} />
+      </Toolbar>
+      <Paper
+        component="pre"
+        className={`${classes.contentContainer} language-${language}`}
+      >
         <IconButton
+          className={classes.copyButton}
           size="small"
           onClick={handleCopyClick}
           title="Copy to clipboard"
         >
           <FileCopyOutlined />
         </IconButton>
-      </Toolbar>
-      <Paper component="pre" className={`language-${language}`}>
         <code
           className={`language-${language}`}
           dangerouslySetInnerHTML={{ __html: currentContent }}
