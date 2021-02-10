@@ -6,6 +6,9 @@ import Case from 'case'
 export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
+  const discoverTemplate = resolve(
+    'src/components/Templates/DiscoverTemplate.tsx'
+  )
   const docTemplate = resolve('src/components/Templates/DocTemplate.tsx')
   const blogTemplate = resolve('src/components/Templates/BlogTemplate.tsx')
   const releaseNotesTemplate = resolve(
@@ -39,8 +42,11 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
         .replace('.mdx', '')
 
       let component
-      if (path.startsWith('/docs')) {
-        path = path.replace('/docs', '') // served from root
+      if (path.startsWith('/discover')) {
+        component = discoverTemplate
+      } else if (path.startsWith('/learn')) {
+        console.log(path)
+        path = path.replace('/learn', '') // served from root
         component = docTemplate
       } else if (path.startsWith('/blog')) {
         component = blogTemplate
@@ -48,6 +54,8 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
         component = releaseNotesTemplate
       } else if (path.startsWith('/portal-release-notes')) {
         component = portalReleaseNotesTemplate
+      } else if (path.startsWith('/docs')) {
+        return
       } else {
         throw new Error(`Can't resolve path ${edge.node.fileAbsolutePath}`)
       }

@@ -1,0 +1,58 @@
+---
+section: 'OrderCloud Basics'
+title: 'Architecture'
+description: 'Learn about the architecture of OrderCloud that enables billions of dollars in B2B commerce every year.'
+priority: 0
+---
+
+OrderCloud is a cloud-hosted B2B eCommerce platform exposed entirely via a RESTful API. It enables rapid development of custom, secure, and scalable B2B eCommerce solutions. Spin up a fully functional B2B app in minutes and customize it to the limits of your imagination.
+
+## Benefits of a RESTful API
+Whether it's the central hub of a mobile purchasing app or one small piece of a larger microservices-based solution, the benefits of a RESTful API vs. other approaches are clear.
+
+### Language Agnostic
+OrderCloud is language agnostic and API-first. This means you can access all of the domain through an Open API specification by using any of our SDKs or by generating your own clients with your preferred development stack. Plus, releases are automatic and non-breaking; there's a clear, inherent boundary between our code and yours. Nearly all modern web and mobile front-end frameworks are designed to work well out of the box with JSON-over-HTTP services that follow RESTful patterns.
+
+### Scalability
+Unlike on-premise solutions, server infrastructure and data security are taken care of for you. Start small and scale up only as your business usage grows. Unlike SaaS products, your ability to customize user interfaces and workflows is virtually limitless.
+
+### Best-of-Breed
+OrderCloud plays nicely with other similarly architected services. We are entering the age of [microservices](https://martinfowler.com/articles/microservices.html), where best-of-breed solutions are not built from scratch. Rather, they are assembled from the best parts. Our "part" is B2B eCommerce and Order Management, a complex domain in which we have been building and refining an incredibly rich and flexible data model since 1999.
+
+- **OAuth 2.0** - OrderCloud API authentication is based on the OAuth 2 specification and supports multiple workflows, including SSO.
+- **SSL** - API access is only allowed via HTTPS; connections on port 80 are refused entirely.
+- **Environments** - OrderCloud Environments enables developers to play around in Sandbox, test their applications in Staging, all without affecting the performance of Production.
+- **Open API 3.0** - Our Open API specification is generated straight from our source code and takes advantage of the latest Open API features, ensuring an accurate and programmatically useful description of every endpoint, model, and property.
+
+## Flexibility Over Features
+OrderCloud is constantly evolving. But we've learned that we don't need to be experts at everything. We believe the best B2B solutions on the planet will not be built from scratch nor offered out-of-the box via SaaS. Rather, they'll be assembled out of distributed, best-in-breed components. We're the engine. We don't make tires or steering wheels or leather-upholstered bucket seats. But we can help you assemble all the best parts, and we think the result will be the shiniest, fastest car on the block.
+
+### Extensible Everywhere
+Virtually _every_ model in OrderCloud can be extended to meet your specific needs. This embodies our core value of flexibility and when combined with our native assignment-based relationships and Webhooks system it's easy to keep legacy systems in sync while augmenting them with powerful B2B commerce at the same time.
+
+<CodeExample
+  title="Filtering Buyers using XP"
+  description="This example will return all your Buyers who are in your ‘USNW’ sales region"
+  content={{
+    http: `GET https://api.ordercloud.io/buyers?filters=xp.MySalesRegion=USNW HTTP/1.1
+Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Content-Type: application/json; charset=UTF-8`,
+javascript: `import { Buyers } from "ordercloud-javascript-sdk";\n
+Buyers.List({ filters: { 'xp.MySalesRegion': 'USNW' } })
+    .then( buyerList => {
+        console.log(buyerList);
+    });`,
+typescript: `import { ListPage, Buyer, Buyers } from "ordercloud-javascript-sdk";\n
+Buyers.List({ filters: { 'xp.MySalesRegion': 'USNW' } })
+    .then( (response: ListPage<Buyers>) => {
+        console.log(response);
+    });`,
+csharp: `using OrderCloud.SDK;\n
+var ocClient = new OrderCloudClient(...);\n
+ListPage<Buyer> response = await ocClient.Buyers.ListAsync(filters: new {
+    "xp.MySalesRegion" = "USNW" 
+});`
+}}
+/>
+
+

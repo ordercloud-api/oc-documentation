@@ -26,6 +26,7 @@ import ApiReferenceMenu, {
   ApiReferenceMenuData,
 } from '../Layout/ApiReferenceMenu'
 import Layout from '../Layout/Layout'
+import utility from '../../services/utility'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
@@ -79,8 +80,8 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
   useLayoutEffect(() => {
     if (!props.location.hash) return
     const el = document.getElementById(props.location.hash.split('#')[1])
-    if (!(el && el.offsetParent)) return
-    window.scrollTo(0, (el.offsetParent as HTMLElement).offsetTop)
+    if (!el) return
+    window.scrollTo(0, utility.getOffsetTop(el))
   }, [props.location.hash])
 
   const defaultDescription =
@@ -127,7 +128,11 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
       />
       {!pageContext.section && (
         <React.Fragment>
-          <Jumbotron heading="API Reference" text={defaultDescription} />
+          <Jumbotron
+            overlayed={true}
+            heading="API Reference"
+            text={defaultDescription}
+          />
           <Container>
             <Grid container spacing={3} className={classes.apiRefGrid}>
               {pageContext.menuData.map(s => (

@@ -5,9 +5,10 @@
   "version": "1.0.37",
   "author": "Rob Watt <rwatt@four51.com>",
   "dependencies": {
-    "@material-ui/core": "^4.8.2",
-    "@material-ui/icons": "^4.5.1",
-    "@material-ui/styles": "^4.8.2",
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@material-ui/styles": "^4.11.2",
     "@mdx-js/mdx": "^1.5.3",
     "@mdx-js/react": "^1.5.3",
     "algoliasearch": "^3.35.1",
@@ -50,6 +51,7 @@
     "react-loading-overlay": "^1.0.1",
     "react-particles-js": "^2.7.0",
     "react-spinners": "^0.7.1",
+    "replace-special-characters": "^1.0.2",
     "smooth-scroll": "^16.1.0",
     "swagger-parser": "8.0.3",
     "universal-cookie": "^4.0.2"

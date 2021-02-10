@@ -1,0 +1,156 @@
+---
+section: 'Getting Started'
+title: 'Making Your First Request'
+description: 'Learn the basics of OrderCloud authentication and using OAuth tokens in subsequent requests.'
+priority: 4
+---
+
+> This guide assumes you have completed all of the steps in [Establishing API Access](/getting-started/establishing-api-access), if you skipped ahead please go back now and follow along with that guide.
+
+## Moving Forward
+Up until now you've been using the API Console to make requests. From now on you will be using some sort of client outside of the Portal, whether it be [PostMan](https://www.postman.com/) or a simple script running in the browser. 
+
+We have some open source packages available to aid in the development process for Javascript and C# solutions. we will be providing examples in raw HTTP format as well as in our JS/TS and C# SDKs to help you learn OrderCloud in the language that best suites your needs.
+
+If you want to use PostMan you can [import our Open API Specification](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman) located [here](https://api.ordercloud.io/v1/openapi/v3).
+
+Otherwise check out our resources section for more information on our installable packages.
+
+<ContentLink to="/resources" subtitle="Related Content" type="developer">Developer Resources</ContentLink>
+
+## Retrieving an Access Token
+OrderCloud uses OAuth 2.0 for token-based authentication. This means that each API request to OrderCloud requires a valid access token which can be acquired through a variety of OAuth workflows. For this walkthrough we will be focusing on the commonly used Password workflow, where an end user provides their account credentials (username/password) to generate an access token.
+
+In the example below we are retrieving, and in some examples also storing an access token using the ID of the API Client we created in the last guide. Notice that we are also requesting a certain "scope" or list of OrderCloud API roles that we think the user should have access to.
+
+<CodeExample
+  title="Password Grant-Type Workflow"
+  content={{
+    http: `POST https://api.ordercloud.io/v1/oauth/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded;\n
+{
+    client_id: "INSERT_SHARED_API_CLIENT_ID",
+    grant_type: "password",
+    username: "admin01",
+    password: "INSERT_ADMIN_USER_PASSWORD",
+    scope: "CatalogAdmin BuyerReader MeAdmin InventoryAdmin PasswordReset OrderAdmin PriceScheduleAdmin ProductAdmin ProductAssignmentAdmin ShipmentAdmin",
+}`,
+javascript: `import { Auth, Tokens } from "ordercloud-javascript-sdk";\n
+var username = "admin01";
+var password = "INSERT_ADMIN_USER_PASSWORD";
+var clientID = "INSERT_SHARED_API_CLIENT_ID";
+var scope = [
+    "CatalogAdmin",
+    "BuyerReader",
+    "MeAdmin",
+    "InventoryAdmin",
+    "PasswordReset",
+    "OrderAdmin",
+    "PriceScheduleAdmin",
+    "ProductAdmin",
+    "ProductAssignmentAdmin",
+    "ShipmentAdmin"
+];\n
+Auth.Login(username, password, clientID, scope)
+  .then(response => {
+      // store token, now any subsequent calls will
+      // automatically set this token in the headers for you
+      const token = response.access_token;
+      Tokens.setAccessToken(token)
+  })
+  .catch(err => console.log(err));`,
+typescript: `import { 
+    ApiRole,
+    AccessToken,
+    OrderCloudError,
+    Auth,
+    Tokens 
+} from "ordercloud-javascript-sdk";\n
+var username:string = "admin01";
+var password:string = "INSERT_ADMIN_USER_PASSWORD";
+var clientID:string = "INSERT_SHARED_API_CLIENT_ID";
+var scope:ApiRole[] = [
+    "CatalogAdmin",
+    "BuyerReader",
+    "MeAdmin",
+    "InventoryAdmin",
+    "PasswordReset",
+    "OrderAdmin",
+    "PriceScheduleAdmin",
+    "ProductAdmin",
+    "ProductAssignmentAdmin",
+    "ShipmentAdmin"
+];\n
+Auth.Login(username, password, clientID, scope)
+  .then((response: AccessToken) => {
+      // store token, now any subsequent calls will
+      // automatically set this token in the headers for you
+      const token = response.access_token;
+      Tokens.setAccessToken(token)
+  })
+  .catch((err: OrderCloudError) => console.log(err));`,
+csharp: `using OrderClould.SDK;\n
+var client = new OrderCloudClient(new OrderCloudClientConfig {
+    ClientId = "INSERT_SHARED_API_CLIENT_ID",
+    Username = "admin01",
+    Password = "INSERT_ADMIN_USER_PASSWORD"
+    Roles = new[] { 
+        ApiRole.CatalogAdmin
+        ApiRole.BuyerReader
+        ApiRole.MeAdmin
+        ApiRole.InventoryAdmin
+        ApiRole.PasswordReset
+        ApiRole.OrderAdmin
+        ApiRole.PriceScheduleAdmin
+        ApiRole.ProductAdmin
+        ApiRole.ProductAssignmentAdmin
+        ApiRole.ShipmentAdmin
+    }
+});`}}
+/>
+
+If you request a scope that includes _more_ API roles than the user in questions `AvailableRoles` you will not recieve an error. Instead, the token will simply be attached whatever roles the user _does_ have in your requested scope. This allows you to maintain a single all encompassing scope variable for your implementation and use it for any authentication request.
+
+OrderCloud does not differentiate between incorrect username vs. incorrect password requests to avoid password enumeration. Here are the possible OrderCloud error codes for this particular request:
+
+- **InvalidGrant** - The requested API Client does not exist or is not available for the username provided
+- **asdf** - The provided credentials do not match any account on record for the provided client
+
+## Using the Access Token
+Once you have successfully retrieved (and stored, if using one of our SDKs) an `access_token`, you will be able to use it in subsequent API requests like so:
+
+<CodeExample
+  title="Authenticating Subsequent API Requests"
+  content={{
+    http: `GET https://api.ordercloud.io/v1/me HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Me } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Me.Get()
+  .then(response => {
+      // returns the currently authenticated user object
+      console.log(response);
+  })
+  .catch(err => console.log(err));\n
+// --- or --- \n
+Me.Get({
+    accessToken: "INSERT_ACCESS_TOKEN_HERE"
+})
+  .then(response => {
+      // returns the currently authenticated user object
+      console.log(response);
+  })
+  .catch(err => console.log(err));`,
+typescript: `import { Me, MeUser, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Me.Get()
+  .then((response:MeUser) => {
+      // returns the currently authenticated user object
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderClould.SDK;\n
+// see previous example for configuring OrderCloudClient
+var client = new OrderCloudClient(...);\n
+var myself:MeUser = await client.Me.GetAsync();`}}
+/>

@@ -17,22 +17,23 @@ export const drawerWidthSpacing = drawerWidthSpacingLg - 20
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     section: {
-      cursor: 'pointer',
       color: theme.palette.grey[500],
       display: 'flex',
       alignItems: 'center',
-      marginBottom: theme.spacing(2),
+      marginBottom: 0,
+      paddingTop: 0,
     },
     sectionActive: {
-      marginBottom: 0,
       color: theme.palette.getContrastText(theme.palette.background.paper),
     },
     guides: {
-      marginTop: theme.spacing(2),
+      marginTop: theme.spacing(1),
       marginBottom: theme.spacing(2),
     },
     guide: {
-      lineHeight: 1.75,
+      lineHeight: 1,
+      paddingTop: theme.spacing(0.5),
+      paddingBottom: theme.spacing(1),
       textDecoration: 'none',
       color: theme.palette.getContrastText(theme.palette.background.paper),
     },
@@ -110,57 +111,27 @@ export default function DocMenu(props: DocMenuProps) {
             }`}
             variant="h4"
             component="h5"
-            onClick={handleSetActiveIndex(sindex)}
           >
-            {`${section.title} `}
-            {activeIndex === sindex ? <ExpandLess /> : <ExpandMore />}
+            {section.title}
           </Typography>
-          <Collapse in={activeIndex === sindex} timeout="auto" unmountOnExit>
-            <div className={classes.guides}>
-              {section.guides.map((guide, gindex) => (
-                <Typography
-                  display="block"
-                  key={`${sindex}_${gindex}`}
-                  className={`${classes.guide} ${
-                    currentPath.includes(guide.path)
-                      ? classes.guideActive
-                      : undefined
-                  }`}
-                  to={guide.path}
-                  variant="body1"
-                  component={Link}
-                >
-                  {guide.frontmatter.title}
-                </Typography>
-              ))}
-              {section.title === 'Getting Started' && (
-                <React.Fragment>
-                  <Typography
-                    display="block"
-                    className={classes.guide}
-                    href="https://github.com/ordercloud-api/ordercloud-dotnet-sdk"
-                    target="_blank"
-                    variant="body1"
-                    component="a"
-                  >
-                    OrderCloud .NET SDK
-                    <OpenInNew className={classes.linkIcon} />
-                  </Typography>
-                  <Typography
-                    display="block"
-                    className={classes.guide}
-                    href="https://github.com/ordercloud-api/OrderCloud-JavaScript-SDK"
-                    target="_blank"
-                    variant="body1"
-                    component="a"
-                  >
-                    OrderCloud Javascript SDK
-                    <OpenInNew className={classes.linkIcon} />
-                  </Typography>
-                </React.Fragment>
-              )}
-            </div>
-          </Collapse>
+          <div className={classes.guides}>
+            {section.guides.map((guide, gindex) => (
+              <Typography
+                display="block"
+                key={`${sindex}_${gindex}`}
+                className={`${classes.guide} ${
+                  currentPath.includes(guide.path)
+                    ? classes.guideActive
+                    : undefined
+                }`}
+                to={guide.path}
+                variant="body1"
+                component={Link}
+              >
+                {guide.frontmatter.title}
+              </Typography>
+            ))}
+          </div>
         </React.Fragment>
       ))}
     </nav>

@@ -3,7 +3,7 @@ require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 })
 const docsQuery = `{
-  docs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/docs/**/*.mdx"}}) {
+  docs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/learn/**/*.mdx"}}) {
     edges {
       node {
         objectID: id
@@ -11,8 +11,8 @@ const docsQuery = `{
         frontmatter {
           section
           title
-          summary
-          authors
+          description
+          priority
         }
         excerpt(pruneLength:5000)
       }
@@ -214,14 +214,15 @@ module.exports = toExport
 if (process.env.GATSBY_ALGOLIA_ADMIN_API_KEY) {
   // for local development, don't store GATSBY_ALGOLIA_ADMIN_API_KEY
   // because it will rebuild the algolia index
-  toExport.plugins.push({
-    resolve: `gatsby-plugin-algolia`,
-    options: {
-      appId: process.env.GATSBY_ALGOLIA_APP_ID,
-      apiKey: process.env.GATSBY_ALGOLIA_ADMIN_API_KEY,
-      indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
-      queries,
-      chunkSize: 10000, // default: 1000
-    },
-  })
+  //TODO: Turn this back on once we are about to go live
+  // toExport.plugins.push({
+  //   resolve: `gatsby-plugin-algolia`,
+  //   options: {
+  //     appId: process.env.GATSBY_ALGOLIA_APP_ID,
+  //     apiKey: process.env.GATSBY_ALGOLIA_ADMIN_API_KEY,
+  //     indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
+  //     queries,
+  //     chunkSize: 10000, // default: 1000
+  //   },
+  // })
 }

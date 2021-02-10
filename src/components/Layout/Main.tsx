@@ -1,22 +1,51 @@
 import {
+  Avatar,
   Box,
+  ButtonBase,
   Container,
   createStyles,
+  Divider,
   Grid,
   List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   makeStyles,
   Paper,
   Theme,
   Typography,
 } from '@material-ui/core/'
-import React from 'react'
-import ocLogo from '../../assets/images/four51-logo-nopyramid--full-color.svg'
-import { darkgrey, mediumgrey, flame } from '../../theme/ocPalette.constants'
-import Jumbotron from '../Shared/Jumbotron'
-import ListItemLink from '../Shared/ListItemLink'
+import {
+  AccountBalanceTwoTone,
+  AccountTree,
+  AttachMoneyTwoTone,
+  BusinessTwoTone,
+  CategoryTwoTone,
+  Code,
+  CreditCardTwoTone,
+  Extension,
+  FindInPageTwoTone,
+  ForwardTwoTone,
+  LocalShippingTwoTone,
+  LockTwoTone,
+  PeopleTwoTone,
+  PlaylistAddCheckTwoTone,
+  StyleTwoTone,
+} from '@material-ui/icons'
+import { Link } from 'gatsby'
+import Prism from 'prismjs'
+import React, { useLayoutEffect } from 'react'
+import {
+  darkgrey,
+  flame,
+  mediumgrey,
+  sherpablue,
+} from '../../theme/ocPalette.constants'
+import themeConstants from '../../theme/theme.constants'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
+import Jumbotron from '../Shared/Jumbotron'
+import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
-import { useDocsSections } from '../../hooks/useDocsSections'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -24,7 +53,6 @@ if (typeof window !== 'undefined') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   require('smooth-scroll')('a[href*="#"]')
 }
-import './../../../custom.d.ts' // custom type definitions
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,54 +61,44 @@ const useStyles = makeStyles((theme: Theme) =>
       right: theme.spacing(4),
       top: theme.spacing(3),
     },
+    spacer: {
+      width: theme.spacing(1),
+    },
     root: {
-      minHeight: `calc(100vh - ${navHeightMobile}px)`,
+      minHeight: `calc(100vh - ${navHeightMobile + 409}px)`,
       [theme.breakpoints.up('md')]: {
-        minHeight: `calc(100vh - ${navHeight}px)`,
+        minHeight: `calc(100vh - ${navHeight + 409}px)`,
       },
     },
     paperRoot: {
       zIndex: 1,
       flexGrow: 1,
     },
+    buttonBase: {
+      borderRadius: theme.shape.borderRadius,
+    },
     paperCard: {
       position: 'relative',
       flexFlow: 'column nowrap',
       alignItems: 'center',
       maxWidth: '100vw',
-      padding: theme.spacing(2),
+      padding: theme.spacing(3),
       [theme.breakpoints.up('md')]: {
         height: '100%',
       },
     },
     paperTitleHeading: {
-      padding: theme.spacing(1, 0, 0, 2),
+      padding: theme.spacing(0, 0, 1),
       color: darkgrey[900],
       textAlign: 'left',
     },
     paperTitleSubheading: {
-      color: mediumgrey[300],
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2),
-      marginBottom: theme.spacing(2),
+      color: darkgrey[500],
+      padding: theme.spacing(0),
     },
-    paperBody: {
-      position: 'absolute',
-      top: '12vh',
-      left: '20vh',
-      margin: '0 auto',
-      width: '75%',
-      padding: 0,
-      minHeight: 'min-content',
-      zIndex: 1,
-      '@media (max-width:992px)': {
-        left: '10vh',
-      },
-    },
-    paperList: {
-      [theme.breakpoints.up('md')]: {
-        columns: 2,
-      },
+    avatar: {
+      backgroundColor: theme.palette.background.default,
+      border: `1px solid ${sherpablue[100]}`,
     },
     cardWrapper: {
       overflowX: 'hidden',
@@ -95,97 +113,449 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: '-5rem',
       },
     },
+    orangeTitle: {
+      color: flame[500],
+    },
   })
 )
 
 const MainComponent: React.FunctionComponent = props => {
   const classes = useStyles(props)
-  const sections = useDocsSections()
-  const getSectionSubtitle = title => {
-    switch (title) {
-      case 'Getting Started':
-        // self-explanatory
-        return ``
-      case 'Main Concepts':
-        return `Establish a firm foundation by learning fundamental OrderCloud concepts`
-      case 'Features':
-        return `Explore some of our API features that can help you solve complex B2B scenarios`
-      case 'Guides':
-        return `Walkthrough some common scenarios you'll encounter in the OrderCloud API`
-      default:
-        return ''
-    }
-  }
+
+  useLayoutEffect(() => {
+    Prism.highlightAll()
+  }, [])
 
   return (
     <React.Fragment>
       <Jumbotron
-        image={{ src: ocLogo, alt: 'Four51 OrderCloud Logo' }}
-        heading="A Next-Generation Headless eCommerce Platform"
+        overlayed={true}
+        heading="A B2B-First Marketplace Platform"
+        text="Build your own marketplace with an API-first, cloud native platform ready to create your own best-of-breed experience with unbounded scalability. We already power custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
         actions={[
+          // <CustomButtonLink
+          //   color="#fff"
+          //   key="platform-overview"
+          //   to="/discover/platform-overview"
+          //   variant="contained"
+          // >
+          //   Platform Overview
+          // </CustomButtonLink>,
           <CustomButtonLink
-            color="#fff"
+            key="developers"
+            to="/ordercloud-basics/architecture"
+            variant="contained"
+            color={flame[600]}
+          >
+            Developers
+          </CustomButtonLink>,
+        ]}
+      />
+      <Container maxWidth="lg">
+        <Grid container className={classes.cardWrapper} spacing={3}>
+          <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
+            <ButtonBase
+              className={classes.buttonBase}
+              component={Link}
+              to="/discover/platform-overview"
+            >
+              <Paper elevation={5} className={classes.paperCard}>
+                <Typography
+                  className={classes.paperTitleHeading}
+                  variant="h4"
+                  component="h2"
+                >
+                  Platform
+                  <br />
+                  Overview
+                </Typography>
+                <Typography
+                  className={classes.paperTitleSubheading}
+                  variant="subtitle1"
+                >
+                  Wherever your business needs to go tomorrow, you’re ready to
+                  lead the way.
+                </Typography>
+                <List>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <Code color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Developer Friendly" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <AccountTree color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Omni-Channel Integration" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <Extension color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Platform Extensibility" />
+                  </ListItem>
+                </List>
+                <CustomButtonLink
+                  fullWidth
+                  color={themeConstants.palette.secondary.main}
+                  to="/discover/define-your-marketplace"
+                  variant="outlined"
+                >
+                  Read More
+                </CustomButtonLink>
+              </Paper>
+            </ButtonBase>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
+            <ButtonBase
+              className={classes.buttonBase}
+              component={Link}
+              to="/discover/define-your-marketplace"
+            >
+              <Paper elevation={5} className={classes.paperCard}>
+                <Typography
+                  className={classes.paperTitleHeading}
+                  variant="h4"
+                  component="h2"
+                >
+                  Define Your
+                  <br />
+                  Marketplace
+                </Typography>
+                <Typography
+                  className={classes.paperTitleSubheading}
+                  variant="subtitle1"
+                >
+                  Mirror your unique business using our flexible modeling tools
+                  and access controls
+                </Typography>
+                <List>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <LockTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Administrative Roles" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <PeopleTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Buyers & User Groups" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <BusinessTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Supplier Management" />
+                  </ListItem>
+                </List>
+                <CustomButtonLink
+                  fullWidth
+                  color={themeConstants.palette.secondary.main}
+                  to="/discover/define-your-marketplace"
+                  variant="outlined"
+                >
+                  Read More
+                </CustomButtonLink>
+              </Paper>
+            </ButtonBase>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
+            <ButtonBase
+              className={classes.buttonBase}
+              component={Link}
+              to="/discover/personalized-shopping"
+            >
+              <Paper elevation={5} className={classes.paperCard}>
+                <Typography
+                  className={classes.paperTitleHeading}
+                  variant="h4"
+                  component="h2"
+                >
+                  Personalized
+                  <br />
+                  Shopping
+                </Typography>
+                <Typography
+                  className={classes.paperTitleSubheading}
+                  variant="subtitle1"
+                >
+                  Our robust catalog management system empowers virtually
+                  limitless shopping experiences
+                </Typography>
+                <List>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <AttachMoneyTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Personalized Pricing" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <CategoryTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="PIM Integrations" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <StyleTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Variable Products" />
+                  </ListItem>
+                </List>
+                <CustomButtonLink
+                  fullWidth
+                  color={themeConstants.palette.secondary.main}
+                  to="/discover/personalized-shopping"
+                  variant="outlined"
+                >
+                  Read More
+                </CustomButtonLink>
+              </Paper>
+            </ButtonBase>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
+            <ButtonBase
+              className={classes.buttonBase}
+              component={Link}
+              to="/discover/flexible-fulfillment"
+            >
+              <Paper elevation={5} className={classes.paperCard}>
+                <Typography
+                  className={classes.paperTitleHeading}
+                  variant="h4"
+                  component="h2"
+                >
+                  Flexible Fullfillment
+                  <br />
+                  Workflows
+                </Typography>
+                <Typography
+                  className={classes.paperTitleSubheading}
+                  variant="subtitle1"
+                >
+                  Powerful marketplace tools enable automating end-to-end order
+                  fulfillment
+                </Typography>
+                <List>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <PlaylistAddCheckTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Approval Rules" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <ForwardTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Order Forwarding" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <FindInPageTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Shipment Tracking" />
+                  </ListItem>
+                </List>
+                <CustomButtonLink
+                  fullWidth
+                  color={themeConstants.palette.secondary.main}
+                  to="/discover/flexible-fulfillment"
+                  variant="outlined"
+                >
+                  Read More
+                </CustomButtonLink>
+              </Paper>
+            </ButtonBase>
+          </Grid>
+        </Grid>
+      </Container>
+      <Container maxWidth="lg">
+        <Box paddingY={5} paddingX={20}>
+          <Divider />
+        </Box>
+        <Typography variant="h1" align="center" color="secondary">
+          Best-of-Breed, Headless Architecture
+        </Typography>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h3" className={classes.orangeTitle}>
+              Our RESTful API was built
+              <br />
+              by developers, for developers.
+            </Typography>
+            <Typography variant="h5">
+              OrderCloud’s proven architecture has enabled developers from
+              around the world to bring powerful B2B applications to life. We
+              aim to provide unmatched interopability by using standardized W3C
+              web standards, extensible data models, and rich feature-sets.
+            </Typography>
+            <Box
+              display="flex"
+              flexDirection="row"
+              flexWrap="noWrap"
+              marginTop={3}
+            >
+              <CustomButtonLink
+                color={themeConstants.palette.secondary.main}
+                key="intro-to-ordercloud"
+                to="/getting-started/intro-to-ordercloud"
+                variant="outlined"
+              >
+                Learn the Basics
+              </CustomButtonLink>
+              <div className={classes.spacer} />
+              <CustomButtonLink
+                key="main-concepts"
+                to="/main-concepts/organization-hierarchy"
+                variant="contained"
+                color={flame[600]}
+              >
+                Start Coding
+              </CustomButtonLink>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box bgcolor={mediumgrey[500]} width="100%" height="100%"></Box>
+          </Grid>
+        </Grid>
+        <Box height="100px"></Box>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6}>
+            <Paper
+              elevation={5}
+              component="pre"
+              className="language-typescript"
+            >
+              <code className="language-typescript">
+                {`import { Me, Orders, LineItems } from "ordercloud-javascript-sdk";
+
+let myself = await Me.Get();
+let order = await Orders.Create("Outgoing", {});
+let products = await Me.ListProducts();
+
+let lineItem = await LineItems.Create("Outgoing", order.ID, {
+  ProductID: products.Items[0].ID,
+  Quantity: 2
+});
+
+await Orders.Submit("Outgoing", order.ID);`}
+              </code>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography
+              variant="h3"
+              align="right"
+              className={classes.orangeTitle}
+            >
+              Open-source resources for developing
+              <br />
+              progressive web applications.
+            </Typography>
+            <Typography variant="h5" align="right">
+              A headless architecture allows solution creators to choose the
+              development stack that works best for their workflow. Our
+              knowledge base and growing library of developer tools make
+              creating solutions both efficient and enjoyable.
+            </Typography>
+            <Box
+              display="flex"
+              flexDirection="row"
+              flexWrap="noWrap"
+              justifyContent="flex-end"
+              marginTop={3}
+            >
+              <CustomButtonLink
+                color={flame[500]}
+                key="intro-to-ordercloud"
+                to="/getting-started/intro-to-ordercloud"
+                variant="contained"
+              >
+                Knowledge Base
+              </CustomButtonLink>
+              <div className={classes.spacer} />
+              <CustomButtonLink
+                key="main-concepts"
+                to="/main-concepts/organization-hierarchy"
+                variant="outlined"
+                color={themeConstants.palette.secondary.main}
+              >
+                Developer Tools
+              </CustomButtonLink>
+            </Box>
+          </Grid>
+        </Grid>
+        <Box paddingY={5} paddingX={20}>
+          <Divider />
+        </Box>
+      </Container>
+      <Container maxWidth="lg">
+        <Typography
+          variant="h2"
+          style={{ fontWeight: 'bold' }}
+          component="h1"
+          align="center"
+        >
+          Create Your Free Account Today!
+        </Typography>
+        <Typography variant="h5" paragraph component="p" align="center">
+          OrderCloud provides a sandbox environment so you can start coding
+          without payment right now.
+        </Typography>
+        <Box
+          display="flex"
+          flexDirection="row"
+          flexWrap="noWrap"
+          alignItems="center"
+          justifyContent="center"
+          paddingBottom={8}
+        >
+          <CustomButtonLink
+            color={sherpablue[500]}
             key="intro-to-ordercloud"
             to="/getting-started/intro-to-ordercloud"
             variant="contained"
           >
-            Introduction
-          </CustomButtonLink>,
+            Sign Up
+          </CustomButtonLink>
+          <div className={classes.spacer} />
           <CustomButtonLink
             key="main-concepts"
             to="/main-concepts/organization-hierarchy"
             variant="contained"
-            color={flame[600]}
+            color={flame[500]}
           >
-            Main Concepts
-          </CustomButtonLink>,
-        ]}
-      />
-      <Container>
-        <Grid container className={classes.cardWrapper} spacing={3}>
-          {sections
-            .filter(section => section.title !== 'Getting Started')
-            .map((section, index) => (
-              <Grid
-                item
-                sm={12}
-                md={6}
-                lg={4}
-                key={index}
-                className={classes.paperRoot}
-              >
-                <Paper elevation={5} className={classes.paperCard}>
-                  <Typography
-                    className={classes.paperTitleHeading}
-                    variant="h3"
-                  >
-                    {section.title}
-                  </Typography>
-                  <Typography
-                    className={classes.paperTitleSubheading}
-                    variant="subtitle1"
-                  >
-                    {getSectionSubtitle(section.title)}
-                  </Typography>
-                  <List
-                    disablePadding={true}
-                    dense={true}
-                    className={classes.paperList}
-                  >
-                    {section.guides.map(g => {
-                      return (
-                        <ListItemLink key={g.id} to={g.path}>
-                          {g.frontmatter.title}
-                        </ListItemLink>
-                      )
-                    })}
-                  </List>
-                </Paper>
-              </Grid>
-            ))}
-        </Grid>
+            Join Our Slack
+          </CustomButtonLink>
+        </Box>
       </Container>
-      <Container maxWidth="md">
+      {/* <Container maxWidth="md">
         <Box paddingTop={7} paddingBottom={14}>
           <Typography variant="h3">
             Four51 OrderCloud™ is an API-first, headless eCommerce platform
@@ -206,7 +576,7 @@ const MainComponent: React.FunctionComponent = props => {
             over $5 billion in revenue annually.
           </Typography>
         </Box>
-      </Container>
+      </Container> */}
     </React.Fragment>
   )
 }

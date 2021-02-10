@@ -1,39 +1,47 @@
-import React from 'react'
 import {
-  createStyles,
-  Theme,
-  withStyles,
-  Typography,
-  Paper,
   Container,
+  createStyles,
+  lighten,
+  Paper,
+  Theme,
+  Typography,
 } from '@material-ui/core'
-import { sherpablue, seafoam } from '../../theme/ocPalette.constants'
-import ocPlatform from '../../assets/svg/Platform--Ordercloud.svg'
+import { makeStyles } from '@material-ui/styles'
+import React, { FunctionComponent } from 'react'
+import { seafoam } from '../../theme/ocPalette.constants'
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    jumbotron: {
-      display: 'flex',
-      position: 'relative',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: 400,
-      borderRadius: 0,
-      overflowY: 'hidden',
-      overflowX: 'hidden',
-      backgroundColor: sherpablue[500],
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      '-webkit-background-size': 'cover',
-      '-moz-background-size': 'cover',
-      '-o-background-size': 'cover',
-      '&>div': {
-        zIndex: 1,
-      },
-      [theme.breakpoints.down('xs')]: {
-        height: '75vh',
-      },
+    jumbotron: ({ overlayed }: any) => {
+      console.log('test', overlayed)
+      return {
+        display: 'flex',
+        position: 'relative',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 30,
+        paddingBottom: overlayed ? 120 : 50,
+        borderRadius: 0,
+        overflowY: 'hidden',
+        overflowX: 'hidden',
+        background: `linear-gradient(${lighten(
+          theme.palette.secondary.main,
+          0.2
+        )}, ${lighten(theme.palette.secondary.main, 0.6)})`,
+        // backgroundColor: sherpablue[500],
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        '-webkit-background-size': 'cover',
+        '-moz-background-size': 'cover',
+        '-o-background-size': 'cover',
+        '&>div': {
+          zIndex: 1,
+        },
+        [theme.breakpoints.down('xs')]: {
+          height: '75vh',
+        },
+      }
     },
     jumbotronSecondary: {
       backgroundColor: theme.palette.secondary.main,
@@ -80,89 +88,99 @@ const styles = (theme: Theme) =>
       display: 'flex',
       marginTop: theme.spacing(3),
     },
-    jumbotronLinkGroupLink: {
-      '&:first-of-type': {
-        marginRight: theme.spacing(3),
-      },
-    },
+    jumbotronLinkGroupLink: ({ align }: any) => ({
+      '&:first-of-type':
+        align === 'center'
+          ? {
+              justifyContent: 'center',
+            }
+          : {
+              marginRight: theme.spacing(1),
+            },
+    }),
     jumbotronHeading: {
       padding: 0,
-      textTransform: 'uppercase',
+      // textTransform: 'uppercase',
       marginTop: '.75rem',
-      color: seafoam[50],
+      color: seafoam[100],
       [theme.breakpoints.down('md')]: {
         fontSize: '2rem',
         marginTop: 0,
       },
     },
-    jumbotronText: {
-      color: seafoam[100],
-    },
+    jumbotronText: ({ align }) => ({
+      color: seafoam[50],
+      maxWidth: align === 'center' ? 700 : 900,
+      margin: align === 'center' ? '0 auto' : undefined,
+    }),
   })
+)
 
-class Jumbotron extends React.Component<any> {
-  public render() {
-    const {
-      classes,
-      image,
-      heading,
-      text,
-      actions,
-      height,
-      secondary,
-    } = this.props
-    return (
-      <div
-        className={`${classes.jumbotron} ${
-          secondary ? classes.jumbotronSecondary : ''
-        }`}
-        style={{ height }}
-      >
-        <Container>
-          <Paper className={classes.jumbotronContainer}>
-            {image && (
-              <img className={classes.logo} src={image.src} alt={image.alt} />
-            )}
-            {heading && (
-              <Typography
-                className={classes.jumbotronHeading}
-                variant={image ? 'h2' : 'h1'}
-                component="h1"
-              >
-                {heading}
-              </Typography>
-            )}
-            {text && (
-              <Typography
-                className={classes.jumbotronText}
-                variant={image ? 'subtitle1' : 'h4'}
-                component="p"
-              >
-                {text}
-              </Typography>
-            )}
-            {actions && (
-              <div className={classes.jumbotronLinkGroup}>
-                {actions.map((a, index) => {
-                  return (
-                    <div className={classes.jumbotronLinkGroupLink} key={index}>
-                      {a}
-                    </div>
-                  )
-                })}
-              </div>
-            )}
-          </Paper>
-        </Container>
-        <img
+const Jumbotron: FunctionComponent<any> = ({
+  image,
+  heading,
+  text,
+  actions,
+  height,
+  secondary,
+  overlayed,
+  align,
+}: any) => {
+  console.log('test', overlayed)
+  const classes = useStyles({ overlayed, align })
+  return (
+    <div
+      className={`${classes.jumbotron} ${
+        secondary ? classes.jumbotronSecondary : ''
+      }`}
+      style={{ height }}
+    >
+      <Container>
+        <Paper className={classes.jumbotronContainer}>
+          {image && (
+            <img className={classes.logo} src={image.src} alt={image.alt} />
+          )}
+          {heading && (
+            <Typography
+              align={align}
+              className={classes.jumbotronHeading}
+              variant={image ? 'h2' : 'h1'}
+              component="h1"
+            >
+              {heading}
+            </Typography>
+          )}
+          {text && (
+            <Typography
+              align={align}
+              className={classes.jumbotronText}
+              variant={image ? 'subtitle1' : 'h4'}
+              component="p"
+            >
+              {text}
+            </Typography>
+          )}
+          {actions && (
+            <div className={classes.jumbotronLinkGroup}>
+              {actions.map((a, index) => {
+                return (
+                  <div className={classes.jumbotronLinkGroupLink} key={index}>
+                    {a}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </Paper>
+      </Container>
+      {/* <img
           className={classes.jumbotronIcon}
           aria-hidden="true"
           src={ocPlatform}
           alt="OrderCloud Platform Icon"
-        />
-      </div>
-    )
-  }
+        /> */}
+    </div>
+  )
 }
 
-export default withStyles(styles)(Jumbotron)
+export default Jumbotron

@@ -123,6 +123,10 @@ export default createMuiTheme({
         paddingTop: '1.5rem',
         marginBottom: '0.5rem',
       },
+      h4: {
+        paddingTop: '1.25rem',
+        marginBottom: '0.5rem',
+      },
     },
   },
 })

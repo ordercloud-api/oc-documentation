@@ -28,9 +28,10 @@ const useStyles = makeStyles((theme: Theme) =>
       height: `calc(100vh - ${theme.spacing(8)}px)`,
     },
     content: {
-      paddingTop: theme.spacing(5),
-      paddingLeft: theme.spacing(4),
-      paddingBottom: theme.spacing(5),
+      padding: theme.spacing(5, 0, 5, 6),
+      [theme.breakpoints.up('lg')]: {
+        paddingLeft: theme.spacing(6),
+      },
     },
     mobileFab: {
       position: 'fixed',

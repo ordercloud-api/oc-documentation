@@ -4,6 +4,7 @@ section: 'Guides'
 ---
 
 import { Link } from 'gatsby'
+// var example1 = 
 
 Price schedules are one of the critical factors related to <Link to="main-concepts/product-visibility">product visibility</Link> and there are several ways that you can build relationships between products and price schedules.  One of the scenarios you may wish to achieve is one product with multiple price schedules.  _Why_ would you possibly want one product that had multiple different prices based on buyer/user?  Lets take a look at the example scenario below, and walk through a solution to achieve the desired result.
 
@@ -24,11 +25,11 @@ First, lets create the price schedule that is to be associated with the Enterpri
 
 Lets assume there is no tax or shipping costs, and the minimum order quantity is 1.  Our call to the OrderCloud API should like this (If successful, our call should return a `201 Created` response):
 
-```
-POST https://api.OrderCloud/v1/priceschedules
+<CodeExample
+  content={{
+    http: `POST https://api.OrderCloud/v1/priceschedules
 Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
-Content-Type: application/json; charset=UTF-8
-
+Content-Type: application/json; charset=UTF-8\n
 {
   "ID": "enterprise-priceschedule-id"
   "Name": "USB Cord",
@@ -39,8 +40,34 @@ Content-Type: application/json; charset=UTF-8
       "Price": 3.99
     }
   ]
-}
-```
+}`,
+javascript: `import { PriceSchedules } from "ordercloud-javascript-sdk";\n
+var response = await PriceSchedules.Create({
+  "ID": "enterprise-priceschedule-id"
+  "Name": "USB Cord",
+  "MinQuantity": 1,
+  "PriceBreaks": [
+    {
+      "Quantity": 1,
+      "Price": 3.99
+    }
+  ]
+})`,
+typescript: `import { PriceSchedule, PriceSchedules } from "ordercloud-javascript-sdk";\n
+const data:Partial<PriceSchedule> = {
+  "ID": "enterprise-priceschedule-id"
+  "Name": "USB Cord",
+  "MinQuantity": 1,
+  "PriceBreaks": [
+    {
+      "Quantity": 1,
+      "Price": 3.99
+    }
+  ]
+};\n
+var response:PriceSchedule = await PriceSchedules.Create(data)`
+}}
+/>
 
 Next, lets make a similar call, but change the `ID` and `PriceBreaks` fields to adjust for the **Startup** configurations.  The call should look like this: 
 

@@ -1,4 +1,4 @@
-import { Theme, Typography, Button } from '@material-ui/core'
+import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React, { useLayoutEffect } from 'react'
@@ -23,47 +23,89 @@ interface DocTemplateProps extends RouteComponentProps {
       fileAbsolutePath: string
       frontmatter: {
         title: string
-        updatedOnDate: number
+        section: string
+        description: string
+        priority: number
       }
     }
   }
   theme: Theme
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    pageSection: {
+      paddingTop: '1.75rem',
+      color: theme.palette.grey[500],
+    },
+    pageTitle: {
+      paddingTop: 0,
+      marginBottom: theme.spacing(3),
+    },
+    pageDescription: {
+      fontWeight: 'bold',
+      marginBottom: theme.spacing(3),
+      // fontSize: theme.typography.h6.fontSize,
+      fontStyle: 'italic',
+      color: theme.palette.grey[700],
+    },
+    editButton: {
+      marginBottom: theme.spacing(3),
+    },
+    editButtonIcon: {
+      marignRight: theme.spacing(1),
+    },
+  })
+)
+
 export default function Template(props: DocTemplateProps) {
   const doc = props.data // data from page query
   const sections = useDocsSections()
+  const classes = useStyles()
   const repoUrl =
     'https://github.com/ordercloud-api/oc-documentation/edit/development'
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
 
   useLayoutEffect(() => {
     if (!props.location.hash) return
-    const el = document.getElementById(props.location.hash.split('#')[1])
-    if (!el) return
-    window.scrollTo(0, el.offsetTop)
+    setTimeout(() => {
+      const el = document.getElementById(props.location.hash.split('#')[1])
+      if (!el) return
+      window.scrollTo(0, utility.getOffsetTop(el))
+    }, 300)
   }, [props.location.hash])
 
   return (
     <Layout location={props.location}>
-      <Helmet title={`Four51 OrderCloud | ${doc.mdx.frontmatter.title}`} />
+      <Helmet title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`} />
       <LayoutContainer>
         <LayoutMain>
+          <Typography variant="h5" className={classes.pageSection}>
+            {doc.mdx.frontmatter.section}
+          </Typography>
+          <Typography variant="h1" className={classes.pageTitle}>
+            {doc.mdx.frontmatter.title}
+          </Typography>
+          <Typography className={classes.pageDescription}>
+            {doc.mdx.frontmatter.description}
+          </Typography>
           <ButtonlinkExternal
-            style={{ float: 'right', marginTop: 40 }}
+            className={classes.editButton}
             variant="outlined"
             size="small"
             href={`${repoUrl}/content/docs${absolutePath}.mdx`}
           >
-            <EditOutlined fontSize="inherit" /> Edit this doc
+            <EditOutlined
+              fontSize="inherit"
+              className={classes.editButtonIcon}
+            />
+            Edit this doc
           </ButtonlinkExternal>
-          <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
-          { 
-            doc.mdx.frontmatter.updatedOnDate && 
+          {/* {doc.mdx.frontmatter.updatedOnDate && (
             <Typography color="textSecondary" variant="caption">
               Last Updated {doc.mdx.frontmatter.updatedOnDate}
-            </Typography> 
-          }
+            </Typography>
+          )} */}
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
           <DocFooter contents={sections} currentGuide={absolutePath} />
         </LayoutMain>
@@ -81,8 +123,10 @@ export const query = graphql`
       body
       fileAbsolutePath
       frontmatter {
+        section
         title
-        updatedOnDate(formatString: "MMMM Do, YYYY")
+        description
+        priority
       }
     }
   }
