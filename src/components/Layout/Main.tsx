@@ -1,62 +1,68 @@
-import React, { Fragment } from 'react'
-import { Theme, withStyles, createStyles } from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import { groupBy as _groupBy, forEach as _forEach } from 'lodash'
-import ListLink from '../Shared/ListLink'
+import {
+  Box,
+  Container,
+  createStyles,
+  Grid,
+  List,
+  makeStyles,
+  Paper,
+  Theme,
+  Typography,
+} from '@material-ui/core/'
+import React from 'react'
+import ocLogo from '../../assets/images/four51-logo-nopyramid--full-color.svg'
+import { darkgrey, mediumgrey, flame } from '../../theme/ocPalette.constants'
 import Jumbotron from '../Shared/Jumbotron'
-import { StaticQuery, graphql } from 'gatsby'
-import utility from '../Shared/utility'
-import { Typography, Container, List } from '@material-ui/core'
-import { mediumgrey } from '../../theme/ocPalette.constants'
+import ListItemLink from '../Shared/ListItemLink'
+import { CustomButtonLink } from '../Shared/ButtonVariants'
+import { navHeight, navHeightMobile } from './Header'
+import { useDocsSections } from '../../hooks/useDocsSections'
 
-const styles = (theme: Theme) =>
+if (typeof window !== 'undefined') {
+  // attach smooth scroll to all hrefs
+  // we ignore lint rule because we want to dynamically resolve smooth-scroll in browser env only
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  require('smooth-scroll')('a[href*="#"]')
+}
+import './../../../custom.d.ts' // custom type definitions
+
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      flexGrow: 1,
-      overflow: 'hidden',
+    searchBox: {
+      position: 'absolute',
+      right: theme.spacing(4),
+      top: theme.spacing(3),
     },
-    cardContainer: {
-      display: 'flex',
-      flex: '1 1 auto',
-      'paperTitle:nth-of-type(1)': {
-        backgroundImage:
-          'url(https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80)',
+    root: {
+      minHeight: `calc(100vh - ${navHeightMobile}px)`,
+      [theme.breakpoints.up('md')]: {
+        minHeight: `calc(100vh - ${navHeight}px)`,
       },
-      'paperTitle:nth-of-type(2)': {
-        backgroundImage:
-          'url(https://images.unsplash.com/photo-1559762691-617a33825bc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80)',
-      },
-      'paperTitle:nth-of-type(3)': {
-        backgroundImage:
-          'url(https://images.unsplash.com/photo-1560131323-29d50e8d1b22?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2167&q=80)',
-      },
+    },
+    paperRoot: {
+      zIndex: 1,
+      flexGrow: 1,
     },
     paperCard: {
       position: 'relative',
-      minHeight: '35vh',
-      display: 'flex',
       flexFlow: 'column nowrap',
       alignItems: 'center',
-    },
-    paperTitle: {
-      width: '100%',
-      backgroundColor: mediumgrey[50],
-      backgroundSize: 'cover',
-      minHeight: '15vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      color: 'white',
+      maxWidth: '100vw',
+      padding: theme.spacing(2),
+      [theme.breakpoints.up('md')]: {
+        height: '100%',
+      },
     },
     paperTitleHeading: {
-      color: mediumgrey[800],
-      paddingLeft: theme.spacing(3),
-      fontWeight: 'bold',
+      padding: theme.spacing(1, 0, 0, 2),
+      color: darkgrey[900],
+      textAlign: 'left',
     },
-    paperTitleSubeading: {
+    paperTitleSubheading: {
       color: mediumgrey[300],
-      paddingLeft: theme.spacing(3),
+      paddingLeft: theme.spacing(2),
+      paddingRight: theme.spacing(2),
+      marginBottom: theme.spacing(2),
     },
     paperBody: {
       position: 'absolute',
@@ -72,128 +78,137 @@ const styles = (theme: Theme) =>
       },
     },
     paperList: {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      '@media (max-width:768px)': {
-        gridTemplateColumns: '1fr',
+      [theme.breakpoints.up('md')]: {
+        columns: 2,
       },
     },
-    //utility classes
-    mr3: {
-      marginRight: theme.spacing(3),
-    },
-    ml3: {
-      marginLeft: theme.spacing(3),
-    },
-    mt3: {
-      marginTop: theme.spacing(3),
-    },
-    mb3: {
-      marginBottom: theme.spacing(3),
-    },
-    my3: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(3),
-    },
-    mx3: {
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3),
-    },
-    pl3: {
-      paddingLeft: theme.spacing(3),
+    cardWrapper: {
+      overflowX: 'hidden',
+      [theme.breakpoints.down('sm')]: {
+        width: '100%',
+        margin: '0',
+      },
+      [theme.breakpoints.up('sm')]: {
+        marginTop: '-7rem',
+      },
+      [theme.breakpoints.up('md')]: {
+        marginTop: '-5rem',
+      },
     },
   })
+)
 
-const Main = withStyles(styles)(
-  class extends React.Component<any> {
-    public render() {
-      const { tableOfContents, classes } = this.props
-      const sections = utility.getSectionsFromQuery(tableOfContents)
-
-      return (
-        <div className={classes.root}>
-          <Jumbotron />
-          <Container maxWidth="xl">
-            <Grid container spacing={5} className={classes.cardContainer}>
-              {sections.map((section, index) =>
-                section.title === 'Getting Started' ? (
-                  <Grid item xs={12} sm={12} key={index}></Grid>
-                ) : (
-                  <Grid item xs={12} sm={6} key={index}>
-                    {section.guides.filter(c => !c.frontmatter.hidden).length >
-                    0 ? (
-                      <div className={classes.paperCard}>
-                        <Paper className={classes.paperTitle}>
-                          <Typography
-                            className={classes.paperTitleHeading}
-                            variant="h5"
-                            component="h2"
-                          >
-                            {section.title}
-                          </Typography>
-                          {/* TODO: ALEXA CAN YOU MAKE THIS??? <Typography>{section.subtitle}</Typography> */}
-                          <Typography
-                            className={classes.paperTitleSubeading}
-                            variant="body2"
-                          >
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Duis vel libero sed arcu convallis tempus.
-                          </Typography>
-                        </Paper>
-                        <Paper className={classes.paperBody}>
-                          <List
-                            disablePadding="true"
-                            dense="true"
-                            className={classes.paperList}
-                          >
-                            {section.guides
-                              .filter(c => !c.frontmatter.hidden)
-                              .map(s => {
-                                return (
-                                  <ListLink
-                                    key={s.id}
-                                    guideProps={{
-                                      path: s.frontmatter.path,
-                                      title: s.frontmatter.title,
-                                    }}
-                                  />
-                                )
-                              })}
-                          </List>
-                        </Paper>
-                      </div>
-                    ) : null}
-                  </Grid>
-                )
-              )}
-            </Grid>
-          </Container>
-        </div>
-      )
+const MainComponent: React.FunctionComponent = props => {
+  const classes = useStyles(props)
+  const sections = useDocsSections()
+  const getSectionSubtitle = title => {
+    switch (title) {
+      case 'Getting Started':
+        // self-explanatory
+        return ``
+      case 'Main Concepts':
+        return `Establish a firm foundation by learning fundamental OrderCloud concepts`
+      case 'Features':
+        return `Explore some of our API features that can help you solve complex B2B scenarios`
+      case 'Guides':
+        return `Walkthrough some common scenarios you'll encounter in the OrderCloud API`
+      default:
+        return ''
     }
   }
-)
 
-export default () => (
-  <StaticQuery
-    query={graphql`
-      query {
-        allMdx(sort: { order: ASC, fields: [frontmatter___priority] }) {
-          totalCount
-          edges {
-            node {
-              id
-              frontmatter {
-                section
-                title
-                path
-                hidden
-              }
-            }
-          }
-        }
-      }
-    `}
-    render={data => <Main tableOfContents={data} />}
-  />
-)
+  return (
+    <React.Fragment>
+      <Jumbotron
+        image={{ src: ocLogo, alt: 'Four51 OrderCloud Logo' }}
+        heading="A Next-Generation Headless eCommerce Platform"
+        actions={[
+          <CustomButtonLink
+            color="#fff"
+            key="intro-to-ordercloud"
+            to="/getting-started/intro-to-ordercloud"
+            variant="contained"
+          >
+            Introduction
+          </CustomButtonLink>,
+          <CustomButtonLink
+            key="main-concepts"
+            to="/main-concepts/organization-hierarchy"
+            variant="contained"
+            color={flame[600]}
+          >
+            Main Concepts
+          </CustomButtonLink>,
+        ]}
+      />
+      <Container>
+        <Grid container className={classes.cardWrapper} spacing={3}>
+          {sections
+            .filter(section => section.title !== 'Getting Started')
+            .map((section, index) => (
+              <Grid
+                item
+                sm={12}
+                md={6}
+                lg={4}
+                key={index}
+                className={classes.paperRoot}
+              >
+                <Paper elevation={5} className={classes.paperCard}>
+                  <Typography
+                    className={classes.paperTitleHeading}
+                    variant="h3"
+                  >
+                    {section.title}
+                  </Typography>
+                  <Typography
+                    className={classes.paperTitleSubheading}
+                    variant="subtitle1"
+                  >
+                    {getSectionSubtitle(section.title)}
+                  </Typography>
+                  <List
+                    disablePadding={true}
+                    dense={true}
+                    className={classes.paperList}
+                  >
+                    {section.guides.map(g => {
+                      return (
+                        <ListItemLink key={g.id} to={g.path}>
+                          {g.frontmatter.title}
+                        </ListItemLink>
+                      )
+                    })}
+                  </List>
+                </Paper>
+              </Grid>
+            ))}
+        </Grid>
+      </Container>
+      <Container maxWidth="md">
+        <Box paddingTop={7} paddingBottom={14}>
+          <Typography variant="h3">
+            Four51 OrderCloud™ is an API-first, headless eCommerce platform
+            offering nearly limitless customizations and endless freedom for
+            growth.
+          </Typography>
+          <Typography paragraph>
+            Your eCommerce data and infrastructure are available in the cloud as
+            building blocks via our RESTful API. Create best-of-breed commerce
+            applications that easily integrate with your back-end systems and
+            3rd party microservices. With OrderCloud, accelerate your commerce
+            transformation, increase your agility, and scale limitlessly.
+          </Typography>
+          <Typography>
+            OrderCloud powers custom eCommerce (B2B, B2C, B2X), order
+            management, and B2B marketplace applications for some of the world’s
+            most well-known brands - processing over 25 million transactions and
+            over $5 billion in revenue annually.
+          </Typography>
+        </Box>
+      </Container>
+    </React.Fragment>
+  )
+}
+
+export default MainComponent

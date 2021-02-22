@@ -1,0 +1,33 @@
+body > div#placeholder {
+    content: "";
+    position:fixed;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+    background: #fafafa;
+    z-index:10000;
+    opacity:1;
+    transition: opacity 200ms ease-out;
+  }
+body > div#placeholder.hide {
+  opacity:0;
+  pointer-events:none;
+}
+body > div#placeholder:after {
+  content: "";
+  position:fixed;
+  left:0;
+  top:0;
+  right:0;
+  height: 56px;
+  background: #032A43;
+  box-shadow:0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  z-index:1;
+}
+  
+@media(min-width:960px) {
+  body > div#placeholder:after {
+    height:64px;
+  }
+}

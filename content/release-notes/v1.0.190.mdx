@@ -1,0 +1,10 @@
+---
+apiVersion: 1.0.190
+date: 2021-01-07
+---
+
+Released on Thursday, January 7th, 2021 at 9:00pm CST.
+
+- Introduced Supplier-owned Price Schedules. Supplier can only edit Price Schedules that they create.
+- Enforce unique IDs across entire marketplace for things a Supplier might own (Products, Catalogs, Price Schedules, and Specs).
+- Allow `Payment.Amount` to be updated to 0. This better enables recording Payments that were reversed (such as with a credit or void transaction) and you wish to maintain that history rather than deleting the Payment. (`Payment.Amount` must still be greater than 0 on _create_.)

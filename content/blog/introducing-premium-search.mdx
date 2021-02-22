@@ -1,0 +1,45 @@
+---
+title: Introducing Premium Search
+tags: 
+authors: Todd Menier
+jobTitle: Chief Architect
+publishDate: 2019-04-29
+featuredImage: /images/blog/thumbnails/prem_search--alt1.jpg
+summary: Premium Search is the next evolution in search technology offered by the OrderCloud platform, powered by Elasticsearch.
+---
+
+import { Link } from 'gatsby'
+
+Premium Search is the next evolution in search technology offered by the OrderCloud platform, powered by [Elasticsearch](https://www.elastic.co/products/elasticsearch).
+
+## What are the advantages?
+
+1. Performance. For large data sets in particular, the observable speed and responsiveness of end-user apps is significant.
+2. Better search results. Out of the box you'll get word stemming (plural inference, etc.), synonyms, and intelligent ranking. Overall, it's much more natural-language, Google-like search experience than previously.
+3. New metadata useful in building faceted navigation.
+4. xp (extended property) fields are searchable, including with wildcard specifiers, such as `searchon=xp.foo.*`.
+5. Sort on any field, including xp fields.
+6. Filter on multiple fields with logical "OR", i.e. `Name|ID|xp.SKU=value`
+7. No need to create xp "indexes" explicitly. All xp fields are searchable/sortable/filterable automatically.
+
+## What areas of the API does this affect?
+
+Premium Search is currently available only in buyer-side product lists, i.e. <Link to="/api-reference/me-and-my-stuff/my-products">`me/products`</Link>. Plans are in the works to roll it out for seller-side products (endpoints under <Link to="/api-reference/product-catalogs/products">`/products`</Link>), as well as <Link to="/api-reference/orders-and-fulfillment/orders">`/orders`</Link> endpoints, in the coming months.
+
+## Is there an add-on cost?
+
+No. We're treating this as an enhancement to the core platform like any other. The only difference is we're rolling it out gradually, client by client.
+
+## Is this a breaking change?
+
+No. Yes. Sorta?
+
+It is non-breaking in the sense that all documented endpoints and parameters still work and generally function as they did before. The one behavioral change that you'll need to be aware of is that search results will be different in many cases. Since Premium Search favors natural-language semantics over exact character sequence matches, this could impact how some apps behave. For example, without Premium Search, searching on "eats" will return results containing "beats", but not "eat". With Premium Search, it's just the opposite. If you require exact character sequence matching, you may need to change your app from using a "search" parameter to instead use wildcard filters. Just keep in mind that you might be sacrificing performance gains, particularly if your filter starts with a wildcard. We recommend favoring search, or at least filters that don't start with a wildcard, whenever possible.
+
+## Is this an experimental beta feature?
+
+No. We began rolling it out to individual beta clients in mid-2018 and we are at a point where nearly all of the largest customers and catalogs on OrderCloud are Premium Search-enabled in production. It is "battle-tested", and in the coming weeks we plan to enable it for everyone by default.
+
+## Got more questions about Premium Search?
+
+Join the discussion on Slack in our <Link to="/slack">OrderCloud Developer Community</Link>.

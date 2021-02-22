@@ -1,0 +1,9 @@
+---
+apiVersion: 1.0.107
+date: 2019-06-20
+---
+
+- New API resources for creating/managing Security Profiles (functionality previously only available via Dev Center UI).
+- New API resources for creating/managing custom Roles.
+- Bugfix: With Premium Search, creating a new Buyer with `DefaultCatalogID` set to an existing catalog did not trigger a search index rebuild. Therefore, Users under the new Buyer could not see products until some other triggering action occurred.
+- Bugfix: For Suppliers, `DateCreated` was updated whenever the Supplier was updated. Should only get set once on create.

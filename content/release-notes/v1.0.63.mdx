@@ -1,0 +1,23 @@
+---
+apiVersion: 1.0.63
+date: 2017-10-18
+---
+
+_Released to Production on Wednesday, October 18th, 2017_
+
+## Bugs
+
+- Payments: Payment with Type `SpendingAccount` must have `SpendingAccountID`
+- Unable to use `PUT` to create new `UserGroup`
+- Orders: `order.Total` not updated when `ShippingCost` is updated via `PATCH`
+
+## New Features
+
+- Added transactional email support for guest checkout ([documentation](http://qa-documentation.ordercloud.io/api-reference#Orders_PatchFromUser))
+
+```
+`PATCH` `v1/orders/{direction}/{orderID}/fromuser`
+{"FirstName": "", "LastName": "", "Email": ""}
+```
+
+- Products: Allow negation of all filters on admin Product List (`catalogID`, `categoryID`, `supplierID`)

@@ -1,24 +1,58 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { ioblue, aliengreen } from './ocPalette.constants'
+import { sherpablue, seafoam, sizzlingred } from './ocPalette.constants'
+import CoreSansDFonts from '../theme/theme.typography.coresansd'
+import GeometriaFonts from '../theme/theme.typography.geometria'
 
-const RobotoMono = {
-  fontFamily: 'Roboto Mono',
-  fontStyle: 'normal',
-  fontDisplay: 'swap',
-  fontWeight: 400,
-  src: `
-    local('RobotoMono'),
-    local('Raleway-Mono'),
-    url(https://fonts.googleapis.com/css?family=Roboto+Mono:400,700&display=swap' format('woff2')
-  `,
-  unicodeRange:
-    'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF',
-}
+const defaultTheme = createMuiTheme()
+const primaryColor = sherpablue
+const secondaryColor = seafoam
+const error = sizzlingred
 
+const fontFamilies = [
+  '-apple-system',
+  'BlinkMacSystemFont',
+  '"Segoe UI"',
+  'Roboto',
+  '"Helvetica Neue"',
+  'Arial',
+  'sans-serif',
+  '"Apple Color Emoji"',
+  '"Segoe UI Emoji"',
+  '"Segoe UI Symbol"',
+]
+const headingFontFamilies = ['"Geometria"', ...fontFamilies].join(',')
+const bodyFontFamilies = ["'Core Sans D'", ...fontFamilies].join(',')
 export default createMuiTheme({
   typography: {
+    h1: {
+      fontSize: '3.5rem',
+      fontWeight: 700,
+    },
+    h2: {
+      fontSize: '2rem',
+      fontWeight: 600,
+    },
+    h3: {
+      fontSize: '1.5rem',
+      fontWeight: 600,
+    },
+    h4: {
+      fontSize: '1.25rem',
+      fontWeight: 500,
+    },
+    h5: {
+      fontSize: '1.15rem',
+      fontWeight: 500,
+    },
+    h6: {
+      fontSize: '1rem',
+      fontWeight: 500,
+    },
+    subtitle1: {
+      fontSize: '.875rem',
+      lineHeight: 1.5,
+    },
     fontFamily: [
-      'Roboto Mono',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',
@@ -31,20 +65,64 @@ export default createMuiTheme({
       '"Segoe UI Symbol"',
     ].join(','),
   },
+  palette: {
+    primary: {
+      main: primaryColor[400],
+    },
+    secondary: {
+      main: secondaryColor[900],
+      contrastText: '#FFF',
+    },
+    error: {
+      light: error[300],
+      main: error[500],
+      dark: error[700],
+    },
+  },
   overrides: {
     MuiCssBaseline: {
       '@global': {
-        '@font-face': [RobotoMono],
+        a: {
+          color: secondaryColor[900],
+        },
+        code: {
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-all',
+        },
+        pre: {
+          whiteSpace: 'pre-wrap',
+          workBreak: 'break-all',
+        },
+        mark: {
+          padding: defaultTheme.spacing(0, 0.25),
+          borderRadius: defaultTheme.shape.borderRadius,
+          backgroundColor: secondaryColor[100],
+          fontWeight: defaultTheme.typography.fontWeightMedium,
+          color: defaultTheme.palette.getContrastText(
+            defaultTheme.palette.background.paper
+          ),
+        },
       },
     },
-  },
-  palette: {
-    primary: {
-      main: ioblue[500],
-    },
-    secondary: {
-      main: aliengreen[300],
-      contrastText: '#FFF',
+    // MuiButton: {
+    //   label: {
+    //     paddingTop: navigator.appVersion.includes('Mac') ? 2 : undefined,
+    //   },
+    // },
+    MuiTypography: {
+      h1: {
+        paddingTop: '2rem',
+        marginBottom: '2rem',
+        fontSize: '2.8rem',
+      },
+      h2: {
+        paddingTop: '1.75rem',
+        marginBottom: '0.5rem',
+      },
+      h3: {
+        paddingTop: '1.5rem',
+        marginBottom: '0.5rem',
+      },
     },
   },
 })
