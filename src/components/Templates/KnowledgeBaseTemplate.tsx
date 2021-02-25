@@ -112,7 +112,8 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function KnowledgeBaseTemplate(
   props: KnowledgeBaseTemplateProps
 ) {
-  const doc = props.data // data from page query
+  const { location, data } = props
+  const doc = data // data from page query
   // const articles = useDiscoverSections()
   const classes = useStyles()
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
@@ -148,7 +149,16 @@ export default function KnowledgeBaseTemplate(
       />
       <LayoutContainer>
         <LayoutMain>
-          <IconButtonLink className={classes.backButton} to="/knowledge-base">
+          <IconButtonLink
+            className={classes.backButton}
+            to={`/knowledge-base${
+              location.state &&
+              location.state.selectedTags &&
+              location.state.selectedTags.length
+                ? `?t=${location.state.selectedTags.join(',')}`
+                : ''
+            }`}
+          >
             <Close />
           </IconButtonLink>
           <Typography variant="h5" className={classes.pageSuperTitle}>
@@ -234,6 +244,10 @@ export default function KnowledgeBaseTemplate(
                   <Typography
                     className={classes.relatedDocument}
                     component={Link}
+                    state={{
+                      selectedTags:
+                        location.state && location.state.selectedTags,
+                    }}
                     to={utility.resolvePath(t.fileAbsolutePath)}
                     key={t.id}
                     display="block"

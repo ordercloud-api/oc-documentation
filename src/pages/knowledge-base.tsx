@@ -78,10 +78,13 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
 ) => {
   const classes = useStyles()
   const { location } = props
-  const params = new URLSearchParams(location.search)
-  const [selectedTags, setSelectedTags] = useState<string[]>(
-    params.has('t') ? params.get('t').split(',') : []
-  )
+  const selectedTags = useMemo(() => {
+    const params = new URLSearchParams(location.search)
+    return params.has('t') ? params.get('t').split(',') : []
+  }, [location.search])
+  // const [selectedTags, setSelectedTags] = useState<string[]>(
+  //   params.has('t') ? params.get('t').split(',') : []
+  // )
   const data: QueryResult = useStaticQuery(graphql`
     query {
       allMdx(
@@ -126,11 +129,11 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
     return Object.entries(result)
   }, [data.allMdx.edges])
 
-  const handleTagToggle = (tag: string) => () => {
-    setSelectedTags(s =>
-      s.findIndex(t => t === tag) > -1 ? s.filter(t => t !== tag) : [...s, tag]
-    )
-  }
+  // const handleTagToggle = (tag: string) => () => {
+  //   setSelectedTags(s =>
+  //     s.findIndex(t => t === tag) > -1 ? s.filter(t => t !== tag) : [...s, tag]
+  //   )
+  // }
 
   const documentNodes = useMemo(() => {
     const nodes = data.allMdx.edges.map(n => n.node)
@@ -157,7 +160,10 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h1">Knowledge Base</Typography>
-          <DocumentList nodes={documentNodes}></DocumentList>
+          <DocumentList
+            selectedTags={selectedTags}
+            nodes={documentNodes}
+          ></DocumentList>
         </LayoutMain>
         <LayoutMenu>
           <Typography variant="h5" paragraph>
@@ -170,7 +176,16 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
                 <Chip
                   color={selectedTags.includes(t[0]) ? 'secondary' : 'default'}
                   clickable
-                  onClick={handleTagToggle(t[0])}
+                  component={Link}
+                  to={`/knowledge-base${
+                    selectedTags.length === 1 && selectedTags[0] === t[0]
+                      ? ''
+                      : `?t=${
+                          selectedTags.includes(t[0])
+                            ? selectedTags.filter(s => s !== t[0]).join(',')
+                            : [...selectedTags, t[0]].join(',')
+                        }`
+                  }`}
                   variant={selectedTags.includes(t[0]) ? 'default' : 'outlined'}
                   key={t[0]}
                   avatar={<Avatar>{t[1]}</Avatar>}
@@ -197,13 +212,14 @@ const useDocListStyles = makeStyles((theme: Theme) =>
 )
 
 interface DocumentListProps {
+  selectedTags: string[]
   nodes: DocumentNode[]
 }
 
 const DocumentList: FunctionComponent<DocumentListProps> = (
   props: DocumentListProps
 ) => {
-  const { nodes } = props
+  const { nodes, selectedTags } = props
   const classes = useDocListStyles()
   const documentListItem = (node: DocumentNode) => {
     return (
@@ -212,6 +228,9 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
           button
           component={Link}
           to={utility.resolvePath(node.fileAbsolutePath)}
+          state={{
+            selectedTags,
+          }}
           key={node.id}
           alignItems="flex-start"
         >
