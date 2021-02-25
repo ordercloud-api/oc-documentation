@@ -1,5 +1,5 @@
 import { EditOutlined } from '@material-ui/icons'
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useMemo } from 'react'
 import ButtonlinkExternal from '../Shared/ButtonlinkExternal'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 
@@ -29,12 +29,15 @@ const SuggestAnEdit: FunctionComponent<SuggestAnEditButtonProps> = (
 ) => {
   const { path } = props
   const classes = useStyles()
+  const realPath = useMemo(() => {
+    return path.replace('knowledge-base', 'documents')
+  }, [path])
   return (
     <ButtonlinkExternal
       className={classes.button}
       variant="outlined"
       size="small"
-      href={`${repoUrl}/content${path}.mdx`}
+      href={`${repoUrl}/content${realPath}.mdx`}
     >
       <EditOutlined fontSize="inherit" className={classes.icon} />
       Suggest an edit

@@ -1,18 +1,21 @@
 import {
   Avatar,
   Box,
+  Chip,
+  Container,
   createStyles,
   makeStyles,
   Theme,
   Typography,
 } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
-import { RouteComponentProps } from '@reach/router'
+import { History, RouteComponentProps } from '@reach/router'
 import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React, { useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import useActiveId from '../../hooks/useActiveId'
+import { useRelatedDocuments } from '../../hooks/useRelatedDocuments'
 import { Heading } from '../../models/tableOfContents.model'
 import { DocumentFrontMatter } from '../../pages/knowledge-base'
 import utility from '../../services/utility'
@@ -35,16 +38,24 @@ interface KnowledgeBaseTemplateProps extends RouteComponentProps {
       frontmatter: DocumentFrontMatter
     }
   }
+  history: History
   theme: Theme
 }
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageTitle: {
+      paddingTop: 0,
       marginBottom: theme.spacing(3),
+    },
+    pageSuperTitle: {
+      paddingTop: '1.75rem',
+      color: theme.palette.grey[500],
     },
     heading: {
       textDecoration: 'none',
+      lineHeight: 1.15,
+      marginBottom: theme.spacing(1),
       color: theme.palette.getContrastText(theme.palette.background.paper),
     },
     heading2: {},
@@ -77,16 +88,40 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(4.5),
       marginLeft: theme.spacing(1),
     },
+    tagChipListItem: {
+      marginRight: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
+    menuHeader: {
+      marginBottom: theme.spacing(1),
+    },
+    menuSection: {
+      marginBottom: theme.spacing(3),
+    },
+    relatedDocument: {
+      lineHeight: 1.15,
+      marginBottom: theme.spacing(1),
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
   })
 )
 
 export default function KnowledgeBaseTemplate(
   props: KnowledgeBaseTemplateProps
 ) {
-  const doc = props.data // data from page query
+  const { location, data } = props
+  const doc = data // data from page query
   // const articles = useDiscoverSections()
   const classes = useStyles()
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
+  const relatedDocuments = useRelatedDocuments(
+    doc.mdx.frontmatter.tags.filter(t => t !== 'Best Practices')
+  )
+
+  console.log(relatedDocuments)
 
   useLayoutEffect(() => {
     if (!props.location.hash) return
@@ -114,9 +149,21 @@ export default function KnowledgeBaseTemplate(
       />
       <LayoutContainer>
         <LayoutMain>
-          <IconButtonLink className={classes.backButton} to="/knowledge-base">
+          <IconButtonLink
+            className={classes.backButton}
+            to={`/knowledge-base${
+              location.state &&
+              location.state.selectedTags &&
+              location.state.selectedTags.length
+                ? `?t=${location.state.selectedTags.join(',')}`
+                : ''
+            }`}
+          >
             <Close />
           </IconButtonLink>
+          <Typography variant="h5" className={classes.pageSuperTitle}>
+            Knowledge Base
+          </Typography>
           <Typography variant="h1" className={classes.pageTitle}>
             {doc.mdx.frontmatter.title}
           </Typography>
@@ -143,28 +190,73 @@ export default function KnowledgeBaseTemplate(
           </div>
         </LayoutMain>
         <LayoutMenu>
-          {headings.map((heading, hindex) => {
-            return (
-              <div
-                key={hindex}
-                className={`${
-                  activeId === heading.id ? classes.activeHeading : ''
-                }`}
-              >
-                <Typography
-                  display="block"
-                  className={`${classes.heading} ${
-                    classes[`heading${heading.depth}`]
-                  }`}
-                  to={`${absolutePath}#${heading.id}`}
-                  variant="body1"
+          <Container maxWidth="xs" disableGutters>
+            <Typography variant="h5" className={classes.menuHeader}>
+              Contents
+            </Typography>
+            <div className={classes.menuSection}>
+              {headings.map((heading, hindex) => {
+                return (
+                  <div
+                    key={hindex}
+                    className={`${
+                      activeId === heading.id ? classes.activeHeading : ''
+                    }`}
+                  >
+                    <Typography
+                      display="block"
+                      className={`${classes.heading} ${
+                        classes[`heading${heading.depth}`]
+                      }`}
+                      to={`${absolutePath}#${heading.id}`}
+                      variant="body1"
+                      component={Link}
+                    >
+                      {heading.value}
+                    </Typography>
+                  </div>
+                )
+              })}
+            </div>
+            <Typography variant="h5" className={classes.menuHeader}>
+              Tags
+            </Typography>
+            <div className={classes.menuSection}>
+              {doc.mdx.frontmatter.tags.map(t => (
+                <Chip
+                  clickable
                   component={Link}
-                >
-                  {heading.value}
-                </Typography>
-              </div>
-            )
-          })}
+                  to={`/knowledge-base?t=${t}`}
+                  variant="outlined"
+                  key={t}
+                  label={t}
+                  className={classes.tagChipListItem}
+                />
+              ))}
+            </div>
+            <Typography variant="h5" className={classes.menuHeader}>
+              Related Reading
+            </Typography>
+            <div className={classes.menuSection}>
+              {relatedDocuments
+                .filter(d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath)
+                .map(t => (
+                  <Typography
+                    className={classes.relatedDocument}
+                    component={Link}
+                    state={{
+                      selectedTags:
+                        location.state && location.state.selectedTags,
+                    }}
+                    to={utility.resolvePath(t.fileAbsolutePath)}
+                    key={t.id}
+                    display="block"
+                  >
+                    {t.frontmatter.title}
+                  </Typography>
+                ))}
+            </div>
+          </Container>
         </LayoutMenu>
       </LayoutContainer>
     </Layout>
