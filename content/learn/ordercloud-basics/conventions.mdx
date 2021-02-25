@@ -5,7 +5,7 @@ description: 'Learn about the conventions of OrderCloud and how the APIs predict
 priority: 1
 ---
 
-With few exceptions, the OrderCloud API adheres to a RESTful architectural style. URIs, HTTP verbs, headers, payloads, and response codes all follow consistent and predictable patterns. This doc will outline conventions that permeate the entire platform.
+The OrderCloud API adheres to a RESTful architectural style. URIs, HTTP verbs, headers, payloads, and response codes all follow consistent and predictable patterns. This doc will outline conventions that permeate the entire platform.
 
 ## SSL Everywhere
 
@@ -25,9 +25,9 @@ OrderCloud API authentication is based on the [OAuth 2 specification](http://too
 
 ## Writeable IDs
 
-Writable IDs can be extremely useful for back-office integrations. They can potentially eliminate the need for a mapping middleware layer.
+Writable IDs can be extremely useful for back-office integrations as they can eliminate the need for a mapping middleware layer.
 
-Most resources that map to an entity of some sort (Orders, Users, Addresses, etc.) contain an ID that is optionally writable on creation or update. If you do not pass one, one will be auto-generated and returned in the response, and will be guaranteed to be unique. If you choose to pass an ID, you are responsible for ensuring uniqueness. Things that live under the context of a single Buyer need only be unique within that context. Things that are shared (such as products) must be unique across the entire Admin organization.
+Most resources that map to an entity of some sort (Orders, Users, Addresses, etc.) contain an ID that is optionally writable on creation or update. If you do not pass one, one will be auto-generated and returned in the response, and will be guaranteed to be unique. If you choose to pass an ID, you are responsible for ensuring uniqueness. Things that live under the context of a single Buyer need only be unique within that context. Things that are shared (such as products) must be unique across the entire Seller organization.
 
 ## Error Handling
 
@@ -41,7 +41,7 @@ A resource is a set of endpoints used to interact with an object of that same na
 | --------------- | --------- | ---------------------------------------------------------------- | ------------------------------------------------------- |
 | GET             | GET       | Returns a specific item                                          | Get a single address                                    |
 | SAVE            | PUT       | Create or replace an item, you provide a unique ID               | Create address ABC, overwriting it if it already exists |
-| UPDATE          | PATCH     | Use it for updating items                                        | Update the name on an address by providing the new name |
+| PATCH           | PATCH     | Use it for updating items                                        | Update the name on an address by providing the new name |
 | LIST            | GET       | Returns a list of items                                          | Get a list of addresses                                 |
 | CREATE          | POST      | Creates a new item, we generate a unique ID if no ID is provided | Create a new address                                    |
 | DELETE          | DELETE    | Deletes an item                                                  | Delete address ABC from the database                    |
@@ -74,31 +74,31 @@ OrderCloud uses conventional HTTP response codes to indicate success or failure 
       <tr>
         <td>401 - Unauthorized</td>
         <td>
-          The user is not authorized to make a call to the API. Check that user
-          credentials are valid and that there is a token on the headers in the
-          format: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+          The user is not authorized to make a call to the API. Check that user credentials are valid and that there is a token on the headers in the format: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...`
         </td>
       </tr>
       <tr>
         <td>403 - Forbidden</td>
         <td>
-          The user's Security Profile does not have the necessary roles to make
-          the API call. Update Security Profile to include valid roles for the
-          call. The response will include a list of the missing roles
+          The user's Security Profile does not have the necessary roles to make the API call. Update Security Profile to include valid roles for the call. The response will include a list of the missing roles
+        </td>
+      </tr>
+      <tr>
+        <td>400 - Bad Request</td>
+        <td>
+          Something was wrong with the request. Use the response from the API to determine the corrective course of action. 
         </td>
       </tr>
       <tr>
         <td>404 - Not Found</td>
         <td>
-          The requested resource was not found. A common reason for this is a
-          bad request.
+          The requested resource was not found. A common reason for this is a bad request.
         </td>
       </tr>
       <tr>
         <td>500 - Internal Server Error</td>
         <td>
-          There was a server-side issue. Please contact us if you encounter this
-          error code.
+          There was a server-side issue. Please contact us if you encounter this error code.
         </td>
       </tr>
     </tbody>
