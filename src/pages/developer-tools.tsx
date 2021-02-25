@@ -1,8 +1,6 @@
 import {
-  Box,
   Container,
   createStyles,
-  Divider,
   Grid,
   makeStyles,
   Paper,
@@ -11,16 +9,13 @@ import {
   Typography,
 } from '@material-ui/core/'
 import React from 'react'
-import {
-  darkgrey,
-  flame,
-  seafoam,
-  sherpablue,
-} from '../../theme/ocPalette.constants'
-import { CustomButtonLink } from '../Shared/ButtonVariants'
-import Jumbotron from '../Shared/Jumbotron'
+import { Helmet } from 'react-helmet'
+import { navHeight, navHeightMobile } from '../components/Layout/Header'
+import Layout from '../components/Layout/Layout'
+import { CustomButtonLink } from '../components/Shared/ButtonVariants'
+import Jumbotron from '../components/Shared/Jumbotron'
+import { darkgrey, flame, sherpablue } from '../theme/ocPalette.constants'
 import './../../../custom.d.ts' // custom type definitions
-import { navHeight, navHeightMobile } from './Header'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -90,25 +85,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 )
-
-const ResourcesComponent: React.FunctionComponent = props => {
-  const classes = useStyles(props)
+export default () => {
+  const classes = useStyles()
   return (
-    <React.Fragment>
+    <Layout>
+      <Helmet title={`Developer Tools | Four51 OrderCloud`} />
       <Jumbotron
         overlayed={true}
-        heading="OrderCloud Resources"
-        text="Everything you need to master creating a complex B2B commerce solution that is secure, scalable, and beautiful."
-        // actions={[
-        //   <CustomButtonLink
-        //     key="test"
-        //     to="/main-concepts/organization-hierarchy"
-        //     variant="contained"
-        //     color={flame[600]}
-        //   >
-        //     Developer Tools
-        //   </CustomButtonLink>,
-        // ]}
+        heading="Developer Tools"
+        text="Build solutions the way you want with our growing library of developer tools"
       />
       <Container maxWidth="lg">
         <Grid container className={classes.cardWrapper} spacing={3}>
@@ -183,50 +168,6 @@ const ResourcesComponent: React.FunctionComponent = props => {
           </Grid>
         </Grid>
       </Container>
-      {/* 
-      <Box paddingY={5} paddingX={20}>
-        <Divider />
-      </Box>
-      <Container maxWidth="lg">
-        <Typography
-          variant="h2"
-          style={{ fontWeight: 'bold' }}
-          component="h1"
-          align="center"
-        >
-          Create Your Free Account Today!
-        </Typography>
-        <Typography variant="h5" paragraph component="p" align="center">
-          OrderCloud provides a sandbox environment so you can start coding
-          without payment right now.
-        </Typography>
-        <Box
-          display="flex"
-          flexDirection="row"
-          flexWrap="noWrap"
-          alignItems="center"
-          justifyContent="center"
-          paddingBottom={8}
-        >
-          <CustomButtonLink
-            color={sherpablue[500]}
-            to="/getting-started/intro-to-ordercloud"
-            variant="contained"
-          >
-            Sign Up
-          </CustomButtonLink>
-          <div className={classes.spacer} />
-          <CustomButtonLink
-            to="/main-concepts/organization-hierarchy"
-            variant="contained"
-            color={flame[500]}
-          >
-            Join Our Slack
-          </CustomButtonLink>
-        </Box>
-      </Container> */}
-    </React.Fragment>
+    </Layout>
   )
 }
-
-export default ResourcesComponent

@@ -3,8 +3,11 @@ import React, { FunctionComponent } from 'react'
 import ButtonlinkExternal from '../Shared/ButtonlinkExternal'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 
-const repoUrl =
-  'https://github.com/ordercloud-api/oc-documentation/edit/development'
+const isProd = window.location.hostname === 'ordercloud.io'
+
+const repoUrl = `https://github.com/ordercloud-api/oc-documentation/edit/${
+  isProd ? 'development' : 'redesign'
+}`
 
 interface SuggestAnEditButtonProps {
   path: string
@@ -31,7 +34,7 @@ const SuggestAnEdit: FunctionComponent<SuggestAnEditButtonProps> = (
       className={classes.button}
       variant="outlined"
       size="small"
-      href={`${repoUrl}/content/docs${path}.mdx`}
+      href={`${repoUrl}/content${path}.mdx`}
     >
       <EditOutlined fontSize="inherit" className={classes.icon} />
       Suggest an edit

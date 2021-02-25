@@ -183,9 +183,10 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
               <Toolbar variant="dense" disableGutters>
                 <Link to="/discover/platform-overview">Discover</Link>
                 <Link to="/learn/ordercloud-basics/architecture">Learn</Link>
-                <Link to="/resources">Resources</Link>
+                <Link to="/knowledge-base">Knowledge Base</Link>
+                <Link to="/developer-tools">Developer Tools</Link>
                 <Link to="/api-reference">API Reference</Link>
-                <Link to="/">Community</Link>
+                <Link to="/slack">Community</Link>
                 <div className={classes.grow} />
                 <Link className={classes.registerCta} to="/">
                   <span>Create a free account </span>
