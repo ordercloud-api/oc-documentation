@@ -96,7 +96,6 @@ const ResourcesComponent: React.FunctionComponent = props => {
   return (
     <React.Fragment>
       <Jumbotron
-        align="center"
         overlayed={true}
         heading="OrderCloud Resources"
         text="Everything you need to master creating a complex B2B commerce solution that is secure, scalable, and beautiful."
@@ -124,7 +123,7 @@ const ResourcesComponent: React.FunctionComponent = props => {
               </Typography>
               <Toolbar disableGutters>
                 <CustomButtonLink
-                  to="/main-concepts/organization-hierarchy"
+                  to="/learn/ordercloud-basics/architecture"
                   variant="outlined"
                   color={sherpablue[500]}
                 >
@@ -132,7 +131,7 @@ const ResourcesComponent: React.FunctionComponent = props => {
                 </CustomButtonLink>
                 <div className={classes.spacer} />
                 <CustomButtonLink
-                  to="/main-concepts/organization-hierarchy"
+                  to="/learn/getting-started/welcome-to-ordercloud"
                   variant="contained"
                   color={flame[600]}
                 >
@@ -173,7 +172,7 @@ const ResourcesComponent: React.FunctionComponent = props => {
               </Typography>
               <Toolbar disableGutters>
                 <CustomButtonLink
-                  to="/main-concepts/organization-hierarchy"
+                  to="/knowledge-base"
                   variant="outlined"
                   color={flame[600]}
                 >

@@ -7,10 +7,13 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core'
+import { useSelector, useDispatch } from 'react-redux'
 import { FileCopyOutlined } from '@material-ui/icons'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
+import { configureStore, createSlice } from '@reduxjs/toolkit'
 import Prism from 'prismjs'
 import React, {
+  createContext,
   Fragment,
   FunctionComponent,
   useCallback,
@@ -65,17 +68,40 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+export type CodeExampleLanugage = keyof CodeExampleContent
+
+export const codeExampleSlice = createSlice({
+  name: 'codeExample',
+  initialState: {
+    value: 'http' as CodeExampleLanugage,
+  },
+  reducers: {
+    changeLanguage: (state, action) => {
+      state.value = action.payload
+    },
+  },
+})
+
+const { changeLanguage } = codeExampleSlice.actions
+
+export const codeExampleStore = configureStore({
+  reducer: {
+    codeExample: codeExampleSlice.reducer,
+  },
+})
+
 const CodeExample: FunctionComponent<CodeExampleProps> = (
   props: CodeExampleProps
 ) => {
   const { title, description, content, hide } = props
   const classes = useStyles()
-  const [language, setLanguage] = useState(Object.keys(content)[0])
+  const language = useSelector(state => state.codeExample.value)
+  const dispatch = useDispatch()
 
   const handleLanguageChange = useCallback(
     (e: React.MouseEvent, value: any) => {
       if (!value || language === value) return
-      setLanguage(value)
+      dispatch(changeLanguage(value))
     },
     [language]
   )
@@ -104,16 +130,14 @@ const CodeExample: FunctionComponent<CodeExampleProps> = (
     <div className={classes.root}>
       <Toolbar disableGutters variant="dense">
         {(title || description) && (
-          <Fragment>
-            <div>
-              {title && <Typography variant="h5">{title}</Typography>}
-              {description && (
-                <Typography variant="caption">{description}</Typography>
-              )}
-            </div>
-            <div className={classes.grow} />
-          </Fragment>
+          <div>
+            {title && <Typography variant="h5">{title}</Typography>}
+            {description && (
+              <Typography variant="caption">{description}</Typography>
+            )}
+          </div>
         )}
+        <div className={classes.grow} />
         <ToggleButtonGroup
           size="small"
           exclusive

@@ -1,7 +1,7 @@
 import { DocsQuery } from '../models/docsQuery'
 import { DiscoverQuery } from '../models/discoverQuery'
 import { groupBy, forEach } from 'lodash'
-import { Article, Heading } from '../models/tableOfContents.model'
+import { Article } from '../models/tableOfContents.model'
 import { Section, Guide } from '../models/section.model'
 
 const service = {
@@ -71,9 +71,9 @@ const sortGuides = (sectionTitle: string) => (first: Guide, second: Guide) => {
  * takes in gatsby's fileAbsolutePath and returns the routeable path
  */
 function resolvePath(fileAbsolutePath: string): string {
-  const path = fileAbsolutePath.split('/content')[1].replace('.mdx', '')
-  if (path.startsWith('/learn')) {
-    return path.replace('/learn', '') // served from root
+  let path = fileAbsolutePath.split('/content')[1].replace('.mdx', '')
+  if (path.startsWith('/documents')) {
+    path = path.replace('documents', 'knowledge-base')
   }
   return path
 }

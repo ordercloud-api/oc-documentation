@@ -1,0 +1,60 @@
+---
+section: 'Product Catalogs'
+title: 'Making Your Product Visible'
+description: 'You have many options to achieve product visibility, each with a unique purpose. The path you take depends on your business requirements.'
+priority: 2
+---
+
+In this chapter we've investigated your default buyer catalog and created a new product with a default price schedule. Our default catalog has `ViewAllProducts` set to `true`, so one might think that your product is ready for buyer users to purchase! This is a common misconception, as products are not inheritly part of a catalog. They exist apart, so that sellers can share products across many catalogs.
+
+## Connecting the dots
+To make the product visible in our example we must assign it directly to the default buyer catalog. This is called a product-catalog assignment. 
+
+In other scenarios this assignment is created automatically when you assign products to a category within a catalog, similar to when you update a buyer organizations `DefaultCatalogID` and OrderCloud creates the buyer-catalog assignment for you.
+
+<ContentLink to="/blog/product-visibility" subtitle="Further Reading">Product Visibility</ContentLink>
+
+For this reason many developers overlook the fact that they need to explicitly assign a product to a catalog in the absence of categories.
+
+<CodeExample
+  title="Assign the product to the default catalog"
+  content={{
+    http: `PUT https://api.ordercloud.io/v1/catalogs/productassignments HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    CatalogID: "BUYER_ORGANIATION",
+    ProductID: "SHIRT"
+}`,
+javascript: `import { Catalogs } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Catalogs.SaveProductAssignment({
+    CatalogID: "BUYER_ORGANIATION",
+    ProductID: "SHIRT"
+})
+  .then(response => {
+      // responds with 204 no content (empty response) when successful
+      console.log(response);
+  })
+  .catch(err => console.log(err));`,
+typescript: `import { Catalogs, ProductCatalogAssignment, OrderCloudError } from "ordercloud-javascript-sdk";\n
+const data: ProductCatalogAssignment = {
+    CatalogID: "BUYER_ORGANIZATION",
+    ProductID: "SHIRT"
+}\n
+Catalogs.SaveProductAssignment(data)
+  .then((response:undefined) => {
+      // responds with 204 no content (empty response) when successful
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderClould.SDK;\n
+var client = new OrderCloudClient(...);\n
+var data = new ProductCatalogAssignment {
+    CatalogID = "BUYER_ORGANIATION",
+    ProductID = "SHIRT"
+};\n
+await _oc.Catalogs.SaveProductAssignmentAsync(data);`}}
+/>
+
+You now have a working product catalog! It may be simple, but it has everything you need to start creating orders in the buyer perspective.

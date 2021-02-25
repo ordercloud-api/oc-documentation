@@ -7,18 +7,22 @@ const useActiveId = itemIds => {
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            setActiveId(entry.target.id)
+            setActiveId(entry.target.firstElementChild.id)
           }
         })
       },
       { rootMargin: `0% 0% -80% 0%` }
     )
     itemIds.forEach(id => {
-      observer.observe(document.getElementById(id))
+      const el = document.getElementById(id)
+      if (!el) return
+      observer.observe(el.parentElement)
     })
     return () => {
       itemIds.forEach(id => {
-        observer.unobserve(document.getElementById(id))
+        const el = document.getElementById(id)
+        if (!el) return
+        observer.unobserve(el)
       })
     }
   }, [itemIds])

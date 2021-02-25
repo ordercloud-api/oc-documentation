@@ -1,20 +1,18 @@
 import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
+import { RouteComponentProps } from '@reach/router'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React, { useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
-import '../../styles/doc-template.css'
+import { useDiscoverSections } from '../../hooks/useDiscoverSections'
 import utility from '../../services/utility'
-// import DocFooter from '../Layout/DocFooter'
+import '../../styles/doc-template.css'
+import DiscoverMenu from '../Layout/DiscoverMenu'
 import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
-import { useDiscoverSections } from '../../hooks/useDiscoverSections'
-import { RouteComponentProps } from '@reach/router'
-import { EditOutlined } from '@material-ui/icons'
-import ButtonlinkExternal from '../Shared/ButtonlinkExternal'
-import DiscoverMenu from '../Layout/DiscoverMenu'
+import SuggestEditButton from '../Shared/SuggestEditButton'
 
 interface DiscoverTemplateProps extends RouteComponentProps {
   data: {
@@ -36,12 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
     pageTitle: {
       marginBottom: theme.spacing(3),
     },
-    editButton: {
-      marginBottom: theme.spacing(3),
-    },
-    editButtonIcon: {
-      marginRight: theme.spacing(0.5),
-    },
   })
 )
 
@@ -49,8 +41,6 @@ export default function Template(props: DiscoverTemplateProps) {
   const doc = props.data // data from page query
   const articles = useDiscoverSections()
   const classes = useStyles()
-  const repoUrl =
-    'https://github.com/ordercloud-api/oc-documentation/edit/development'
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
 
   useLayoutEffect(() => {
@@ -73,24 +63,7 @@ export default function Template(props: DiscoverTemplateProps) {
           <Typography variant="h1" className={classes.pageTitle}>
             {doc.mdx.frontmatter.title}
           </Typography>
-          <ButtonlinkExternal
-            className={classes.editButton}
-            variant="outlined"
-            size="small"
-            href={`${repoUrl}/content/${absolutePath}.mdx`}
-          >
-            <EditOutlined
-              fontSize="inherit"
-              className={classes.editButtonIcon}
-            />
-            Edit this doc
-          </ButtonlinkExternal>
-          {doc.mdx.frontmatter.updatedOnDate && (
-            <Typography color="textSecondary" variant="caption">
-              Last Updated {doc.mdx.frontmatter.updatedOnDate}
-            </Typography>
-          )}
-
+          <SuggestEditButton path={absolutePath} />
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
           {/* <DocFooter contents={sections} currentGuide={absolutePath} /> */}
         </LayoutMain>
@@ -113,7 +86,6 @@ export const query = graphql`
       frontmatter {
         title
         description
-        updatedOnDate(formatString: "MMMM Do, YYYY")
       }
     }
   }

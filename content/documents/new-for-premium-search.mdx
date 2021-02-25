@@ -1,0 +1,45 @@
+---
+type:           article
+title:          What's New for Premium Search
+description:    Premium Search is now available on product admin endpoints, and introducing the new searchType parameter.
+author:         tmenier
+publishDate:    2020-03-30
+updatedDate:    
+tags:           ["Products", "Catalogs", "Product Facets", "Extended Properties"]
+---
+
+It's been almost a year since we first [unveiled](https://ordercloud.io/blog/introducing-premium-search) our fancy new Elasticsearch-powered Premium Search for products. In that time we've transitioned everyone gradually (in order to deal with potentially breaking behavioral differences), seen some great implementations of new features like facets, made lots of tweaks to improve performance and scalability, and gotten a lot of good feedback. We've also been moving forward on some new features in this area, which I'll highlight here.
+
+## Premium Search for Admin endpoints
+
+Premium Search is no longer just for "me". Bad jokes aside, this means that the same "engine" that powers `v1/me/products` (for building the buyer experience) will also serve `v1/products` so that the product admin experience can take advantage of the same features. Detailing these features point by point would be a bit redundant with the [original blog post on Premium Search](https://ordercloud.io/blog/introducing-premium-search), so instead I'd encourage you to review that post carefully to understand what this means for the admin side.
+
+Like we did with the "me" endpoint, we're rolling out the admin side gradually, but on a more aggressive schedule, since the engine itself is already battle-hardened and proven to scale well. Here is our rollout plan:
+
+1. Enable all newly created orgs by default (in place since February 2020, in case you [missed](https://ordercloud.io/release-notes/v1.0.140) it).
+2. Transition a few select clients/partners individually (many done or in progress).
+3. Transition all orgs that we can easily identify as "Test" or "Dev" orgs (Friday April 3, 2020).
+4. Transition _all_ remaining orgs (Monday April 20, 2020).
+5. Remove all xp indexes defined on Product, and disallow creating new ones* (TBD, soon after everyone is transitioned and confirmed stable).
+
+\* With Premium Search, all xp fields are searchable/sortable/filterable automaticlaly, so there is no need for explicit indexes.
+
+### Look out for this potential "gotcha"
+
+As with the "me" endpoints, there are no breaking changes from an API specification standpoint. But if there's one _behavioral_ aspect you need to be particularly aware of and proactive about, it's this: `GET`s will be serving cached data, which by its nature has the potential of being stale. If you do any sort of write operation (`POST` / `PUT` / `PATCH`), the model returned in the _response_ is guaranteed to be fresh and consistent. _**But if you immediately follow a write with a `GET`, you may get back stale data.**_ Hopefully understanding the nature of this will help you avoid potential bugs, but we encourage everyone to proactively check their code to determine if this might affect them. (Recall that all orgs created after 2/12/2020 are already enabled, so nothing to do in this case.)
+
+## New `searchType` parameter
+
+One piece of critical feedback we're heard a few times (okay, I'll call it a complaint) is that searches are simply returning too many results in many cases. We have certainly erred on that side intentionally, and we've found _ranking_ of search results, which we consider much more important, to be working extremely well. Still, we understand the desire to tighten the reins on the sheer volume of results in some cases, and we're rolling out the new `searchType` query parameter to help achieve this. Here are the possible values:
+
+- `AnyTerm` - Default. Any word in the search phrase must appear in any of the fields being searched on.
+- `AllTermsAnyField` - All words in the search phrase must appear _somewhere_ in any of the fields being searched on.
+- `AllTermsSameField` - All words in the search phrase must appear _in the same field_, of those being searched on.
+- `ExactPhrase` - The phrase must appear exactly as typed (case insensitive) in any field being searched on.
+- `ExactPhrasePrefix` - Like `ExactPhrase`, except the _last_ word in the search phrase can be incomplete. This is ideal for powering type-ahead lookups.
+
+The `searchType` parameter is available on `v1/products` and `v1/me/products` today. In the coming days we'll be releasing updates to our SDKs with direct support for the new parameter.
+
+### Use with care
+
+Although we encourage you to use these features when appropriate, we'd still caution you to err on the side of too many results. Remember that _ranking_ works the same in all cases. That is, exact phrase matches will rank ahead of individual terms, more term matches will rank ahead of fewer, matches on `ID` and `Name` will rank ahead of matches on `Description`, etc. Think about searching for something on Google or Amazon: are you likely to go to page 20 of the results if you found what you're looking for on page 1? The flip side of too many results is too few, and you don't want to unintentionally prevent users from finding what they're looking for.

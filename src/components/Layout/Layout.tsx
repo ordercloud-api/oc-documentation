@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { createContext, useState } from 'react'
+import { Provider } from 'react-redux'
 import Header, { navHeight, navHeightMobile } from './Header2'
 import { ThemeProvider } from '@material-ui/styles'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
@@ -27,7 +28,9 @@ import AlertContainer from '../Shared/Alert'
 import { RouteComponentProps } from '@reach/router'
 import { useDocsSections } from '../../hooks/useDocsSections'
 import ContentLink from '../Shared/ContentLink'
-import CodeExample from '../Shared/CodeExample'
+import CodeExample, { codeExampleStore } from '../Shared/CodeExample'
+import { Link } from 'gatsby'
+import { PortalLink } from '../Shared/PortalLink'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -114,102 +117,109 @@ export default (props: LayoutProps) => {
       </Typography>
     )
   }
+
   return (
-    <ThemeProvider theme={ORDERCLOUD_THEME}>
-      <Helmet
-        meta={[
-          {
-            property: 'og:image',
-            content: '/images/meta/meta_thumbnail.jpg',
-          },
-          {
-            name: 'viewport',
-            content:
-              'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
-          },
-          {
-            name: 'description',
-            content:
-              'OrderCloud powers custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and over $5 billion in revenue annually.',
-          },
-        ]}
-      >
-        <html />
-        <body className={classes.body} />
-      </Helmet>
-      <CssBaseline />
-      <AlertContainer />
-      <div className={classes.containerMain}>
-        <Header />
-        {/* <Header location={props.location} /> */}
-        <div className={classes.pageWrapper}>
-          <MDXProvider
-            components={{
-              ContentLink,
-              CodeExample,
-              h1: buildHeader('h1'),
-              h2: buildHeader('h2'),
-              h3: buildHeader('h3'),
-              h4: buildHeader('h4'),
-              h5: buildHeader('h5'),
-              h6: buildHeader('h6'),
-              blockquote: blockquoteProps => (
-                <Box
-                  paddingX={2}
-                  paddingTop={2}
-                  paddingBottom="1px"
-                  marginBottom={2}
-                  bgcolor={seafoam[100]}
-                  borderRadius={4}
-                >
-                  {blockquoteProps.children}
-                </Box>
-              ),
-              p: pProps => <Typography {...pProps} paragraph variant="body1" />,
-              ol: olProps => (
-                <Typography
-                  paragraph
-                  variant="body1"
-                  component="span"
-                  display="block"
-                >
-                  <ol {...olProps} />
-                </Typography>
-              ),
-              ul: ulProps => (
-                <Typography
-                  paragraph
-                  variant="body1"
-                  component="span"
-                  display="block"
-                >
-                  <ul {...ulProps} />
-                </Typography>
-              ),
-              a: aProps => <LayoutLink {...aProps} />,
-              table: tableProps => (
-                <TableContainer
-                  component={Paper}
-                  className={classes.tableContainer}
-                >
-                  <Table {...tableProps} />
-                </TableContainer>
-              ),
-              tr: trProps => <TableRow {...trProps} />,
-              th: thProps => (
-                <TableCell variant="head">{thProps.children}</TableCell>
-              ),
-              td: tdProps => (
-                <TableCell variant="body">{tdProps.children}</TableCell>
-              ),
-              hr: hrProps => <Divider {...hrProps} />,
-            }}
-          >
-            {props.children}
-          </MDXProvider>
+    <Provider store={codeExampleStore}>
+      <ThemeProvider theme={ORDERCLOUD_THEME}>
+        <Helmet
+          meta={[
+            {
+              property: 'og:image',
+              content: '/images/meta/meta_thumbnail.jpg',
+            },
+            {
+              name: 'viewport',
+              content:
+                'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+            },
+            {
+              name: 'description',
+              content:
+                'OrderCloud powers custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and over $5 billion in revenue annually.',
+            },
+          ]}
+        >
+          <html />
+          <body className={classes.body} />
+        </Helmet>
+        <CssBaseline />
+        <AlertContainer />
+        <div className={classes.containerMain}>
+          <Header />
+          {/* <Header location={props.location} /> */}
+          <div className={classes.pageWrapper}>
+            <MDXProvider
+              components={{
+                Link,
+                PortalLink,
+                ContentLink,
+                CodeExample,
+                h1: buildHeader('h1'),
+                h2: buildHeader('h2'),
+                h3: buildHeader('h3'),
+                h4: buildHeader('h4'),
+                h5: buildHeader('h5'),
+                h6: buildHeader('h6'),
+                blockquote: blockquoteProps => (
+                  <Box
+                    paddingX={2}
+                    paddingTop={2}
+                    paddingBottom="1px"
+                    marginBottom={2}
+                    bgcolor={seafoam[100]}
+                    borderRadius={4}
+                  >
+                    {blockquoteProps.children}
+                  </Box>
+                ),
+                p: pProps => (
+                  <Typography {...pProps} paragraph variant="body1" />
+                ),
+                ol: olProps => (
+                  <Typography
+                    paragraph
+                    variant="body1"
+                    component="span"
+                    display="block"
+                  >
+                    <ol {...olProps} />
+                  </Typography>
+                ),
+                ul: ulProps => (
+                  <Typography
+                    paragraph
+                    variant="body1"
+                    component="span"
+                    display="block"
+                  >
+                    <ul {...ulProps} />
+                  </Typography>
+                ),
+                a: aProps => <LayoutLink {...aProps} />,
+                table: tableProps => (
+                  <TableContainer
+                    component={Paper}
+                    className={classes.tableContainer}
+                  >
+                    <Table {...tableProps} />
+                  </TableContainer>
+                ),
+                tr: trProps => <TableRow {...trProps} />,
+                th: thProps => (
+                  <TableCell variant="head">{thProps.children}</TableCell>
+                ),
+                td: tdProps => (
+                  <TableCell variant="body">{tdProps.children}</TableCell>
+                ),
+                hr: hrProps => <Divider {...hrProps} />,
+              }}
+            >
+              {props.children}
+            </MDXProvider>
+          </div>
         </div>
-      </div>
-      <Footer sections={sections}></Footer>
-    </ThemeProvider>
+        <Footer sections={sections}></Footer>
+      </ThemeProvider>
+    </Provider>
   )
 }
