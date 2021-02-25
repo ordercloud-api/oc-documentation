@@ -56,7 +56,12 @@ export default function Template(props: DiscoverTemplateProps) {
     <Layout location={props.location}>
       <Helmet
         title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`}
-        description={doc.mdx.frontmatter.description}
+        meta={[
+          {
+            name: 'description',
+            content: doc.mdx.frontmatter.description,
+          },
+        ]}
       />
       <LayoutContainer>
         <LayoutMain>
