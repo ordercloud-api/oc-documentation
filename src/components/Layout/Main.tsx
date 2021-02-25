@@ -191,7 +191,7 @@ const MainComponent: React.FunctionComponent = props => {
                         <AccountTree color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Omni-Channel Integration" />
+                    <ListItemText primary="Omni-Channel" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>

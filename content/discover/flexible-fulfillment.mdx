@@ -193,7 +193,7 @@ As covered in a previous section on _Estimate Shipping_, OrderCloud can provide 
 
 This shipment preference data is stored with the original buyer order and can be accessed through OrderCloud APIs.  Depending on if you choose to do basic commerce or are setting up a more complex marketplace on OrderCloud, you can dictate what and how that buyer preference is communicated.
 
-<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/seller/integration-events/get-worksheet">OrderCloud Shipments</ContentLink>
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/seller/integration-events/get-worksheet">Order Worksheets</ContentLink>
 
 ### Seller Managed Fulfillment (Basic Commerce)
 OrderCloud can handle basic commerce scenarios that other platforms support.  The seller (you) may have systems in place, most likely an order management system (OMS) or enterprise resource planning system (ERP) such as NetSuite or SAP where your distribution and financials are centrally managed.  You simply want the order to land in your system to manage from there.
@@ -265,7 +265,7 @@ A more common application of middleware is if you want to publish your own servi
 
 In both cases, it is recommended to leverage OrderCloud’s robust security architecture versus rolling your own.  OrderCloud handles the roles of buyers, admins, and suppliers, along with data rights authorization.    Again, you can choose to implement your services in any language of choice.
 
-[[INSERT LINK TO MIDDLEWARE GITHUB REPOS]]
+<!-- [[INSERT LINK TO MIDDLEWARE GITHUB REPOS]] -->
 
 ### Integration Events
 While the previous two sections with webhooks and middleware proxies covered how to intercept and augment OrderCloud through direct API calls, Integration Events work on the same premise but are initiated indirectly due to coordinating things like order checkout and also includes more robust information in the request and response lifecycle.  Think of this as pointing OrderCloud to your own middleware services to own the logic of order intake.
@@ -294,7 +294,7 @@ API Clients represent a specific channel that connects to OrderCloud.  For the f
 - **Webhooks** - they are associated with one or more API Clients, so you can control when the webhook is even fired by channel, you can even configure multiple webhooks for the same ‘thing'
 - **Integration Events** - per API client, you can specify which single Integration Event to use to guarantee only one Integration Event is fired per Client ID.  This is similar to saying ‘use this middleware service’ to delegate order processing logic to.
 
-[[ LINK TO PAGE ON API CLIENTS w/ DEV CENTER ]]
+<ContentLink subtitle="Further Reading" to="/knowledge-base/api-clients">Introduction to API Clients</ContentLink>
 
 ### Synchronizing Orders
 For distributed systems, once the order is created within OrderCloud, you may be wondering how to get that order into other systems downstream.  As covered in Order Fulfillment, the orders can be passed or accessed by just you (the seller) or providing direct access to individual suppliers.
