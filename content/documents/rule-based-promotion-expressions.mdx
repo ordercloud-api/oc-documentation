@@ -8,7 +8,7 @@ updatedDate:
 tags:           ["Rules Engine", "Promotions", "Orders", "Line Items"]
 ---
 
-Writing custom rule-base expressions for your order promotions may seem intimidating at first, but once you get the hang of it you'll realize there are virtually limitless possibilities which provide the flexibility to meet almost any business need. In fact, custom order promotions are a great example of how our core value <Link to="/blog/flexibility-over-features">*Flexibility over Features*</Link> informs everything we build (and don't build) into the platform. We've found that allowing developers to define their own custom if-then statements is incredibly robust and solves more problems than providing a limited set of non-customizable promotions out-of-the-box.
+Writing custom rule-base expressions for your order promotions may seem intimidating at first, but once you get the hang of it you'll realize there are virtually limitless possibilities which provide the flexibility to meet almost any business need. In fact, custom order promotions are a great example of how our core value <Link to="/knowledge-base/flexibility-over-features">*Flexibility over Features*</Link> informs everything we build (and don't build) into the platform. We've found that allowing developers to define their own custom if-then statements is incredibly robust and solves more problems than providing a limited set of non-customizable promotions out-of-the-box.
 
 ## Promotions Overview
 
@@ -89,10 +89,10 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
  - Promotion eligibility is evaluated by the api at the time the promotion is applied, and then again on order submit.
 
 **Enhancements Roadmap**
- - <Link to="/blog/line-item-promos">Line item level promotions</Link> (<Link to="/release-notes/v1.0.158">released in v1.0.158</Link>)
+ - <Link to="/knowledge-base/line-item-promos">Line item level promotions</Link> (<Link to="/release-notes/v1.0.158">released in v1.0.158</Link>)
   - `v1/orders/{direction}/{orderID}/validate` <Link to="/api-reference/orders-and-fulfillment/orders/validate">endpoint</Link> that will check validity of an order in it's current state, including, but not limited to, applied promotions (<Link to="/release-notes/v1.0.131">released in v1.0.131</Link>)
  - Support for `min(...)` and `max(...)` functions (<Link to="/release-notes/v1.0.165">released in v1.0.165</Link>)
  - `product.inparentcategory()` - the current function `product.incategory()` only recognizes direct assignments, the new function will look for products assigned to any child categories of the parent that is passed in.
 
 **Other Resources**
-- <Link to="/blog/rules-engine-has-arrived">Rules Engine Introduction</Link>
+- <Link to="/knowledge-base/rules-engine-has-arrived">Rules Engine Introduction</Link>

@@ -498,7 +498,7 @@ await Orders.Submit("Outgoing", order.ID);`}
               </CustomButtonLink>
               <div className={classes.spacer} />
               <CustomButtonLink
-                to="/resources"
+                to="/developer-tools"
                 variant="outlined"
                 color={themeConstants.palette.secondary.main}
               >

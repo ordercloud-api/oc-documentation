@@ -22,7 +22,7 @@ GET https://api.ordercloud.io/v1/me/products?search=bike HTTP/1.1
 
 This will return all results such as bike, words including bike, bikes, bicycle, etc. The fields searched include `ID`,`Name`, and `Description`. (This of course varies from endpoint to endpoint). Fields marked "Searchable" in the API reference will be searched and weighted according to priority level.
 
-You can also optionally specify which fields (of the searchable fields available) are searched by providing a `searchOn` parameter for any field available on the resource you're searching including <Link to="/features/extended-properties">extended properties (XP)</Link>. Here's we're searching on Name and xp.Color so if our search finds a match in either of those two fields we will get a result.
+You can also optionally specify which fields (of the searchable fields available) are searched by providing a `searchOn` parameter for any field available on the resource you're searching including <Link to="/knowledge-base/extended-properties">extended properties (XP)</Link>. Here's we're searching on Name and xp.Color so if our search finds a match in either of those two fields we will get a result.
 
 ```http
 GET https://api.ordercloud.io/v1/me/products?search=bike&searchOn=Name,xp.Color HTTP/1.1
@@ -34,7 +34,7 @@ Filtering is best for looking at specific values in a given field. If you do not
 
 ### Filtering On XP
 
-Let's examine a common scenario of filtering on an <Link to="/features/extended-properties">extended property (XP) field</Link>. Suppose our XP field looks like this:
+Let's examine a common scenario of filtering on an <Link to="/knowledge-base/extended-properties">extended property (XP) field</Link>. Suppose our XP field looks like this:
 
 ```json
 {

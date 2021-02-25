@@ -34,7 +34,7 @@ You will quickly realize that a Client Secret by itself is not sufficient enough
 
 The `DefaultContextUserName` property is for exactly that. It let's OrderCloud know what user context to provide when authentication occurs using the Client Credentials grant type. As far as OrderCloud knows, you *are* the default context user when using this grant type.
 
-Read more about supported OAuth workflows here <Link to="/main-concepts/authentication#ordercloud-workflows">here</Link>.
+Read more about supported OAuth workflows here <Link to="/knowledge-base/authentication#ordercloud-workflows">here</Link>.
 
 ### Anonymous Shopping (Guest Checkout)
 Now that you understand how to enable the Client Credentials grant type you may think that this is all you would need in order to enable Anonymous Shopping - or what some call "Guest Checkout". **This is incorrect**, as anonymous shoppers should **not** be treated as if they *are* the default context user. They need to be treated as a temporary "copy" of the default context user.
@@ -43,7 +43,7 @@ This is where the `IsAnonBuyer` property comes in. When enabled, many of the Me 
 
 > It is important to note that adding a Client Secret is not necessary to enable Anonymous Shopping. In fact, it is not recommended to require a Client Secret for any client-side application.
 
-Read more about Anonymous Shopping <Link to="/features/anonymous-shopping">here</Link>.
+Read more about Anonymous Shopping <Link to="/knowledge-base/anonymous-shopping">here</Link>.
 
 ### Token Durations
 Once a party has the appropriate level of access to your organization - it's important to control _how long_ that access will last. This is controlled by two properties: `AccessTokenDuration` and `RefreshTokenDuration`. The most important of the two is `AccessTokenDuration` - this is how long an `access_token` acquired using a specific API Client ID will live (in minutes).
