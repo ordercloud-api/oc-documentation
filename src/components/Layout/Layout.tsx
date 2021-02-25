@@ -1,36 +1,35 @@
-import React, { createContext, useState } from 'react'
-import { Provider } from 'react-redux'
-import Header, { navHeight, navHeightMobile } from './Header2'
-import { ThemeProvider } from '@material-ui/styles'
-import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import {
   Box,
-  Theme,
-  makeStyles,
   createStyles,
-  Typography,
-  Table,
-  TableRow,
-  TableCell,
   CssBaseline,
   Divider,
-  TableContainer,
+  makeStyles,
   Paper,
+  Table,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Theme,
+  Typography,
   TypographyVariant,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
+import { ThemeProvider } from '@material-ui/styles'
 import { MDXProvider } from '@mdx-js/react'
-import IconButtonLink from '../Shared/IconButtonLink'
-import { Helmet } from 'react-helmet'
-import Footer from './Footer'
-import { seafoam } from '../../theme/ocPalette.constants'
-import AlertContainer from '../Shared/Alert'
 import { RouteComponentProps } from '@reach/router'
-import { useDocsSections } from '../../hooks/useDocsSections'
-import ContentLink from '../Shared/ContentLink'
-import CodeExample, { codeExampleStore } from '../Shared/CodeExample'
 import { Link } from 'gatsby'
+import React from 'react'
+import { Helmet } from 'react-helmet'
+import { Provider } from 'react-redux'
+import { seafoam } from '../../theme/ocPalette.constants'
+import ORDERCLOUD_THEME from '../../theme/theme.constants'
+import AlertContainer from '../Shared/Alert'
+import CodeExample, { codeExampleStore } from '../Shared/CodeExample'
+import ContentLink from '../Shared/ContentLink'
+import IconButtonLink from '../Shared/IconButtonLink'
 import { PortalLink } from '../Shared/PortalLink'
+import Footer from './Footer'
+import Header, { navHeight, navHeightMobile } from './Header2'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -108,7 +107,6 @@ interface LayoutProps extends RouteComponentProps {
 
 export default (props: LayoutProps) => {
   const classes = useStyles(props)
-  const sections = useDocsSections()
   const buildHeader = (variant: TypographyVariant) => (hProps: any) => {
     return (
       <Typography className={classes.heading} variant={variant}>
@@ -218,7 +216,7 @@ export default (props: LayoutProps) => {
             </MDXProvider>
           </div>
         </div>
-        <Footer sections={sections}></Footer>
+        <Footer />
       </ThemeProvider>
     </Provider>
   )

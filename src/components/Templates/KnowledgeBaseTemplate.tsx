@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Chip,
+  Container,
   createStyles,
   makeStyles,
   Theme,
@@ -53,6 +54,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     heading: {
       textDecoration: 'none',
+      lineHeight: 1.15,
+      marginBottom: theme.spacing(1),
       color: theme.palette.getContrastText(theme.palette.background.paper),
     },
     heading2: {},
@@ -93,7 +96,15 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1),
     },
     menuSection: {
-      marginBottom: theme.spacing(2),
+      marginBottom: theme.spacing(3),
+    },
+    relatedDocument: {
+      lineHeight: 1.15,
+      marginBottom: theme.spacing(1),
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
     },
   })
 )
@@ -169,66 +180,69 @@ export default function KnowledgeBaseTemplate(
           </div>
         </LayoutMain>
         <LayoutMenu>
-          <Typography variant="h5" className={classes.menuHeader}>
-            Contents
-          </Typography>
-          <div className={classes.menuSection}>
-            {headings.map((heading, hindex) => {
-              return (
-                <div
-                  key={hindex}
-                  className={`${
-                    activeId === heading.id ? classes.activeHeading : ''
-                  }`}
-                >
-                  <Typography
-                    display="block"
-                    className={`${classes.heading} ${
-                      classes[`heading${heading.depth}`]
+          <Container maxWidth="xs" disableGutters>
+            <Typography variant="h5" className={classes.menuHeader}>
+              Contents
+            </Typography>
+            <div className={classes.menuSection}>
+              {headings.map((heading, hindex) => {
+                return (
+                  <div
+                    key={hindex}
+                    className={`${
+                      activeId === heading.id ? classes.activeHeading : ''
                     }`}
-                    to={`${absolutePath}#${heading.id}`}
-                    variant="body1"
-                    component={Link}
                   >
-                    {heading.value}
-                  </Typography>
-                </div>
-              )
-            })}
-          </div>
-          <Typography variant="h5" className={classes.menuHeader}>
-            Tags
-          </Typography>
-          <div className={classes.menuSection}>
-            {doc.mdx.frontmatter.tags.map(t => (
-              <Chip
-                clickable
-                component={Link}
-                to={`/knowledge-base?t=${t}`}
-                variant="outlined"
-                key={t}
-                label={t}
-                className={classes.tagChipListItem}
-              />
-            ))}
-          </div>
-          <Typography variant="h5" className={classes.menuHeader}>
-            Related Reading
-          </Typography>
-          <div className={classes.menuSection}>
-            {relatedDocuments
-              .filter(d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath)
-              .map(t => (
-                <Typography
+                    <Typography
+                      display="block"
+                      className={`${classes.heading} ${
+                        classes[`heading${heading.depth}`]
+                      }`}
+                      to={`${absolutePath}#${heading.id}`}
+                      variant="body1"
+                      component={Link}
+                    >
+                      {heading.value}
+                    </Typography>
+                  </div>
+                )
+              })}
+            </div>
+            <Typography variant="h5" className={classes.menuHeader}>
+              Tags
+            </Typography>
+            <div className={classes.menuSection}>
+              {doc.mdx.frontmatter.tags.map(t => (
+                <Chip
+                  clickable
                   component={Link}
-                  to={utility.resolvePath(t.fileAbsolutePath)}
-                  key={t.id}
-                  display="block"
-                >
-                  {t.frontmatter.title}
-                </Typography>
+                  to={`/knowledge-base?t=${t}`}
+                  variant="outlined"
+                  key={t}
+                  label={t}
+                  className={classes.tagChipListItem}
+                />
               ))}
-          </div>
+            </div>
+            <Typography variant="h5" className={classes.menuHeader}>
+              Related Reading
+            </Typography>
+            <div className={classes.menuSection}>
+              {relatedDocuments
+                .filter(d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath)
+                .map(t => (
+                  <Typography
+                    className={classes.relatedDocument}
+                    component={Link}
+                    to={utility.resolvePath(t.fileAbsolutePath)}
+                    key={t.id}
+                    display="block"
+                  >
+                    {t.frontmatter.title}
+                  </Typography>
+                ))}
+            </div>
+          </Container>
         </LayoutMenu>
       </LayoutContainer>
     </Layout>
