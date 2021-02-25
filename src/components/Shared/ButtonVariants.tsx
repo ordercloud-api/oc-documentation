@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: (props: any) => {
       const contrastColor = theme.palette.getContrastText(props.color)
-      console.log('cc', contrastColor)
       return {
         backgroundColor: `${
           props.variant === 'contained' ? props.color : undefined

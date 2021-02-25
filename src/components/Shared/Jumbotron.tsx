@@ -13,7 +13,6 @@ import { seafoam } from '../../theme/ocPalette.constants'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     jumbotron: ({ overlayed }: any) => {
-      console.log('test', overlayed)
       return {
         display: 'flex',
         position: 'relative',
@@ -126,7 +125,6 @@ const Jumbotron: FunctionComponent<any> = ({
   overlayed,
   align,
 }: any) => {
-  console.log('test', overlayed)
   const classes = useStyles({ overlayed, align })
   return (
     <div
