@@ -20,6 +20,7 @@ import { flame, sherpablue } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
+import { navigate, PortalLink } from '../Shared/PortalLink'
 
 export const navHeight =
   ORDERCLOUD_THEME.spacing(8) + ORDERCLOUD_THEME.spacing(5)
@@ -162,7 +163,11 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
               </Hidden>
               <div className={classes.grow} />
               <Hidden smDown>
-                <Button variant="contained" color="secondary">
+                <Button
+                  onClick={() => navigate('')}
+                  variant="contained"
+                  color="secondary"
+                >
                   Portal
                 </Button>
                 <div className={classes.spacer} />
@@ -188,10 +193,10 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
                 <Link to="/api-reference">API Reference</Link>
                 <Link to="/slack">Community</Link>
                 <div className={classes.grow} />
-                <Link className={classes.registerCta} to="/">
+                <PortalLink className={classes.registerCta} to="/register">
                   <span>Create a free account </span>
                   <ChevronRight />
-                </Link>
+                </PortalLink>
               </Toolbar>
             </Container>
           </div>

@@ -8,14 +8,14 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core/'
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { Helmet } from 'react-helmet'
 import { navHeight, navHeightMobile } from '../components/Layout/Header'
 import Layout from '../components/Layout/Layout'
 import { CustomButtonLink } from '../components/Shared/ButtonVariants'
 import Jumbotron from '../components/Shared/Jumbotron'
 import { darkgrey, flame, sherpablue } from '../theme/ocPalette.constants'
-import './../../../custom.d.ts' // custom type definitions
+import '../../custom.d.ts' // custom type definitions
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -85,7 +85,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 )
-export default () => {
+
+const DeveloperTools: FunctionComponent = () => {
   const classes = useStyles()
   return (
     <Layout>
@@ -171,3 +172,5 @@ export default () => {
     </Layout>
   )
 }
+
+export default DeveloperTools

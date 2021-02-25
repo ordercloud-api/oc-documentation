@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Badge,
   Chip,
   Container,
   createStyles,
@@ -13,8 +12,9 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core/'
-import { Book, Code, Description } from '@material-ui/icons'
+import { Code, Description } from '@material-ui/icons'
 import { graphql, Link, useStaticQuery } from 'gatsby'
+import { flatten, intersection } from 'lodash'
 import React, { Fragment, FunctionComponent, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
@@ -22,7 +22,6 @@ import LayoutContainer from '../components/Layout/LayoutContainer'
 import LayoutMain from '../components/Layout/LayoutMain'
 import LayoutMenu from '../components/Layout/LayoutMenu'
 import utility from '../services/utility'
-import { flatten, intersection } from 'lodash'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,7 +58,7 @@ interface DocumentNode {
   frontmatter: DocumentFrontMatter
 }
 
-interface QueryResult {
+export interface QueryResult {
   allMdx: {
     totalCount: number
     edges: [
@@ -78,7 +77,11 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
   props: KnowledgeBaseProps
 ) => {
   const classes = useStyles()
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
+  const { location } = props
+  const params = new URLSearchParams(location.search)
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    params.has('t') ? params.get('t').split(',') : []
+  )
   const data: QueryResult = useStaticQuery(graphql`
     query {
       allMdx(
