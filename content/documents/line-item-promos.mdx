@@ -1,0 +1,45 @@
+---
+type:           tutorial
+title:          Introducing Line Item-Level Promotions
+description:    Automatically apply specific promos/discount amounts to specific line items
+author:         tmenier
+publishDate:    2020-05-15
+updatedDate:    
+tags:           ["Promotions", "LineItems", "Best Practices", "Rules Engine"]
+---
+
+Promotions have become one of OrderCloud's more popular features, largely due to flexibility of [rules-based expressions](https://ordercloud.io/guides/rule-based-promotion-expressions) in determining both the eligibility and value of a promotion relative to an order. Today we're taking this capability a step farther by introducing the ability to associate a promotion directly with one or more line items on an order.
+
+## Why?
+
+Currently, all promotional discounts "live" at the order level. Expressions can make certain item-level assertions (e.g. `items.any(...)`) and calculations (e.g. `items.total(...)`), so you may be able to infer which line items triggered which discounts by referring back to the rule expressions, but we've heard multiple requests to break out discount amounts by the items they apply to. A couple use cases cited: making it easier to calculate item-level tax and partial returns. Who wants to reverse-engineer the rules engine to figure these out?
+
+## Getting Started
+
+To remove any ambiguity (a central theme of this feature), you must first declare whether a promotion applies at the order level or line item level. Do this by setting `Promotion.LineItemLevel` to true or false. There's also 2 new read-only fields on the `LineItem` model: `LineSubtotal` and `PromotionDiscount`. The existing `LineTotal` field is simply the former minus the latter. (`Order.PromotionDiscount` still reflects the total of all item-level and order-level discounts, not just the latter.) Also, the models you get back in a call to `GET v1/orders/{direction}/{id}/promotions` will contain a `LineItemID` field, which will be `null` in the case of order-level promos. Together, these enhancements should give you what you need to easily and unambiguously associate specific promotions and discount amounts with specific line items.
+
+## The Fun Part: Expressions
+
+(If you've gotten this far but didn't follow the link at the beginning of this post, it might be a good time for a [refresher](https://ordercloud.io/guides/rule-based-promotion-expressions) on promo expressions.)
+
+The existing `items` functions aren't quite enough to determine which item(s) to associate with a promo. Simple example: buy product X and get product Y for free. You can imagine writing your `EligibleExpression` with a pair of `items.any`, and it'll work, but we won't know which of the 2 items to tie the discount to.
+
+Enter the new `item` (singular) token. When used in an `EligibleExpression`, think of it as sort of a selector of the line item(s) that you want the promo applied to. Any property of the full-blown `LineItem` model is valid on `item` in an expression, as is the `incategory` function. In the example above, the `EligibleExpression` would be:
+
+```
+item.ProductID = 'Y' and items.any(ProductID = 'X')
+```
+
+Now the discount will be tied unambiguously to lines item(s) containing product Y, fulfilling the original intent. As you can see, `items` is still allowed in this context, but it's used to assert "other" parts of the order, not to identify the item(s) to tie the promo to. You could do order-level assertions here too, e.g. `order.Total > 100`.
+
+For line item-level promos, `item` is required in `EligibleExpression` and optional in `ValueExpression`. For order-level promos, it's not allowed for either.
+
+## What about ValueExpression?
+
+Kudos and bonus points if you already thought it through this far, but let's take our example over the finish line by specifying the `ValueExpression`. Here we can use our `item` token, which has already "selected" product Y, and just specify the price of one of them. Easy enough:
+
+```
+item.UnitPrice
+```
+
+Questions? Feedback? Let us know what you think in our [Slack community](https://ordercloud.io/slack).

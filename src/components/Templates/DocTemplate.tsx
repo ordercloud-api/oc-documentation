@@ -1,20 +1,19 @@
 import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
+import { RouteComponentProps } from '@reach/router'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React, { useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
-import '../../styles/doc-template.css'
+import { useDocsSections } from '../../hooks/useDocsSections'
 import utility from '../../services/utility'
+import '../../styles/doc-template.css'
 import DocFooter from '../Layout/DocFooter'
 import DocMenu from '../Layout/DocMenu'
 import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
-import { useDocsSections } from '../../hooks/useDocsSections'
-import { RouteComponentProps } from '@reach/router'
-import { EditOutlined } from '@material-ui/icons'
-import ButtonlinkExternal from '../Shared/ButtonlinkExternal'
+import SuggestEditButton from '../Shared/SuggestEditButton'
 
 interface DocTemplateProps extends RouteComponentProps {
   data: {
@@ -49,12 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
       fontStyle: 'italic',
       color: theme.palette.grey[700],
     },
-    editButton: {
-      marginBottom: theme.spacing(3),
-    },
-    editButtonIcon: {
-      marignRight: theme.spacing(1),
-    },
   })
 )
 
@@ -62,8 +55,6 @@ export default function Template(props: DocTemplateProps) {
   const doc = props.data // data from page query
   const sections = useDocsSections()
   const classes = useStyles()
-  const repoUrl =
-    'https://github.com/ordercloud-api/oc-documentation/edit/development'
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
 
   useLayoutEffect(() => {
@@ -81,7 +72,7 @@ export default function Template(props: DocTemplateProps) {
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h5" className={classes.pageSection}>
-            {doc.mdx.frontmatter.section}
+            {`Learn > ${doc.mdx.frontmatter.section}`}
           </Typography>
           <Typography variant="h1" className={classes.pageTitle}>
             {doc.mdx.frontmatter.title}
@@ -89,18 +80,7 @@ export default function Template(props: DocTemplateProps) {
           <Typography className={classes.pageDescription}>
             {doc.mdx.frontmatter.description}
           </Typography>
-          <ButtonlinkExternal
-            className={classes.editButton}
-            variant="outlined"
-            size="small"
-            href={`${repoUrl}/content/docs${absolutePath}.mdx`}
-          >
-            <EditOutlined
-              fontSize="inherit"
-              className={classes.editButtonIcon}
-            />
-            Edit this doc
-          </ButtonlinkExternal>
+          <SuggestEditButton path={absolutePath} />
           {/* {doc.mdx.frontmatter.updatedOnDate && (
             <Typography color="textSecondary" variant="caption">
               Last Updated {doc.mdx.frontmatter.updatedOnDate}

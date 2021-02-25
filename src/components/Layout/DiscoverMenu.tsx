@@ -86,10 +86,10 @@ const findActiveArticle = (articles: Article[], path: string) => {
 }
 
 const stripSpecialChars = (string: string) => {
-  return string.replace(/[’]/gi, '')
+  return string.replace(/[’/():;"]/gi, '')
 }
 
-const transformHeadingToId = (string: string) => {
+export const transformHeadingToId = (string: string) => {
   return Case.kebab(rsc(stripSpecialChars(string)))
 }
 

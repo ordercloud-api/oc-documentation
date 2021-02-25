@@ -143,7 +143,7 @@ const MainComponent: React.FunctionComponent = props => {
           // </CustomButtonLink>,
           <CustomButtonLink
             key="developers"
-            to="/ordercloud-basics/architecture"
+            to="/learn/ordercloud-basics/architecture"
             variant="contained"
             color={flame[600]}
           >
@@ -423,16 +423,14 @@ const MainComponent: React.FunctionComponent = props => {
             >
               <CustomButtonLink
                 color={themeConstants.palette.secondary.main}
-                key="intro-to-ordercloud"
-                to="/getting-started/intro-to-ordercloud"
+                to="/learn/ordercloud-basics/architecture"
                 variant="outlined"
               >
                 Learn the Basics
               </CustomButtonLink>
               <div className={classes.spacer} />
               <CustomButtonLink
-                key="main-concepts"
-                to="/main-concepts/organization-hierarchy"
+                to="/learn/getting-started/welcome-to-ordercloud"
                 variant="contained"
                 color={flame[600]}
               >
@@ -493,16 +491,14 @@ await Orders.Submit("Outgoing", order.ID);`}
             >
               <CustomButtonLink
                 color={flame[500]}
-                key="intro-to-ordercloud"
-                to="/getting-started/intro-to-ordercloud"
+                to="/knowledge-base"
                 variant="contained"
               >
                 Knowledge Base
               </CustomButtonLink>
               <div className={classes.spacer} />
               <CustomButtonLink
-                key="main-concepts"
-                to="/main-concepts/organization-hierarchy"
+                to="/resources"
                 variant="outlined"
                 color={themeConstants.palette.secondary.main}
               >

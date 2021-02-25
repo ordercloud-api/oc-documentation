@@ -1,0 +1,173 @@
+---
+type:           article
+title:          Advanced Querying
+description:    Most OrderCloud resources have list endpoints that can return thousands, even hundreds of thousands of items. We understand that effectively querying this data is not only practical but necessary and have built an assortment of API tools to help pinpoint and extract the exact data you and your users need.
+author:         tmenier
+publishDate:    2016-11-24
+updatedDate:
+tags:           ["Best Practices", "Products", "Users", "Orders", "Search" ]
+---
+
+Most OrderCloud resources have list endpoints that can return thousands, even hundreds of thousands of items. We understand that effectively querying this data is not only practical but necessary and have built an assortment of API tools to help pinpoint and extract the exact data you and your users need. Up first, let's talk about Search.
+
+## Searching
+
+_Google-esque_ searches, simply provide a search term.
+
+This type of querying is best for natural language searches like a product search on a buyer site. Our search handles case-insensitive word stemming (plural inference for example), synonyms, and intelligently ranks results based on fields relevant to each resource. If you're curious about which default fields are taken into account and how much weight they're given for a search check out our <Link to="/api-reference">API reference</Link>.
+
+```http
+GET https://api.ordercloud.io/v1/me/products?search=bike HTTP/1.1
+```
+
+This will return all results such as bike, words including bike, bikes, bicycle, etc. The fields searched include `ID`,`Name`, and `Description`. (This of course varies from endpoint to endpoint). Fields marked "Searchable" in the API reference will be searched and weighted according to priority level.
+
+You can also optionally specify which fields (of the searchable fields available) are searched by providing a `searchOn` parameter for any field available on the resource you're searching including <Link to="/features/extended-properties">extended properties (XP)</Link>. Here's we're searching on Name and xp.Color so if our search finds a match in either of those two fields we will get a result.
+
+```http
+GET https://api.ordercloud.io/v1/me/products?search=bike&searchOn=Name,xp.Color HTTP/1.1
+```
+
+## Filtering
+
+Filtering is best for looking at specific values in a given field. If you do not require natural language type searching over text fields, filtering is a more performant _and_ more powerful method for querying data.
+
+### Filtering On XP
+
+Let's examine a common scenario of filtering on an <Link to="/features/extended-properties">extended property (XP) field</Link>. Suppose our XP field looks like this:
+
+```json
+{
+  "xp": {
+    "MoreInfo": {
+      "TeamName": "Tigers",
+      "Gender": "Male"
+    }
+  }
+}
+```
+
+We can use dot notation to access deeply nested values. The following call will return all buyers with team name "Tigers"
+
+```http
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?xp.MoreInfo.TeamName=Tigers HTTP/1.1
+```
+
+### Fuzzy Searches
+
+Fuzzy matches are supported using the `*` wildcard character.
+
+```http
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?LastName=*Smith&FirstName=John* HTTP/1.1
+```
+
+This will return both "John Smith" and "Johnny McSmooth".
+
+### Logical OR
+
+You can also use `|` as a logical OR.
+
+```http
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?LastName=Smith|Jo*&FirstName=Johnny HTTP/1.1
+```
+
+This will return "John Smith", "Johnny Jones", and "John Johnson". Maybe you want "John Smith" but not "John Jones".
+
+### Negate and Logical AND
+
+You can negate your conditions by prefixing them with `!`, and logically `AND` them together by simply providing the same parameter multiple times.
+
+```http
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?LastName=!Smith&LastName=!Jones HTTP/1.1
+```
+
+This will return all users _except_ those with last name "Smith" or "Jones".
+
+### Comparison Operators
+
+Dates and numeric values support `>` (greater than) and `<` (less than) prefixes.
+
+```http
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?DateCreated=>2015-01-01 HTTP/1.1
+```
+
+For a more advanced example, let's say you want users whose ID is the range of 0 to 9 inclusive. Ranges are not directly supported, but you can use the existing features to achieve this.
+
+```http
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?ID=0|1|2|3|4|5|6|7|8|9 HTTP/1.1
+```
+
+Of course that's not going to be feasible if the range is very large or you're dealing with floating-point numbers. A better way would be to leverage `>` and `<`, but we want the range to be inclusive, and there are no `>=` or `<=` operators. We can however leverage the `!` operator.
+
+Here we're saying "give me all users whose ID is not less than 0 and not greater than 9", which is effectively equivalent to our 0-9 range.
+
+```http
+GET https://api.ordercloud.io/v1/buyers/{buyerID}/users?ID=!<0&ID=!>9 HTTP/1.1
+```
+
+### Absence of a value
+
+Sometimes you need a list of items where some field either doesn't exist or is null or undefined. To search on the absence of a field, you can combine the negate operator and the wildcard operator.
+
+```http
+GET https://api.ordercloud.io/v1/orders?xp.Billed=!* HTTP/1.1
+```
+
+Here we're saying "give me all orders that haven't been billed (xp.Billed is undefined, null, or doesn't exist)"
+
+> Note: Searching on the absence of a value can be fairly expensive since we're using the wildcard filter `*`. Another (more performant) way to solve the same problem would be to initialize your field with some value that you define as being "null" and then simply filter on that value. Prefer this method when possible.
+
+### Performance Considerations
+
+Your data is highly indexed for fast retrieval using the methods mentioned above, including deep XP object graphs. However, there are a _few important takeaways_ to keep search and listing functionality efficient. Filters with many `OR` conditions or with values that start with the `*` wildcard character may be particularly performance-sensitive. The larger the set of data, the more likely you are to notice any performance impact. It pays to know the data model well, and use grouping constructs like User Groups and Categories effectively.
+
+## Sorting
+
+In addition to being able to narrow down the data itself, you can also indicate to OrderCloud how you want it sorted. Perhaps you want to sort the results (in ascending order) by the last name of the person who placed an order. To do this you can simply include the `sortBy` parameter for the field you would like to sort by.
+
+```http
+GET https://api.ordercloud.io/v1/me/orders/incoming?sortBy=LastName HTTP/1.1
+```
+
+If you want to sort results in descending order simply add the `!` operator
+
+```http
+GET https://api.ordercloud.io/v1/me/orders/incoming?sortBy=!LastName HTTP/1.1
+```
+
+## Combining Queries
+
+Searching, filtering and sorting can all be mixed and matched to give you ultimate control when defining what is in a list and how that list is presented to your users.
+
+## Pagination
+
+All list responses will return an object with two values: `Meta` and `Items`. The `Meta` value returns important information regarding your query, such as total results, how many results are shown in the `Items` array, how many more pages of results there are, and what page you are currently on. The `Items` array stores the actual results of the resource you are querying.
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=UTF-8
+
+  {
+    "Meta": {
+      "Page": 1,
+      "PageSize": 20,
+      "TotalCount": 25,
+      "TotalPages": 2,
+      "ItemRange": [1, 20]
+    },
+    "Items": ["..."]
+  }
+```
+
+Lists default to 20 items per page, but you can set the `pageSize` up to 100. If you have more results than the page count, you will have multiple pages. You can use the `Page` and `PageSize` values from the `Meta` object to specify the page (starting at 1) and items per page.
+
+> Note: Unlike the page parameter, `ItemRange` values are zero-based.
+
+### LastID method
+
+When it's necessary to paginate through many items (generally anything > page 30) we highly recommend using the following pattern for the optimal performance:
+
+1. Make your first list call with `page=1&pageSize=100&sortBy=ID` as query parameters
+2. Keep track of the `ID` of the last item returned in the list
+3. In subsequent calls, always request `page=1&pageSize=100&sortBy=ID&ID=>{lastID}`
+4. Stop paginating when the query returns an empty `Items` array

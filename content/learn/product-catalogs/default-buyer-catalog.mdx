@@ -1,6 +1,147 @@
 ---
 section: 'Product Catalogs'
 title: 'Default Buyer Catalog'
-description: 'Learn about the default Buyer Catalog that is established on your behalf whenever a new Buyer Organization is created.'
+description: 'Learn about the default buyer catalog that is established on your behalf whenever a new buyer organization is created.'
 priority: 0
 ---
+
+In the previous chapter, you [established API access](/learn/getting-started/establishing-api-access) for a new organization. During that process you were asked to create a seller and buyer perspective. Throughout this chapter you should remain in the seller perspective that we authenticated with in the ["Making Your First Request"](/learn/getting-started/making-your-first-request) guide.
+
+## What is a Catalog?
+Catalogs are a container of products and, optionally, categories. As a seller, your role is to sell products to your buyers through one or more catalogs. To do so, your catalog must be active and assigned to a buyer organization or user group.
+
+Each buyer organization has a default catalog that is created automatically. You can find the ID of this catalog on the [buyer organization model](/api-reference/buyers/buyers/get) under `DefaultCatalogID`. The buyer you created in the last chapter should look something like this:
+
+```json
+{
+	"ID": "BUYER_ORGANIZATION",
+	"Name": "Example Buyer",
+	"DefaultCatalogID": "BUYER_ORGANIZATION",
+	"Active": true,
+	"DateCreated": "2021-02-08T23:01:03.57+00:00",
+	"xp": null
+}
+```
+
+Notice that `DefaultCatalogID` matches the buyer organization `ID`. OrderCloud will match IDs when possible.
+
+Let's [retrieve the default buyer catalog](/api-reference/product-catalogs/catalogs/get) and look at it's properties:
+
+<CodeExample
+  title="Get the default catalog by ID"
+  content={{
+    http: `GET https://api.ordercloud.io/v1/catalogs/BUYER_ORGANIZATION HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Catalogs } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Catalogs.Get("BUYER_ORGANIZATION")
+  .then(response => {
+      // returns the default catalog for our buyer organization
+      console.log(response);
+  })
+  .catch(err => console.log(err));`,
+typescript: `import { Catalogs, Catalog, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Catalogs.Get("BUYER_ORGANIZATION")
+  .then((response:Catalog) => {
+      // returns the default catalog for our buyer organization
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderClould.SDK;\n
+// see previous example for configuring OrderCloudClient
+var client = new OrderCloudClient(...);\n
+var defaultBuyerCatalog:Catalog = await client.Catalogs.GetAsync("BUYER_ORGANIZATION");`}}
+/>
+
+```json
+{
+	"ID": "BUYER_ORGANIZATION",
+	"OwnerID": "xxxxxxxxxxxxxxxxxx",
+	"Name": "Example Buyer",
+	"Description": "Default catalog for Example Buyer",
+	"Active": true,
+	"CategoryCount": 0,
+	"xp": null
+}
+```
+
+Here are some properties worth noting at this time:
+
+- `OwnerID` - The ID of the organization that owns the catalog (our seller organization ID)
+- `Name` - The catalog name, based on the name of the buyer organization
+- `Active` - Whether or not the catalog is accessible to the parties it's assigned to
+
+Our catalog is currently active, which is what we want. If it were inactive it would be useless to our buyer organization. We will not be creating any categories for this example, as that can complicate our visibility rules down the line. So `CategoryCount` should remain at 0.
+
+<ContentLink to="/blog/catalog-heirarchy" subtitle="Further Reading">Catalog Heirarchy</ContentLink>
+
+Since our buyer organization uses this catalog as the `DefaultCatalogID` a catalog assignment was automatically created for us.
+
+## Catalog Assignments
+The catalog assignment plays a major role in controlling the visibility of products to your buyers. These visibility rules are intentionally flexible and can get complicated quickly; therefore, we cover them in a separate guide. For now, we will focus on the most straightforward way of getting a product in front of your buyers.
+
+<ContentLink to="/blog/catalog-visibility-rules" subtitle="Further Reading">Catalog Visibility Rules</ContentLink>
+
+Let's [list the assignments for this catalog](/api-reference/product-catalogs/catalogs/list-assignments) to see what OrderCloud created on our behalf:
+
+<CodeExample
+  title="List catalog assignments for the default catalog"
+  content={{
+    http: `GET https://api.ordercloud.io/v1/catalogs/assignments?catalogID=BUYER_ORGANIZATION HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Catalogs } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Catalogs.ListAssignments({
+    CatalogID: "BUYER_ORGANIZATION"
+})
+  .then(response => {
+      // returns the first page of assignments for our catalog
+      console.log(response);
+  })
+  .catch(err => console.log(err));`,
+typescript: `import { Catalogs, CatalogAssignment, ListPage, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Catalogs.ListAssignments({
+    CatalogID: "BUYER_ORGANIZATION"
+})
+  .then((response:ListPage<CatalogAssignment>) => {
+      // returns the first page of assignments for our catalog
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderClould.SDK;\n
+// see previous example for configuring OrderCloudClient
+var client = new OrderCloudClient(...);\n
+ListPage<CatalogAssignment> response = await client.Catalogs.ListAssignmentsAsync(catalogid = "BUYER_ORGANIZATION");`}}
+/>
+
+```json
+{
+	"Meta": {
+		"Page": 1,
+		"PageSize": 20,
+		"TotalCount": 1,
+		"TotalPages": 1,
+		"ItemRange": [
+			1,
+			1
+		]
+	},
+	"Items": [
+		{
+			"CatalogID": "BUYER_ORGANIZATION",
+			"BuyerID": "BUYER_ORGANIZATION",
+			"ViewAllCategories": true,
+			"ViewAllProducts": true
+		}
+	]
+}
+```
+
+We get back a single result that shows the relationship between our buyer organization and its default catalog. This is one of few assignment models in the API that have additional configuration properties. OrderCloud defaults both of these settings to `true` because this is the _most inclusive_ way of defining catalog visibility for a buyer.
+
+- **`ViewAllCategories`** - When set to true, every category in the catalog will be visible to the assigned party without a category assignment.
+- **`ViewAllProducts`** - When set to true, every product assigned to the catalog will be visible to the assigned party without a product assignment.
+
+When creating a more finely tuned catalog, where some buyer users should see categories or products that are hidden for others, these settings are usually turned off and more granular assignments are made between the buying parties and the products/catalogs they should see. For the purposes of keeping this example simple, we will keep these set to `true` and move on.
