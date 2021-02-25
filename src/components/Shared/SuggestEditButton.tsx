@@ -3,12 +3,6 @@ import React, { FunctionComponent, useMemo } from 'react'
 import ButtonlinkExternal from '../Shared/ButtonlinkExternal'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 
-const isProd = window.location.hostname === 'ordercloud.io'
-
-const repoUrl = `https://github.com/ordercloud-api/oc-documentation/edit/${
-  isProd ? 'development' : 'redesign'
-}`
-
 interface SuggestAnEditButtonProps {
   path: string
 }
@@ -29,6 +23,10 @@ const SuggestAnEdit: FunctionComponent<SuggestAnEditButtonProps> = (
 ) => {
   const { path } = props
   const classes = useStyles()
+
+  const repoUrl =
+    'https://github.com/ordercloud-api/oc-documentation/edit/development'
+
   const realPath = useMemo(() => {
     return path.replace('knowledge-base', 'documents')
   }, [path])

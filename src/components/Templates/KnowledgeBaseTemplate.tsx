@@ -121,8 +121,6 @@ export default function KnowledgeBaseTemplate(
     doc.mdx.frontmatter.tags.filter(t => t !== 'Best Practices')
   )
 
-  console.log(relatedDocuments)
-
   useLayoutEffect(() => {
     if (!props.location.hash) return
     setTimeout(() => {

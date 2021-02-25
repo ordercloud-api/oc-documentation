@@ -1,8 +1,6 @@
-import { useStaticQuery, graphql } from 'gatsby'
-import utility from '../services/utility'
-import { DiscoverQuery } from '../models/discoverQuery'
-import { QueryResult } from '../pages/knowledge-base'
+import { graphql, useStaticQuery } from 'gatsby'
 import { intersection } from 'lodash'
+import { QueryResult } from '../pages/knowledge-base'
 
 export const useRelatedDocuments = (tags: string[]) => {
   const allPosts: QueryResult = useStaticQuery(graphql`
