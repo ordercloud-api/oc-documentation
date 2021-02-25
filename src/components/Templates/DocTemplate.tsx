@@ -68,7 +68,15 @@ export default function Template(props: DocTemplateProps) {
 
   return (
     <Layout location={props.location}>
-      <Helmet title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`} />
+      <Helmet
+        title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`}
+        meta={[
+          {
+            name: 'description',
+            content: doc.mdx.frontmatter.description,
+          },
+        ]}
+      />
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h5" className={classes.pageSection}>

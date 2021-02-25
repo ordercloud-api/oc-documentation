@@ -90,7 +90,16 @@ const DeveloperTools: FunctionComponent = () => {
   const classes = useStyles()
   return (
     <Layout>
-      <Helmet title={`Developer Tools | Four51 OrderCloud`} />
+      <Helmet
+        title={`Developer Tools | Four51 OrderCloud`}
+        meta={[
+          {
+            name: 'description',
+            content:
+              'Build solutions the way you want with our growing library of developer tools',
+          },
+        ]}
+      />
       <Jumbotron
         overlayed={true}
         heading="Developer Tools"
