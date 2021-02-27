@@ -129,7 +129,7 @@ const MainComponent: React.FunctionComponent = props => {
       <Jumbotron
         overlayed={true}
         heading="YOUR B2B-FIRST ECOMMERCE° PLATFORM"
-        text="Build your own marketplace with an API-first, cloud native platform ready to create your own best-of-breed experience with unbounded scalability. We already power custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
+        text="Design your own marketplace with an API-first, headless cloud platform for B2B, B2C, and B2X. We power custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
         actions={[
           <CustomButtonLink
             key="developers"
