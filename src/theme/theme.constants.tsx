@@ -26,11 +26,11 @@ const bodyFontFamilies = ["'Core Sans D'", ...fontFamilies].join(',')
 export default createMuiTheme({
   typography: {
     h1: {
-      fontSize: '2.25rem',
+      fontSize: '2rem',
       fontWeight: 600,
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: '1.75rem',
       fontWeight: 600,
     },
     h3: {
@@ -114,7 +114,7 @@ export default createMuiTheme({
       h1: {
         paddingTop: '2rem',
         marginBottom: '2rem',
-        fontSize: '2.5rem',
+        fontSize: '2rem',
       },
       h2: {
         paddingTop: '1.75rem',
