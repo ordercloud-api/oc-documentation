@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(2, 2, 3),
       textAlign: 'center',
     },
-    questionsBtn: {
+    btnSpacer: {
       margin: theme.spacing(0, 0.5),
     },
   })
@@ -133,7 +133,17 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Get the JavaScript SDK
+                  GitHub Project
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  href="https://www.npmjs.com/package/ordercloud-javascript-sdk"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={classes.btnSpacer}
+                >
+                  NPM Package
                 </Button>
               </Toolbar>
             </Paper>
@@ -154,7 +164,17 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Get the .NET SDK
+                  GitHub Project
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  href="https://www.nuget.org/packages/OrderCloud.SDK/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={classes.btnSpacer}
+                >
+                  NuGet Package
                 </Button>
               </Toolbar>
             </Paper>
@@ -175,7 +195,17 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Get .NET Catalyst
+                  GitHub Project
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  href="https://www.nuget.org/packages/ordercloud-dotnet-catalyst/1.0.0"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={classes.btnSpacer}
+                >
+                  NuGet Package
                 </Button>
               </Toolbar>
             </Paper>
@@ -196,7 +226,7 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Get HeadStart
+                  GitHub Project
                 </Button>
               </Toolbar>
             </Paper>
@@ -217,7 +247,7 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  OrderCloud GitHub
+                  GitHub Project
                 </Button>
               </Toolbar>
             </Paper>
@@ -262,7 +292,7 @@ const DeveloperTools: FunctionComponent = () => {
             href="https://api.ordercloud.io/v1/openapi/v3"
             target="_blank"
             rel="noreferrer"
-            className={classes.questionsBtn}
+            className={classes.btnSpacer}
           >
             Open API Spec
           </Button>
@@ -271,7 +301,7 @@ const DeveloperTools: FunctionComponent = () => {
             variant="outlined"
             to="/slack"
             color="secondary"
-            className={classes.questionsBtn}
+            className={classes.btnSpacer}
           >
             Join Our Community
           </ButtonLink>

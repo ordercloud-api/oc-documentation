@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       opacity: 0.2,
       width: '100%',
+      top: 0,
       [theme.breakpoints.down('md')]: {
         minWidth: '150%',
         left: '6vh',

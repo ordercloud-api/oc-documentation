@@ -88,7 +88,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
   const data: QueryResult = useStaticQuery(graphql`
     query {
       allMdx(
-        sort: { order: DESC, fields: [frontmatter___publishDate] }
+        sort: { order: [ ASC, DESC], fields: [frontmatter___priority, frontmatter___publishDate] }
         filter: { fileAbsolutePath: { glob: "**/content/documents/**/*.mdx" } }
       ) {
         totalCount
