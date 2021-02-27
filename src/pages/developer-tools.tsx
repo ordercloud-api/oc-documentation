@@ -117,6 +117,27 @@ const DeveloperTools: FunctionComponent = () => {
       />
       <Container maxWidth="lg">
         <Grid container className={classes.cardWrapper} spacing={3}>
+        <Grid item md={4} className={classes.paperRoot}>
+            <Paper className={classes.paperCard}>
+              <Typography className={classes.paperTitleHeading} variant="h3">
+                JavaScript SDK
+              </Typography>
+              <Typography paragraph component="p">
+                Supports both TypeScript and JavaScript development with any of your favorite UI component libraries
+              </Typography>
+              <Toolbar disableGutters>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  href="https://github.com/ordercloud-api/OrderCloud-JavaScript-SDK"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Get the JavaScript SDK
+                </Button>
+              </Toolbar>
+            </Paper>
+          </Grid>
           <Grid item md={4} className={classes.paperRoot}>
             <Paper elevation={3} className={classes.paperCard}>
               <Typography variant="h3" className={classes.paperTitleHeading}>
@@ -134,27 +155,6 @@ const DeveloperTools: FunctionComponent = () => {
                   rel="noreferrer"
                 >
                   Get the .NET SDK
-                </Button>
-              </Toolbar>
-            </Paper>
-          </Grid>
-          <Grid item md={4} className={classes.paperRoot}>
-            <Paper className={classes.paperCard}>
-              <Typography className={classes.paperTitleHeading} variant="h3">
-                JavaScript SDK
-              </Typography>
-              <Typography paragraph component="p">
-                Supports both TypeScript and JavaScript development with any of your favorite UI component libraries
-              </Typography>
-              <Toolbar disableGutters>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  href="https://github.com/ordercloud-api/OrderCloud-JavaScript-SDK"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Get the JavaScript SDK
                 </Button>
               </Toolbar>
             </Paper>
