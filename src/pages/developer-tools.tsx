@@ -254,17 +254,17 @@ const DeveloperTools: FunctionComponent = () => {
           </Typography>
         <Box paddingY={3} paddingX={20} className={classes.boxMain}>
           <Typography>
-                Don't see a library for your language of choice?  OrderCloud is built with Open API standards and our SDKs are generated with libaries such as Swagger, and extended to make it even easier to develop applications.  If there's a project you have and are looking for another lanugage, you can generate your own client.
+                Don't see a library for your language of choice?  OrderCloud is built with Open API standards and our SDKs are generated with libaries such as Swagger, and extended to make it even easier to develop applications.  If there's a project you have and are looking for another language, you can generate your own client.
           </Typography>
           <br/>
           <Button
             variant="outlined"
-            href="https://four51.io/contact-us/"
+            href="https://api.ordercloud.io/v1/openapi/v3"
             target="_blank"
             rel="noreferrer"
             className={classes.questionsBtn}
           >
-            Contact Us
+            Open API Spec
           </Button>
 
           <ButtonLink
@@ -275,6 +275,9 @@ const DeveloperTools: FunctionComponent = () => {
           >
             Join Our Community
           </ButtonLink>
+        </Box>
+        <Box paddingY={3} paddingX={20}>
+          <Divider />
         </Box>
       </Container>
     </Layout>
