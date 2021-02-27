@@ -16,21 +16,18 @@ import {
   Typography,
 } from '@material-ui/core/'
 import {
-  AccountBalanceTwoTone,
-  AccountTree,
+  DeviceHub,
   AttachMoneyTwoTone,
+  AccountTreeTwoTone,
   BusinessTwoTone,
   CategoryTwoTone,
   Code,
-  CreditCardTwoTone,
-  Extension,
-  FindInPageTwoTone,
-  ForwardTwoTone,
+  MarkunreadMailboxTwoTone,
+  ShoppingCartTwoTone,
   LocalShippingTwoTone,
-  LockTwoTone,
+  ExtensionTwoTone,
   PeopleTwoTone,
   PlaylistAddCheckTwoTone,
-  StyleTwoTone,
 } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import Prism from 'prismjs'
@@ -90,6 +87,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paperTitleHeading: {
       padding: theme.spacing(0, 0, 1),
       color: darkgrey[900],
+      fontWeight: 700,
       textAlign: 'left',
     },
     paperTitleSubheading: {
@@ -130,24 +128,24 @@ const MainComponent: React.FunctionComponent = props => {
     <React.Fragment>
       <Jumbotron
         overlayed={true}
-        heading="A B2B-First Marketplace Platform"
+        heading="YOUR B2B-FIRST ECOMMERCE° PLATFORM"
         text="Build your own marketplace with an API-first, cloud native platform ready to create your own best-of-breed experience with unbounded scalability. We already power custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
         actions={[
-          // <CustomButtonLink
-          //   color="#fff"
-          //   key="platform-overview"
-          //   to="/discover/platform-overview"
-          //   variant="contained"
-          // >
-          //   Platform Overview
-          // </CustomButtonLink>,
           <CustomButtonLink
             key="developers"
-            to="/learn/ordercloud-basics/architecture"
+            to="/learn/getting-started/welcome-to-ordercloud"
             variant="contained"
             color={flame[600]}
           >
-            Developers
+            Getting Started
+          </CustomButtonLink>,
+          <CustomButtonLink
+            key="knowledge"
+            to="/knowledge-base"
+            variant="contained"
+            color="#fff"
+          >
+            Knowledge Base
           </CustomButtonLink>,
         ]}
       />
@@ -188,7 +186,7 @@ const MainComponent: React.FunctionComponent = props => {
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <AccountTree color="primary" />
+                        <DeviceHub color="primary" />
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText primary="Omnichannel" />
@@ -196,10 +194,10 @@ const MainComponent: React.FunctionComponent = props => {
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <Extension color="primary" />
+                        <BusinessTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Platform Extensibility" />
+                    <ListItemText primary="Enterprise Ready" />
                   </ListItem>
                 </List>
                 <CustomButtonLink
@@ -240,10 +238,10 @@ const MainComponent: React.FunctionComponent = props => {
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <LockTwoTone color="primary" />
+                        <ShoppingCartTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Administrative Roles" />
+                    <ListItemText primary="Commerce Strategy" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
@@ -251,15 +249,15 @@ const MainComponent: React.FunctionComponent = props => {
                         <PeopleTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Buyers & User Groups" />
+                    <ListItemText primary="Buyer Segments" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <BusinessTwoTone color="primary" />
+                        <LocalShippingTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Supplier Management" />
+                    <ListItemText primary="Multi-Supplier" />
                   </ListItem>
                 </List>
                 <CustomButtonLink
@@ -300,26 +298,26 @@ const MainComponent: React.FunctionComponent = props => {
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <AttachMoneyTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Personalized Pricing" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
                         <CategoryTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="PIM Integrations" />
+                    <ListItemText primary="Custom Catalogs" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <StyleTwoTone color="primary" />
+                        <AccountTreeTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Variable Products" />
+                    <ListItemText primary="Product Setup" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <AttachMoneyTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Variable Pricing" />
                   </ListItem>
                 </List>
                 <CustomButtonLink
@@ -363,23 +361,23 @@ const MainComponent: React.FunctionComponent = props => {
                         <PlaylistAddCheckTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Approval Rules" />
+                    <ListItemText primary="Order Checkout" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <ForwardTwoTone color="primary" />
+                        <MarkunreadMailboxTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Order Forwarding" />
+                    <ListItemText primary="Shipping Selection" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <FindInPageTwoTone color="primary" />
+                        <ExtensionTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Shipment Tracking" />
+                    <ListItemText primary="Customized Logic" />
                   </ListItem>
                 </List>
                 <CustomButtonLink
@@ -396,11 +394,11 @@ const MainComponent: React.FunctionComponent = props => {
         </Grid>
       </Container>
       <Container maxWidth="lg">
-        <Box paddingY={5} paddingX={20}>
+        <Box paddingY={3} paddingX={20}>
           <Divider />
         </Box>
         <Typography variant="h1" align="center" color="secondary">
-          Best-of-Breed, Headless Architecture
+          Future-Proof with Headless Architecture
         </Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>

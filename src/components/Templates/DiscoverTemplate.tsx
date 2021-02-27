@@ -8,6 +8,7 @@ import { useDiscoverSections } from '../../hooks/useDiscoverSections'
 import utility from '../../services/utility'
 import '../../styles/doc-template.css'
 import DiscoverMenu from '../Layout/DiscoverMenu'
+import DiscoverFooter from '../Layout/DiscoverFooter'
 import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
@@ -68,9 +69,8 @@ export default function Template(props: DiscoverTemplateProps) {
           <Typography variant="h1" className={classes.pageTitle}>
             {doc.mdx.frontmatter.title}
           </Typography>
-          <SuggestEditButton path={absolutePath} />
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
-          {/* <DocFooter contents={sections} currentGuide={absolutePath} /> */}
+          <DiscoverFooter contents={articles} currentGuide={absolutePath} />
         </LayoutMain>
         <LayoutMenu>
           <DiscoverMenu

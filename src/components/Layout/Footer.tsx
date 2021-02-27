@@ -22,7 +22,6 @@ const styles = (theme: Theme) =>
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4),
       [theme.breakpoints.up('md')]: {
-        position: 'fixed',
         bottom: 0,
         left: 0,
         right: 0,
@@ -99,18 +98,7 @@ class Footer extends React.Component<any> {
             justify="space-between"
             alignItems="flex-start"
           >
-            <Grid item xs={12}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="flex-start"
-              >
-                <img className={classes.logo} src={ocOrange} alt="OC" />
-              </Box>
-              <Typography variant="body2" className={classes.Typography}>
-                © {currentYear} OrderCloud All rights reserved.
-              </Typography>
-            </Grid>
+            
             <Grid item xs={6} md={3}>
               <Box marginY={2} display="flex" flexDirection="column">
                 <Typography
@@ -272,6 +260,18 @@ class Footer extends React.Component<any> {
                   </Box>
                 </a>
               </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-start"
+              >
+                <img className={classes.logo} src={ocOrange} alt="OC" />
+              </Box>
+              <Typography variant="body2" className={classes.Typography}>
+                © {currentYear} OrderCloud All rights reserved.
+              </Typography>
             </Grid>
           </Grid>
           <div className={classes.footerAside}></div>

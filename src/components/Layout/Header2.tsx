@@ -69,7 +69,6 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     appBarSecondary: {
-      backgroundColor: theme.palette.primary.dark,
       '& a': {
         color: theme.palette.getContrastText(theme.palette.primary.dark),
         textDecoration: 'none',
@@ -194,7 +193,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
                 <Link to="/slack">Community</Link>
                 <div className={classes.grow} />
                 <PortalLink className={classes.registerCta} to="/register">
-                  <span>Create a free account </span>
+                  <span>Create a Free Account</span>
                   <ChevronRight />
                 </PortalLink>
               </Toolbar>

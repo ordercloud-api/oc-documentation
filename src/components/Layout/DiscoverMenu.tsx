@@ -25,16 +25,20 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       textDecoration: 'none',
+      marginBottom: 0,
+      paddingTop: 0,
     },
     sectionActive: {
       color: theme.palette.getContrastText(theme.palette.background.paper),
     },
     guides: {
       marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(3),
+      marginBottom: theme.spacing(2),
     },
     guide: {
-      lineHeight: 1.75,
+      lineHeight: 1,
+      paddingTop: theme.spacing(0.5),
+      paddingBottom: theme.spacing(1),
       textDecoration: 'none',
       color: theme.palette.getContrastText(theme.palette.background.paper),
     },

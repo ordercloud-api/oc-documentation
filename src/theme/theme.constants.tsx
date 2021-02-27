@@ -2,6 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles'
 import { sherpablue, seafoam, sizzlingred } from './ocPalette.constants'
 import CoreSansDFonts from '../theme/theme.typography.coresansd'
 import GeometriaFonts from '../theme/theme.typography.geometria'
+import { upperCase } from 'lodash'
 
 const defaultTheme = createMuiTheme()
 const primaryColor = sherpablue
@@ -25,8 +26,8 @@ const bodyFontFamilies = ["'Core Sans D'", ...fontFamilies].join(',')
 export default createMuiTheme({
   typography: {
     h1: {
-      fontSize: '3.5rem',
-      fontWeight: 700,
+      fontSize: '2.25rem',
+      fontWeight: 600,
     },
     h2: {
       fontSize: '2rem',
@@ -113,7 +114,7 @@ export default createMuiTheme({
       h1: {
         paddingTop: '2rem',
         marginBottom: '2rem',
-        fontSize: '2.8rem',
+        fontSize: '2.5rem',
       },
       h2: {
         paddingTop: '1.75rem',
