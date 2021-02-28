@@ -84,7 +84,7 @@ const LayoutMenu: React.FunctionComponent = (props: { children: any }) => {
           </Portal>
         </div>
       </Hidden>
-      <Hidden smDown>
+      <Hidden mdDown>
         <div className={classes.root}>
           <div className={classes.inner}>
             <div className={classes.content}>{props.children}</div>

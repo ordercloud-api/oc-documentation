@@ -1,9 +1,11 @@
 import {
   Avatar,
   Box,
+  Breadcrumbs,
   Chip,
   Container,
   createStyles,
+  Hidden,
   makeStyles,
   Theme,
   Typography,
@@ -44,10 +46,6 @@ interface KnowledgeBaseTemplateProps extends RouteComponentProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    pageTitle: {
-      paddingTop: 0,
-      marginBottom: theme.spacing(3),
-    },
     pageSuperTitle: {
       paddingTop: '1.75rem',
       color: theme.palette.grey[500],
@@ -164,10 +162,13 @@ export default function KnowledgeBaseTemplate(
           >
             <Close />
           </IconButtonLink>
-          <Typography variant="h5" className={classes.pageSuperTitle}>
-            Knowledge Base
-          </Typography>
-          <Typography variant="h1" className={classes.pageTitle}>
+          <Hidden mdDown>
+            <Breadcrumbs>
+              <Link to='/'>Home</Link>
+              <Link to='/knowledge-base'>Knowledge Base</Link>
+            </Breadcrumbs>
+          </Hidden>
+          <Typography variant="h1">
             {doc.mdx.frontmatter.title}
           </Typography>
           <SuggestEditButton path={absolutePath} />

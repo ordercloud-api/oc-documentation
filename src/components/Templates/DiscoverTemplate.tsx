@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
+import { Breadcrumbs, Box, createStyles, Link, makeStyles, Theme, Typography, Hidden } from '@material-ui/core'
 import { RouteComponentProps } from '@reach/router'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
@@ -32,9 +32,6 @@ interface DiscoverTemplateProps extends RouteComponentProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    pageTitle: {
-      marginBottom: theme.spacing(3),
-    },
   })
 )
 
@@ -66,7 +63,13 @@ export default function Template(props: DiscoverTemplateProps) {
       />
       <LayoutContainer>
         <LayoutMain>
-          <Typography variant="h1" className={classes.pageTitle}>
+          <Hidden mdDown>
+            <Breadcrumbs>
+              <Link href="/">Home</Link>
+              <Typography>Discover</Typography>
+            </Breadcrumbs>
+          </Hidden>
+          <Typography variant="h1">
             {doc.mdx.frontmatter.title}
           </Typography>
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>

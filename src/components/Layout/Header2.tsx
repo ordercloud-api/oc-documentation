@@ -42,9 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
     spacer: {
       width: theme.spacing(1),
     },
-    appBar: {
-      backgroundColor: sherpablue[500],
-    },
     logo: {
       display: 'flex',
       flexFlow: 'row nowrap',
@@ -141,7 +138,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
   return (
     <Fragment>
       <div className={classes.root}>
-        <AppBar position="relative" className={classes.appBar}>
+        <AppBar position="relative">
           <Container maxWidth="lg">
             <Toolbar disableGutters>
               <Link to="/" className={classes.logo}>
@@ -161,7 +158,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
                 />
               </Hidden>
               <div className={classes.grow} />
-              <Hidden smDown>
+              <Hidden xsDown>
                 <Button
                   onClick={() => navigate('')}
                   variant="contained"
@@ -182,6 +179,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
               ></DocSearch>
             </Toolbar>
           </Container>
+          <Hidden xsDown>
           <div className={classes.appBarSecondary}>
             <Container maxWidth="lg">
               <Toolbar variant="dense" disableGutters>
@@ -199,6 +197,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
               </Toolbar>
             </Container>
           </div>
+          </Hidden>
         </AppBar>
       </div>
     </Fragment>

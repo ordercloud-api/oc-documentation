@@ -90,6 +90,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: sherpablue[500],
       fontWeight: 700,
       textAlign: 'left',
+      minHeight: '2.5rem',
     },
     paperTitleSubheading: {
       color: darkgrey[500],
@@ -138,7 +139,7 @@ const MainComponent: React.FunctionComponent = props => {
             variant="contained"
             color={flame[600]}
           >
-            Getting Started
+            Developer Guide
           </CustomButtonLink>,
           <CustomButtonLink
             key="knowledge"
@@ -164,9 +165,7 @@ const MainComponent: React.FunctionComponent = props => {
                   variant="h4"
                   component="h2"
                 >
-                  Platform
-                  <br />
-                  Overview
+                  Platform Overview
                 </Typography>
                 <Typography
                   className={classes.paperTitleSubheading}
@@ -224,9 +223,7 @@ const MainComponent: React.FunctionComponent = props => {
                   variant="h4"
                   component="h2"
                 >
-                  Define Your
-                  <br />
-                  Marketplace
+                  Define Your Marketplace
                 </Typography>
                 <Typography
                   className={classes.paperTitleSubheading}
@@ -284,16 +281,14 @@ const MainComponent: React.FunctionComponent = props => {
                   variant="h4"
                   component="h2"
                 >
-                  Personalized
-                  <br />
-                  Shopping
+                  Personalized Shopping
                 </Typography>
                 <Typography
                   className={classes.paperTitleSubheading}
                   variant="subtitle1"
                 >
                   Our robust catalog management system empowers virtually
-                  limitless shopping experiences
+                  limitless experiences
                 </Typography>
                 <List>
                   <ListItem disableGutters>
@@ -345,8 +340,6 @@ const MainComponent: React.FunctionComponent = props => {
                   component="h2"
                 >
                   Flexible Fullfillment
-                  <br />
-                  Workflows
                 </Typography>
                 <Typography
                   className={classes.paperTitleSubheading}
@@ -362,7 +355,7 @@ const MainComponent: React.FunctionComponent = props => {
                         <PlaylistAddCheckTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Order Checkout" />
+                    <ListItemText primary="Checkout Process" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
@@ -370,7 +363,7 @@ const MainComponent: React.FunctionComponent = props => {
                         <MarkunreadMailboxTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Shipping Selection" />
+                    <ListItemText primary="Order Fulfillment" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>

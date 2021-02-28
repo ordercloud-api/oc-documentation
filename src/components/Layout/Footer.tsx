@@ -26,7 +26,7 @@ const styles = (theme: Theme) =>
         left: 0,
         right: 0,
       },
-      backgroundColor: theme.palette.primary.dark,
+      backgroundColor: sherpablue[500],
       borderTop: '2px solid',
       borderColor: mediumgrey[100],
       ...theme.typography.body2,

@@ -21,7 +21,12 @@ const useStyles = makeStyles((theme: Theme) =>
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 30,
-        paddingBottom: overlayed ? 120 : 50,
+        [theme.breakpoints.up('sm')]: {
+          paddingBottom: overlayed ? 120 : 50,
+        },
+        [theme.breakpoints.down('xs')]: {
+          paddingBottom: 30
+        },
         borderRadius: 0,
         overflowY: 'hidden',
         overflowX: 'hidden',
@@ -38,16 +43,13 @@ const useStyles = makeStyles((theme: Theme) =>
         '&>div': {
           zIndex: 1,
         },
-        [theme.breakpoints.down('xs')]: {
-          height: '75vh',
-        },
+        
       }
     },
     jumbotronSecondary: {
       backgroundColor: theme.palette.secondary.main,
     },
     logo: {
-    
       width: theme.spacing(40),
       marginBottom: theme.spacing(2),
       '& path': {
@@ -78,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) =>
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         marginBottom: theme.spacing(2),
       },
     },
@@ -103,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: '0.5rem', 
       color: 'white',
       textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down('sm')]: {
         fontSize: '2rem',
         marginTop: '0.25rem',
       },

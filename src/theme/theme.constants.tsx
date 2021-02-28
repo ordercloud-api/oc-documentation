@@ -85,6 +85,10 @@ export default createMuiTheme({
       '@global': {
         a: {
           color: secondaryColor[900],
+          textDecoration: 'none',
+          // '&:hover': {
+          //   textDecoration: 'underline'
+          // }
         },
         code: {
           whiteSpace: 'pre-wrap',
@@ -105,6 +109,14 @@ export default createMuiTheme({
         },
       },
     },
+    MuiAppBar: {
+      root: {
+        backgroundColor: sherpablue[500],
+      },
+      colorPrimary: {
+        backgroundColor: sherpablue[500],
+      }
+    },
     // MuiButton: {
     //   label: {
     //     paddingTop: navigator.appVersion.includes('Mac') ? 2 : undefined,
@@ -119,12 +131,18 @@ export default createMuiTheme({
         color: 'black',
       }
     },
+    MuiBreadcrumbs: {
+      root: {
+        paddingTop: '1rem',
+        textDecoration: 'none'
+      },
+    },
     MuiTypography: {
       h1: {
-        paddingTop: '2rem',
-        marginBottom: '2rem',
+        paddingTop: '1rem',
+        marginBottom: '1rem',
         fontSize: '2rem',
-        color: seafoam[500],
+        color: seafoam[600],
         textTransform: 'uppercase',
       },
       h2: {

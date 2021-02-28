@@ -12,6 +12,8 @@ import {
   Box,
   Theme,
   Typography,
+  Breadcrumbs,
+  Hidden,
 } from '@material-ui/core/'
 import { Block, Code, Description } from '@material-ui/icons'
 import { graphql, Link, useStaticQuery } from 'gatsby'
@@ -35,6 +37,9 @@ const useStyles = makeStyles((theme: Theme) =>
       right: theme.spacing(0.5),
       top: theme.spacing(0.5),
     },
+    titleDescription: {
+
+    }
   })
 )
 
@@ -161,7 +166,16 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
       />
       <LayoutContainer>
         <LayoutMain>
+          <Hidden mdDown>
+          <Breadcrumbs>
+            <Link to='/'>Home</Link>
+            <Typography>Knowledge Base</Typography>
+          </Breadcrumbs>
+          </Hidden>
           <Typography variant="h1">Knowledge Base</Typography>
+          <Typography style={{ marginBottom: '2rem' }} color="textSecondary">
+            OrderCloud has an ever growing library of articles and guides to help you as you plan and develop your solution.  Alternately, search from the top of the page.  If you have additional questions, access our <Link to="/slack">Slack community</Link>.
+          </Typography>
           <DocumentList
             selectedTags={selectedTags}
             nodes={documentNodes}
@@ -171,7 +185,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
           <Typography variant="h5" paragraph>
             Filter by tag:
           </Typography>
-          <Container maxWidth="xs" disableGutters>
+          <Container disableGutters>
             {availableTags
               .sort((a: any, b: any) => b[1] - a[1])
               .map(t => (
