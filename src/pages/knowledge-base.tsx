@@ -9,10 +9,11 @@ import {
   ListItemText,
   makeStyles,
   Paper,
+  Box,
   Theme,
   Typography,
 } from '@material-ui/core/'
-import { Code, Description } from '@material-ui/icons'
+import { Block, Code, Description } from '@material-ui/icons'
 import { graphql, Link, useStaticQuery } from 'gatsby'
 import { flatten, intersection } from 'lodash'
 import React, { Fragment, FunctionComponent, useMemo, useState } from 'react'
@@ -22,6 +23,7 @@ import LayoutContainer from '../components/Layout/LayoutContainer'
 import LayoutMain from '../components/Layout/LayoutMain'
 import LayoutMenu from '../components/Layout/LayoutMenu'
 import utility from '../services/utility'
+import themeConstants from '../theme/theme.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -207,7 +209,15 @@ const useDocListStyles = makeStyles((theme: Theme) =>
     },
     listItemDescription: {
       marginBottom: theme.spacing(1),
+      color: 'black',
     },
+    avatarStyle: {
+      backgroundColor: theme.palette.secondary.main,
+    },
+    listItemTags: {
+      marginBottom: theme.spacing(1),
+      marginRight: '4px'
+    }
   })
 )
 
@@ -223,7 +233,7 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
   const classes = useDocListStyles()
   const documentListItem = (node: DocumentNode) => {
     return (
-      <Paper elevation={2} className={classes.root}>
+      <Paper elevation={2} className={classes.root} key={node.id}>
         <ListItem
           button
           component={Link}
@@ -235,11 +245,11 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
           alignItems="flex-start"
         >
           <ListItemAvatar>
-            <Avatar>
+            <Avatar className={classes.avatarStyle}>
               {node.frontmatter.type === 'tutorial' ? (
                 <Code />
               ) : (
-                <Description />
+                <Description /> 
               )}
             </Avatar>
           </ListItemAvatar>
@@ -254,6 +264,13 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
                 >
                   {node.frontmatter.description}
                 </Typography>
+                <Box>
+                  {node.frontmatter.tags.map(
+                    t => {
+                      return <Chip size='small' label={t} key={t} className={classes.listItemTags}/>
+                    }
+                  )}
+                </Box>
                 <Typography variant="caption" display="block">
                   {`${
                     node.frontmatter.updatedDate ? 'Updated' : 'Published'

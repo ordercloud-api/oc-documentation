@@ -110,6 +110,11 @@ export default createMuiTheme({
     //     paddingTop: navigator.appVersion.includes('Mac') ? 2 : undefined,
     //   },
     // },
+    MuiListItemText: {
+      primary: {
+        fontWeight: 700,
+      }
+    },
     MuiTypography: {
       h1: {
         paddingTop: '2rem',
