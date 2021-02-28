@@ -53,8 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       maxWidth: '100vw',
       padding: theme.spacing(3),
-      minHeight: '18rem',
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up('sm')]: {
         height: '100%',
       },
     },
@@ -133,7 +132,7 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  GitHub Project
+                  GitHub
                 </Button>
                 <Button
                   variant="outlined"
@@ -143,7 +142,7 @@ const DeveloperTools: FunctionComponent = () => {
                   rel="noreferrer"
                   className={classes.btnSpacer}
                 >
-                  NPM Package
+                  NPM
                 </Button>
               </Toolbar>
             </Paper>
@@ -164,7 +163,7 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  GitHub Project
+                  GitHub
                 </Button>
                 <Button
                   variant="outlined"
@@ -174,7 +173,7 @@ const DeveloperTools: FunctionComponent = () => {
                   rel="noreferrer"
                   className={classes.btnSpacer}
                 >
-                  NuGet Package
+                  NuGet
                 </Button>
               </Toolbar>
             </Paper>
@@ -195,7 +194,7 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  GitHub Project
+                  GitHub
                 </Button>
                 <Button
                   variant="outlined"
@@ -205,7 +204,7 @@ const DeveloperTools: FunctionComponent = () => {
                   rel="noreferrer"
                   className={classes.btnSpacer}
                 >
-                  NuGet Package
+                  NuGet
                 </Button>
               </Toolbar>
             </Paper>
@@ -226,7 +225,7 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  GitHub Project
+                  GitHub
                 </Button>
               </Toolbar>
             </Paper>
@@ -247,7 +246,7 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  GitHub Project
+                  GitHub
                 </Button>
               </Toolbar>
             </Paper>
@@ -255,7 +254,7 @@ const DeveloperTools: FunctionComponent = () => {
           <Grid item md={4} sm={6} className={classes.paperRoot}>
             <Paper elevation={3} className={classes.paperCard}>
               <Typography className={classes.paperTitleHeading} variant="h4">
-                Postman Samples
+                Postman Tutorial
               </Typography>
               <Typography paragraph component="p">
                 A sample project with code snippets you can reference and learn from, which is extremely basic, ideal for the curious
@@ -268,7 +267,7 @@ const DeveloperTools: FunctionComponent = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View Postman Samples
+                  Tutorial
                 </Button>
               </Toolbar>
             </Paper>
