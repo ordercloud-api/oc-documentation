@@ -53,13 +53,13 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       maxWidth: '100vw',
       padding: theme.spacing(3),
+      minHeight: '18rem',
       [theme.breakpoints.up('md')]: {
         height: '100%',
       },
     },
     paperTitleHeading: {
       padding: theme.spacing(0, 0, 1),
-      color: darkgrey[900],
       textAlign: 'left',
     },
     paperTitleSubheading: {
@@ -117,9 +117,9 @@ const DeveloperTools: FunctionComponent = () => {
       />
       <Container maxWidth="lg">
         <Grid container className={classes.cardWrapper} spacing={3}>
-        <Grid item md={4} className={classes.paperRoot}>
-            <Paper className={classes.paperCard}>
-              <Typography className={classes.paperTitleHeading} variant="h3">
+        <Grid item md={4} sm={6} className={classes.paperRoot}>
+            <Paper elevation={3} className={classes.paperCard}>
+              <Typography className={classes.paperTitleHeading} variant="h4">
                 JavaScript SDK
               </Typography>
               <Typography paragraph component="p">
@@ -148,9 +148,9 @@ const DeveloperTools: FunctionComponent = () => {
               </Toolbar>
             </Paper>
           </Grid>
-          <Grid item md={4} className={classes.paperRoot}>
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
             <Paper elevation={3} className={classes.paperCard}>
-              <Typography variant="h3" className={classes.paperTitleHeading}>
+              <Typography variant="h4" className={classes.paperTitleHeading}>
                 .NET C# SDK
               </Typography>
               <Typography paragraph component="p">
@@ -179,9 +179,9 @@ const DeveloperTools: FunctionComponent = () => {
               </Toolbar>
             </Paper>
           </Grid>
-          <Grid item md={4} className={classes.paperRoot}>
-            <Paper className={classes.paperCard}>
-              <Typography className={classes.paperTitleHeading} variant="h3">
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
+            <Paper elevation={3} className={classes.paperCard}>
+              <Typography className={classes.paperTitleHeading} variant="h4">
                 .NET Catalyst Middleware
               </Typography>
               <Typography paragraph component="p">
@@ -210,9 +210,9 @@ const DeveloperTools: FunctionComponent = () => {
               </Toolbar>
             </Paper>
           </Grid>
-          <Grid item md={4} className={classes.paperRoot}>
-            <Paper className={classes.paperCard}>
-              <Typography className={classes.paperTitleHeading} variant="h3">
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
+            <Paper elevation={3} className={classes.paperCard}>
+              <Typography className={classes.paperTitleHeading} variant="h4">
                 OrderCloud HeadStart
               </Typography>
               <Typography paragraph component="p">
@@ -231,9 +231,9 @@ const DeveloperTools: FunctionComponent = () => {
               </Toolbar>
             </Paper>
           </Grid>
-          <Grid item md={4} className={classes.paperRoot}>
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
             <Paper elevation={3} className={classes.paperCard}>
-              <Typography variant="h3" className={classes.paperTitleHeading}>
+              <Typography variant="h4" className={classes.paperTitleHeading}>
                 OrderCloud on GitHub
               </Typography>
               <Typography paragraph component="p">
@@ -252,9 +252,9 @@ const DeveloperTools: FunctionComponent = () => {
               </Toolbar>
             </Paper>
           </Grid>
-          <Grid item md={4} className={classes.paperRoot}>
-            <Paper className={classes.paperCard}>
-              <Typography className={classes.paperTitleHeading} variant="h3">
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
+            <Paper elevation={3} className={classes.paperCard}>
+              <Typography className={classes.paperTitleHeading} variant="h4">
                 Postman Samples
               </Typography>
               <Typography paragraph component="p">

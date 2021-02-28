@@ -6,9 +6,11 @@ import {
   createStyles,
   Divider,
   Grid,
+  Hidden,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemIcon,
   ListItemText,
   makeStyles,
   Paper,
@@ -28,6 +30,12 @@ import {
   ExtensionTwoTone,
   PeopleTwoTone,
   PlaylistAddCheckTwoTone,
+  CodeOutlined,
+  SchoolTwoTone,
+  BookmarkTwoTone,
+  BuildTwoTone,
+  EmojiObjectsTwoTone,
+  HelpTwoTone,
 } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import Prism from 'prismjs'
@@ -40,8 +48,10 @@ import {
   sherpablue,
 } from '../../theme/ocPalette.constants'
 import themeConstants from '../../theme/theme.constants'
+import ButtonLink from '../Shared/ButtonLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
 import Jumbotron from '../Shared/Jumbotron'
+import ListItemLink from '../Shared/ListItemLink'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
 
@@ -95,6 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paperTitleSubheading: {
       color: darkgrey[500],
       padding: theme.spacing(0),
+      marginBottom: '0.5rem'
     },
     avatar: {
       backgroundColor: theme.palette.background.default,
@@ -151,6 +162,60 @@ const MainComponent: React.FunctionComponent = props => {
           </CustomButtonLink>,
         ]}
       />
+      <Hidden smUp>
+        <Container style={{ marginTop: '0.25rem', marginBottom: '0.25rem'}}>
+            <List>
+              <ListItemLink to="/discover/platform-overview">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <EmojiObjectsTwoTone color="primary"/>
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Discover" />
+              </ListItemLink>
+              <ListItemLink to="/learn/ordercloud-basics/architecture">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <SchoolTwoTone color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Learn" />
+              </ListItemLink>
+              <ListItemLink to="/knowledge-base">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <BookmarkTwoTone color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Knowledge Base" />
+              </ListItemLink>
+              <ListItemLink to="/developer-tools">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <BuildTwoTone color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Developer Tools" />
+              </ListItemLink>
+              <ListItemLink to="/api-reference">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <CodeOutlined color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="API Reference" />
+              </ListItemLink>
+              <ListItemLink to="/slack">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <HelpTwoTone color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Community" />
+              </ListItemLink>
+            </List>
+        </Container>
+      </Hidden>
       <Container maxWidth="lg">
         <Grid container className={classes.cardWrapper} spacing={3}>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
@@ -174,6 +239,7 @@ const MainComponent: React.FunctionComponent = props => {
                   Wherever your business needs to go tomorrow, you’re ready to
                   lead the way.
                 </Typography>
+                <Hidden xsDown>
                 <List>
                   <ListItem disableGutters>
                     <ListItemAvatar>
@@ -200,6 +266,7 @@ const MainComponent: React.FunctionComponent = props => {
                     <ListItemText primary="Enterprise Ready" />
                   </ListItem>
                 </List>
+                </Hidden>
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}
@@ -232,6 +299,7 @@ const MainComponent: React.FunctionComponent = props => {
                   Mirror your unique business using our flexible modeling tools
                   and access controls
                 </Typography>
+                <Hidden xsDown>
                 <List>
                   <ListItem disableGutters>
                     <ListItemAvatar>
@@ -258,6 +326,7 @@ const MainComponent: React.FunctionComponent = props => {
                     <ListItemText primary="Multi-Supplier" />
                   </ListItem>
                 </List>
+                </Hidden>
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}
@@ -290,6 +359,7 @@ const MainComponent: React.FunctionComponent = props => {
                   Our robust catalog management system empowers virtually
                   limitless experiences
                 </Typography>
+                <Hidden xsDown>
                 <List>
                   <ListItem disableGutters>
                     <ListItemAvatar>
@@ -316,6 +386,7 @@ const MainComponent: React.FunctionComponent = props => {
                     <ListItemText primary="Variable Pricing" />
                   </ListItem>
                 </List>
+                </Hidden>
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}
@@ -348,6 +419,7 @@ const MainComponent: React.FunctionComponent = props => {
                   Powerful marketplace tools enable automating end-to-end order
                   fulfillment
                 </Typography>
+                <Hidden xsDown>
                 <List>
                   <ListItem disableGutters>
                     <ListItemAvatar>
@@ -374,6 +446,7 @@ const MainComponent: React.FunctionComponent = props => {
                     <ListItemText primary="Customized Logic" />
                   </ListItem>
                 </List>
+                </Hidden>
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}

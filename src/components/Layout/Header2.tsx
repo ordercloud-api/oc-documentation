@@ -191,7 +191,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
                 <Link to="/slack">Community</Link>
                 <div className={classes.grow} />
                 <PortalLink className={classes.registerCta} to="/register">
-                  <span>Create a Free Account</span>
+                  <span>Create a Sandbox</span>
                   <ChevronRight />
                 </PortalLink>
               </Toolbar>
