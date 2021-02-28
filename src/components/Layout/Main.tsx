@@ -35,6 +35,7 @@ import React, { useLayoutEffect } from 'react'
 import {
   darkgrey,
   flame,
+  seafoam,
   mediumgrey,
   sherpablue,
 } from '../../theme/ocPalette.constants'
@@ -86,7 +87,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paperTitleHeading: {
       padding: theme.spacing(0, 0, 1),
-      color: darkgrey[900],
+      color: sherpablue[500],
       fontWeight: 700,
       textAlign: 'left',
     },

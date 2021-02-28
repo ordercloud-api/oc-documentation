@@ -209,7 +209,6 @@ const useDocListStyles = makeStyles((theme: Theme) =>
     },
     listItemDescription: {
       marginBottom: theme.spacing(1),
-      color: 'black',
     },
     avatarStyle: {
       backgroundColor: theme.palette.secondary.main,

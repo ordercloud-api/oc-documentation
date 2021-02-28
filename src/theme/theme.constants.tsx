@@ -112,7 +112,11 @@ export default createMuiTheme({
     // },
     MuiListItemText: {
       primary: {
-        fontWeight: 700,
+        fontWeight: 600,
+        color: primaryColor[500],
+      },
+      secondary: {
+        color: 'black',
       }
     },
     MuiTypography: {
@@ -120,19 +124,27 @@ export default createMuiTheme({
         paddingTop: '2rem',
         marginBottom: '2rem',
         fontSize: '2rem',
+        color: seafoam[500],
+        textTransform: 'uppercase',
       },
       h2: {
         paddingTop: '1.75rem',
         marginBottom: '0.5rem',
+        color: primaryColor[400],
       },
       h3: {
         paddingTop: '1.5rem',
         marginBottom: '0.5rem',
+        color: primaryColor[400],
       },
       h4: {
         paddingTop: '1.25rem',
         marginBottom: '0.5rem',
+        color: primaryColor[400],
       },
+      caption: {
+        color: primaryColor[300]
+      }
     },
   },
 })
