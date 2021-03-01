@@ -26,6 +26,7 @@ import ApiReferenceMenu, {
   ApiReferenceMenuData,
 } from '../Layout/ApiReferenceMenu'
 import Layout from '../Layout/Layout'
+import utility from '../../services/utility'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
@@ -45,10 +46,7 @@ interface ApiReferenceProps extends RouteComponentProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    breadcrumbs: {
-      paddingTop: theme.spacing(5),
-      marginBottom: -theme.spacing(2.5),
-    },
+    breadcrumbs: {},
     breadcrumbLink: {
       textDecoration: 'none',
     },
@@ -79,24 +77,24 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
   useLayoutEffect(() => {
     if (!props.location.hash) return
     const el = document.getElementById(props.location.hash.split('#')[1])
-    if (!(el && el.offsetParent)) return
-    window.scrollTo(0, (el.offsetParent as HTMLElement).offsetTop)
+    if (!el) return
+    window.scrollTo(0, utility.getOffsetTop(el))
   }, [props.location.hash])
 
   const defaultDescription =
     'OrderCloud is a cloud-hosted B2B eCommerce platform exposed entirely via a RESTful API. It enables rapid development of custom, secure, and scalable B2B eCommerce solutions. Spin up a fully functional B2B app in minutes and customize it to the limits of your imagination.'
   const pageInfo = useMemo(() => {
-    const prefix = 'Four51 OrderCloud'
+    const suffix = 'Four51 OrderCloud'
     const { section, resource, operation, menuData, currentPath } = pageContext
     if (operation) {
       return {
-        title: `${prefix} | ${operation.summary.replace(/\./g, '')}`,
+        title: `${operation.summary.replace(/\./g, '')} | ${suffix}`,
         description: resource.description,
       }
     }
     if (resource) {
       return {
-        title: `${prefix} | ${resource.name}`,
+        title: `${resource.name} | ${suffix}`,
         description: resource.description,
         operations: menuData
           .find(s => currentPath.includes(s.path))
@@ -105,13 +103,13 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
     }
     if (section) {
       return {
-        title: `${prefix} | ${section.name}`,
+        title: `${section.name} | ${suffix}`,
         description: section.description,
         resources: menuData.find(s => currentPath.includes(s.path)).resources,
       }
     }
     return {
-      title: `${prefix} | API Reference`,
+      title: `API Reference | ${suffix}`,
     }
   }, [pageContext])
   return (
@@ -127,7 +125,11 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
       />
       {!pageContext.section && (
         <React.Fragment>
-          <Jumbotron heading="API Reference" text={defaultDescription} />
+          <Jumbotron
+            overlayed={true}
+            heading="API Reference"
+            text={defaultDescription}
+          />
           <Container>
             <Grid container spacing={3} className={classes.apiRefGrid}>
               {pageContext.menuData.map(s => (
@@ -174,7 +176,6 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
             <Breadcrumbs className={classes.breadcrumbs}>
               <Typography
                 className={classes.breadcrumbLink}
-                variant="body2"
                 component={Link}
                 to="/api-reference"
               >
@@ -183,7 +184,6 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
               {pageContext.resource && (
                 <Typography
                   className={classes.breadcrumbLink}
-                  variant="body2"
                   component={Link}
                   to={`/api-reference/${Case.kebab(
                     pageContext.section['x-id']
@@ -195,7 +195,6 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
               {pageContext.operation && pageContext.resource && (
                 <Typography
                   className={classes.breadcrumbLink}
-                  variant="body2"
                   component={Link}
                   to={`/api-reference/${Case.kebab(
                     pageContext.section['x-id']
@@ -270,7 +269,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
               <ApiOperationDisplay operation={pageContext.operation} />
             )}
           </LayoutMain>
-          <LayoutMenu>
+          <LayoutMenu stayOpen={true}>
             <ApiReferenceMenu data={pageContext.menuData} uri={uri} />
           </LayoutMenu>
         </LayoutContainer>

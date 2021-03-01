@@ -2,8 +2,8 @@
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
 })
-const docsQuery = `{
-  docs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/docs/**/*.mdx"}}) {
+const learnQuery = `{
+  results: allMdx(filter: {fileAbsolutePath: {glob: "**/content/learn/**/*.mdx"}}) {
     edges {
       node {
         objectID: id
@@ -11,8 +11,8 @@ const docsQuery = `{
         frontmatter {
           section
           title
-          summary
-          authors
+          description
+          priority
         }
         excerpt(pruneLength:5000)
       }
@@ -20,17 +20,34 @@ const docsQuery = `{
   }
 }
 `
-const blogQuery = `{
-  blogs: allMdx(filter: {fileAbsolutePath: {glob: "**/content/blog/*.mdx"}}) {
+const discoverQuery = `{
+  results: allMdx(filter: {fileAbsolutePath: {glob: "**/content/discover/**/*.mdx"}}) {
     edges {
       node {
         objectID: id
         fileAbsolutePath
-        timeToRead
         frontmatter {
           title
-          authors
-          date
+          description
+          priority
+        }
+        excerpt(pruneLength:5000)
+      }
+    }
+  }
+}
+`
+const knowledgeBase = `{
+  results: allMdx(filter: {fileAbsolutePath: {glob: "**/content/documents/*.mdx"}}) {
+    edges {
+      node {
+        objectID: id
+        fileAbsolutePath
+        frontmatter {
+          title
+          description
+          publishDate
+          updatedDate
           tags
         }
         excerpt(pruneLength:5000)
@@ -78,14 +95,26 @@ const settings = {
 
 const queries = [
   {
-    query: docsQuery,
-    transformer: ({ data }) => flatten(data.docs.edges),
+    query: discoverQuery,
+    transformer: ({ data }) =>
+      flatten(
+        data.results.edges.map(e => {
+          e.node.frontmatter.section = 'Discover'
+          return e
+        })
+      ),
     indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
     settings,
   },
   {
-    query: blogQuery,
-    transformer: ({ data }) => flatten(data.blogs.edges),
+    query: learnQuery,
+    transformer: ({ data }) => flatten(data.results.edges),
+    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
+    settings,
+  },
+  {
+    query: knowledgeBase,
+    transformer: ({ data }) => flatten(data.results.edges),
     indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
     settings,
   },
@@ -214,6 +243,7 @@ module.exports = toExport
 if (process.env.GATSBY_ALGOLIA_ADMIN_API_KEY) {
   // for local development, don't store GATSBY_ALGOLIA_ADMIN_API_KEY
   // because it will rebuild the algolia index
+  // TODO: Turn this back on once we are about to go live
   toExport.plugins.push({
     resolve: `gatsby-plugin-algolia`,
     options: {

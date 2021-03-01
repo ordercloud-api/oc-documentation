@@ -10,6 +10,7 @@ export interface Guide {
   frontmatter: {
     section: string
     title: string
-    priority?: string // only set on main-concepts and getting-started guides
+    description: string
+    priority: number // only set on main-concepts and getting-started guides
   }
 }

@@ -16,7 +16,7 @@
 .gatsby-highlight {
     background-color: #3e4249; /* blackpearl[400] */
     border-radius: 0.3em;
-    margin: 0.5em 0;
+    margin: 0.5em 0 1.5em;
     padding: 1em;
     overflow: auto;
   }

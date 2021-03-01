@@ -46,6 +46,11 @@ const useStyles = makeStyles((theme: Theme) =>
         opacity: 1,
       },
     },
+    headingSpan: {
+      display: 'block',
+      marginTop: -120,
+      paddingBottom: 120,
+    },
   })
 )
 
@@ -60,7 +65,8 @@ const ApiHeading = (props: ApiHeadingProps) => {
       <IconButtonLink to={`#${hash}`} className={classes.iconButton}>
         <Link />
       </IconButtonLink>
-      <Typography {...props} id={hash}>
+      <Typography {...props}>
+        <span id={hash} className={classes.headingSpan}></span>
         {title}
       </Typography>
     </div>
