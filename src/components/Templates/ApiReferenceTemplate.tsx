@@ -46,8 +46,7 @@ interface ApiReferenceProps extends RouteComponentProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    breadcrumbs: {
-    },
+    breadcrumbs: {},
     breadcrumbLink: {
       textDecoration: 'none',
     },
@@ -270,7 +269,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
               <ApiOperationDisplay operation={pageContext.operation} />
             )}
           </LayoutMain>
-          <LayoutMenu>
+          <LayoutMenu stayOpen={true}>
             <ApiReferenceMenu data={pageContext.menuData} uri={uri} />
           </LayoutMenu>
         </LayoutContainer>

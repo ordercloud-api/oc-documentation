@@ -49,15 +49,18 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 interface LayoutMenuProps {
-  stayOpen?: boolean;
+  stayOpen?: boolean
+  children: any
 }
 
-const LayoutMenu: React.FunctionComponent<LayoutMenuProps> = (props: { children: any }) => {
+const LayoutMenu: React.FunctionComponent<LayoutMenuProps> = (
+  props: LayoutMenuProps
+) => {
   const classes = useStyles({})
   const [mobileOpen, setMobileOpen] = useState(false)
   const mobileContainer = useRef(null)
   const drawerContainer = useRef(null)
-  const stayOpen = props.stayOpen || false;
+  const stayOpen = props.stayOpen || false
 
   const toggleMenu = () => {
     setMobileOpen(!mobileOpen)

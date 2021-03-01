@@ -10,7 +10,7 @@ priority: 4
 ## Moving Forward
 Up until now you've been using the API Console to make requests. From now on you will be using some sort of client outside of the Portal, whether it be [Postman](https://www.postman.com/) or a simple script running in the browser. 
 
-We have some open source packages available to aid in the development process for Javascript and C# solutions. we will be providing examples in raw HTTP format as well as in our JS/TS and C# SDKs to help you learn OrderCloud in the language that best suites your needs.
+We have some open source packages available to aid in the development process for Javascript and C# solutions. we will be providing examples in raw HTTP format as well as in our JS/TS and C# SDKs to help you learn OrderCloud in the language that best suits your needs.
 
 If you want to use Postman you can follow the instructions [here](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-data-into-postman) to import our Open API Specification by link: `https://api.ordercloud.io/v1/openapi/v3`.
 
@@ -142,12 +142,10 @@ csharp: `using OrderCloud.SDK;\n
 // see previous example for configuring OrderCloudClient
 var client = new OrderCloudClient(...);\n
 try {
-  MeUser myself = await client.Me.GetAsync();`
+  MeUser myself = await client.Me.GetAsync();
 } catch(OrderCloudException ex) {
   Console.WriteLine(ex.Message);
-}
-
-}}
+}`}}
 />
 
 This particular request is made using the seller perspective. To change perspectives you will need to acquire an `access_token` using your buyer user's credentials and roles. In future chapters, we will alternate between these two perspectives to perform certain actions.

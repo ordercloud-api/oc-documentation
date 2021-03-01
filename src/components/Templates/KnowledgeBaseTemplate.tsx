@@ -14,7 +14,7 @@ import { Close } from '@material-ui/icons'
 import { History, RouteComponentProps } from '@reach/router'
 import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
-import React, { useLayoutEffect } from 'react'
+import React, { useLayoutEffect, Fragment } from 'react'
 import { Helmet } from 'react-helmet'
 import useActiveId from '../../hooks/useActiveId'
 import { useRelatedDocuments } from '../../hooks/useRelatedDocuments'
@@ -25,6 +25,7 @@ import '../../styles/doc-template.css'
 import { seafoam } from '../../theme/ocPalette.constants'
 import { transformHeadingToId } from '../Layout/DiscoverMenu'
 import Layout from '../Layout/Layout'
+import { filter } from 'lodash'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
@@ -115,8 +116,11 @@ export default function KnowledgeBaseTemplate(
   // const articles = useDiscoverSections()
   const classes = useStyles()
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
-  const relatedDocuments = useRelatedDocuments(
-    doc.mdx.frontmatter.tags.filter(t => t !== 'Best Practices')
+  const relatedDocuments = filter(
+    useRelatedDocuments(
+      doc.mdx.frontmatter.tags.filter(t => t !== 'Best Practices')
+    ),
+    d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath
   )
 
   useLayoutEffect(() => {
@@ -164,13 +168,11 @@ export default function KnowledgeBaseTemplate(
           </IconButtonLink>
           <Hidden mdDown>
             <Breadcrumbs>
-              <Link to='/'>Home</Link>
-              <Link to='/knowledge-base'>Knowledge Base</Link>
+              <Link to="/">Home</Link>
+              <Link to="/knowledge-base">Knowledge Base</Link>
             </Breadcrumbs>
           </Hidden>
-          <Typography variant="h1">
-            {doc.mdx.frontmatter.title}
-          </Typography>
+          <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
           <SuggestEditButton path={absolutePath} />
           <Box display="flex" mb={3} alignItems="center">
             <Avatar
@@ -238,28 +240,30 @@ export default function KnowledgeBaseTemplate(
                 />
               ))}
             </div>
-            <Typography variant="h5" className={classes.menuHeader}>
-              Related Reading
-            </Typography>
-            <div className={classes.menuSection}>
-              {relatedDocuments
-                .filter(d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath)
-                .map(t => (
-                  <Typography
-                    className={classes.relatedDocument}
-                    component={Link}
-                    state={{
-                      selectedTags:
-                        location.state && location.state.selectedTags,
-                    }}
-                    to={utility.resolvePath(t.fileAbsolutePath)}
-                    key={t.id}
-                    display="block"
-                  >
-                    {t.frontmatter.title}
-                  </Typography>
-                ))}
-            </div>
+            {Boolean(relatedDocuments.length) && (
+              <Fragment>
+                <Typography variant="h5" className={classes.menuHeader}>
+                  Related Reading
+                </Typography>
+                <div className={classes.menuSection}>
+                  {relatedDocuments.map(t => (
+                    <Typography
+                      className={classes.relatedDocument}
+                      component={Link}
+                      state={{
+                        selectedTags:
+                          location.state && location.state.selectedTags,
+                      }}
+                      to={utility.resolvePath(t.fileAbsolutePath)}
+                      key={t.id}
+                      display="block"
+                    >
+                      {t.frontmatter.title}
+                    </Typography>
+                  ))}
+                </div>
+              </Fragment>
+            )}
           </Container>
         </LayoutMenu>
       </LayoutContainer>

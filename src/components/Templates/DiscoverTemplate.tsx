@@ -1,4 +1,13 @@
-import { Breadcrumbs, Box, createStyles, Link, makeStyles, Theme, Typography, Hidden } from '@material-ui/core'
+import {
+  Breadcrumbs,
+  Box,
+  createStyles,
+  Link,
+  makeStyles,
+  Theme,
+  Typography,
+  Hidden,
+} from '@material-ui/core'
 import { RouteComponentProps } from '@reach/router'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
@@ -30,10 +39,7 @@ interface DiscoverTemplateProps extends RouteComponentProps {
   theme: Theme
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-  })
-)
+const useStyles = makeStyles((theme: Theme) => createStyles({}))
 
 export default function Template(props: DiscoverTemplateProps) {
   const doc = props.data // data from page query
@@ -69,9 +75,7 @@ export default function Template(props: DiscoverTemplateProps) {
               <Typography>Discover</Typography>
             </Breadcrumbs>
           </Hidden>
-          <Typography variant="h1">
-            {doc.mdx.frontmatter.title}
-          </Typography>
+          <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
           <DiscoverFooter contents={articles} currentGuide={absolutePath} />
         </LayoutMain>

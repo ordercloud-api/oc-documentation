@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
           paddingBottom: overlayed ? 120 : 50,
         },
         [theme.breakpoints.down('xs')]: {
-          paddingBottom: 30
+          paddingBottom: 30,
         },
         borderRadius: 0,
         overflowY: 'hidden',
@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme: Theme) =>
         '&>div': {
           zIndex: 1,
         },
-        
       }
     },
     jumbotronSecondary: {
@@ -102,7 +101,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: 0,
       textTransform: 'uppercase',
       marginTop: '.75rem',
-      marginBottom: '0.5rem', 
+      marginBottom: '0.5rem',
       color: 'white',
       textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
       [theme.breakpoints.down('sm')]: {

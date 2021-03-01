@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
     paperTitleSubheading: {
       color: darkgrey[500],
       padding: theme.spacing(0),
-      marginBottom: '0.5rem'
+      marginBottom: '0.5rem',
     },
     avatar: {
       backgroundColor: theme.palette.background.default,
@@ -140,6 +140,10 @@ const MainComponent: React.FunctionComponent = props => {
   return (
     <React.Fragment>
       <Jumbotron
+        // image={{
+        //   src: '/images/ordercloud_nobg.png',
+        //   alt: 'homepage background',
+        // }}
         overlayed={true}
         heading="YOUR B2B-FIRST ECOMMERCE° PLATFORM"
         text="Design your own marketplace with an API-first, headless cloud platform for B2B, B2C, and B2X. We power custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
@@ -163,57 +167,57 @@ const MainComponent: React.FunctionComponent = props => {
         ]}
       />
       <Hidden smUp>
-        <Container style={{ marginTop: '0.25rem', marginBottom: '0.25rem'}}>
-            <List>
-              <ListItemLink to="/discover/platform-overview">
-                <ListItemAvatar>
-                  <Avatar className={classes.avatar} variant="rounded">
-                    <EmojiObjectsTwoTone color="primary"/>
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Discover" />
-              </ListItemLink>
-              <ListItemLink to="/learn/ordercloud-basics/architecture">
-                <ListItemAvatar>
-                  <Avatar className={classes.avatar} variant="rounded">
-                    <SchoolTwoTone color="primary" />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Learn" />
-              </ListItemLink>
-              <ListItemLink to="/knowledge-base">
-                <ListItemAvatar>
-                  <Avatar className={classes.avatar} variant="rounded">
-                    <BookmarkTwoTone color="primary" />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Knowledge Base" />
-              </ListItemLink>
-              <ListItemLink to="/developer-tools">
-                <ListItemAvatar>
-                  <Avatar className={classes.avatar} variant="rounded">
-                    <BuildTwoTone color="primary" />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Developer Tools" />
-              </ListItemLink>
-              <ListItemLink to="/api-reference">
-                <ListItemAvatar>
-                  <Avatar className={classes.avatar} variant="rounded">
-                    <CodeOutlined color="primary" />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="API Reference" />
-              </ListItemLink>
-              <ListItemLink to="/slack">
-                <ListItemAvatar>
-                  <Avatar className={classes.avatar} variant="rounded">
-                    <HelpTwoTone color="primary" />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Community" />
-              </ListItemLink>
-            </List>
+        <Container style={{ marginTop: '0.25rem', marginBottom: '0.25rem' }}>
+          <List>
+            <ListItemLink to="/discover/platform-overview">
+              <ListItemAvatar>
+                <Avatar className={classes.avatar} variant="rounded">
+                  <EmojiObjectsTwoTone color="primary" />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Discover" />
+            </ListItemLink>
+            <ListItemLink to="/learn/ordercloud-basics/architecture">
+              <ListItemAvatar>
+                <Avatar className={classes.avatar} variant="rounded">
+                  <SchoolTwoTone color="primary" />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Learn" />
+            </ListItemLink>
+            <ListItemLink to="/knowledge-base">
+              <ListItemAvatar>
+                <Avatar className={classes.avatar} variant="rounded">
+                  <BookmarkTwoTone color="primary" />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Knowledge Base" />
+            </ListItemLink>
+            <ListItemLink to="/developer-tools">
+              <ListItemAvatar>
+                <Avatar className={classes.avatar} variant="rounded">
+                  <BuildTwoTone color="primary" />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Developer Tools" />
+            </ListItemLink>
+            <ListItemLink to="/api-reference">
+              <ListItemAvatar>
+                <Avatar className={classes.avatar} variant="rounded">
+                  <CodeOutlined color="primary" />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="API Reference" />
+            </ListItemLink>
+            <ListItemLink to="/slack">
+              <ListItemAvatar>
+                <Avatar className={classes.avatar} variant="rounded">
+                  <HelpTwoTone color="primary" />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Community" />
+            </ListItemLink>
+          </List>
         </Container>
       </Hidden>
       <Container maxWidth="lg">
@@ -240,32 +244,32 @@ const MainComponent: React.FunctionComponent = props => {
                   lead the way.
                 </Typography>
                 <Hidden xsDown>
-                <List>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <Code color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Developer Friendly" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <DeviceHub color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Omnichannel" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <BusinessTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Enterprise Ready" />
-                  </ListItem>
-                </List>
+                  <List>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <Code color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Developer Friendly" />
+                    </ListItem>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <DeviceHub color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Omnichannel" />
+                    </ListItem>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <BusinessTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Enterprise Ready" />
+                    </ListItem>
+                  </List>
                 </Hidden>
                 <CustomButtonLink
                   fullWidth
@@ -300,32 +304,32 @@ const MainComponent: React.FunctionComponent = props => {
                   and access controls
                 </Typography>
                 <Hidden xsDown>
-                <List>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <ShoppingCartTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Commerce Strategy" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <PeopleTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Buyer Segments" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <LocalShippingTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Multi-Supplier" />
-                  </ListItem>
-                </List>
+                  <List>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <ShoppingCartTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Commerce Strategy" />
+                    </ListItem>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <PeopleTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Buyer Segments" />
+                    </ListItem>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <LocalShippingTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Multi-Supplier" />
+                    </ListItem>
+                  </List>
                 </Hidden>
                 <CustomButtonLink
                   fullWidth
@@ -360,32 +364,32 @@ const MainComponent: React.FunctionComponent = props => {
                   limitless experiences
                 </Typography>
                 <Hidden xsDown>
-                <List>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <CategoryTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Custom Catalogs" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <AccountTreeTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Product Setup" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <AttachMoneyTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Variable Pricing" />
-                  </ListItem>
-                </List>
+                  <List>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <CategoryTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Custom Catalogs" />
+                    </ListItem>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <AccountTreeTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Product Setup" />
+                    </ListItem>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <AttachMoneyTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Variable Pricing" />
+                    </ListItem>
+                  </List>
                 </Hidden>
                 <CustomButtonLink
                   fullWidth
@@ -420,32 +424,32 @@ const MainComponent: React.FunctionComponent = props => {
                   fulfillment
                 </Typography>
                 <Hidden xsDown>
-                <List>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <PlaylistAddCheckTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Checkout Process" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <MarkunreadMailboxTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Order Fulfillment" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <ExtensionTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Customized Logic" />
-                  </ListItem>
-                </List>
+                  <List>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <PlaylistAddCheckTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Checkout Process" />
+                    </ListItem>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <MarkunreadMailboxTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Order Fulfillment" />
+                    </ListItem>
+                    <ListItem disableGutters>
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar} variant="rounded">
+                          <ExtensionTwoTone color="primary" />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Customized Logic" />
+                    </ListItem>
+                  </List>
                 </Hidden>
                 <CustomButtonLink
                   fullWidth

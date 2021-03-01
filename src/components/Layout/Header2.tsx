@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     appBarSecondary: {
+      backgroundColor: `rgba(0, 0, 0, 0.25)`,
       '& a': {
         color: theme.palette.getContrastText(theme.palette.primary.dark),
         textDecoration: 'none',
@@ -174,23 +175,23 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
             </Toolbar>
           </Container>
           <Hidden xsDown>
-          <div className={classes.appBarSecondary}>
-            <Container maxWidth="lg">
-              <Toolbar variant="dense" disableGutters>
-                <Link to="/discover/platform-overview">Discover</Link>
-                <Link to="/learn/ordercloud-basics/architecture">Learn</Link>
-                <Link to="/knowledge-base">Knowledge Base</Link>
-                <Link to="/developer-tools">Developer Tools</Link>
-                <Link to="/api-reference">API Reference</Link>
-                <Link to="/slack">Community</Link>
-                <div className={classes.grow} />
-                <PortalLink className={classes.registerCta} to="/register">
-                  <span>Create a Sandbox</span>
-                  <ChevronRight />
-                </PortalLink>
-              </Toolbar>
-            </Container>
-          </div>
+            <div className={classes.appBarSecondary}>
+              <Container maxWidth="lg">
+                <Toolbar variant="dense" disableGutters>
+                  <Link to="/discover/platform-overview">Discover</Link>
+                  <Link to="/learn/ordercloud-basics/architecture">Learn</Link>
+                  <Link to="/knowledge-base">Knowledge Base</Link>
+                  <Link to="/developer-tools">Developer Tools</Link>
+                  <Link to="/api-reference">API Reference</Link>
+                  <Link to="/slack">Community</Link>
+                  <div className={classes.grow} />
+                  <PortalLink className={classes.registerCta} to="/register">
+                    <span>Create a Free Account</span>
+                    <ChevronRight />
+                  </PortalLink>
+                </Toolbar>
+              </Container>
+            </div>
           </Hidden>
         </AppBar>
       </div>
