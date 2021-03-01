@@ -1,4 +1,11 @@
-import { Breadcrumbs, createStyles, Hidden, makeStyles, Theme, Typography } from '@material-ui/core'
+import {
+  Breadcrumbs,
+  createStyles,
+  Hidden,
+  makeStyles,
+  Theme,
+  Typography,
+} from '@material-ui/core'
 import { RouteComponentProps } from '@reach/router'
 import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
@@ -77,9 +84,7 @@ export default function Template(props: DocTemplateProps) {
               <Typography>{doc.mdx.frontmatter.section}</Typography>
             </Breadcrumbs>
           </Hidden>
-          <Typography variant="h1">
-            {doc.mdx.frontmatter.title}
-          </Typography>
+          <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
           <Typography color="textSecondary" className={classes.pageDescription}>
             {doc.mdx.frontmatter.description}
           </Typography>

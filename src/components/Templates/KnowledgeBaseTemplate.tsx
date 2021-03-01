@@ -168,13 +168,11 @@ export default function KnowledgeBaseTemplate(
           </IconButtonLink>
           <Hidden mdDown>
             <Breadcrumbs>
-              <Link to='/'>Home</Link>
-              <Link to='/knowledge-base'>Knowledge Base</Link>
+              <Link to="/">Home</Link>
+              <Link to="/knowledge-base">Knowledge Base</Link>
             </Breadcrumbs>
           </Hidden>
-          <Typography variant="h1">
-            {doc.mdx.frontmatter.title}
-          </Typography>
+          <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
           <SuggestEditButton path={absolutePath} />
           <Box display="flex" mb={3} alignItems="center">
             <Avatar

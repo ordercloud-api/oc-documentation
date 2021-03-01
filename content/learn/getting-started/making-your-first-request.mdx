@@ -142,12 +142,10 @@ csharp: `using OrderCloud.SDK;\n
 // see previous example for configuring OrderCloudClient
 var client = new OrderCloudClient(...);\n
 try {
-  MeUser myself = await client.Me.GetAsync();`
+  MeUser myself = await client.Me.GetAsync();
 } catch(OrderCloudException ex) {
   Console.WriteLine(ex.Message);
-}
-
-}}
+}`}}
 />
 
 This particular request is made using the seller perspective. To change perspectives you will need to acquire an `access_token` using your buyer user's credentials and roles. In future chapters, we will alternate between these two perspectives to perform certain actions.
