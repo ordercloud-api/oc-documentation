@@ -29,7 +29,7 @@ Lets assume there is no tax or shipping costs, and the minimum order quantity is
 
 <CodeExample
   content={{
-    http: `POST https://api.OrderCloud/v1/priceschedules
+    http: `POST https://sandboxapi.OrderCloud/v1/priceschedules
 Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8\n
 {
@@ -44,30 +44,59 @@ Content-Type: application/json; charset=UTF-8\n
   ]
 }`,
 javascript: `import { PriceSchedules } from "ordercloud-javascript-sdk";\n
-var response = await PriceSchedules.Create({
-  "ID": "enterprise-priceschedule-id"
-  "Name": "USB Cord",
-  "MinQuantity": 1,
-  "PriceBreaks": [
+PriceSchedules.Create({
+  ID: "enterprise-priceschedule-id",
+  Name: "USB Cord",
+  MinQuantity: 1,
+  PriceBreaks: [
     {
-      "Quantity": 1,
-      "Price": 3.99
-    }
-  ]
-})`,
-typescript: `import { PriceSchedule, PriceSchedules } from "ordercloud-javascript-sdk";\n
-const data:Partial<PriceSchedule> = {
-  "ID": "enterprise-priceschedule-id"
-  "Name": "USB Cord",
-  "MinQuantity": 1,
-  "PriceBreaks": [
+      Quantity: 1,
+      Price: 3.99,
+    },
+  ],
+})
+.then((buyerList) => {
+    console.log(buyerList);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { PriceSchedule, PriceSchedules, OrderCloudError } from "ordercloud-javascript-sdk";\n
+PriceSchedules.Create({
+  ID: "enterprise-priceschedule-id",
+  Name: "USB Cord",
+  MinQuantity: 1,
+  PriceBreaks: [
     {
-      "Quantity": 1,
-      "Price": 3.99
+      Quantity: 1,
+      Price: 3.99,
+    },
+  ],
+})
+.then((pricescheduleList: PriceSchedule) => {
+  console.log(pricescheduleList);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var priceSchedule = new PriceSchedule
+{
+    ID = "enterprise-priceschedule-id",
+    Name = "USB Cord",
+    MinQuantity = 1,
+    PriceBreaks = new List<PriceBreak>
+    {
+        new PriceBreak
+        {
+            Quantity = 1,
+            Price = 3.99M
+        }
     }
-  ]
-};\n
-var response:PriceSchedule = await PriceSchedules.Create(data)`
+};
+try {
+  PriceSchedule response = await PriceSchedules.Create(data);
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
 }}
 />
 

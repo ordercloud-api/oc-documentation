@@ -1,7 +1,7 @@
 ---
 title: 'Flexible Fulfillment'
 priority: 3
-description: 'With OrderCloud, a developer can create and submit an order with less than ten lines of code.  While this section walks through the individual steps for you to leverage in crafting an online store, you can orchestrate this process without user interaction as part of automated fulfillment or integrations.'
+description: 'Discover how to customize the fulfillment process within OrderCloud, including the order flow, supplier routing, and extending with custom logic.'
 ---
 
 With OrderCloud, a developer can create and submit an order with less than ten lines of code.  While this section walks through the individual steps for you to leverage in crafting an online store, you can orchestrate this process without user interaction as part of automated fulfillment or integrations.
@@ -171,7 +171,7 @@ Once the order is submitted, you can pull the orders into your fulfillment syste
 
 <ContentLink subtitle="Developer Guide" to="/learn/buyer-perspective/submitting-your-first-order">Submitting Your First Order</ContentLink>
 
-### Order Fulfillment
+## Order Fulfillment
 Once an order is submitted through the checkout process by the buyer, you (as the seller) can update the status of the order or incorporate separate suppliers into the fulfillment process directly. To learn about what happens before order submission, read the _Checkout Process_ section above.
 
 ### Order Shipments
@@ -233,7 +233,7 @@ While the below diagram is quite complex, the intention is to show what OrderClo
 
 <ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/orders-and-fulfillment/orders/forward">Order Forwarding</ContentLink>
 
-### Extending OrderCloud
+## Extending OrderCloud
 While OrderCloud provides out of the box order capture and validation, this section covers topics that require external integrations through deployed services to augment and customize the use of OrderCloud for your business.
 
 Example use cases for connecting your own logic:
@@ -264,8 +264,6 @@ More complex solutions may have most of their website interactions first route t
 A more common application of middleware is if you want to publish your own service which aggregates multiple calls into one service-- primarily complex ‘GET’ scenarios to produce net new object types for your clients to use.
 
 In both cases, it is recommended to leverage OrderCloud’s robust security architecture versus rolling your own.  OrderCloud handles the roles of buyers, admins, and suppliers, along with data rights authorization.    Again, you can choose to implement your services in any language of choice.
-
-<!-- [[INSERT LINK TO MIDDLEWARE GITHUB REPOS]] -->
 
 ### Integration Events
 While the previous two sections with webhooks and middleware proxies covered how to intercept and augment OrderCloud through direct API calls, Integration Events work on the same premise but are initiated indirectly due to coordinating things like order checkout and also includes more robust information in the request and response lifecycle.  Think of this as pointing OrderCloud to your own middleware services to own the logic of order intake.
@@ -325,11 +323,3 @@ PATCH /orders/incoming/{orderID}?xp.Downloaded=true&xp.SystemOrderID={ERP_ORDER_
 _Your implementation may end up using a combination of solutions to leverage both real-time and an intermittent batch pass before order cut off to catch anything which may have fallen out of your system SLA._
 
 <ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/orders-and-fulfillment/orders">OrderCloud Orders</ContentLink>
-
-## Next Steps
-OrderCloud provides sandbox environments which you can stand up on your own and immediately start playing with the platform.  As a next step, we recommend:
-
-- **Getting Started Guide** - to walk through the basics of developing on OrderCloud, along with how to use our dev center
-- **SDKs and Tools** - if you want to jump ahead and look at code samples specific to custom integrations
-- **Knowledge Base** - access our library of deep-dive topics which can support specific scenarios you might be considering that wasn’t part of this overview
-- **Community** - contact us through our support or Slack channels, if you’re a developer with questions or if you’re wondering if OrderCloud can support your solution

@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
+import { Breadcrumbs, Box, createStyles, Link, makeStyles, Theme, Typography, Hidden } from '@material-ui/core'
 import { RouteComponentProps } from '@reach/router'
 import { graphql } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
@@ -8,6 +8,7 @@ import { useDiscoverSections } from '../../hooks/useDiscoverSections'
 import utility from '../../services/utility'
 import '../../styles/doc-template.css'
 import DiscoverMenu from '../Layout/DiscoverMenu'
+import DiscoverFooter from '../Layout/DiscoverFooter'
 import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
@@ -31,9 +32,6 @@ interface DiscoverTemplateProps extends RouteComponentProps {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    pageTitle: {
-      marginBottom: theme.spacing(3),
-    },
   })
 )
 
@@ -65,12 +63,17 @@ export default function Template(props: DiscoverTemplateProps) {
       />
       <LayoutContainer>
         <LayoutMain>
-          <Typography variant="h1" className={classes.pageTitle}>
+          <Hidden mdDown>
+            <Breadcrumbs>
+              <Link href="/">Home</Link>
+              <Typography>Discover</Typography>
+            </Breadcrumbs>
+          </Hidden>
+          <Typography variant="h1">
             {doc.mdx.frontmatter.title}
           </Typography>
-          <SuggestEditButton path={absolutePath} />
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
-          {/* <DocFooter contents={sections} currentGuide={absolutePath} /> */}
+          <DiscoverFooter contents={articles} currentGuide={absolutePath} />
         </LayoutMain>
         <LayoutMenu>
           <DiscoverMenu

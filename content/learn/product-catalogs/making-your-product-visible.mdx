@@ -19,7 +19,7 @@ For this reason many developers overlook the fact that they need to explicitly a
 <CodeExample
   title="Assign the product to the default catalog"
   content={{
-    http: `PUT https://api.ordercloud.io/v1/catalogs/productassignments HTTP/1.1
+    http: `PUT https://sandboxapi.ordercloud.io/v1/catalogs/productassignments HTTP/1.1
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
@@ -27,34 +27,37 @@ Content-Type: application/json; charset=UTF-8;\n
     ProductID: "SHIRT"
 }`,
 javascript: `import { Catalogs } from "ordercloud-javascript-sdk";\n
-Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
 Catalogs.SaveProductAssignment({
-    CatalogID: "BUYER_ORGANIATION",
-    ProductID: "SHIRT"
+  CatalogID: "BUYER_ORGANIATION",
+  ProductID: "SHIRT",
 })
-  .then(response => {
-      // responds with 204 no content (empty response) when successful
-      console.log(response);
+  .then((response) => {
+    // responds with 204 no content (empty response) when successful
+    console.log(response);
   })
-  .catch(err => console.log(err));`,
+  .catch((err) => console.log(err));`,
 typescript: `import { Catalogs, ProductCatalogAssignment, OrderCloudError } from "ordercloud-javascript-sdk";\n
-const data: ProductCatalogAssignment = {
-    CatalogID: "BUYER_ORGANIZATION",
-    ProductID: "SHIRT"
-}\n
-Catalogs.SaveProductAssignment(data)
-  .then((response:undefined) => {
-      // responds with 204 no content (empty response) when successful
-      console.log(response);
+var assignment: ProductCatalogAssignment = {
+  CatalogID: "BUYER_ORGANIZATION",
+  ProductID: "SHIRT"
+}
+Catalogs.SaveProductAssignment(assignment)
+  .then((response: void) => {
+    // responds with 204 no content (empty response) when successful
+    console.log(response);
   })
-  .catch((err:OrderCloudError) => console.log(err));`,
-csharp: `using OrderClould.SDK;\n
+  .catch((err: OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
 var client = new OrderCloudClient(...);\n
-var data = new ProductCatalogAssignment {
+var assignment = new ProductCatalogAssignment {
     CatalogID = "BUYER_ORGANIATION",
     ProductID = "SHIRT"
 };\n
-await _oc.Catalogs.SaveProductAssignmentAsync(data);`}}
+try {
+    await _oc.Catalogs.SaveProductAssignmentAsync(assignment);
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`}}
 />
 
 You now have a working product catalog! It may be simple, but it has everything you need to start creating orders in the buyer perspective.

@@ -28,9 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
       height: `calc(100vh - ${theme.spacing(8)}px)`,
     },
     content: {
-      padding: theme.spacing(5, 0, 5, 6),
+      padding: theme.spacing(4, 2.5, 4, 2.5),
       [theme.breakpoints.up('lg')]: {
-        paddingLeft: theme.spacing(6),
+        paddingLeft: theme.spacing(4),
       },
     },
     mobileFab: {
@@ -41,15 +41,23 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawerPaper: {
       width: '90vw',
+      [theme.breakpoints.up('sm')]: {
+        width: '60vw',
+      },
     },
   })
 )
 
-const LayoutMenu: React.FunctionComponent = (props: { children: any }) => {
+interface LayoutMenuProps {
+  stayOpen?: boolean;
+}
+
+const LayoutMenu: React.FunctionComponent<LayoutMenuProps> = (props: { children: any }) => {
   const classes = useStyles({})
   const [mobileOpen, setMobileOpen] = useState(false)
   const mobileContainer = useRef(null)
   const drawerContainer = useRef(null)
+  const stayOpen = props.stayOpen || false;
 
   const toggleMenu = () => {
     setMobileOpen(!mobileOpen)
@@ -58,7 +66,7 @@ const LayoutMenu: React.FunctionComponent = (props: { children: any }) => {
   return (
     <React.Fragment>
       <Hidden mdUp>
-        <div ref={mobileContainer}>
+        <div ref={mobileContainer} onClick={stayOpen ? undefined : toggleMenu}>
           <Drawer
             anchor="right"
             variant="temporary"

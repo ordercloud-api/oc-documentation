@@ -1,6 +1,6 @@
-import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
+import { Breadcrumbs, createStyles, Hidden, makeStyles, Theme, Typography } from '@material-ui/core'
 import { RouteComponentProps } from '@reach/router'
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React, { useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
@@ -37,16 +37,8 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: '1.75rem',
       color: theme.palette.grey[500],
     },
-    pageTitle: {
-      paddingTop: 0,
-      marginBottom: theme.spacing(3),
-    },
     pageDescription: {
-      fontWeight: 'bold',
       marginBottom: theme.spacing(3),
-      // fontSize: theme.typography.h6.fontSize,
-      fontStyle: 'italic',
-      color: theme.palette.grey[700],
     },
   })
 )
@@ -79,13 +71,16 @@ export default function Template(props: DocTemplateProps) {
       />
       <LayoutContainer>
         <LayoutMain>
-          <Typography variant="h5" className={classes.pageSection}>
-            {`Learn > ${doc.mdx.frontmatter.section}`}
-          </Typography>
-          <Typography variant="h1" className={classes.pageTitle}>
+          <Hidden mdDown>
+            <Breadcrumbs>
+              <Link to="/">Home</Link>
+              <Typography>{doc.mdx.frontmatter.section}</Typography>
+            </Breadcrumbs>
+          </Hidden>
+          <Typography variant="h1">
             {doc.mdx.frontmatter.title}
           </Typography>
-          <Typography className={classes.pageDescription}>
+          <Typography color="textSecondary" className={classes.pageDescription}>
             {doc.mdx.frontmatter.description}
           </Typography>
           <SuggestEditButton path={absolutePath} />

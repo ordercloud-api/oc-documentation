@@ -18,12 +18,12 @@ For simpler solutions, you can tie a product directly to a price schedule using 
 ## Creating the Product
 For our streamlined example we would like to create a purshase-able product in the easiest way possible. That means we will want to take advantage of the `DefaultPriceSchedule` field.
 
-First, let's create the product. Beacuse we do not have a price schedule yet, we will leave that field out for now.
+First, let's create the product. Since we don't have a price schedule yet, we'll leave that field out for now.
 
 <CodeExample
   title="Create a new product"
   content={{
-    http: `POST https://api.ordercloud.io/v1/products HTTP/1.1
+    http: `POST https://sandboxapi.ordercloud.io/v1/products HTTP/1.1
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
@@ -33,40 +33,44 @@ Content-Type: application/json; charset=UTF-8;\n
     Active: true
 }`,
 javascript: `import { Products } from "ordercloud-javascript-sdk";\n
-Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
 Products.Create({
     ID: "SHIRT",
     Name: "Cotton T-Shirt",
     Description: "A plain white, cotton shirt for everyday use.",
     Active: true
 })
-  .then(response => {
-      // returns the newly created product with default values added
-      console.log(response);
-  })
-  .catch(err => console.log(err));`,
+.then(response => {
+    // returns the newly created product with default values added
+    console.log(response);
+})
+.catch(err => console.log(err));`,
 typescript: `import { Products, Product, OrderCloudError } from "ordercloud-javascript-sdk";\n
-const data: Product = {
+var product: Product = {
     ID: "SHIRT",
     Name: "Cotton T-Shirt",
     Description: "A plain white, cotton shirt for everyday use.",
     Active: true
 }\n
-Products.Create(data)
-  .then((response:Product) => {
+Products.Create(product)
+  .then((response: Product) => {
       // returns the newly created product with default values added
       console.log(response);
   })
   .catch((err:OrderCloudError) => console.log(err));`,
-csharp: `using OrderClould.SDK;\n
+csharp: `using OrderCloud.SDK;\n
 var client = new OrderCloudClient(...);\n
-var data = new Product {
+var product = new Product {
     ID = "SHIRT",
     Name = "Cotton T-Shirt",
     Description = "A plain white, cotton shirt for everyday use.",
     Active = true
 };\n
-Product response = await _oc.Products.CreateAsync(data);`}}
+try {
+    Product response = await _oc.Products.CreateAsync(data);
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
 />
 
 Your response should look something like this:
@@ -116,7 +120,7 @@ Their most basic form consists of an ID, Name, and one or more price breaks. Pri
 <CodeExample
   title="Create a new price schedule"
   content={{
-    http: `POST https://api.ordercloud.io/v1/priceschedules HTTP/1.1
+    http: `POST https://sandboxapi.ordercloud.io/v1/priceschedules HTTP/1.1
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
@@ -130,7 +134,6 @@ Content-Type: application/json; charset=UTF-8;\n
     ]
 }`,
 javascript: `import { PriceSchedules } from "ordercloud-javascript-sdk";\n
-Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
 PriceSchedules.Create({
     ID: "SHIRT_PRICE",
     Name: "Cotton T-Shirt Price",
@@ -141,13 +144,13 @@ PriceSchedules.Create({
         }
     ]
 })
-  .then(response => {
-      // returns the newly created price schedule with default values added
-      console.log(response);
-  })
-  .catch(err => console.log(err));`,
+.then(response => {
+    // returns the newly created price schedule with default values added
+    console.log(response);
+})
+.catch(err => console.log(err));`,
 typescript: `import { PriceSchedules, PriceSchedule, OrderCloudError } from "ordercloud-javascript-sdk";\n
-const data: PriceSchedule = {
+var priceSchedule: PriceSchedule = {
     ID: "SHIRT_PRICE",
     Name: "Cotton T-Shirt Price",
     PriceBreaks: [
@@ -157,15 +160,15 @@ const data: PriceSchedule = {
         }
     ]
 }\n
-PriceSchedules.Create(data)
-  .then((response:PriceSchedule) => {
+PriceSchedules.Create(priceSchedule)
+  .then((response: PriceSchedule) => {
       // returns the newly created price schedule with default values added
       console.log(response);
   })
   .catch((err:OrderCloudError) => console.log(err));`,
-csharp: `using OrderClould.SDK;\n
+csharp: `using OrderCloud.SDK;\n
 var client = new OrderCloudClient(...);\n
-var data = new PriceSchedule {
+var priceSchedule = new PriceSchedule {
     ID = "SHIRT_PRICE",
     Name = "Cotton T-Shirt Price",
     PriceBreaks = new [
@@ -175,44 +178,53 @@ var data = new PriceSchedule {
         }
     ]
 };\n
-PriceSchedule response = await _oc.PriceSchedules.CreateAsync(data);`}}
+try {
+    PriceSchedule response = await _oc.PriceSchedules.CreateAsync(priceSchedule);
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
 />
 
 <CodeExample
   title="Update the default price schedule ID"
   content={{
-    http: `PATCH https://api.ordercloud.io/v1/products/SHIRT HTTP/1.1
+    http: `PATCH https://sandboxapi.ordercloud.io/v1/products/SHIRT HTTP/1.1
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
     DefaultPriceScheduleID: "SHIRT_PRICE"
 }`,
 javascript: `import { Products } from "ordercloud-javascript-sdk";\n
-Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
 Products.Patch("SHIRT", {
     DefaultPriceScheduleID: "SHIRT_PRICE"
 })
-  .then(response => {
-      // returns the updated product with DefaultPriceScheduleID added
-      console.log(response);
-  })
-  .catch(err => console.log(err));`,
+.then(response => {
+    // returns the updated product with DefaultPriceScheduleID added
+    console.log(response);
+})
+.catch(err => console.log(err));`,
 typescript: `import { Products, Product, OrderCloudError } from "ordercloud-javascript-sdk";\n
-const data: Partial<Product> = {
+var product: Partial<Product> = {
     DefaultPriceScheduleID: "SHIRT_PRICE"
 }\n
-Products.Patch("SHIRT", data)
-  .then((response:Product) => {
+Products.Patch("SHIRT", product)
+  .then((response: Product) => {
       // returns the updated product with DefaultPriceScheduleID added
       console.log(response);
   })
   .catch((err:OrderCloudError) => console.log(err));`,
-csharp: `using OrderClould.SDK;\n
+csharp: `using OrderCloud.SDK;\n
 var client = new OrderCloudClient(...);\n
-var data = new PartialProduct {
+var product = new PartialProduct {
     DefaultPriceScheduleID: "SHIRT_PRICE"
 };\n
-Product response = await _oc.Products.PatchAsync("SHIRT", data);`}}
+try {
+    Product response = await _oc.Products.PatchAsync("SHIRT", product);
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
 />
 
 Congratulations! You've just created your first OrderCloud product and price schedule. Your product isn't quite visible to your buyer user yet, though. Jump to the next guide and learn how to connect the final dots!

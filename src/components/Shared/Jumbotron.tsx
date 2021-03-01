@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@material-ui/styles'
 import React, { FunctionComponent } from 'react'
 import { seafoam } from '../../theme/ocPalette.constants'
+import ocPlatform from '../../assets/svg/four51-banner-bg.svg'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,13 +21,18 @@ const useStyles = makeStyles((theme: Theme) =>
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: 30,
-        paddingBottom: overlayed ? 120 : 50,
+        [theme.breakpoints.up('sm')]: {
+          paddingBottom: overlayed ? 120 : 50,
+        },
+        [theme.breakpoints.down('xs')]: {
+          paddingBottom: 30
+        },
         borderRadius: 0,
         overflowY: 'hidden',
         overflowX: 'hidden',
         background: `linear-gradient(${lighten(
           theme.palette.secondary.main,
-          0.2
+          0.0
         )}, ${lighten(theme.palette.secondary.main, 0.6)})`,
         // backgroundColor: sherpablue[500],
         backgroundSize: 'cover',
@@ -37,16 +43,13 @@ const useStyles = makeStyles((theme: Theme) =>
         '&>div': {
           zIndex: 1,
         },
-        [theme.breakpoints.down('xs')]: {
-          height: '75vh',
-        },
+        
       }
     },
     jumbotronSecondary: {
       backgroundColor: theme.palette.secondary.main,
     },
     logo: {
-      maxWidth: '40rem',
       width: theme.spacing(40),
       marginBottom: theme.spacing(2),
       '& path': {
@@ -60,11 +63,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     jumbotronIcon: {
       position: 'absolute',
-      top: '-10vh',
-      left: '45vw',
-      opacity: 0.25,
-      width: '55%',
-      mixBlendMode: 'exclusion',
+      opacity: 0.2,
+      width: '100%',
+      top: 0,
       [theme.breakpoints.down('md')]: {
         minWidth: '150%',
         left: '6vh',
@@ -79,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) =>
       boxShadow: 'none',
       display: 'flex',
       flexDirection: 'column',
-      [theme.breakpoints.down('xs')]: {
+      [theme.breakpoints.down('sm')]: {
         marginBottom: theme.spacing(2),
       },
     },
@@ -99,18 +100,21 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
     jumbotronHeading: {
       padding: 0,
-      // textTransform: 'uppercase',
+      textTransform: 'uppercase',
       marginTop: '.75rem',
-      color: seafoam[100],
-      [theme.breakpoints.down('md')]: {
+      marginBottom: '0.5rem', 
+      color: 'white',
+      textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
+      [theme.breakpoints.down('sm')]: {
         fontSize: '2rem',
-        marginTop: 0,
+        marginTop: '0.25rem',
       },
     },
     jumbotronText: ({ align }) => ({
       color: seafoam[50],
       maxWidth: align === 'center' ? 700 : 900,
       margin: align === 'center' ? '0 auto' : undefined,
+      textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
     }),
   })
 )
@@ -152,7 +156,7 @@ const Jumbotron: FunctionComponent<any> = ({
             <Typography
               align={align}
               className={classes.jumbotronText}
-              variant={image ? 'subtitle1' : 'h4'}
+              variant={image ? 'subtitle1' : 'h5'}
               component="p"
             >
               {text}
@@ -171,12 +175,12 @@ const Jumbotron: FunctionComponent<any> = ({
           )}
         </Paper>
       </Container>
-      {/* <img
-          className={classes.jumbotronIcon}
-          aria-hidden="true"
-          src={ocPlatform}
-          alt="OrderCloud Platform Icon"
-        /> */}
+      <img
+        className={classes.jumbotronIcon}
+        aria-hidden="true"
+        src={ocPlatform}
+        alt="OrderCloud Platform Icon"
+      />
     </div>
   )
 }

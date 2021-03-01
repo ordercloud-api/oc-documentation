@@ -2,6 +2,7 @@ import { createMuiTheme } from '@material-ui/core/styles'
 import { sherpablue, seafoam, sizzlingred } from './ocPalette.constants'
 import CoreSansDFonts from '../theme/theme.typography.coresansd'
 import GeometriaFonts from '../theme/theme.typography.geometria'
+import { upperCase } from 'lodash'
 
 const defaultTheme = createMuiTheme()
 const primaryColor = sherpablue
@@ -25,11 +26,11 @@ const bodyFontFamilies = ["'Core Sans D'", ...fontFamilies].join(',')
 export default createMuiTheme({
   typography: {
     h1: {
-      fontSize: '3.5rem',
-      fontWeight: 700,
+      fontSize: '2rem',
+      fontWeight: 600,
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: '1.75rem',
       fontWeight: 600,
     },
     h3: {
@@ -84,6 +85,10 @@ export default createMuiTheme({
       '@global': {
         a: {
           color: secondaryColor[900],
+          textDecoration: 'none',
+          // '&:hover': {
+          //   textDecoration: 'underline'
+          // }
         },
         code: {
           whiteSpace: 'pre-wrap',
@@ -104,29 +109,60 @@ export default createMuiTheme({
         },
       },
     },
+    MuiAppBar: {
+      root: {
+        backgroundColor: sherpablue[500],
+      },
+      colorPrimary: {
+        backgroundColor: sherpablue[500],
+      }
+    },
     // MuiButton: {
     //   label: {
     //     paddingTop: navigator.appVersion.includes('Mac') ? 2 : undefined,
     //   },
     // },
+    MuiListItemText: {
+      primary: {
+        fontWeight: 600,
+        color: primaryColor[500],
+      },
+      secondary: {
+        color: 'black',
+      }
+    },
+    MuiBreadcrumbs: {
+      root: {
+        paddingTop: '1rem',
+        textDecoration: 'none'
+      },
+    },
     MuiTypography: {
       h1: {
-        paddingTop: '2rem',
-        marginBottom: '2rem',
-        fontSize: '2.8rem',
+        paddingTop: '1rem',
+        marginBottom: '1rem',
+        fontSize: '2rem',
+        color: seafoam[600],
+        textTransform: 'uppercase',
       },
       h2: {
         paddingTop: '1.75rem',
         marginBottom: '0.5rem',
+        color: primaryColor[400],
       },
       h3: {
         paddingTop: '1.5rem',
         marginBottom: '0.5rem',
+        color: primaryColor[400],
       },
       h4: {
         paddingTop: '1.25rem',
         marginBottom: '0.5rem',
+        color: primaryColor[400],
       },
+      caption: {
+        color: primaryColor[300]
+      }
     },
   },
 })

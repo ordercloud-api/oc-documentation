@@ -9,10 +9,13 @@ import {
   ListItemText,
   makeStyles,
   Paper,
+  Box,
   Theme,
   Typography,
+  Breadcrumbs,
+  Hidden,
 } from '@material-ui/core/'
-import { Code, Description } from '@material-ui/icons'
+import { Block, Code, Description } from '@material-ui/icons'
 import { graphql, Link, useStaticQuery } from 'gatsby'
 import { flatten, intersection } from 'lodash'
 import React, { Fragment, FunctionComponent, useMemo, useState } from 'react'
@@ -22,6 +25,7 @@ import LayoutContainer from '../components/Layout/LayoutContainer'
 import LayoutMain from '../components/Layout/LayoutMain'
 import LayoutMenu from '../components/Layout/LayoutMenu'
 import utility from '../services/utility'
+import themeConstants from '../theme/theme.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,6 +37,9 @@ const useStyles = makeStyles((theme: Theme) =>
       right: theme.spacing(0.5),
       top: theme.spacing(0.5),
     },
+    titleDescription: {
+
+    }
   })
 )
 
@@ -88,7 +95,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
   const data: QueryResult = useStaticQuery(graphql`
     query {
       allMdx(
-        sort: { order: DESC, fields: [frontmatter___publishDate] }
+        sort: { order: [ ASC, DESC], fields: [frontmatter___priority, frontmatter___publishDate] }
         filter: { fileAbsolutePath: { glob: "**/content/documents/**/*.mdx" } }
       ) {
         totalCount
@@ -159,17 +166,26 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
       />
       <LayoutContainer>
         <LayoutMain>
+          <Hidden mdDown>
+          <Breadcrumbs>
+            <Link to='/'>Home</Link>
+            <Typography>Knowledge Base</Typography>
+          </Breadcrumbs>
+          </Hidden>
           <Typography variant="h1">Knowledge Base</Typography>
+          <Typography style={{ marginBottom: '2rem' }} color="textSecondary">
+            OrderCloud has an ever growing library of articles and guides to help you as you plan and develop your solution.  Alternately, search from the top of the page.  If you have additional questions, access our <Link to="/slack">Slack community</Link>.
+          </Typography>
           <DocumentList
             selectedTags={selectedTags}
             nodes={documentNodes}
           ></DocumentList>
         </LayoutMain>
-        <LayoutMenu>
+        <LayoutMenu stayOpen={true}>
           <Typography variant="h5" paragraph>
             Filter by tag:
           </Typography>
-          <Container maxWidth="xs" disableGutters>
+          <Container disableGutters>
             {availableTags
               .sort((a: any, b: any) => b[1] - a[1])
               .map(t => (
@@ -208,6 +224,13 @@ const useDocListStyles = makeStyles((theme: Theme) =>
     listItemDescription: {
       marginBottom: theme.spacing(1),
     },
+    avatarStyle: {
+      backgroundColor: theme.palette.secondary.main,
+    },
+    listItemTags: {
+      marginBottom: theme.spacing(1),
+      marginRight: '4px'
+    }
   })
 )
 
@@ -223,7 +246,7 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
   const classes = useDocListStyles()
   const documentListItem = (node: DocumentNode) => {
     return (
-      <Paper elevation={2} className={classes.root}>
+      <Paper elevation={2} className={classes.root} key={node.id}>
         <ListItem
           button
           component={Link}
@@ -235,11 +258,11 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
           alignItems="flex-start"
         >
           <ListItemAvatar>
-            <Avatar>
+            <Avatar className={classes.avatarStyle}>
               {node.frontmatter.type === 'tutorial' ? (
                 <Code />
               ) : (
-                <Description />
+                <Description /> 
               )}
             </Avatar>
           </ListItemAvatar>
@@ -254,6 +277,13 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
                 >
                   {node.frontmatter.description}
                 </Typography>
+                <Box>
+                  {node.frontmatter.tags.map(
+                    t => {
+                      return <Chip size='small' label={t} key={t} className={classes.listItemTags}/>
+                    }
+                  )}
+                </Box>
                 <Typography variant="caption" display="block">
                   {`${
                     node.frontmatter.updatedDate ? 'Updated' : 'Published'

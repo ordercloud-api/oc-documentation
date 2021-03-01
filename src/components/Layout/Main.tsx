@@ -6,9 +6,11 @@ import {
   createStyles,
   Divider,
   Grid,
+  Hidden,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemIcon,
   ListItemText,
   makeStyles,
   Paper,
@@ -16,21 +18,24 @@ import {
   Typography,
 } from '@material-ui/core/'
 import {
-  AccountBalanceTwoTone,
-  AccountTree,
+  DeviceHub,
   AttachMoneyTwoTone,
+  AccountTreeTwoTone,
   BusinessTwoTone,
   CategoryTwoTone,
   Code,
-  CreditCardTwoTone,
-  Extension,
-  FindInPageTwoTone,
-  ForwardTwoTone,
+  MarkunreadMailboxTwoTone,
+  ShoppingCartTwoTone,
   LocalShippingTwoTone,
-  LockTwoTone,
+  ExtensionTwoTone,
   PeopleTwoTone,
   PlaylistAddCheckTwoTone,
-  StyleTwoTone,
+  CodeOutlined,
+  SchoolTwoTone,
+  BookmarkTwoTone,
+  BuildTwoTone,
+  EmojiObjectsTwoTone,
+  HelpTwoTone,
 } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import Prism from 'prismjs'
@@ -38,12 +43,15 @@ import React, { useLayoutEffect } from 'react'
 import {
   darkgrey,
   flame,
+  seafoam,
   mediumgrey,
   sherpablue,
 } from '../../theme/ocPalette.constants'
 import themeConstants from '../../theme/theme.constants'
+import ButtonLink from '../Shared/ButtonLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
 import Jumbotron from '../Shared/Jumbotron'
+import ListItemLink from '../Shared/ListItemLink'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
 
@@ -89,12 +97,15 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paperTitleHeading: {
       padding: theme.spacing(0, 0, 1),
-      color: darkgrey[900],
+      color: sherpablue[500],
+      fontWeight: 700,
       textAlign: 'left',
+      minHeight: '2.5rem',
     },
     paperTitleSubheading: {
       color: darkgrey[500],
       padding: theme.spacing(0),
+      marginBottom: '0.5rem'
     },
     avatar: {
       backgroundColor: theme.palette.background.default,
@@ -130,27 +141,81 @@ const MainComponent: React.FunctionComponent = props => {
     <React.Fragment>
       <Jumbotron
         overlayed={true}
-        heading="A B2B-First Marketplace Platform"
-        text="Build your own marketplace with an API-first, cloud native platform ready to create your own best-of-breed experience with unbounded scalability. We already power custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
+        heading="YOUR B2B-FIRST ECOMMERCE° PLATFORM"
+        text="Design your own marketplace with an API-first, headless cloud platform for B2B, B2C, and B2X. We power custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
         actions={[
-          // <CustomButtonLink
-          //   color="#fff"
-          //   key="platform-overview"
-          //   to="/discover/platform-overview"
-          //   variant="contained"
-          // >
-          //   Platform Overview
-          // </CustomButtonLink>,
           <CustomButtonLink
             key="developers"
-            to="/learn/ordercloud-basics/architecture"
+            to="/learn/getting-started/welcome-to-ordercloud"
             variant="contained"
             color={flame[600]}
           >
-            Developers
+            Developer Guide
+          </CustomButtonLink>,
+          <CustomButtonLink
+            key="knowledge"
+            to="/knowledge-base"
+            variant="contained"
+            color="#fff"
+          >
+            Knowledge Base
           </CustomButtonLink>,
         ]}
       />
+      <Hidden smUp>
+        <Container style={{ marginTop: '0.25rem', marginBottom: '0.25rem'}}>
+            <List>
+              <ListItemLink to="/discover/platform-overview">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <EmojiObjectsTwoTone color="primary"/>
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Discover" />
+              </ListItemLink>
+              <ListItemLink to="/learn/ordercloud-basics/architecture">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <SchoolTwoTone color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Learn" />
+              </ListItemLink>
+              <ListItemLink to="/knowledge-base">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <BookmarkTwoTone color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Knowledge Base" />
+              </ListItemLink>
+              <ListItemLink to="/developer-tools">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <BuildTwoTone color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Developer Tools" />
+              </ListItemLink>
+              <ListItemLink to="/api-reference">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <CodeOutlined color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="API Reference" />
+              </ListItemLink>
+              <ListItemLink to="/slack">
+                <ListItemAvatar>
+                  <Avatar className={classes.avatar} variant="rounded">
+                    <HelpTwoTone color="primary" />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Community" />
+              </ListItemLink>
+            </List>
+        </Container>
+      </Hidden>
       <Container maxWidth="lg">
         <Grid container className={classes.cardWrapper} spacing={3}>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
@@ -165,9 +230,7 @@ const MainComponent: React.FunctionComponent = props => {
                   variant="h4"
                   component="h2"
                 >
-                  Platform
-                  <br />
-                  Overview
+                  Platform Overview
                 </Typography>
                 <Typography
                   className={classes.paperTitleSubheading}
@@ -176,6 +239,7 @@ const MainComponent: React.FunctionComponent = props => {
                   Wherever your business needs to go tomorrow, you’re ready to
                   lead the way.
                 </Typography>
+                <Hidden xsDown>
                 <List>
                   <ListItem disableGutters>
                     <ListItemAvatar>
@@ -188,20 +252,21 @@ const MainComponent: React.FunctionComponent = props => {
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <AccountTree color="primary" />
+                        <DeviceHub color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Omni-Channel" />
+                    <ListItemText primary="Omnichannel" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <Extension color="primary" />
+                        <BusinessTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Platform Extensibility" />
+                    <ListItemText primary="Enterprise Ready" />
                   </ListItem>
                 </List>
+                </Hidden>
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}
@@ -225,9 +290,7 @@ const MainComponent: React.FunctionComponent = props => {
                   variant="h4"
                   component="h2"
                 >
-                  Define Your
-                  <br />
-                  Marketplace
+                  Define Your Marketplace
                 </Typography>
                 <Typography
                   className={classes.paperTitleSubheading}
@@ -236,14 +299,15 @@ const MainComponent: React.FunctionComponent = props => {
                   Mirror your unique business using our flexible modeling tools
                   and access controls
                 </Typography>
+                <Hidden xsDown>
                 <List>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <LockTwoTone color="primary" />
+                        <ShoppingCartTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Administrative Roles" />
+                    <ListItemText primary="Commerce Strategy" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
@@ -251,17 +315,18 @@ const MainComponent: React.FunctionComponent = props => {
                         <PeopleTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Buyers & User Groups" />
+                    <ListItemText primary="Buyer Segments" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <BusinessTwoTone color="primary" />
+                        <LocalShippingTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Supplier Management" />
+                    <ListItemText primary="Multi-Supplier" />
                   </ListItem>
                 </List>
+                </Hidden>
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}
@@ -285,43 +350,43 @@ const MainComponent: React.FunctionComponent = props => {
                   variant="h4"
                   component="h2"
                 >
-                  Personalized
-                  <br />
-                  Shopping
+                  Personalized Shopping
                 </Typography>
                 <Typography
                   className={classes.paperTitleSubheading}
                   variant="subtitle1"
                 >
                   Our robust catalog management system empowers virtually
-                  limitless shopping experiences
+                  limitless experiences
                 </Typography>
+                <Hidden xsDown>
                 <List>
-                  <ListItem disableGutters>
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar} variant="rounded">
-                        <AttachMoneyTwoTone color="primary" />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Personalized Pricing" />
-                  </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
                         <CategoryTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="PIM Integrations" />
+                    <ListItemText primary="Custom Catalogs" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <StyleTwoTone color="primary" />
+                        <AccountTreeTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Variable Products" />
+                    <ListItemText primary="Product Setup" />
+                  </ListItem>
+                  <ListItem disableGutters>
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar} variant="rounded">
+                        <AttachMoneyTwoTone color="primary" />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary="Variable Pricing" />
                   </ListItem>
                 </List>
+                </Hidden>
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}
@@ -346,8 +411,6 @@ const MainComponent: React.FunctionComponent = props => {
                   component="h2"
                 >
                   Flexible Fullfillment
-                  <br />
-                  Workflows
                 </Typography>
                 <Typography
                   className={classes.paperTitleSubheading}
@@ -356,6 +419,7 @@ const MainComponent: React.FunctionComponent = props => {
                   Powerful marketplace tools enable automating end-to-end order
                   fulfillment
                 </Typography>
+                <Hidden xsDown>
                 <List>
                   <ListItem disableGutters>
                     <ListItemAvatar>
@@ -363,25 +427,26 @@ const MainComponent: React.FunctionComponent = props => {
                         <PlaylistAddCheckTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Approval Rules" />
+                    <ListItemText primary="Checkout Process" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <ForwardTwoTone color="primary" />
+                        <MarkunreadMailboxTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Order Forwarding" />
+                    <ListItemText primary="Order Fulfillment" />
                   </ListItem>
                   <ListItem disableGutters>
                     <ListItemAvatar>
                       <Avatar className={classes.avatar} variant="rounded">
-                        <FindInPageTwoTone color="primary" />
+                        <ExtensionTwoTone color="primary" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Shipment Tracking" />
+                    <ListItemText primary="Customized Logic" />
                   </ListItem>
                 </List>
+                </Hidden>
                 <CustomButtonLink
                   fullWidth
                   color={themeConstants.palette.secondary.main}
@@ -396,11 +461,11 @@ const MainComponent: React.FunctionComponent = props => {
         </Grid>
       </Container>
       <Container maxWidth="lg">
-        <Box paddingY={5} paddingX={20}>
+        <Box paddingY={3} paddingX={20}>
           <Divider />
         </Box>
         <Typography variant="h1" align="center" color="secondary">
-          Best-of-Breed, Headless Architecture
+          Future-Proof with Headless Architecture
         </Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>

@@ -2,8 +2,11 @@ import {
   Container,
   createStyles,
   Grid,
+  Box,
   makeStyles,
   Paper,
+  Button,
+  Divider,
   Theme,
   Toolbar,
   Typography,
@@ -12,7 +15,7 @@ import React, { FunctionComponent } from 'react'
 import { Helmet } from 'react-helmet'
 import { navHeight, navHeightMobile } from '../components/Layout/Header'
 import Layout from '../components/Layout/Layout'
-import { CustomButtonLink } from '../components/Shared/ButtonVariants'
+import ButtonLink from '../components/Shared/ButtonLink'
 import Jumbotron from '../components/Shared/Jumbotron'
 import { darkgrey, flame, sherpablue } from '../theme/ocPalette.constants'
 import '../../custom.d.ts' // custom type definitions
@@ -50,13 +53,12 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       maxWidth: '100vw',
       padding: theme.spacing(3),
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up('sm')]: {
         height: '100%',
       },
     },
     paperTitleHeading: {
       padding: theme.spacing(0, 0, 1),
-      color: darkgrey[900],
       textAlign: 'left',
     },
     paperTitleSubheading: {
@@ -83,6 +85,13 @@ const useStyles = makeStyles((theme: Theme) =>
     orangeTitle: {
       color: flame[500],
     },
+    boxMain: {
+      padding: theme.spacing(2, 2, 3),
+      textAlign: 'center',
+    },
+    btnSpacer: {
+      margin: theme.spacing(0, 0.5),
+    },
   })
 )
 
@@ -103,80 +112,202 @@ const DeveloperTools: FunctionComponent = () => {
       <Jumbotron
         overlayed={true}
         heading="Developer Tools"
-        text="Build solutions the way you want with our growing library of developer tools"
+        text="Build solutions the way you want with our growing library of developer tools, available under MIT licensing.  Our SDKs make it extremely easy to develop, with supporting utility and base libraries to get started."
       />
       <Container maxWidth="lg">
         <Grid container className={classes.cardWrapper} spacing={3}>
-          <Grid item md={4} className={classes.paperRoot}>
+        <Grid item md={4} sm={6} className={classes.paperRoot}>
             <Paper elevation={3} className={classes.paperCard}>
-              <Typography variant="h3" className={classes.paperTitleHeading}>
-                Learn the Basics
+              <Typography className={classes.paperTitleHeading} variant="h4">
+                JavaScript SDK
               </Typography>
-              <Typography variant="h6" paragraph component="p">
-                New to OrderCloud? Start out by learning what makes us one of
-                the most flexible and advanced B2B E-Commerce platforms.
+              <Typography paragraph component="p">
+                Supports both TypeScript and JavaScript development with any of your favorite UI component libraries
               </Typography>
               <Toolbar disableGutters>
-                <CustomButtonLink
-                  to="/learn/ordercloud-basics/architecture"
-                  variant="outlined"
-                  color={sherpablue[500]}
-                >
-                  OrderCloud Basics
-                </CustomButtonLink>
-                <div className={classes.spacer} />
-                <CustomButtonLink
-                  to="/learn/getting-started/welcome-to-ordercloud"
+                <Button
                   variant="contained"
-                  color={flame[600]}
+                  color="secondary"
+                  href="https://github.com/ordercloud-api/OrderCloud-JavaScript-SDK"
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  Get Started
-                </CustomButtonLink>
+                  GitHub
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  href="https://www.npmjs.com/package/ordercloud-javascript-sdk"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={classes.btnSpacer}
+                >
+                  NPM
+                </Button>
               </Toolbar>
             </Paper>
           </Grid>
-          <Grid item md={4} className={classes.paperRoot}>
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
             <Paper elevation={3} className={classes.paperCard}>
-              <Typography variant="h3" className={classes.paperTitleHeading}>
-                Explore OrderCloud
+              <Typography variant="h4" className={classes.paperTitleHeading}>
+                .NET C# SDK
               </Typography>
-              <Typography variant="h6" paragraph component="p">
-                See every resource, endpoint, and method we have to offer by
-                browsing our detailed technical documentation.
+              <Typography paragraph component="p">
+                Get up and running fast with our innovative C# SDK to support creating and querying extensible objects for eCommerce
               </Typography>
               <Toolbar disableGutters>
-                <CustomButtonLink
-                  to="/api-reference"
-                  variant="outlined"
-                  color={flame[600]}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  href="https://github.com/ordercloud-api/ordercloud-dotnet-sdk"
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  View API Reference
-                </CustomButtonLink>
+                  GitHub
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  href="https://www.nuget.org/packages/OrderCloud.SDK/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={classes.btnSpacer}
+                >
+                  NuGet
+                </Button>
               </Toolbar>
             </Paper>
           </Grid>
-          <Grid item md={4} className={classes.paperRoot}>
-            <Paper className={classes.paperCard}>
-              <Typography className={classes.paperTitleHeading} variant="h3">
-                Knowledge Base
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
+            <Paper elevation={3} className={classes.paperCard}>
+              <Typography className={classes.paperTitleHeading} variant="h4">
+                .NET Catalyst Middleware
               </Typography>
-              <Typography variant="h6" paragraph component="p">
-                OrderCloud veteran? Find use cases and tutorials relevant to the
-                solution you need in our growing library of implementation
-                guides.
+              <Typography paragraph component="p">
+                A foundational library for crafting your own middleware extensions for webhooks and integrations
               </Typography>
               <Toolbar disableGutters>
-                <CustomButtonLink
-                  to="/knowledge-base"
-                  variant="outlined"
-                  color={flame[600]}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  href="https://github.com/ordercloud-api/ordercloud-dotnet-catalyst"
+                  target="_blank"
+                  rel="noreferrer"
                 >
-                  See All Articles
-                </CustomButtonLink>
+                  GitHub
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  href="https://www.nuget.org/packages/ordercloud-dotnet-catalyst/1.0.0"
+                  target="_blank"
+                  rel="noreferrer"
+                  className={classes.btnSpacer}
+                >
+                  NuGet
+                </Button>
+              </Toolbar>
+            </Paper>
+          </Grid>
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
+            <Paper elevation={3} className={classes.paperCard}>
+              <Typography className={classes.paperTitleHeading} variant="h4">
+                OrderCloud HeadStart
+              </Typography>
+              <Typography paragraph component="p">
+                A full implementation on OrderCloud with a buyer and admin app geared for bootstrapping your project or as a way to learn
+              </Typography>
+              <Toolbar disableGutters>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  href="https://github.com/ordercloud-api/headstart"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  GitHub
+                </Button>
+              </Toolbar>
+            </Paper>
+          </Grid>
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
+            <Paper elevation={3} className={classes.paperCard}>
+              <Typography variant="h4" className={classes.paperTitleHeading}>
+                OrderCloud on GitHub
+              </Typography>
+              <Typography paragraph component="p">
+                Check out the many libraries and samples our teams have published to make building scalable eCommerce work for you
+              </Typography>
+              <Toolbar disableGutters>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  href="https://github.com/ordercloud-api"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  GitHub
+                </Button>
+              </Toolbar>
+            </Paper>
+          </Grid>
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
+            <Paper elevation={3} className={classes.paperCard}>
+              <Typography className={classes.paperTitleHeading} variant="h4">
+                Postman Tutorial
+              </Typography>
+              <Typography paragraph component="p">
+                A sample project with code snippets you can reference and learn from, which is extremely basic, ideal for the curious
+              </Typography>
+              <Toolbar disableGutters>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  href="https://documenter.getpostman.com/view/13422742/TVt19jd1"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Tutorial
+                </Button>
               </Toolbar>
             </Paper>
           </Grid>
         </Grid>
+      </Container>
+      <Container maxWidth="lg">
+        <Box paddingY={3} paddingX={20}>
+          <Divider />
+        </Box>
+        <Typography variant="h2" align="center" color="secondary">
+            Open API Standards with Swagger
+          </Typography>
+        <Box paddingY={3} paddingX={20} className={classes.boxMain}>
+          <Typography>
+                Don't see a library for your language of choice?  OrderCloud is built with Open API standards and our SDKs are generated with libaries such as Swagger, and extended to make it even easier to develop applications.  If there's a project you have and are looking for another language, you can generate your own client.
+          </Typography>
+          <br/>
+          <Button
+            variant="outlined"
+            href="https://api.ordercloud.io/v1/openapi/v3"
+            target="_blank"
+            rel="noreferrer"
+            className={classes.btnSpacer}
+          >
+            Open API Spec
+          </Button>
+
+          <ButtonLink
+            variant="outlined"
+            to="/slack"
+            color="secondary"
+            className={classes.btnSpacer}
+          >
+            Join Our Community
+          </ButtonLink>
+        </Box>
+        <Box paddingY={3} paddingX={20}>
+          <Divider />
+        </Box>
       </Container>
     </Layout>
   )

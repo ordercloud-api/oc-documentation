@@ -5,12 +5,12 @@ description: 'Learn about the default buyer catalog that is established on your 
 priority: 0
 ---
 
-In the previous chapter, you [established API access](/learn/getting-started/establishing-api-access) for a new organization. During that process you were asked to create a seller and buyer perspective. Throughout this chapter you should remain in the seller perspective that we authenticated with in the ["Making Your First Request"](/learn/getting-started/making-your-first-request) guide.
+In the previous chapter, you [established API access](/learn/getting-started/establishing-api-access) for a new organization. During that process, you were asked to create a seller and buyer perspective. Throughout this chapter you should remain in the seller perspective that we authenticated with while in the ["Making Your First Request"](/learn/getting-started/making-your-first-request) guide.
 
 ## What is a Catalog?
 Catalogs are a container of products and, optionally, categories. As a seller, your role is to sell products to your buyers through one or more catalogs. To do so, your catalog must be active and assigned to a buyer organization or user group.
 
-Each buyer organization has a default catalog that is created automatically. You can find the ID of this catalog on the [buyer organization model](/api-reference/buyers/buyers/get) under `DefaultCatalogID`. The buyer you created in the last chapter should look something like this:
+Each buyer organization has a default catalog that is created automatically with the. You can find the ID of this catalog on the [buyer organization model](/api-reference/buyers/buyers/get) under `DefaultCatalogID`. The buyer you created in the last chapter should look something like this:
 
 ```json
 {
@@ -30,28 +30,34 @@ Let's [retrieve the default buyer catalog](/api-reference/product-catalogs/catal
 <CodeExample
   title="Get the default catalog by ID"
   content={{
-    http: `GET https://api.ordercloud.io/v1/catalogs/BUYER_ORGANIZATION HTTP/1.1
+    http: `GET https://sandboxapi.ordercloud.io/v1/catalogs/BUYER_ORGANIZATION HTTP/1.1
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
-javascript: `import { Catalogs } from "ordercloud-javascript-sdk";\n
+javascript: `import { Tokens, Catalogs } from "ordercloud-javascript-sdk";\n
 Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
 Catalogs.Get("BUYER_ORGANIZATION")
   .then(response => {
       // returns the default catalog for our buyer organization
       console.log(response);
   })
-  .catch(err => console.log(err));`,
-typescript: `import { Catalogs, Catalog, OrderCloudError } from "ordercloud-javascript-sdk";\n
+  .catch(err => console.log(err.message));`,
+typescript: `import { Tokens, Catalogs, Catalog, OrderCloudError } from "ordercloud-javascript-sdk";\n
 Catalogs.Get("BUYER_ORGANIZATION")
-  .then((response:Catalog) => {
+  .then((response: Catalog) => {
       // returns the default catalog for our buyer organization
       console.log(response);
   })
-  .catch((err:OrderCloudError) => console.log(err));`,
-csharp: `using OrderClould.SDK;\n
+  .catch((err:OrderCloudError) => console.log(err.message));`,
+csharp: `using OrderCloud.SDK;\n
 // see previous example for configuring OrderCloudClient
 var client = new OrderCloudClient(...);\n
-var defaultBuyerCatalog:Catalog = await client.Catalogs.GetAsync("BUYER_ORGANIZATION");`}}
+try
+{
+	Catalog defaultBuyerCatalog = await _oc.Catalogs.GetAsync("BUYER_ORGANIZATION");
+} catch(OrderCloudException ex)
+{
+	Console.WriteLine(ex.Message);
+}
 />
 
 ```json
@@ -84,32 +90,40 @@ Let's [list the assignments for this catalog](/api-reference/product-catalogs/ca
 <CodeExample
   title="List catalog assignments for the default catalog"
   content={{
-    http: `GET https://api.ordercloud.io/v1/catalogs/assignments?catalogID=BUYER_ORGANIZATION HTTP/1.1
+    http: `GET https://sandboxapi.ordercloud.io/v1/catalogs/assignments?catalogID=BUYER_ORGANIZATION HTTP/1.1
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
 javascript: `import { Catalogs } from "ordercloud-javascript-sdk";\n
-Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE");\n
 Catalogs.ListAssignments({
-    CatalogID: "BUYER_ORGANIZATION"
+  catalogID: "BUYER_ORGANIZATION",
 })
-  .then(response => {
-      // returns the first page of assignments for our catalog
-      console.log(response);
+  .then((response) => {
+    // returns the first page of assignments for our catalog
+    console.log(response);
   })
-  .catch(err => console.log(err));`,
-typescript: `import { Catalogs, CatalogAssignment, ListPage, OrderCloudError } from "ordercloud-javascript-sdk";\n
+  .catch((err) => console.log(err));`,
+typescript: `import { Catalogs, CatalogAssignment, ListPage, OrderCloudError } from "ordercloud-javascript-sdk";
 Catalogs.ListAssignments({
-    CatalogID: "BUYER_ORGANIZATION"
+  catalogID: "BUYER_ORGANIZATION"
 })
-  .then((response:ListPage<CatalogAssignment>) => {
-      // returns the first page of assignments for our catalog
-      console.log(response);
-  })
-  .catch((err:OrderCloudError) => console.log(err));`,
-csharp: `using OrderClould.SDK;\n
-// see previous example for configuring OrderCloudClient
-var client = new OrderCloudClient(...);\n
-ListPage<CatalogAssignment> response = await client.Catalogs.ListAssignmentsAsync(catalogid = "BUYER_ORGANIZATION");`}}
+.then((response: ListPage<CatalogAssignment>) => {
+  // returns the first page of assignments for our catalog
+  console.log(response);
+})
+.catch((err: OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+try
+{
+    // see previous example for configuring OrderCloudClient
+    var client = new OrderCloudClient(...);\n
+    ListPage<CatalogAssignment> response = await client.Catalogs.ListAssignmentsAsync(catalogID: "BUYER_ORGANIZATION");
+}
+catch (OrderCloudException ex)
+{
+    Console.WriteLine(ex.Message);
+}`
+}}
 />
 
 ```json

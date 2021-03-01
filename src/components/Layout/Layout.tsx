@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: 'white',
       minHeight: `calc(100vh - ${navHeightMobile}px)`,
       [theme.breakpoints.up('md')]: {
-        marginBottom: theme.spacing(51),
+        marginBottom: theme.spacing(0),
         minHeight: `calc(100vh - ${navHeight}px)`,
       },
       '& img': {

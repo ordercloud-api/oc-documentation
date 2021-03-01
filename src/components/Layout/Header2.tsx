@@ -42,9 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
     spacer: {
       width: theme.spacing(1),
     },
-    appBar: {
-      backgroundColor: sherpablue[500],
-    },
     logo: {
       display: 'flex',
       flexFlow: 'row nowrap',
@@ -69,7 +66,6 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     appBarSecondary: {
-      backgroundColor: theme.palette.primary.dark,
       '& a': {
         color: theme.palette.getContrastText(theme.palette.primary.dark),
         textDecoration: 'none',
@@ -83,20 +79,14 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     searchBox: {
-      marginRight: theme.spacing(1),
-      [theme.breakpoints.up('md')]: {
-        marginRight: 0,
-      },
+      marginRight: 0,
     },
     searchBoxInput: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
-      width: 80,
-      [theme.breakpoints.up('md')]: {
-        width: 100,
-      },
-      [theme.breakpoints.up('lg')]: {
-        width: 'auto',
+      width: 150,
+      [theme.breakpoints.up('sm')]: {
+        width: 250,
       },
     },
     registerCta: {
@@ -128,7 +118,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
 }: HeaderContentProps) => {
   const classes = useStyles()
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
   const isMedium = useMediaQuery(theme.breakpoints.down('md'))
 
   const currentApiVersion = useMemo(() => {
@@ -142,7 +132,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
   return (
     <Fragment>
       <div className={classes.root}>
-        <AppBar position="relative" className={classes.appBar}>
+        <AppBar position="relative">
           <Container maxWidth="lg">
             <Toolbar disableGutters>
               <Link to="/" className={classes.logo}>
@@ -177,12 +167,13 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
                   searchBox: classes.searchBox,
                   searchBoxInput: classes.searchBoxInput,
                 }}
-                placeholder={isMedium && 'Search...'}
+                placeholder={isMobile && 'Search...'}
                 darkMode={true}
                 noPopper={isMobile}
               ></DocSearch>
             </Toolbar>
           </Container>
+          <Hidden xsDown>
           <div className={classes.appBarSecondary}>
             <Container maxWidth="lg">
               <Toolbar variant="dense" disableGutters>
@@ -194,12 +185,13 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
                 <Link to="/slack">Community</Link>
                 <div className={classes.grow} />
                 <PortalLink className={classes.registerCta} to="/register">
-                  <span>Create a free account </span>
+                  <span>Create a Sandbox</span>
                   <ChevronRight />
                 </PortalLink>
               </Toolbar>
             </Container>
           </div>
+          </Hidden>
         </AppBar>
       </div>
     </Fragment>

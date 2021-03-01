@@ -34,21 +34,6 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface CustomButtonProps extends ButtonProps {
-  color: any
-}
-export const CustomButton: React.FunctionComponent<CustomButtonProps> = (
-  props: CustomButtonProps
-) => {
-  const { color, ...rest } = props
-  const classes = useStyles({ color: color, variant: props.variant })
-  return (
-    <Button
-      {...rest}
-      className={classNames(classes.root, props.className)}
-    ></Button>
-  )
-}
 
 interface CustomButtonLinkProps extends CustomButtonProps {
   to: string
@@ -65,5 +50,21 @@ export const CustomButtonLink: React.FunctionComponent<CustomButtonLinkProps> = 
       })}
       {...props}
     />
+  )
+}
+
+interface CustomButtonProps extends ButtonProps {
+  color: any
+}
+export const CustomButton: React.FunctionComponent<CustomButtonProps> = (
+  props: CustomButtonProps
+) => {
+  const { color, ...rest } = props
+  const classes = useStyles({ color: color, variant: props.variant })
+  return (
+    <Button
+      {...rest}
+      className={classNames(classes.root, props.className)}
+    ></Button>
   )
 }

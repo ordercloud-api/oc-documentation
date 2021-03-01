@@ -47,8 +47,6 @@ interface ApiReferenceProps extends RouteComponentProps {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     breadcrumbs: {
-      paddingTop: theme.spacing(5),
-      marginBottom: -theme.spacing(2.5),
     },
     breadcrumbLink: {
       textDecoration: 'none',
@@ -179,7 +177,6 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
             <Breadcrumbs className={classes.breadcrumbs}>
               <Typography
                 className={classes.breadcrumbLink}
-                variant="body2"
                 component={Link}
                 to="/api-reference"
               >
@@ -188,7 +185,6 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
               {pageContext.resource && (
                 <Typography
                   className={classes.breadcrumbLink}
-                  variant="body2"
                   component={Link}
                   to={`/api-reference/${Case.kebab(
                     pageContext.section['x-id']
@@ -200,7 +196,6 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
               {pageContext.operation && pageContext.resource && (
                 <Typography
                   className={classes.breadcrumbLink}
-                  variant="body2"
                   component={Link}
                   to={`/api-reference/${Case.kebab(
                     pageContext.section['x-id']
