@@ -610,7 +610,7 @@ await Orders.Submit("Outgoing", order.ID);`}
           <CustomButtonLink
             color={sherpablue[500]}
             key="intro-to-ordercloud"
-            to="/getting-started/intro-to-ordercloud"
+            to="/register"
             variant="contained"
           >
             Sign Up
