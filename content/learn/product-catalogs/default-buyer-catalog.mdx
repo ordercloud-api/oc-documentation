@@ -53,7 +53,7 @@ csharp: `using OrderCloud.SDK;\n
 var client = new OrderCloudClient(...);\n
 try
 {
-	Catalog defaultBuyerCatalog = await _oc.Catalogs.GetAsync("BUYER_ORGANIZATION");
+	Catalog defaultBuyerCatalog = await client.Catalogs.GetAsync("BUYER_ORGANIZATION");
 } catch(OrderCloudException ex)
 {
 	Console.WriteLine(ex.Message);
