@@ -4,3 +4,78 @@ title: 'Shipping an Order'
 description: 'The API provides some shortcuts to automatically create Shipments based on the Line Items in a given Order. Learn about this alternative to the "complete" endpoint.'
 priority: 2
 ---
+
+Let's assume we now have a different workflow that _does_ require shipments. OrderCloud provides a shorthand method so that you can automatically create a new shipment containing all of the line items on an order. It is called the **Order Ship** endpoint. Once everything is shipped, the order status is updated to "Complete" and the process is complete.
+
+<ContentLink to="/api-reference/orders-and-fulfillment/orders/ship" subtitle="API Reference" type="bookmark">Order Ship Endpoint</ContentLink>
+
+> If you already completed your order in the previous guide, you will need to create and submit another using the [buyer perspective](/learn/buyer-perspective/creating-your-first-order).
+
+Let's go ahead and use the shorthand method of shipping and completing an order using the ID you retrieved in the previous guide:
+
+<CodeExample
+  title="Ship and complete an order"
+  content={{
+    http: `GET https://sandboxapi.ordercloud.io/v1/orders/incoming/INSERT_ORDER_ID_HERE/complete HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
+Orders.Ship("Incoming", "INSERT_ORDER_ID_HERE")
+.then(response => {
+    // returns the completed order
+    console.log(response);
+})
+.catch(err => console.log(err));`,
+typescript: `import { Orders, Order, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Orders.Complete("Incoming", "INSERT_ORDER_ID_HERE")
+  .then((response: Order) => {
+      // returns the completed order
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+try {
+    Order response = await client.Orders.ShipAsync("Incoming", "INSERT_ORDER_ID_HERE")
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
+/>
+
+## Viewing Shipments
+Now that you have shipped and completed your order, you should be able to view the order's shipments using the OrderCloud **Shipments** resource.
+
+<ContentLink to="/api-reference/orders-and-fulfillment/shipments" subtitle="API Reference" type="bookmark">OrderCloud Shipments</ContentLink>
+
+<CodeExample
+  title="View order shipments"
+  content={{
+    http: `GET https://sandboxapi.ordercloud.io/v1/shipments?orderID="INSERT_ORDER_ID_HERE" HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Shipments } from "ordercloud-javascript-sdk";\n
+Shipments.List({OrderID: "INSERT_ORDER_ID_HERE"})
+.then(response => {
+    // returns the completed order
+    console.log(response);
+})
+.catch(err => console.log(err));`,
+typescript: `import { Shipments, Shipment, ListPage, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Shipments.List({OrderID: "INSERT_ORDER_ID_HERE"})
+  .then((response: ListPage<Shipment>) => {
+      // returns the completed order
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+try {
+    ListPage<Shipment> response = await client.Shipments.ListAsync({ 
+        OrderID = "INSERT_ORDER_ID_HERE" 
+    })
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
+/>

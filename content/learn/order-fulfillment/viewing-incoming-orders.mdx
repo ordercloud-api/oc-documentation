@@ -5,19 +5,7 @@ description: 'Learn how to view incoming Buyer Orders in the Seller Perspective 
 priority: 0
 ---
 
-Now that you've submitted your first order as a buyer user let's take a look at how an admin user can look at that same order and take action on it like completing it. In order to do that you'll first need to understand a very important concept in OrderCloud - the order "direction". 
-
-### Order Direction
-
-The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, seller, supplier. What changes is the order *direction*. An order is thought to flow like this:
-
-Buyer ➔ Seller ➔ Supplier
-
-In our example, there is no supplier so the flow is even simpler:
-
-Buyer ➔ Seller
-
-An order goes from the buyer **to** the seller to fulfill. From the perspective of the buyer user that order is *outgoing*, and conversely from the perspective of the seller that order is *incoming*. Let's see this in action. First we'll want to switch perspectives to our admin user
+Now that you've submitted your first order as a buyer user let's take a look at how an admin user can look at that same order and take action on it like completing it. Doing so requires us to change into the seller perspective.
 
 <CodeExample
   title="Password Grant-Type Workflow"
@@ -80,7 +68,11 @@ var client = new OrderCloudClient(new OrderCloudClientConfig {
 });`}}
 />
 
-Now that we are operating under the admin perspective let's go ahead and list incoming orders, and specifically lets filter by status "Open" which is all orders that have been submitted but not yet completed.
+Now that we are operating under a seller perspective, interacting with orders has changed a little bit. In pervious guides we covered **Order Direction** and so far have been using `Outgoing`. Looking at the flow below:
+
+Buyer ➔ Seller
+
+We can see that the order should now be `Incoming`. Let's go ahead and list incoming orders, and specifically lets filter by status "Open" which is all orders that have been submitted but not yet completed.
 
 <CodeExample
   title="List incoming orders as an admin user"
@@ -111,3 +103,63 @@ try {
 }`
 }}
 />
+
+Your response should look like this:
+```json
+{
+	"Meta": {
+		"Page": 1,
+		"PageSize": 20,
+		"TotalCount": 1,
+		"TotalPages": 1,
+		"ItemRange": [
+			1,
+			1
+		]
+	},
+	"Items": [
+		{
+			"ID": "PKTiEFNEiEi9mEmC9cZCrw",
+			"FromUser": {
+				"ID": "BUYER_USER",
+				"Username": "buyer01",
+				"Password": null,
+				"FirstName": "Buyer",
+				"LastName": "User",
+				"Email": "buyer@email.com",
+				"Phone": null,
+				"TermsAccepted": null,
+				"Active": true,
+				"xp": null,
+				"AvailableRoles": null,
+				"DateCreated": "2021-02-08T23:09:14.82+00:00",
+				"PasswordLastSetDate": "2021-02-08T23:10:00.56+00:00"
+			},
+			"FromCompanyID": "BUYER_ORGANIZATION",
+			"ToCompanyID": "xxxxxxxxxxxxx",
+			"FromUserID": "BUYER_USER",
+			"BillingAddressID": null,
+			"BillingAddress": null,
+			"ShippingAddressID": null,
+			"Comments": null,
+			"LineItemCount": 1,
+			"Status": "Open",
+			"DateCreated": "2021-02-23T20:39:03.173+00:00",
+			"DateSubmitted": "2021-03-01T22:37:59.267+00:00",
+			"DateApproved": null,
+			"DateDeclined": null,
+			"DateCanceled": null,
+			"DateCompleted": null,
+			"Subtotal": 20,
+			"ShippingCost": 0,
+			"TaxCost": 0,
+			"PromotionDiscount": 0,
+			"Total": 20,
+			"IsSubmitted": true,
+			"xp": null
+		}
+	]
+}
+```
+
+>Take note of the Order ID in this response, as you will need it in the next guides.
