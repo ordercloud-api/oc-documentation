@@ -5,4 +5,117 @@ description: 'Learn how to traverse a product catalog in the Buyer Perspective a
 priority: 1
 ---
 
-Now that we are in the buyer perspective, you have access to the **My Products** resource.
+In the last guide, we changed perspectives to a buyer user that has the `Shopper` role available. This provides access to some additional Me resources including the **My Products** resource.
+
+## Listing Buyer Products
+Let's retrieve a list of products available to our buyer user.
+
+<CodeExample
+  title="Get a list of buyer products"
+  content={{
+    http: `GET https://sandboxapi.ordercloud.io/v1/me/products HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Tokens, Me } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Me.ListProducts()
+  .then(response => {
+      // returns the first page of buyer products
+      console.log(response);
+  })
+  .catch(err => console.log(err.message));`,
+typescript: `import { Tokens, Me, BuyerProduct, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Me.ListProducts()
+  .then((response: ListPage<BuyerProduct>) => {
+      // returns the first page of buyer products
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err.message));`,
+csharp: `using OrderCloud.SDK;\n
+// see previous example for configuring OrderCloudClient
+var client = new OrderCloudClient(...);\n
+try
+{
+	ListPage<BuyerProduct> buyerProducts = await _oc.Me.ListProductsAsync();
+} catch(OrderCloudException ex)
+{
+	Console.WriteLine(ex.Message);
+}`}}
+/>
+
+Notice we did not pass any parameters yet. Your response should look something like this:
+
+```json
+{
+	"Meta": {
+		"Facets": [],
+		"Page": 1,
+		"PageSize": 20,
+		"TotalCount": 1,
+		"TotalPages": 1,
+		"ItemRange": [
+			1,
+			1
+		]
+	},
+	"Items": [
+		{
+			"PriceSchedule": {
+				"ID": "SHIRT_PRICE",
+				"Name": "Cotton T-Shirt Price",
+				"ApplyTax": false,
+				"ApplyShipping": false,
+				"MinQuantity": 1,
+				"MaxQuantity": null,
+				"UseCumulativeQuantity": false,
+				"RestrictedQuantity": false,
+				"PriceBreaks": [
+					{
+						"Quantity": 1,
+						"Price": 10
+					}
+				],
+				"xp": null
+			},
+			"ID": "SHIRT",
+			"Name": "Cotton T-Shirt",
+			"Description": "A plain white, cotton shirt for everyday use.",
+			"QuantityMultiplier": 1,
+			"ShipWeight": null,
+			"ShipHeight": null,
+			"ShipWidth": null,
+			"ShipLength": null,
+			"Active": true,
+			"SpecCount": 0,
+			"VariantCount": 0,
+			"ShipFromAddressID": null,
+			"Inventory": null,
+			"DefaultSupplierID": null,
+			"xp": null
+		}
+	]
+}
+```
+
+As you can see, OrderCloud has flattened out the relationships between our buyer user and the `SHIRT` product. The buyer user's organization, `BUYER_ORGANIZATION`, has the default catalog `BUYER_ORGANIZATION`, which has the `SHIRT` product assigned to it with a default price schedule of `SHIRT_PRICE`.
+
+### Buyer Product Model
+My Products introduces a new OrderCloud model called `BuyerProduct` here. This type of product has a price schedule attached as a sub-object, allowing developers quick access to pricing information without needing to make additional API calls.
+
+### List Page with Facets
+Another interesting part of this response model is the `Facets` property within the `Meta` information. Facets are unique to resources that have been enhanced with elastic search in OrderCloud's backend. This topic is covered in other reading.
+
+<ContentLink to="/knowledge-base/introducing-premium-search" 
+subtitle="Futher Reading">Introducing Premium Search</ContentLink>
+
+## Browsing Other Catalogs
+The buyer product list request provides a way for buyer users to browser other product catalogs (when assigned to more than just their organizations default catalog). This can be done using the `CatalogID` option.
+
+### Browsing by Category
+If one of these other catalogs had categories in it, one would be able to filter buyer products by category using the `CategoryID` property.
+
+<ContentLink to="/api-reference/me-and-my-stuff/my-products/list-products#parameters" type="bookmark" subtitle="API Reference">Buyer Product List Parameters</ContentLink>
+
+Creating a unique experience entirely depends on how you take advantage of the parameters available to you. You can create a faceted product search, a category browse experience, or something completely custom using advanced querying.
+
+<ContentLink to="/knowledge-base/advanced-querying" subtitle="Further Reading">Advanced Querying</ContentLink>

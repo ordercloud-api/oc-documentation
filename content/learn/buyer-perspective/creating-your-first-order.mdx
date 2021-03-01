@@ -4,3 +4,113 @@ title: 'Creating Your First Order'
 description: 'Learn how to create a Buyer Order and some of the basic concepts surrounding the Order model.'
 priority: 2
 ---
+
+The central concept within OrderCloud is not surprisingly the order. This is the object where buyers, sellers, products, payments, and almost everything come together to form a business transaction.
+
+## Order Direction
+
+A key feature of the Order resource is the order "direction". The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, seller, supplier. What changes however is the order _direction_. An order is generally thought to flow like this:
+
+Buyer ➔ Seller
+
+So to create an order for our buyer user, we will be using a direction of `Outgoing`. Since we are placing an _outgoing_ order from buyer to seller.
+
+## Create an Empty Order
+Now that we know what direction to use, let's create an empty order using the `Orders` resource. You may be thinking - wait, we don't have the `OrderAdmin` role available, so how will we use the Orders resource? The `Shopper` role allows buyer users to create and modify new orders and line items for their own user.
+
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/orders HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{} //empty order object`,
+javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Orders.Create({})
+  .then(response => {
+      // returns the newly created empty order
+      console.log(response);
+  })
+  .catch(err => console.log(err));\n
+})
+.catch(err => console.log(err));`,
+typescript: `import { Orders, Order, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Orders.Create({})
+  .then((response: Order) => {
+      // returns the newly created empty order
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+// see previous example for configuring OrderCloudClient
+var client = new OrderCloudClient(...);\n
+Order response = await client.Orders.CreateAsync({});`}}
+/>
+
+The response should look something like this:
+
+```json
+{
+	"ID": "PKTiEFNEiEi9mEmC9cZCrw",
+	"FromUser": {
+		"ID": "BUYER_USER",
+		"Username": "buyer01",
+		"Password": null,
+		"FirstName": "Buyer",
+		"LastName": "User",
+		"Email": "buyer@email.com",
+		"Phone": null,
+		"TermsAccepted": null,
+		"Active": true,
+		"xp": null,
+		"AvailableRoles": null,
+		"DateCreated": "2021-02-08T23:09:14.82+00:00",
+		"PasswordLastSetDate": "2021-02-08T23:10:00.56+00:00"
+	},
+	"FromCompanyID": "BUYER_ORGANIZATION",
+	"ToCompanyID": "xxxxxxxxxxxxxxxx",
+	"FromUserID": "BUYER_USER",
+	"BillingAddressID": null,
+	"BillingAddress": null,
+	"ShippingAddressID": null,
+	"Comments": null,
+	"LineItemCount": 0,
+	"Status": "Unsubmitted",
+	"DateCreated": "2021-02-23T20:39:03.173+00:00",
+	"DateSubmitted": null,
+	"DateApproved": null,
+	"DateDeclined": null,
+	"DateCanceled": null,
+	"DateCompleted": null,
+	"Subtotal": 0,
+	"ShippingCost": 0,
+	"TaxCost": 0,
+	"PromotionDiscount": 0,
+	"Total": 0,
+	"IsSubmitted": false,
+	"xp": null
+}
+```
+
+> Take note of the Order ID returned here, you will need it in subsequent guides
+
+Let's review some of the properties that were populated on our behalf:
+
+- **`FromUser`** - The user placing the order. In our case this is our buyer user with the username `buyer01`.
+- **`FromCompanyID`** - The company of the from user, our buyer organization ID.
+- **`ToCompanyID`** - The company that the order will be submitted to, in our case this is the seller organization ID.
+- **`OrderStatus`** - The OrderCloud order status of the order, which begins at `Unsubmitted` and changes throughout the order's lifecycle.
+
+## Order Status
+Throughout a workflow an order undergoes various status changes:
+
+- Unsubmitted: Created but has not yet been submitted
+- Open: Submitted but not yet fulfilled
+- AwaitingApproval: On hold awaiting approval
+- Declined: Submitted but has been declined
+- Completed: Submitted and all the line items on the order have been shipped
+- Canceled: Order can no longer be submitted
+
+> Once and order is canceled, it is effectively DEAD and no further actions can be taken on it
+
+<ContentLink to="/knowledge-base/orders" subtitle="Further Reading">Understanding Orders</ContentLink>

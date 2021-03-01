@@ -508,7 +508,13 @@ const MainComponent: React.FunctionComponent = props => {
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Box bgcolor={mediumgrey[500]} width="100%" height="100%"></Box>
+            <figure>
+              <img
+                style={{ maxWidth: '100%' }}
+                src="/images/oc_homepage_logos.png"
+                alt="Languages and Frameworks"
+              />
+            </figure>
           </Grid>
         </Grid>
         <Box height="100px"></Box>

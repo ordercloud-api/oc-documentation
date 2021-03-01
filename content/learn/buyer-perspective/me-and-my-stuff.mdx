@@ -106,16 +106,7 @@ Me.Get()
       // returns the currently authenticated user object
       console.log(response);
   })
-  .catch(err => console.log(err));\n
-// --- or --- \n
-Me.Get({
-    accessToken: "INSERT_ACCESS_TOKEN_HERE"
-})
-.then(response => {
-    // returns the currently authenticated user object
-    console.log(response);
-})
-.catch(err => console.log(err));`,
+  .catch(err => console.log(err));`,
 typescript: `import { Me, MeUser, OrderCloudError } from "ordercloud-javascript-sdk";\n
 Me.Get()
   .then((response: MeUser) => {
