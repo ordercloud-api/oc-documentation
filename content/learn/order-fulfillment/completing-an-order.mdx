@@ -4,3 +4,39 @@ title: 'Completing an Order'
 description: 'The API provides some shortcuts for completing open Buyer Orders, learn what it means to "complete" an order and how to do so.'
 priority: 1
 ---
+
+Now let's fast forward a bit and assume that we've received an order, procesed it and are now ready to complete it. How do we do that? Well first we should understand that in OrderCloud an order will automatically transition to status "Complete" once all the line items on the order have shipped. If however your workflow doesn't require storing shipments in OrderCloud there is also a manual method which we'll be using for this demo and is the shortest possible way to complete an order.
+
+> Only mark an order complete manually if your order doesn't need a shipment. You will not be able to ship or reopen an order after completing it.
+
+Let's go ahead and use the shorthand method of completing an order to complete order ID "myOrderID"
+
+<CodeExample
+  title="Complete an order"
+  content={{
+    http: `GET https://sandboxapi.ordercloud.io/v1/orders/incoming/myorderID/complete HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
+Orders.Complete("Incoming", "myOrderID")
+.then(response => {
+    // returns the completed order
+    console.log(response);
+})
+.catch(err => console.log(err));`,
+typescript: `import { Orders, Order, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Orders.Complete("Incoming", "myOrderID")
+  .then((response: Order) => {
+      // returns the completed order
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+try {
+    Order response = await client.Orders.List("Incoming", filters: new { Status = "Open" })
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
+/>

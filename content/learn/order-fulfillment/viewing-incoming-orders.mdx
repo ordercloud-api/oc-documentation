@@ -4,3 +4,112 @@ title: 'Viewing Incoming Orders'
 description: 'Learn how to view incoming Buyer Orders in the Seller Perspective and how to filter these results by Order Status.'
 priority: 0
 ---
+
+Now that we've submitted our first order as a buyer user let's take a look at how an admin user can look at that same order and take action on it like completing it. In order to do that we'll first need to understand a very important concept in OrderCloud - the order "direction". 
+
+### Order Direction
+
+The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, seller, supplier. What changes is the order *direction*. An order is thought to flow like this:
+
+Buyer ➔ Seller ➔ Supplier
+
+In our example, there is no supplier so the flow is even simpler:
+
+Buyer ➔ Seller
+
+An order goes from the buyer **to** the seller to fulfill. From the perspective of the buyer user that order is *outgoing*, and conversely from the perspective of the seller that order is *incoming*. 
+
+Let's see this in action. First we'll want to switch perspectives to our admin user
+
+<CodeExample
+  title="Password Grant-Type Workflow"
+  description="Use the access token in the response for the remainder of this chapter."
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/oauth/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded;\n
+{
+    client_id: "INSERT_SHARED_API_CLIENT_ID",
+    grant_type: "password",
+    username: "admin01",
+    password: "INSERT_ADMIN_USER_PASSWORD",
+    scope: "OrderAdmin",
+}`,
+javascript: `import { Auth, Tokens } from "ordercloud-javascript-sdk";\n
+var username = "admin01";
+var password = "INSERT_ADMIN_USER_PASSWORD";
+var clientID = "INSERT_SHARED_API_CLIENT_ID";
+var scope = [
+    "OrderAdmin"
+];\n
+Auth.Login(username, password, clientID, scope)
+  .then(response => {
+      // store token, now any subsequent calls will
+      // automatically set this token in the headers for you
+      var token = response.access_token;
+      Tokens.setAccessToken(token)
+  })
+  .catch(err => console.log(err));`,
+typescript: `import {
+  ApiRole,
+  AccessToken,
+  OrderCloudError,
+  Auth,
+  Tokens
+} from "ordercloud-javascript-sdk";\n
+var username: string = "admin01";
+var password: string = "INSERT_ADMIN_USER_PASSWORD";
+var clientID: string = "INSERT_SHARED_API_CLIENT_ID";
+var scope: ApiRole[] = [
+  "OrderAdmin"
+];\n
+Auth.Login(username, password, clientID, scope)
+  .then((response: AccessToken) => {
+    // store token, now any subsequent calls will
+    // automatically set this token in the headers for you
+    var token = response.access_token;
+    Tokens.SetAccessToken(token)
+  })
+  .catch((err: OrderCloudError) => console.log(err));
+  `,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(new OrderCloudClientConfig {
+    ClientId = "INSERT_SHARED_API_CLIENT_ID",
+    Username = "admin01",
+    Password = "INSERT_ADMIN_USER_PASSWORD",
+    Roles = new[] { 
+        ApiRole.OrderAdmin
+    }
+});`}}
+/>
+
+Now that we are operating under the admin perspective let's go ahead and list incoming orders, and specifically lets filter by status "Open" which is all orders that have been submitted but not yet completed.
+
+<CodeExample
+  title="List incoming orders as an admin user"
+  content={{
+    http: `GET https://sandboxapi.ordercloud.io/v1/orders/incoming?Status=Open HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
+Orders.List("Incoming", { filters: { Status: "Open" } })
+.then(response => {
+    // returns the list of incoming orders
+    console.log(response);
+})
+.catch(err => console.log(err));`,
+typescript: `import { Orders, Order, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Orders.List("Incoming", { filters: { Status: "Open" } })
+  .then((response: ListPage<Order>) => {
+      // returns the list of incoming orders
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+try {
+    ListPage<Orders> response = await client.Orders.List("Incoming", filters: new { Status = "Open" })
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
+/>

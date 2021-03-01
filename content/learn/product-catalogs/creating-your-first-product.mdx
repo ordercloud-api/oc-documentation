@@ -66,7 +66,7 @@ var product = new Product {
     Active = true
 };\n
 try {
-    Product response = await _oc.Products.CreateAsync(data);
+    Product response = await client.Products.CreateAsync(data);
 } catch(OrderCloudException ex) {
     Console.WriteLine(ex.Message);
 }`
@@ -179,7 +179,7 @@ var priceSchedule = new PriceSchedule {
     ]
 };\n
 try {
-    PriceSchedule response = await _oc.PriceSchedules.CreateAsync(priceSchedule);
+    PriceSchedule response = await client.PriceSchedules.CreateAsync(priceSchedule);
 } catch(OrderCloudException ex) {
     Console.WriteLine(ex.Message);
 }`
@@ -220,7 +220,7 @@ var product = new PartialProduct {
     DefaultPriceScheduleID: "SHIRT_PRICE"
 };\n
 try {
-    Product response = await _oc.Products.PatchAsync("SHIRT", product);
+    Product response = await client.Products.PatchAsync("SHIRT", product);
 } catch(OrderCloudException ex) {
     Console.WriteLine(ex.Message);
 }`
