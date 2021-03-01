@@ -79,20 +79,14 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     searchBox: {
-      marginRight: theme.spacing(1),
-      [theme.breakpoints.up('md')]: {
-        marginRight: 0,
-      },
+      marginRight: 0,
     },
     searchBoxInput: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(1),
-      width: 80,
-      [theme.breakpoints.up('md')]: {
-        width: 100,
-      },
-      [theme.breakpoints.up('lg')]: {
-        width: 'auto',
+      width: 150,
+      [theme.breakpoints.up('sm')]: {
+        width: 250,
       },
     },
     registerCta: {
@@ -124,7 +118,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
 }: HeaderContentProps) => {
   const classes = useStyles()
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const isMobile = useMediaQuery(theme.breakpoints.down('xs'))
   const isMedium = useMediaQuery(theme.breakpoints.down('md'))
 
   const currentApiVersion = useMemo(() => {
@@ -158,7 +152,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
                 />
               </Hidden>
               <div className={classes.grow} />
-              <Hidden xsDown>
+              <Hidden smDown>
                 <Button
                   onClick={() => navigate('')}
                   variant="contained"
@@ -173,7 +167,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
                   searchBox: classes.searchBox,
                   searchBoxInput: classes.searchBoxInput,
                 }}
-                placeholder={isMedium && 'Search...'}
+                placeholder={isMobile && 'Search...'}
                 darkMode={true}
                 noPopper={isMobile}
               ></DocSearch>

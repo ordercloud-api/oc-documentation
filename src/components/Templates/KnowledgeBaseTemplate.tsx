@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     backButton: {
       float: 'right',
-      marginTop: theme.spacing(4.5),
+      marginTop: theme.spacing(2),
       marginLeft: theme.spacing(1),
     },
     tagChipListItem: {

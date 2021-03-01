@@ -28,23 +28,24 @@ const useStyles = makeStyles((theme: Theme) =>
     caret: (props: any) => ({
       display: props.noPopper ? 'none' : undefined,
       position: 'absolute',
-      zIndex: theme.zIndex.appBar + 1,
+      zIndex: theme.zIndex.appBar + 2,
       color: props.darkMode
         ? theme.palette.primary.dark
         : theme.palette.background.paper,
       right: theme.spacing(3),
       fontSize: '4rem',
-      top: -theme.spacing(10.5),
+      margin: '-1rem 0 -1rem 0',
     }),
-    caretBackground: (props: any) => ({
-      display: props.noPopper ? 'none' : undefined,
-      position: 'absolute',
-      zIndex: theme.zIndex.appBar + 1,
-      color: 'rgba(0,0,0,0.1)',
-      right: theme.spacing(3),
-      fontSize: '4rem',
-      top: -theme.spacing(10.6),
-    }),
+    // caretBackground: (props: any) => ({
+    //   display: props.noPopper ? 'none' : undefined,
+    //   position: 'absolute',
+    //   zIndex: theme.zIndex.appBar + 1,
+    //   color: 'rgba(0,0,0,0.1)',
+    //   right: theme.spacing(3),
+    //   fontSize: '4rem',
+    //   lineHeight: '1rem',
+    //   // padding: '-1rem',
+    // }),
     inner: (props: any) => {
       const noPopperStyles: CSSProperties = {
         maxWidth: '100vw',
@@ -63,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: (props: any) => ({
       zIndex: theme.zIndex.appBar + 1,
-      top: -theme.spacing(6),
+      top: '1.25rem',
       position: 'relative',
       background: props.darkMode
         ? theme.palette.primary.dark
@@ -163,8 +164,7 @@ const OrderCloudSearchHits = ({
   const classesSelf = useStyles({ darkMode: false, noPopper, open })
   const sections = groupBy(hits, 'section')
   const inner = (
-    <div className={`${classesSelf.inner} ${classes.searchHits}`}>
-      <ArrowDropUp className={classesSelf.caretBackground} />
+    <div id="searchHits" className={`${classesSelf.inner} ${classes.searchHits}`}>
       <ArrowDropUp className={classesSelf.caret} />
       <Paper
         className={`${classesSelf.paper} ${classes.searchHitsPaper}`}

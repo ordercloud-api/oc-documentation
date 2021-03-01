@@ -181,7 +181,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
             nodes={documentNodes}
           ></DocumentList>
         </LayoutMain>
-        <LayoutMenu>
+        <LayoutMenu stayOpen={true}>
           <Typography variant="h5" paragraph>
             Filter by tag:
           </Typography>
