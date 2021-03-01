@@ -5,7 +5,7 @@ description: 'Learn how to view incoming Buyer Orders in the Seller Perspective 
 priority: 0
 ---
 
-Now that we've submitted our first order as a buyer user let's take a look at how an admin user can look at that same order and take action on it like completing it. In order to do that we'll first need to understand a very important concept in OrderCloud - the order "direction". 
+Now that you've submitted your first order as a buyer user let's take a look at how an admin user can look at that same order and take action on it like completing it. In order to do that you'll first need to understand a very important concept in OrderCloud - the order "direction". 
 
 ### Order Direction
 
@@ -17,9 +17,7 @@ In our example, there is no supplier so the flow is even simpler:
 
 Buyer ➔ Seller
 
-An order goes from the buyer **to** the seller to fulfill. From the perspective of the buyer user that order is *outgoing*, and conversely from the perspective of the seller that order is *incoming*. 
-
-Let's see this in action. First we'll want to switch perspectives to our admin user
+An order goes from the buyer **to** the seller to fulfill. From the perspective of the buyer user that order is *outgoing*, and conversely from the perspective of the seller that order is *incoming*. Let's see this in action. First we'll want to switch perspectives to our admin user
 
 <CodeExample
   title="Password Grant-Type Workflow"
@@ -97,7 +95,7 @@ Orders.List("Incoming", { filters: { Status: "Open" } })
     console.log(response);
 })
 .catch(err => console.log(err));`,
-typescript: `import { Orders, Order, OrderCloudError } from "ordercloud-javascript-sdk";\n
+typescript: `import { Orders, Order, ListPage, OrderCloudError } from "ordercloud-javascript-sdk";\n
 Orders.List("Incoming", { filters: { Status: "Open" } })
   .then((response: ListPage<Order>) => {
       // returns the list of incoming orders
