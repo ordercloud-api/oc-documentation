@@ -164,7 +164,10 @@ const OrderCloudSearchHits = ({
   const classesSelf = useStyles({ darkMode: false, noPopper, open })
   const sections = groupBy(hits, 'section')
   const inner = (
-    <div id="searchHits" className={`${classesSelf.inner} ${classes.searchHits}`}>
+    <div
+      id="searchHits"
+      className={`${classesSelf.inner} ${classes.searchHits}`}
+    >
       <ArrowDropUp className={classesSelf.caret} />
       <Paper
         className={`${classesSelf.paper} ${classes.searchHitsPaper}`}
@@ -198,7 +201,7 @@ const OrderCloudSearchHits = ({
                       component="div"
                       className={classesSelf.subheader}
                     >
-                      {section === 'undefined' ? 'OrderCloud Blog' : section}
+                      {section === 'undefined' ? 'Knowledge Base' : section}
                     </ListSubheader>
                     {items.map(hit => {
                       return hit.verb
