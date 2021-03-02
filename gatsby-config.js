@@ -240,18 +240,15 @@ const toExport = {
 }
 
 module.exports = toExport
-if (process.env.GATSBY_ALGOLIA_ADMIN_API_KEY) {
-  // for local development, don't store GATSBY_ALGOLIA_ADMIN_API_KEY
-  // because it will rebuild the algolia index
-  // TODO: Turn this back on once we are about to go live
-  toExport.plugins.push({
-    resolve: `gatsby-plugin-algolia`,
-    options: {
-      appId: process.env.GATSBY_ALGOLIA_APP_ID,
-      apiKey: process.env.GATSBY_ALGOLIA_ADMIN_API_KEY,
-      indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
-      queries,
-      chunkSize: 10000, // default: 1000
-    },
-  })
-}
+// if (process.env.GATSBY_ALGOLIA_ADMIN_API_KEY) {
+//   toExport.plugins.push({
+//     resolve: `gatsby-plugin-algolia`,
+//     options: {
+//       appId: process.env.GATSBY_ALGOLIA_APP_ID,
+//       apiKey: process.env.GATSBY_ALGOLIA_ADMIN_API_KEY,
+//       indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
+//       queries,
+//       chunkSize: 10000, // default: 1000
+//     },
+//   })
+// }
