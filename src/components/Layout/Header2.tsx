@@ -11,16 +11,15 @@ import {
   useTheme,
 } from '@material-ui/core'
 import { ChevronRight } from '@material-ui/icons'
-import { Link, graphql, StaticQuery } from 'gatsby'
-
-import React, { FunctionComponent, Fragment, useMemo } from 'react'
+import { graphql, Link, StaticQuery } from 'gatsby'
+import React, { Fragment, FunctionComponent, useMemo } from 'react'
 import ocLogo from '../../assets/images/four51-badge--flame-white.svg'
 import ocLogoTypography from '../../assets/images/four51-logo-nopyramid--full-color.svg'
-import { flame, sherpablue } from '../../theme/ocPalette.constants'
+import { flame } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
-import { navigate, PortalLink } from '../Shared/PortalLink'
+import { PortalLink, withPrefix } from '../Shared/PortalLink'
 
 export const navHeight =
   ORDERCLOUD_THEME.spacing(8) + ORDERCLOUD_THEME.spacing(5)
@@ -155,7 +154,8 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
               <div className={classes.grow} />
               <Hidden smDown>
                 <Button
-                  onClick={() => navigate('')}
+                  href={withPrefix('')}
+                  target="_blank"
                   variant="contained"
                   color="secondary"
                 >

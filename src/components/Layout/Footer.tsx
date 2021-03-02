@@ -98,7 +98,6 @@ class Footer extends React.Component<any> {
             justify="space-between"
             alignItems="flex-start"
           >
-            
             <Grid item xs={6} md={3}>
               <Box marginY={2} display="flex" flexDirection="column">
                 <Typography
@@ -214,7 +213,7 @@ class Footer extends React.Component<any> {
                 >
                   More
                 </Typography>
-                <PortalLink className={classes.footerLinks} to="">
+                <PortalLink className={classes.footerLinks} to="/">
                   OrderCloud Portal
                 </PortalLink>
                 <Link className={classes.footerLinks} to="/release-notes">

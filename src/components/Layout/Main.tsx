@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   ButtonBase,
   Container,
   createStyles,
@@ -10,7 +11,6 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemIcon,
   ListItemText,
   makeStyles,
   Paper,
@@ -18,40 +18,34 @@ import {
   Typography,
 } from '@material-ui/core/'
 import {
-  DeviceHub,
-  AttachMoneyTwoTone,
   AccountTreeTwoTone,
+  AttachMoneyTwoTone,
+  BookmarkTwoTone,
+  BuildTwoTone,
   BusinessTwoTone,
   CategoryTwoTone,
   Code,
-  MarkunreadMailboxTwoTone,
-  ShoppingCartTwoTone,
-  LocalShippingTwoTone,
+  CodeOutlined,
+  DeviceHub,
+  EmojiObjectsTwoTone,
   ExtensionTwoTone,
+  HelpTwoTone,
+  LocalShippingTwoTone,
+  MarkunreadMailboxTwoTone,
   PeopleTwoTone,
   PlaylistAddCheckTwoTone,
-  CodeOutlined,
   SchoolTwoTone,
-  BookmarkTwoTone,
-  BuildTwoTone,
-  EmojiObjectsTwoTone,
-  HelpTwoTone,
+  ShoppingCartTwoTone,
 } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import Prism from 'prismjs'
 import React, { useLayoutEffect } from 'react'
-import {
-  darkgrey,
-  flame,
-  seafoam,
-  mediumgrey,
-  sherpablue,
-} from '../../theme/ocPalette.constants'
+import { darkgrey, flame, sherpablue } from '../../theme/ocPalette.constants'
 import themeConstants from '../../theme/theme.constants'
-import ButtonLink from '../Shared/ButtonLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
 import Jumbotron from '../Shared/Jumbotron'
 import ListItemLink from '../Shared/ListItemLink'
+import { withPrefix } from '../Shared/PortalLink'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
 
@@ -607,47 +601,19 @@ await Orders.Submit("Outgoing", order.ID);`}
           justifyContent="center"
           paddingBottom={8}
         >
-          <CustomButtonLink
-            color={sherpablue[500]}
-            key="intro-to-ordercloud"
-            to="/register"
+          <Button
+            href={withPrefix('/register')}
+            color="primary"
             variant="contained"
           >
             Sign Up
-          </CustomButtonLink>
+          </Button>
           <div className={classes.spacer} />
-          <CustomButtonLink
-            key="main-concepts"
-            to="/main-concepts/organization-hierarchy"
-            variant="contained"
-            color={flame[500]}
-          >
+          <CustomButtonLink to="/slack" variant="contained" color={flame[500]}>
             Join Our Slack
           </CustomButtonLink>
         </Box>
       </Container>
-      {/* <Container maxWidth="md">
-        <Box paddingTop={7} paddingBottom={14}>
-          <Typography variant="h3">
-            Four51 OrderCloud™ is an API-first, headless eCommerce platform
-            offering nearly limitless customizations and endless freedom for
-            growth.
-          </Typography>
-          <Typography paragraph>
-            Your eCommerce data and infrastructure are available in the cloud as
-            building blocks via our RESTful API. Create best-of-breed commerce
-            applications that easily integrate with your back-end systems and
-            3rd party microservices. With OrderCloud, accelerate your commerce
-            transformation, increase your agility, and scale limitlessly.
-          </Typography>
-          <Typography>
-            OrderCloud powers custom eCommerce (B2B, B2C, B2X), order
-            management, and B2B marketplace applications for some of the world’s
-            most well-known brands - processing over 25 million transactions and
-            over $5 billion in revenue annually.
-          </Typography>
-        </Box>
-      </Container> */}
     </React.Fragment>
   )
 }
