@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'block',
       marginTop: -120,
       paddingBottom: 120,
+      pointerEvents: 'none',
     },
   })
 )
