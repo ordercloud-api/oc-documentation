@@ -37,6 +37,7 @@ function normalizePath(path) {
 
 interface PortalLinkProps {
   to: string
+  className: string
 }
 
 export class PortalLink extends React.Component<PortalLinkProps> {
@@ -45,8 +46,16 @@ export class PortalLink extends React.Component<PortalLinkProps> {
   }
 
   public render() {
-    const { to, children } = this.props
-    return <Link onClick={() => navigate(to)}>{children}</Link>
+    const { to, children, className } = this.props
+    return (
+      <Link
+        style={{ cursor: 'pointer' }}
+        className={className}
+        onClick={() => navigate(to)}
+      >
+        {children}
+      </Link>
+    )
   }
 }
 

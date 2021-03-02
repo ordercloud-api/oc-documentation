@@ -1,0 +1,234 @@
+---
+type:           tutorial
+title:          Authentication
+description:    OrderCloud's authentication system is built on top of an open authorization standard called OAuth2 which is increasingly becoming an industry standard for security and permission-based application experiences.
+author:         jilse
+priority:       5
+publishDate:    2015-12-15
+updatedDate:    2021-02-26
+tags:           ["Authentication", "API Clients", "Security Profiles", "OpenID Connects"]
+---
+
+## Understanding Access Tokens
+
+Access tokens are what gives you _access_ to parts of the API and must be appended to every request. Encrypted in the token are the identity of the user as well as the roles that the user has access to. Once validated, the OrderCloud API has enough information from this token to determine which endpoints and data a user can read and/or write.
+
+## OrderCloud Workflows
+
+OrderCloud's authentication system is built on top of an open authorization standard called [OAuth2](https://oauth.net/2/) which is increasingly becoming an industry standard for security and permission-based application experiences. OAuth2 provides five different workflows (ways of getting an access token). Additionally, OrderCloud has support for OpenID connect which is an authorization standard built on top of OAuth2 which enables single-sign-on and brings our grand tally up to 6 workflows.
+
+### Password Grant Type Workflow
+
+This is the most common, a user logs in with their username and password.  A successful authentication request with this workflow requires the following information:
+
+- ClientID
+- Scope (space delimited list of roles being requested)
+- Username
+- Password
+- Grant Type (set to `password`)
+
+<CodeExample
+  title="Password Grant-Type Workflow"
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/oauth/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded;\n
+{
+    client_id: "INSERT_SHARED_API_CLIENT_ID",
+    grant_type: "password",
+    username: "INSERT_USER_NAME",
+    password: "INSERT_USER_PASSWORD",
+    scope: "Shopper",
+}`,
+javascript: `import { Auth, Tokens } from "ordercloud-javascript-sdk";\n
+var username = "INSERT_USER_NAME";
+var password = "INSERT_USER_PASSWORD";
+var clientID = "INSERT_SHARED_API_CLIENT_ID";
+var scope = [
+    "Shopper"
+];\n
+Auth.Login(username, password, clientID, scope)
+  .then(response => {
+      // store token, now any subsequent calls will
+      // automatically set this token in the headers for you
+      var token = response.access_token;
+      Tokens.setAccessToken(token)
+  })
+  .catch(err => console.log(err));`,
+typescript: `import { 
+    ApiRole,
+    AccessToken,
+    OrderCloudError,
+    Auth,
+    Tokens 
+} from "ordercloud-javascript-sdk";\n
+var username:string = "INSERT_USER_NAME";
+var password:string = "INSERT_USER_PASSWORD";
+var clientID:string = "INSERT_SHARED_API_CLIENT_ID";
+var scope:ApiRole[] = [
+    "Shopper"
+];\n
+Auth.Login(username, password, clientID, scope)
+  .then((response: AccessToken) => {
+      // store token, now any subsequent calls will
+      // automatically set this token in the headers for you
+      var token = response.access_token;
+      Tokens.setAccessToken(token)
+  })
+  .catch((err: OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(new OrderCloudClientConfig {
+    ClientId = "INSERT_SHARED_API_CLIENT_ID",
+    Username = "INSERT_USER_NAME",
+    Password = "INSERT_USER_PASSWORD",
+    Roles = new[] { 
+        ApiRole.Shopper
+    }
+});`}}
+/>
+
+### Client Credentials Workflow
+
+This is typically used by a backend integration system.
+
+A successful authentication request with this workflow requires the following information:
+
+- ClientID
+- Client Secret
+- Scope (space delimited list of roles being requested)
+- Grant Type (set to `client_credentials`)
+
+```http
+POST https://auth.ordercloud.io/oauth/token HTTP/1.1
+Content-Type: text/html; charset=UTF-8
+
+client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=client_credentials&client_secret=xxxxxxxxxxxxx&scope=Shopper
+```
+
+### Anonymous Shopping or Guest Checkout Workflow
+
+You may want to enable visitors to browse a catalog of products and/or checkout without registering themselves. We call this Anonymous Shopping or Guest Checkout. An in-depth guide for this workflow is detailed <Link to="/knowledge-base/anonymous-shopping">here</Link>
+
+### Refresh Workflow
+
+Securely enable your users to obtain a new access token without having to log in again.
+
+This workflow is a bit different than the rest in that it can only be used once a token has initially been requested using one of the other workflows. Additionally it must be enabled in the API by setting `ApiClient.RefreshTokenDuration` to a number greater than 0. Once that is set, your authentication responses will include a `refresh_token` that you can use to extend the lease on your user's session.
+
+A successful authentication request with this workflow requires the following information:
+
+- ClientID
+- Refresh Token (from a successful authentication response using any of the other auth workflows)
+- Grant Type (set to `refresh_token`)
+
+```http
+POST https://auth.ordercloud.io/oauth/token HTTP/1.1
+Content-Type: text/html; charset=UTF-8
+
+client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=refresh_token&refresh_token=xxxxxxxx-xxxxxxxx-xxxx-xxxxxxx&scope=Shopper
+```
+
+### Elevated Password Flow
+
+When security really matters. This is the same as the [password grant type workflow](#password-grant-type-workflow) except with an additional requirement of client secret.
+
+A successful authentication request with this workflow requires the following information:
+
+- ClientID
+- Scope (space delimited list of roles being requested)
+- Username
+- Password
+- ClientSecret (set on api client)
+- Grant Type (set to `password`)
+
+```http
+POST https://auth.ordercloud.io/oauth/token HTTP/1.1
+Content-Type: text/html; charset=UTF-8
+
+client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=client_credentials&client_secret=xxxxxxxxxxxxx&scope=Shopper
+```
+
+### Single Sign on Flow via OpenID Connect
+
+Powered by OpenID Connect, Single Sign on allows your users to authenticate themselves to the OrderCloud API by logging into any other identity provider you trust. For example, let shoppers save addresses and orders on your site by logging in with Google or Facebook. Or, save your users the hassle of one more login screen by providing a single sign-on point through your system. Check out our <Link to="/knowledge-base/sso-via-openid-connect">in-depth guide</Link> for more details.
+
+## Error Handling
+
+When managing authentication flows, error scenarios should be handled by your application to help guide users to resolution.  To start, here's a sample error response:
+
+```json
+{
+	"error": "invalid_grant",
+	"error_description": "Password does not meet security requirements.",
+	"Errors": [
+        {
+            "ErrorCode": "PasswordReset.InsecurePassword",
+            "Message": "Password does not meet security requirements.",
+            "Data": {
+	              "MinimumCharacterCount": 10,
+                "UpperCaseRequired": true,
+                "SpecialCharacterRequired": true,
+                "NumericRequired": true
+            }
+        }
+    ]
+}
+```
+
+Multiple errors can be returned, but more than likely, you'll want to focus on programming to `Errors[0].ErrorCode`
+
+### Authentication Errors
+
+When logging in via `/oauth/token`, the following error codes can be returned to drive user action.  Recoverable means the end user is able to re-attempt login.  For those errors which are not recoverable, you may have to have an administrator role fix the user before they can retry.
+
+| ErrorCode | Description | Recoverable |
+|---|------|-----|
+| `Auth.InvalidUsernameOrPassword`  | Bad username or password was provided | Retry |
+| `Auth.UsernameAndPasswordRequired`  | Either the username or password was missing | Retry |
+| `Auth.PasswordExpired` | Based on the security profile, the password is expired | Pwd Reset |
+| `Auth.InsecurePassword` | Password no longer meets requirements, and will need to be changed | Pwd Reset |
+| `Auth.InsufficientRole`  | One or more of the roles requested is not allowed for this user | False |
+| `Auth.SellerNotActive` | The organanization is inactive not not accessible to login | False |
+| `Auth.UserNotActive` | User is not active, need to complete setup to activate | False |
+| `Auth.LockedOut` | User is locked out due to exceeding the max attempts | False |
+
+
+### Password Reset Errors
+
+For requests to reset the password `/password/reset`, the following errors can be returned as part of that workflow.  In many cases, these errors will be driven by the setup of the [security profile](/knowledge-base/security-profiles)
+
+| ErrorCode | Description | Recoverable |
+|---|-----|----|
+| `PasswordReset.CannotReusePassword`  | Password recently used | Retry |
+| `PasswordReset.TooSoonToChange` | User will need to wait until retrying again | Wait |
+| `PasswordReset.InvalidVerification`  | Password reset attempt with expired or invalid verification token  | False |
+| `PasswordReset.LockedOut`  | User currently locked out from making changes  | False |
+| `PasswordReset.MissingOrInvalidClientID` | The client being accessed is no longer valid | False |
+| `PasswordReset.MissingUsername` | The username for the reset request is missing | False |
+
+## Subsequent Requests
+
+A successful authentication (using one of the four workflows) will yield the following response:
+
+```json
+{
+  "access_token": "eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...",
+  "token_type": "bearer",
+  "expires_in": 35999,
+  "refresh_token": "878ca890-af6a-48b6-98a2-1e1cf4a.."
+}
+```
+
+The `access_token` from the response will need to be included in each and every api request as part of the Authorization header prefaced with `Bearer`
+
+For example:
+
+```http
+GET https://api.ordercloud.io/v1/buyers HTTP/1.1
+
+Authentication: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
+Content-Type: application/json; charset=UTF-8
+```
+
+## Conclusion
+
+As you can see there are many different ways that you can obtain an access token to _give_ someone access to your organization but what about _limiting_ access within your organization? OrderCloud has a built-in way of handling access within your organization via Security Profiles which we'll talk about next.

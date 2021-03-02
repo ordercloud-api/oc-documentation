@@ -5,10 +5,13 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       [theme.breakpoints.up('md')]: {
-        flex: '1 1 80%',
+        flex: '1 1 60%',
         minHeight: '100vh',
-        width: '80%',
-        padding: theme.spacing(0, 4, 4, 4),
+        width: '60%',
+        padding: theme.spacing(0, 4, 4, 3),
+      },
+      [theme.breakpoints.up('lg')]: {
+        paddingRight: theme.spacing(8),
       },
     },
   })

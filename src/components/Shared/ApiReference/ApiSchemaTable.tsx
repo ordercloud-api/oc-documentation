@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
   Theme,
+  Tooltip,
   Typography,
 } from '@material-ui/core'
 import { ExpandLess, ExpandMore } from '@material-ui/icons'
@@ -24,6 +25,9 @@ import {
 } from '../../../theme/ocPalette.constants'
 import SmallChip from '../../Styled/Chip'
 import { red } from '@material-ui/core/colors'
+import { QuestionAnswer } from '@material-ui/icons'
+import { Help } from '@material-ui/icons'
+import { HelpOutline } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -55,6 +59,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     integer: {
       color: seafoam[600],
+    },
+    tooltip: {
+      ...theme.typography.body1,
     },
   })
 )
@@ -93,109 +100,121 @@ const ApiSchemaTable = (props: ApiSchemaTableProps) => {
     [expanded]
   )
 
+  const mapEnumValues = useCallback(
+    l => (e, i) => <span key={i}>{l - 1 == i ? e : `${e}, `}</span>,
+    []
+  )
+
+  const mapSchemaProperties = useCallback(
+    ([name, field]: [string, any]) => {
+      const hasSubSchema =
+        field.properties ||
+        (field.allOf && field.allOf.length) ||
+        (field.items && field.items.properties)
+      const isExpanded = expanded.includes(name)
+      if (field.readOnly && !isResponse) {
+        return null
+      }
+      return (
+        <React.Fragment key={name}>
+          <TableRow
+            className={
+              field.description ? classes.rowWithDescription : undefined
+            }
+          >
+            <TableCell padding={hasSubSchema ? 'checkbox' : undefined}>
+              {hasSubSchema && (
+                <IconButton size="small" onClick={handleToggleExpand(name)}>
+                  {isExpanded ? (
+                    <ExpandLess fontSize="inherit" />
+                  ) : (
+                    <ExpandMore fontSize="inherit" />
+                  )}
+                </IconButton>
+              )}
+              {name}
+            </TableCell>
+            <TableCell padding="checkbox" align="center">
+              {Boolean(!isResponse && required && required.includes(name)) && (
+                <SmallChip className={classes.requiredChip} label="Required" />
+              )}
+              {Boolean(field.readOnly || readOnlyOverride) && (
+                <SmallChip label="Read Only" />
+              )}
+            </TableCell>
+            <TableCell style={{ width: 100 }}>
+              <code className={classes[field.type]}>
+                {field.type || 'object'}
+              </code>
+            </TableCell>
+            <TableCell>{field.format || '---'}</TableCell>
+            <TableCell>
+              {field.maxLength ? `${field.maxLength} characters` : '---'}
+            </TableCell>
+            <TableCell>
+              {field.enum && field.enum.length
+                ? field.enum.map(mapEnumValues(field.enum.length))
+                : `---`}
+              {/* <pre>{JSON.stringify(field, null, 2)}</pre> */}
+            </TableCell>
+            <TableCell padding="checkbox" align="center">
+              {field.description && (
+                <Tooltip
+                  title={field.description}
+                  placement="left"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <Typography color="secondary">
+                    <HelpOutline />
+                  </Typography>
+                </Tooltip>
+              )}
+            </TableCell>
+          </TableRow>
+          {hasSubSchema && (
+            <TableRow>
+              <TableCell
+                colSpan={6}
+                padding="none"
+                style={{ border: isExpanded ? undefined : 'none' }}
+              >
+                <Collapse in={isExpanded}>
+                  <Box padding={1} bgcolor="#f2f2f2">
+                    <Paper>
+                      <ApiSchemaTable
+                        isResponse={isResponse}
+                        readOnlyOverride={readOnlyOverride || field.readOnly}
+                        schema={field}
+                      />
+                    </Paper>
+                  </Box>
+                </Collapse>
+              </TableCell>
+            </TableRow>
+          )}
+        </React.Fragment>
+      )
+    },
+    [expanded, isResponse, readOnlyOverride]
+  )
+
   return (
     <Table>
       <TableHead>
         <TableRow>
-          <TableCell style={{ minWidth: 200 }}>Property</TableCell>
-          <TableCell style={{ minWidth: 40 }}></TableCell>
+          <TableCell colSpan={2} style={{ minWidth: 200 }}>
+            Property
+          </TableCell>
           <TableCell style={{ minWidth: 100 }}>Type</TableCell>
           <TableCell style={{ minWidth: 100 }}>Format</TableCell>
           <TableCell style={{ minWidth: 150 }}>Max Length</TableCell>
+          <TableCell colSpan={2} style={{ minWidth: 150 }}>
+            Possible Values
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {Object.entries(schemaRef.properties).map(
-          ([name, field]: [string, any]) => {
-            const hasSubSchema =
-              field.properties ||
-              (field.allOf && field.allOf.length) ||
-              (field.items && field.items.properties)
-            const isExpanded = expanded.includes(name)
-            if (field.readOnly && !isResponse) {
-              return null
-            }
-            return (
-              <React.Fragment key={name}>
-                <TableRow
-                  className={
-                    field.description ? classes.rowWithDescription : undefined
-                  }
-                >
-                  <TableCell padding={hasSubSchema ? 'checkbox' : undefined}>
-                    {hasSubSchema && (
-                      <IconButton
-                        size="small"
-                        onClick={handleToggleExpand(name)}
-                      >
-                        {isExpanded ? (
-                          <ExpandLess fontSize="inherit" />
-                        ) : (
-                          <ExpandMore fontSize="inherit" />
-                        )}
-                      </IconButton>
-                    )}
-                    {name}
-                  </TableCell>
-                  <TableCell padding="checkbox" align="center">
-                    {Boolean(
-                      !isResponse && required && required.includes(name)
-                    ) && (
-                      <SmallChip
-                        className={classes.requiredChip}
-                        label="Required"
-                      />
-                    )}
-                    {Boolean(field.readOnly || readOnlyOverride) && (
-                      <SmallChip label="Read Only" />
-                    )}
-                  </TableCell>
-                  <TableCell style={{ width: 100 }}>
-                    <code className={classes[field.type]}>
-                      {field.type || 'object'}
-                    </code>
-                  </TableCell>
-                  <TableCell>{field.format || '---'}</TableCell>
-                  <TableCell>
-                    {field.maxLength ? `${field.maxLength} characters` : '---'}
-                  </TableCell>
-                </TableRow>
-                {field.description && (
-                  <TableRow>
-                    <TableCell colSpan={5} style={{ paddingTop: 0 }}>
-                      <Typography variant="caption">
-                        {field.description}
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                )}
-                {hasSubSchema && (
-                  <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      padding="none"
-                      style={{ border: isExpanded ? undefined : 'none' }}
-                    >
-                      <Collapse in={isExpanded}>
-                        <Box padding={1} bgcolor="#f2f2f2">
-                          <Paper>
-                            <ApiSchemaTable
-                              isResponse={isResponse}
-                              readOnlyOverride={
-                                readOnlyOverride || field.readOnly
-                              }
-                              schema={field}
-                            />
-                          </Paper>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </React.Fragment>
-            )
-          }
-        )}
+        {Object.entries(schemaRef.properties).map(mapSchemaProperties)}
       </TableBody>
     </Table>
   )
