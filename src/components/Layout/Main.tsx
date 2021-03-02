@@ -45,7 +45,7 @@ import themeConstants from '../../theme/theme.constants'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
 import Jumbotron from '../Shared/Jumbotron'
 import ListItemLink from '../Shared/ListItemLink'
-import { withPrefix } from '../Shared/PortalLink'
+import { navigate } from '../Shared/PortalLink'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
 
@@ -602,7 +602,7 @@ await Orders.Submit("Outgoing", order.ID);`}
           paddingBottom={8}
         >
           <Button
-            href={withPrefix('/register')}
+            onClick={() => navigate('/register')}
             color="primary"
             variant="contained"
           >

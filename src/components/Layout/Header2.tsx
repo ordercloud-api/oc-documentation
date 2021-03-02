@@ -19,7 +19,7 @@ import { flame } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
-import { PortalLink, withPrefix } from '../Shared/PortalLink'
+import { PortalLink, navigate } from '../Shared/PortalLink'
 
 export const navHeight =
   ORDERCLOUD_THEME.spacing(8) + ORDERCLOUD_THEME.spacing(5)
@@ -154,8 +154,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
               <div className={classes.grow} />
               <Hidden smDown>
                 <Button
-                  href={withPrefix('')}
-                  target="_blank"
+                  onClick={() => navigate('')}
                   variant="contained"
                   color="secondary"
                 >

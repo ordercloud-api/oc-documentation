@@ -5,7 +5,7 @@ import React from 'react'
  * Takes in a path and resolves to portal URL
  */
 
-export function withPrefix(path) {
+function withPrefix(path) {
   const portalBaseUrl = getBaseUrl()
   return [portalBaseUrl, normalizePath(path)].join(`/`)
 }
