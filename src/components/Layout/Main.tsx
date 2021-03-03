@@ -134,14 +134,23 @@ const MainComponent: React.FunctionComponent = props => {
   return (
     <React.Fragment>
       <Jumbotron
-        // image={{
-        //   src: '/images/ordercloud_nobg.png',
-        //   alt: 'homepage background',
-        // }}
+        image={{
+          src: '/images/logos_horizontal_desktop.png',
+          alt: 'homepage background',
+        }}
         overlayed={true}
-        heading="YOUR B2B-FIRST ECOMMERCE° PLATFORM"
-        text="Design your own marketplace with an API-first, headless cloud platform for B2B, B2C, and B2X. We power custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
+        heading="Four51 to be Acquired by Sitecore"
+        text={["Deal means we’ll be joining forces with the digital experience leader.", <br/>, <br/>, "With Four51 OrderCloud, design your own marketplace with an API-first, headless cloud platform for B2B, B2C, and B2X. We power custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."]}
         actions={[
+          <Button
+            key="knowledge"
+            href="https://www.four51.io/sitecore-acquires-boxever-and-four51"
+            variant="contained"
+            target="new"
+            style={{backgroundColor: '#fff'}}
+          >
+            Press Release
+          </Button>,
           <CustomButtonLink
             key="developers"
             to="/learn/getting-started/welcome-to-ordercloud"
@@ -150,14 +159,7 @@ const MainComponent: React.FunctionComponent = props => {
           >
             Developer Guide
           </CustomButtonLink>,
-          <CustomButtonLink
-            key="knowledge"
-            to="/knowledge-base"
-            variant="contained"
-            color="#fff"
-          >
-            Knowledge Base
-          </CustomButtonLink>,
+          
         ]}
       />
       <Hidden smUp>
