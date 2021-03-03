@@ -165,6 +165,15 @@ const toExport = {
         cookieDomain: 'ordercloud.io',
       },
     },
+    {
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        trackingIds: ['G-522MCT7PJK'],
+      },
+      gtagConfig: {
+        cookie_domain: 'ordercloud.io',
+      },
+    },
     `gatsby-ordercloud-version`,
     `gatsby-plugin-sitemap`,
     `gatsby-plugin-catch-links`,
