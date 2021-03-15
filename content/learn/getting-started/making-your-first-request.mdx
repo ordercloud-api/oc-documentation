@@ -35,7 +35,10 @@ Content-Type: application/x-www-form-urlencoded;\n
     password: "INSERT_ADMIN_USER_PASSWORD",
     scope: "CatalogAdmin BuyerReader MeAdmin InventoryAdmin PasswordReset OrderAdmin PriceScheduleAdmin ProductAdmin ProductAssignmentAdmin ShipmentAdmin",
 }`,
-javascript: `import { Auth, Tokens } from "ordercloud-javascript-sdk";\n
+javascript: `import { Auth, Tokens, Configuration } from "ordercloud-javascript-sdk";\n
+Configuration.Set({
+  baseApiUrl: "https://sandboxapi.ordercloud.io",
+});
 var username = "admin01";
 var password = "INSERT_ADMIN_USER_PASSWORD";
 var clientID = "INSERT_SHARED_API_CLIENT_ID";
@@ -63,8 +66,12 @@ typescript: `import {
     AccessToken,
     OrderCloudError,
     Auth,
-    Tokens 
+    Tokens,
+    Configuration
 } from "ordercloud-javascript-sdk";\n
+Configuration.Set({
+  baseApiUrl: "https://sandboxapi.ordercloud.io",
+});
 var username:string = "admin01";
 var password:string = "INSERT_ADMIN_USER_PASSWORD";
 var clientID:string = "INSERT_SHARED_API_CLIENT_ID";
@@ -102,7 +109,9 @@ var client = new OrderCloudClient(new OrderCloudClientConfig {
         ApiRole.ProductAssignmentAdmin,
         ApiRole.PriceScheduleAdmin,
         ApiRole.ShipmentAdmin
-    }
+    },
+    ApiUrl: "https://sandboxapi.ordercloud.io",
+    AuthUrl: "https://sandboxapi.ordercloud.io"
 });`}}
 />
 

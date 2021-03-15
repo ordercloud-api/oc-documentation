@@ -30,7 +30,7 @@ This is the most common, a user logs in with their username and password.  A suc
 <CodeExample
   title="Password Grant-Type Workflow"
   content={{
-    http: `POST https://sandboxapi.ordercloud.io/v1/oauth/token HTTP/1.1
+    http: `POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: application/x-www-form-urlencoded;\n
 {
     client_id: "INSERT_SHARED_API_CLIENT_ID",
@@ -39,7 +39,10 @@ Content-Type: application/x-www-form-urlencoded;\n
     password: "INSERT_USER_PASSWORD",
     scope: "Shopper",
 }`,
-javascript: `import { Auth, Tokens } from "ordercloud-javascript-sdk";\n
+javascript: `import { Auth, Tokens, Configuration } from "ordercloud-javascript-sdk";\n
+Configuration.Set({
+  baseApiUrl: "https://sandboxapi.ordercloud.io",
+});
 var username = "INSERT_USER_NAME";
 var password = "INSERT_USER_PASSWORD";
 var clientID = "INSERT_SHARED_API_CLIENT_ID";
@@ -59,8 +62,12 @@ typescript: `import {
     AccessToken,
     OrderCloudError,
     Auth,
-    Tokens 
+    Tokens,
+    Configuration
 } from "ordercloud-javascript-sdk";\n
+Configuration.Set({
+  baseApiUrl: "https://sandboxapi.ordercloud.io",
+});
 var username:string = "INSERT_USER_NAME";
 var password:string = "INSERT_USER_PASSWORD";
 var clientID:string = "INSERT_SHARED_API_CLIENT_ID";
@@ -82,7 +89,9 @@ var client = new OrderCloudClient(new OrderCloudClientConfig {
     Password = "INSERT_USER_PASSWORD",
     Roles = new[] { 
         ApiRole.Shopper
-    }
+    },
+    ApiUrl: "https://sandboxapi.ordercloud.io",
+    AuthUrl: "https://sandboxapi.ordercloud.io"
 });`}}
 />
 

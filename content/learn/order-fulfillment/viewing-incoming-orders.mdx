@@ -11,7 +11,7 @@ Now that you've submitted your first order as a buyer user let's take a look at 
   title="Password Grant-Type Workflow"
   description="Use the access token in the response for the remainder of this chapter."
   content={{
-    http: `POST https://sandboxapi.ordercloud.io/v1/oauth/token HTTP/1.1
+    http: `POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: application/x-www-form-urlencoded;\n
 {
     client_id: "INSERT_SHARED_API_CLIENT_ID",
@@ -20,7 +20,10 @@ Content-Type: application/x-www-form-urlencoded;\n
     password: "INSERT_ADMIN_USER_PASSWORD",
     scope: "OrderAdmin",
 }`,
-javascript: `import { Auth, Tokens } from "ordercloud-javascript-sdk";\n
+javascript: `import { Auth, Tokens, Configuration } from "ordercloud-javascript-sdk";\n
+Configuration.Set({
+  baseApiUrl: "https://sandboxapi.ordercloud.io",
+});
 var username = "admin01";
 var password = "INSERT_ADMIN_USER_PASSWORD";
 var clientID = "INSERT_SHARED_API_CLIENT_ID";
@@ -40,8 +43,12 @@ typescript: `import {
   AccessToken,
   OrderCloudError,
   Auth,
-  Tokens
+  Tokens,
+  Configuration
 } from "ordercloud-javascript-sdk";\n
+Configuration.Set({
+  baseApiUrl: "https://sandboxapi.ordercloud.io",
+});
 var username: string = "admin01";
 var password: string = "INSERT_ADMIN_USER_PASSWORD";
 var clientID: string = "INSERT_SHARED_API_CLIENT_ID";
@@ -64,7 +71,9 @@ var client = new OrderCloudClient(new OrderCloudClientConfig {
     Password = "INSERT_ADMIN_USER_PASSWORD",
     Roles = new[] { 
         ApiRole.OrderAdmin
-    }
+    },
+	ApiUrl: "https://sandboxapi.ordercloud.io",
+    AuthUrl: "https://sandboxapi.ordercloud.io"
 });`}}
 />
 
