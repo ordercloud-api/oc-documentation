@@ -1,0 +1,54 @@
+---
+type:           article
+title:          How to Calculate Tax with OrderCloud
+description:    This guide is designed to be an overview of how we support tax calculation integration and management with some focus on a particular vendor we recommend highly, Avalara.
+author:         sdavis
+publishDate:    2021-03-24
+updatedDate:
+priority:       1
+tags:           ["Integrations"]
+---
+
+## Overview
+Tax calculation is complex, bordering on overwhelming. Tax rules and regulations with E-Commerce are continually evolving. In the United States each state has jurisdiction over their tax laws creating very different applications of taxes making them even more difficult to manage. Factor in entities outside the US and the complexity grows exponentially. These reasons, but not only these reasons, are why OrderCloud has taken an agnostic approach to tax calculation. 
+
+Our 20 years of e-commerce solution experience has informed us of the rules and regulations challenges, but also the customer solution challenges they face with ERP integration and business relationship management with technology vendors. There are dozens of tax services employed throughout our customer base and we’ve helped each of them become tightly integrated into the online shopping experience for them.
+
+This guide is designed to be an overview of how we support tax calculation integration and management with some focus on a particular vendor we recommend highly, Avalara.
+
+## Integration Event
+[Integration events](/api-reference/seller/integration-events) are a feature of the OrderCloud platform. In particular I’ll focus on the OrderCheckout Integration event. It was designed to help coordinate the process of the customer checkout. Calculating the values for shipping, tax, inventory and promotions have many data points that can be adjusted in a number of ways. Each time one of the key data points is changed the relevant calculations need to be performed and orchestrating that from the front end application (UI) is cumbersome and fraught with peril. The OrderCheckout Integration event is here to help.
+
+The event acts much like a webhook from a technical perspective. The ability to validate the webhook hash is present for security. However, these events can be manually triggered:
+
+- [Calculate an Order](/api-reference/seller/integration-events/calculate)
+- [Estimate shipping cost](/api-reference/seller/integration-events/estimate-shipping)
+- [Select a ShipMethod](/api-reference/seller/integration-events/select-shipmethods)
+
+The Calculate an Order event has the property to provide the TaxTotal to be applied to the Order. The property is a number/float and doesn’t have any restrictions on the value other than the data type. This is important because we are always asked “how do you support different currencies”. OrderCloud is agnostic to currency as well. In fact, we have some customers that use reward points as currency for payments. So, if you need to support the Japanese Yen or the British Pound it’s not a problem. 
+
+## Integration
+As I mentioned above, calculating tax is complex. Tackling this yourself isn’t a good idea. That’s why vendors like [Avalara](https://www.avalara.com/), [Vertex](https://www.vertexinc.com/) and [TaxJar](https://www.taxjar.com/) exist. At Four51, we don’t want to force you into a solution so we designed a simple and secure method for integrating your preferred tax vendor into your e-commerce solution.
+
+The generally recommended workflow for integrating a tax calculation vendor into your commerce solution is simple:
+1. Trigger the OrderCalculate Integration Event that is configured to point to your Middleware
+2. Middleware receives the request
+3. Middleware requests and is granted a token with the OverrideTax scoped role
+4. Middleware calls to the configured Tax vendor for calculation passing along all relevant data points
+5. Middleware receives the response from the Tax Vendor
+6. Middleware responds to the OrderCloud Integration event with the TaxTotal populated
+
+The OrderCheckout calculate event is a recommended solution, but it’s not the only opportunity to provide tax calculation for your Order. You can simply call out to your tax vendor and apply the tax cost directly to your Order. To apply the tax cost to your Order you must have the scope “OverrideTax” granted in your token request. We refer to this security profile role as an “elevated” role. Generally it is granted to a middleware implementation rather than the user that is shopping your site. This prevents any illegitimate activity on the Order from occurring.
+
+Every tax vendor has different configurations and data models. For example, Avalara needs a tax and item code for each line item or product. You also may need to manage a number of entities for your customers and suppliers in order to identify the proper tax jurisdiction. This is another area where OrderCloud is flexible for your needs. If you have properties on a Product, or LineItem that are specific to your tax integration implementation you can use our [Extended Properties (xp)](/knowledge-base/leverage-xp) to define them. There may be a number of data points, or properties, you need to reference in order to fulfill the integration event. This is where the payload of the Integration Event is important. OrderCloud sends, as the request payload, an Order Worksheet that is essentially a hydrated model of a number of concerns related to the Order. Information about the User, their organization and Order properties for the LineItems, Products and Pricing. If you ever encounter any missing details let us know in our [Slack channel](/slack) and we’ll review for inclusion.
+
+## Special Considerations
+
+### International Tax
+All this information still leaves us with the question of how to support regional localization. Primarily this is a concern with the tax vendor. [Avalara](https://www.avalara.com/vatlive/en/index.html), for example, supports a great number of localities very elegantly. From a development perspective the same API endpoints needed to perform tax calculation with US entities is used. The configuration of the data is the key to having the accurate Value Added Tax (VAT) returned for your integration. 
+
+You may need to address some configuration items in your data model. For example, specifying the currency of the transaction. This information should be configured on the User or Buyer model that is provided in the Order Worksheet. For Japan, you can specify “JPY” which is the currency code for the Japanese Yen. If you simply apply the property locale information and the currency to the same transaction API endpoint at Avalara you will get the right calculation to apply to your OrderCloud TaxTotal field.
+
+## Architecture Diagram
+
+![Tax Integration Architecture Diagram](/images/knowledge-base/inline/how-to-calculate-tax-with-ordercloud/architecture-diagram.png)
