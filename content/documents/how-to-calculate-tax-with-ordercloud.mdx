@@ -42,13 +42,13 @@ The OrderCheckout calculate event is a recommended solution, but it’s not the 
 
 Every tax vendor has different configurations and data models. For example, Avalara needs a tax and item code for each line item or product. You also may need to manage a number of entities for your customers and suppliers in order to identify the proper tax jurisdiction. This is another area where OrderCloud is flexible for your needs. If you have properties on a Product, or LineItem that are specific to your tax integration implementation you can use our [Extended Properties (xp)](/knowledge-base/leverage-xp) to define them. There may be a number of data points, or properties, you need to reference in order to fulfill the integration event. This is where the payload of the Integration Event is important. OrderCloud sends, as the request payload, an Order Worksheet that is essentially a hydrated model of a number of concerns related to the Order. Information about the User, their organization and Order properties for the LineItems, Products and Pricing. If you ever encounter any missing details let us know in our [Slack channel](/slack) and we’ll review for inclusion.
 
+## Workflow Diagram
+
+![Tax Integration Workflow Diagram](/images/knowledge-base/inline/how-to-calculate-tax-with-ordercloud/architecture-diagram.png)
+
 ## Special Considerations
 
 ### International Tax
 All this information still leaves us with the question of how to support regional localization. Primarily this is a concern with the tax vendor. [Avalara](https://www.avalara.com/vatlive/en/index.html), for example, supports a great number of localities very elegantly. From a development perspective the same API endpoints needed to perform tax calculation with US entities is used. The configuration of the data is the key to having the accurate Value Added Tax (VAT) returned for your integration. 
 
 You may need to address some configuration items in your data model. For example, specifying the currency of the transaction. This information should be configured on the User or Buyer model that is provided in the Order Worksheet. For Japan, you can specify “JPY” which is the currency code for the Japanese Yen. If you simply apply the property locale information and the currency to the same transaction API endpoint at Avalara you will get the right calculation to apply to your OrderCloud TaxTotal field.
-
-## Architecture Diagram
-
-![Tax Integration Architecture Diagram](/images/knowledge-base/inline/how-to-calculate-tax-with-ordercloud/architecture-diagram.png)
