@@ -19,3 +19,25 @@ exports.onCreateWebpackConfig = ({ actions }) => {
     },
   })
 }
+
+exports.createSchemaCustomization = ({ actions, schema }) => {
+  const { createTypes } = actions
+  const typeDefs = [
+    'type Mdx implements Node { frontmatter: Frontmatter }',
+    schema.buildObjectType({
+      name: 'Frontmatter',
+      fields: {
+        author: {
+          type: 'AuthorJson',
+          resolve: (source, args, context, info) => {
+            return context.nodeModel.getNodeById({
+              id: source.author,
+              type: 'AuthorJson',
+            })
+          },
+        },
+      },
+    }),
+  ]
+  createTypes(typeDefs)
+}

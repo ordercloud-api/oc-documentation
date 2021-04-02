@@ -1,0 +1,37 @@
+---
+type:           article
+title:          OrderCloud Environments
+description:    The Portal allows users to access organizations from OrderCloud Sandbox, Staging, and Production in a single user interface.
+author:         rwatt
+publishDate:    2020-08-31
+updatedDate:    2020-09-08
+tags:           ["Portal", "Environments"]
+---
+
+The Portal allows users to access organizations from OrderCloud Sandbox, Staging, and Production in a single user interface. These environments have been available for some time; however, OrderCloud customers haven't yet been able to utilize them in a meaningful way. Each environment has a unique purpose, which is detailed below.
+
+## What is an Environment?
+
+An environment is an isolated, independent instance of the OrderCloud API provisioned with its own host name, dedicated compute resources, isolated data storage, etc. Up until this release, any organization created in the Portal was created in "Production". Developers that required a separate organization for testing purposes had to create a "copy" of their production organization, and manually keep it in sync. Furthermore, developers that wanted to test changes to the OrderCloud API against their applications couldn't do so until the API release was completed - which is not ideal. 
+
+Providing access to additional "environments" means that you can test experimental app code, and even unreleased API features, without consuming resources dedicated to your production application(s). Each environment has its own API URL, purpose, and behavior outlined below.
+
+## What Environments does OrderCloud offer?
+
+### Production
+`https://api.ordercloud.io`
+
+Previously our only public-facing environment, Production will now be now reserved for live apps with real buyers and sellers performing real transactions, and nothing else. It's provisioned for high performance, high availability, and geo-redundant data protection. In order to keep this premium environment performing at the highest possible level, we'll be doing a bit more "gatekeeping" of what goes in, and assisting with transitioning the many "test" and "dev" orgs that currently live there; we have better homes for them now.
+
+### Staging
+`https://stagingapi.ordercloud.io`
+
+If you have live apps deployed to production and want a place to test code changes, or if you want to test unreleased API features against existing app code, Staging is the place to do it. Each Sunday morning we restore a copy of all of your production data (organizations, users, products, orders, etc.) to Staging, meaning you always have near-current, near-"real" data to test against. (We do wipe a few things like webhook URLs that could trigger external events. You probably don't want an email sent to a real customer when you pretend-ship their order!) The caveat here is that any data created or changed in Staging will only survive until the end of the week; it will be overwritten by a fresh snapshot of production data for the following week.
+
+### Sandbox
+`https://sandboxapi.ordercloud.io`
+
+If you're building a new app that does not have a production equivalent, or you have a need to test against long-lived "fake" data that is never overwritten, Sandbox is the right choice. Although this might seem like the most seamless transition for those "test" and "dev" orgs currently in production, we would strongly encourage you to consider transitioning to Staging first. If you can live with the caveat of weekly data overwrites, then eliminating the need to do your own data synchronization should be a no-brainer.
+
+## Conclusion
+You can expect this blog post to improve over time - with more detail on exactly how to take advantage of these new environments in the Portal coming soon. If you have any questions or concerns, please don't hesitate to reach out in the [OrderCloud Slack Community](https://ordercloud.io/slack).

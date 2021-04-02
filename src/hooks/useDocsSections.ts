@@ -7,7 +7,7 @@ export const useDocsSections = () => {
     query {
       allMdx(
         sort: { order: ASC, fields: [frontmatter___priority] }
-        filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
+        filter: { fileAbsolutePath: { glob: "**/content/learn/**/*.mdx" } }
       ) {
         totalCount
         edges {

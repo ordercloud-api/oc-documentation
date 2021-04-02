@@ -12,6 +12,7 @@ import {
 import { OpenInNewOutlined } from '@material-ui/icons'
 import { mediumgrey, sherpablue } from '../../theme/ocPalette.constants'
 import ocOrange from '../../../src/assets/images/four51-logo-geo--full-color-white.svg'
+import { PortalLink } from '../Shared/PortalLink'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -21,12 +22,11 @@ const styles = (theme: Theme) =>
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4),
       [theme.breakpoints.up('md')]: {
-        position: 'fixed',
         bottom: 0,
         left: 0,
         right: 0,
       },
-      backgroundColor: theme.palette.primary.dark,
+      backgroundColor: sherpablue[500],
       borderTop: '2px solid',
       borderColor: mediumgrey[100],
       ...theme.typography.body2,
@@ -87,7 +87,7 @@ const styles = (theme: Theme) =>
 class Footer extends React.Component<any> {
   public render() {
     const currentYear = new Date().getFullYear()
-    const { classes, sections } = this.props
+    const { classes } = this.props
     return (
       <footer className={classes.root}>
         <Container className={classes.inner}>
@@ -98,45 +98,74 @@ class Footer extends React.Component<any> {
             justify="space-between"
             alignItems="flex-start"
           >
-            <Grid item xs={12}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="flex-start"
-              >
-                <img className={classes.logo} src={ocOrange} alt="OC" />
-                {/* <Typography variant="h4">OrderCloud</Typography> */}
+            <Grid item xs={6} md={3}>
+              <Box marginY={2} display="flex" flexDirection="column">
+                <Typography
+                  className={classes.sectionTitle}
+                  component="h6"
+                  variant="h6"
+                >
+                  Discover
+                </Typography>
+                <Link
+                  className={classes.footerLinks}
+                  to="/discover/platform-overview"
+                >
+                  Platform Overview
+                </Link>
+                <Link
+                  className={classes.footerLinks}
+                  to="/discover/define-your-marketplace"
+                >
+                  Define Your Marketplace
+                </Link>
+                <Link
+                  className={classes.footerLinks}
+                  to="/discover/personalized-shopping"
+                >
+                  Personalized Shopping
+                </Link>
+                <Link
+                  className={classes.footerLinks}
+                  to="/discover/flexible-fulfillment"
+                >
+                  Flexible Fulfillment Workflows
+                </Link>
               </Box>
-              <Typography variant="body2" className={classes.Typography}>
-                © {currentYear} OrderCloud All rights reserved.
-              </Typography>
             </Grid>
-            <Grid item xs={6} md={4}>
-              {sections && (
-                <Box marginY={2} display="flex" flexDirection="column">
-                  <Typography
-                    className={classes.sectionTitle}
-                    component="h6"
-                    variant="h6"
-                  >
-                    Docs
-                  </Typography>
-                  {sections.map(section => (
-                    <Link
-                      className={classes.footerLinks}
-                      key={section.title}
-                      to={section.guides[0].path}
-                    >
-                      {section.title}
-                    </Link>
-                  ))}
-                  <Link className={classes.footerLinks} to="/api-reference">
-                    API Reference
-                  </Link>
-                </Box>
-              )}
+            <Grid item xs={6} md={3}>
+              <Box marginY={2} display="flex" flexDirection="column">
+                <Typography
+                  className={classes.sectionTitle}
+                  component="h6"
+                  variant="h6"
+                >
+                  Learn
+                </Typography>
+                <Link
+                  className={classes.footerLinks}
+                  to="/learn/ordercloud-basics/architecture"
+                >
+                  OrderCloud Basics
+                </Link>
+                <Link
+                  className={classes.footerLinks}
+                  to="/learn/getting-started/welcome-to-ordercloud"
+                >
+                  Getting Started
+                </Link>
+                <Link className={classes.footerLinks} to="/developer-tools">
+                  Developer Tools
+                </Link>
+                <Link className={classes.footerLinks} to="/knowledge-base">
+                  Knowledge Base
+                </Link>
+                <Link className={classes.footerLinks} to="/api-reference">
+                  API Reference
+                </Link>
+              </Box>
             </Grid>
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={3}>
               <Box display="flex" flexDirection="column" marginY={2}>
                 <Typography
                   className={classes.sectionTitle}
@@ -145,16 +174,8 @@ class Footer extends React.Component<any> {
                 >
                   Channels
                 </Typography>
-                <Link
-                  className={classes.footerLinks}
-                  to="/slack"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <Link className={classes.footerLinks} to="/slack">
                   Slack Community
-                  <Box marginLeft={0.5} display="flex" alignItems="center">
-                    <OpenInNewOutlined fontSize="inherit" />
-                  </Box>
                 </Link>
                 <a
                   className={classes.footerLinks}
@@ -183,7 +204,7 @@ class Footer extends React.Component<any> {
                 </Link>
               </Box>
             </Grid>
-            <Grid item xs={6} md={4}>
+            <Grid item xs={6} md={3}>
               <Box display="flex" flexDirection="column" marginY={2}>
                 <Typography
                   className={classes.sectionTitle}
@@ -192,6 +213,9 @@ class Footer extends React.Component<any> {
                 >
                   More
                 </Typography>
+                <PortalLink className={classes.footerLinks} to="/">
+                  OrderCloud Portal
+                </PortalLink>
                 <Link className={classes.footerLinks} to="/release-notes">
                   API Release Notes
                 </Link>
@@ -235,6 +259,18 @@ class Footer extends React.Component<any> {
                   </Box>
                 </a>
               </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-start"
+              >
+                <img className={classes.logo} src={ocOrange} alt="OC" />
+              </Box>
+              <Typography variant="body2" className={classes.Typography}>
+                © {currentYear} OrderCloud All rights reserved.
+              </Typography>
             </Grid>
           </Grid>
           <div className={classes.footerAside}></div>

@@ -1,28 +1,35 @@
-import React from 'react'
-import Header, { navHeight, navHeightMobile } from './Header'
-import { ThemeProvider } from '@material-ui/styles'
-import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import {
   Box,
-  Theme,
-  makeStyles,
   createStyles,
-  Typography,
-  Table,
-  TableRow,
-  TableCell,
   CssBaseline,
   Divider,
+  makeStyles,
+  Paper,
+  Table,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Theme,
+  Typography,
+  TypographyVariant,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
+import { ThemeProvider } from '@material-ui/styles'
 import { MDXProvider } from '@mdx-js/react'
-import IconButtonLink from '../Shared/IconButtonLink'
-import { Helmet } from 'react-helmet'
-import Footer from './Footer'
-import { seafoam } from '../../theme/ocPalette.constants'
-import AlertContainer from '../Shared/Alert'
 import { RouteComponentProps } from '@reach/router'
-import { useDocsSections } from '../../hooks/useDocsSections'
+import { Link } from 'gatsby'
+import React from 'react'
+import { Helmet } from 'react-helmet'
+import { Provider } from 'react-redux'
+import { seafoam } from '../../theme/ocPalette.constants'
+import ORDERCLOUD_THEME from '../../theme/theme.constants'
+import AlertContainer from '../Shared/Alert'
+import CodeExample, { codeExampleStore } from '../Shared/CodeExample'
+import ContentLink from '../Shared/ContentLink'
+import IconButtonLink from '../Shared/IconButtonLink'
+import { PortalLink } from '../Shared/PortalLink'
+import Footer from './Footer'
+import Header, { navHeight, navHeightMobile } from './Header2'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: 'white',
       minHeight: `calc(100vh - ${navHeightMobile}px)`,
       [theme.breakpoints.up('md')]: {
-        marginBottom: theme.spacing(51),
+        marginBottom: theme.spacing(0),
         minHeight: `calc(100vh - ${navHeight}px)`,
       },
       '& img': {
@@ -45,9 +52,18 @@ const useStyles = makeStyles((theme: Theme) =>
     heading: {
       position: 'relative',
     },
+    headingSpan: {
+      display: 'block',
+      marginTop: -120,
+      paddingBottom: 120,
+      pointerEvents: 'none',
+    },
     containerMain: {
       zIndex: 1,
       position: 'relative',
+    },
+    tableContainer: {
+      marginBottom: theme.spacing(3),
     },
   })
 )
@@ -88,121 +104,120 @@ export const LayoutLink = (props: any) => {
 interface LayoutProps extends RouteComponentProps {
   children: any
 }
+
 export default (props: LayoutProps) => {
   const classes = useStyles(props)
-  const sections = useDocsSections()
+  const buildHeader = (variant: TypographyVariant) => (hProps: any) => {
+    return (
+      <Typography className={classes.heading} variant={variant}>
+        <span id={hProps.id} className={classes.headingSpan}></span>
+        {hProps.children}
+      </Typography>
+    )
+  }
+
   return (
-    <ThemeProvider theme={ORDERCLOUD_THEME}>
-      <Helmet
-        meta={[
-          {
-            property: 'og:image',
-            content: '/images/meta/meta_thumbnail.jpg',
-          },
-          {
-            name: 'viewport',
-            content:
-              'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
-          },
-          {
-            name: 'description',
-            content:
-              'OrderCloud powers custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and over $5 billion in revenue annually.',
-          },
-        ]}
-      >
-        <html />
-        <body className={classes.body} />
-      </Helmet>
-      <CssBaseline />
-      <AlertContainer />
-      <div className={classes.containerMain}>
-        <Header location={props.location} />
-        <div className={classes.pageWrapper}>
-          <MDXProvider
-            components={{
-              h1: h1Props => (
-                <Typography
-                  {...h1Props}
-                  className={classes.heading}
-                  variant="h1"
-                />
-              ),
-              h2: h2Props => (
-                <Typography
-                  {...h2Props}
-                  className={classes.heading}
-                  variant="h2"
-                />
-              ),
-              h3: h3Props => (
-                <Typography
-                  {...h3Props}
-                  className={classes.heading}
-                  variant="h3"
-                />
-              ),
-              h4: h4Props => (
-                <Typography
-                  {...h4Props}
-                  className={classes.heading}
-                  variant="h4"
-                />
-              ),
-              h5: h5Props => (
-                <Typography
-                  {...h5Props}
-                  className={classes.heading}
-                  variant="h5"
-                />
-              ),
-              h6: h6Props => (
-                <Typography
-                  {...h6Props}
-                  className={classes.heading}
-                  variant="h6"
-                />
-              ),
-              blockquote: blockquoteProps => (
-                <Box
-                  paddingX={2}
-                  paddingTop={2}
-                  paddingBottom="1px"
-                  marginBottom={2}
-                  bgcolor={seafoam[100]}
-                  borderRadius={4}
-                >
-                  {blockquoteProps.children}
-                </Box>
-              ),
-              p: pProps => <Typography {...pProps} paragraph variant="body1" />,
-              ol: olProps => (
-                <Typography paragraph variant="body1">
-                  <ol {...olProps} />
-                </Typography>
-              ),
-              ul: ulProps => (
-                <Typography paragraph variant="body1" component="span">
-                  <ul {...ulProps} />
-                </Typography>
-              ),
-              a: aProps => <LayoutLink {...aProps} />,
-              table: tableProps => <Table {...tableProps} />,
-              tr: trProps => <TableRow {...trProps} />,
-              th: thProps => (
-                <TableCell variant="head">{thProps.children}</TableCell>
-              ),
-              td: tdProps => (
-                <TableCell variant="body">{tdProps.children}</TableCell>
-              ),
-              hr: hrProps => <Divider {...hrProps} />,
-            }}
-          >
-            {props.children}
-          </MDXProvider>
+    <Provider store={codeExampleStore}>
+      <ThemeProvider theme={ORDERCLOUD_THEME}>
+        <Helmet
+          meta={[
+            {
+              property: 'og:image',
+              content: '/images/meta/meta_thumbnail.jpg',
+            },
+            {
+              name: 'viewport',
+              content:
+                'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+            },
+            {
+              name: 'description',
+              content:
+                'OrderCloud powers custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and over $5 billion in revenue annually.',
+            },
+          ]}
+        >
+          <html />
+          <body className={classes.body} />
+        </Helmet>
+        <CssBaseline />
+        <AlertContainer />
+        <div className={classes.containerMain}>
+          <Header />
+          {/* <Header location={props.location} /> */}
+          <div className={classes.pageWrapper}>
+            <MDXProvider
+              components={{
+                Link,
+                PortalLink,
+                ContentLink,
+                CodeExample,
+                h1: buildHeader('h1'),
+                h2: buildHeader('h2'),
+                h3: buildHeader('h3'),
+                h4: buildHeader('h4'),
+                h5: buildHeader('h5'),
+                h6: buildHeader('h6'),
+                blockquote: blockquoteProps => (
+                  <Box
+                    paddingX={2}
+                    paddingTop={2}
+                    paddingBottom="1px"
+                    marginBottom={2}
+                    bgcolor={seafoam[100]}
+                    borderRadius={4}
+                  >
+                    {blockquoteProps.children}
+                  </Box>
+                ),
+                p: pProps => (
+                  <Typography {...pProps} paragraph variant="body1" />
+                ),
+                ol: olProps => (
+                  <Typography
+                    paragraph
+                    variant="body1"
+                    component="span"
+                    display="block"
+                  >
+                    <ol {...olProps} />
+                  </Typography>
+                ),
+                ul: ulProps => (
+                  <Typography
+                    paragraph
+                    variant="body1"
+                    component="span"
+                    display="block"
+                  >
+                    <ul {...ulProps} />
+                  </Typography>
+                ),
+                a: aProps => <LayoutLink {...aProps} />,
+                table: tableProps => (
+                  <TableContainer
+                    component={Paper}
+                    className={classes.tableContainer}
+                  >
+                    <Table {...tableProps} />
+                  </TableContainer>
+                ),
+                tr: trProps => <TableRow {...trProps} />,
+                th: thProps => (
+                  <TableCell variant="head">{thProps.children}</TableCell>
+                ),
+                td: tdProps => (
+                  <TableCell variant="body">{tdProps.children}</TableCell>
+                ),
+                hr: hrProps => <Divider {...hrProps} />,
+              }}
+            >
+              {props.children}
+            </MDXProvider>
+          </div>
         </div>
-      </div>
-      <Footer sections={sections}></Footer>
-    </ThemeProvider>
+        <Footer />
+      </ThemeProvider>
+    </Provider>
   )
 }

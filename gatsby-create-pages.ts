@@ -6,8 +6,13 @@ import Case from 'case'
 export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
+  const discoverTemplate = resolve(
+    'src/components/Templates/DiscoverTemplate.tsx'
+  )
   const docTemplate = resolve('src/components/Templates/DocTemplate.tsx')
-  const blogTemplate = resolve('src/components/Templates/BlogTemplate.tsx')
+  const knowledgeBaseTemplate = resolve(
+    'src/components/Templates/KnowledgeBaseTemplate.tsx'
+  )
   const releaseNotesTemplate = resolve(
     'src/components/Templates/ReleaseNotes.tsx'
   )
@@ -16,6 +21,10 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
   )
   const portalReleaseNotesTemplate = resolve(
     'src/components/Templates/PortalReleaseNotesTemplate.tsx'
+  )
+
+  const staticPageTemplate = resolve(
+    'src/components/Templates/StaticPageTemplate.tsx'
   )
 
   const staticDocs = graphql(`
@@ -39,15 +48,20 @@ export const createPages: GatsbyCreatePages = async ({ graphql, actions }) => {
         .replace('.mdx', '')
 
       let component
-      if (path.startsWith('/docs')) {
-        path = path.replace('/docs', '') // served from root
+      if (path.startsWith('/discover')) {
+        component = discoverTemplate
+      } else if (path.startsWith('/learn')) {
         component = docTemplate
-      } else if (path.startsWith('/blog')) {
-        component = blogTemplate
+      } else if (path.startsWith('/documents')) {
+        path = path.replace('documents', 'knowledge-base')
+        component = knowledgeBaseTemplate
       } else if (path.startsWith('/release-notes')) {
         component = releaseNotesTemplate
       } else if (path.startsWith('/portal-release-notes')) {
         component = portalReleaseNotesTemplate
+      } else if (path.startsWith('/static-pages')) {
+        component = staticPageTemplate
+        path = path.replace('/static-pages', '')
       } else {
         throw new Error(`Can't resolve path ${edge.node.fileAbsolutePath}`)
       }

@@ -1,0 +1,203 @@
+---
+section: 'Buyer Perspective'
+title: 'Adding Line Items'
+description: 'Familiarize yourself with the OrderCloud Line Item model and how to create new Line Items on existing Buyer Orders.'
+priority: 3
+---
+
+In the previous guide, we created our first empty buyer order. To add some line items to it, we will need the Order ID. 
+
+## Viewing My Orders
+If you don't remember it, fear not - buyer users can view their orders using the `My Orders` resource. This will provide a list of orders that have the currently authenticated user as the `FromUser`.
+
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/me/orders HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Me } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Me.ListOrders({})
+  .then(response => {
+      // returns the first page of buyer orders
+      console.log(response);
+  })
+  .catch(err => console.log(err));\n
+})
+.catch(err => console.log(err));`,
+typescript: `import { Tokens, Me, ListPage, BuyerOrder, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Me.ListOrders({})
+  .then((response: ListPage<BuyerOrder>) => {
+      // returns the first page of buyer orders
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+// see previous example for configuring OrderCloudClient
+var client = new OrderCloudClient(...);\n
+ListPage<BuyerOrder> response = await client.Me.ListOrdersAsync();`}}
+/>
+
+### Creating a Line Item
+Now that we know how to browse products available to our buyer user and the direction and ID of the order we are working with - we can populate our order with a line item.
+
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/orders-and-fulfillment/line-items">OrderCloud LineItems</ContentLink>
+
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/orders/Outgoing/INSERT_ORDER_ID_HERE/lineitems HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+  "ProductID": "SHIRT",
+  "Quantity": 2
+}`,
+javascript: `import { Tokens, LineItems } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+var orderId = "INSERT_ORDER_ID_HERE";\n
+LineItems.Create("Outgoing", orderId, {
+  "ProductID": "SHIRT",
+  "Quantity": 2
+})
+  .then(response => {
+      // returns the newly created line item object
+      console.log(response);
+  })
+  .catch(err => console.log(err));\n
+})
+.catch(err => console.log(err));`,
+typescript: `import { Tokens, LineItems, LineItem, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+const orderId:string = "INSERT_ORDER_ID_HERE";
+const data:Partial<LineItem> = {
+    "ProductID": "SHIRT",
+    "Quantity": 2
+};
+LineItems.Create("Outgoing", orderId, data)
+  .then((response: LineItem) => {
+      // returns the newly created line item object
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+// see previous example for configuring OrderCloudClient
+var client = new OrderCloudClient(...);\n
+LineItem response = await client.LineItems.CreateAsync("Outgoing", "INSERT_ORDER_ID_HERE", new PartialLineItem {
+    ProductID: "SHIRT",
+    Quantity: 2
+});`}}
+/>
+
+Your response should looks like this:
+
+```json
+{
+	"ID": "wvBDPU-WM0CaHpDaIplJcA",
+	"ProductID": "SHIRT",
+	"Quantity": 2,
+	"DateAdded": "2021-03-01T22:00:05.437+00:00",
+	"QuantityShipped": 0,
+	"UnitPrice": 10,
+	"PromotionDiscount": 0,
+	"LineTotal": 20,
+	"LineSubtotal": 20,
+	"CostCenter": null,
+	"DateNeeded": null,
+	"ShippingAccount": null,
+	"ShippingAddressID": null,
+	"ShipFromAddressID": null,
+	"Product": {
+		"ID": "SHIRT",
+		"Name": "Cotton T-Shirt",
+		"Description": "A plain white, cotton shirt for everyday use.",
+		"QuantityMultiplier": 1,
+		"ShipWeight": null,
+		"ShipHeight": null,
+		"ShipWidth": null,
+		"ShipLength": null,
+		"xp": null
+	},
+	"Variant": null,
+	"ShippingAddress": null,
+	"ShipFromAddress": null,
+	"SupplierID": null,
+	"Specs": [],
+	"xp": null
+}
+```
+
+## LineItem Response Model
+Like the buyer product model, you can see that line item has a sub-object for the `Product` attached to it. Though, this is not a buyer product with a full price schedule. Pricing information appears on the root of the line item model.
+
+Note that since we added a `Quantity` of two, the API automatically will calculate `UnitPrice`, `LineTotal`, and `LineSubtotals`.
+
+We rely on these line item properties to show the cost in a shopping cart because the price schedule is only 1 piece to calculating actual purchase price.
+
+If there was a product spec for "shirt size" that incurred a price markup of say, $2.00 - the new unit price would be $12.00.
+
+If there were any applicable line item promotions, the `PromotionDiscount` and `LineSubtotal` might be affected. Perhaps a BOGO offer is applied to our product so the second unit should be free. Which would bring our sub total back down to $10.00.
+
+<ContentLink to="/knowledge-base/line-item-promos" type="Further Reading">Introducing Line Item-Level Promotions</ContentLink>
+
+## Retrieve the Order
+Now that we have added a LineItem, let's retrieve our order again and see how it has changed. Use the example at the top of this guide. Your response should now look something like this:
+
+```json
+{
+	"Meta": {
+		"Page": 1,
+		"PageSize": 20,
+		"TotalCount": 1,
+		"TotalPages": 1,
+		"ItemRange": [
+			1,
+			1
+		]
+	},
+	"Items": [
+		{
+			"ID": "PKTiEFNEiEi9mEmC9cZCrw",
+			"FromUser": {
+				"ID": "BUYER_USER",
+				"Username": "buyer01",
+				"Password": null,
+				"FirstName": "Buyer",
+				"LastName": "User",
+				"Email": "buyer@email.com",
+				"Phone": null,
+				"TermsAccepted": null,
+				"Active": true,
+				"xp": null,
+				"AvailableRoles": null,
+				"DateCreated": "2021-02-08T23:09:14.82+00:00",
+				"PasswordLastSetDate": "2021-02-08T23:10:00.56+00:00"
+			},
+			"FromCompanyID": "BUYER_ORGANIZATION",
+			"ToCompanyID": "bClEeDV0f9GjjkGD",
+			"FromUserID": "BUYER_USER",
+			"BillingAddressID": null,
+			"BillingAddress": null,
+			"ShippingAddressID": null,
+			"Comments": null,
+			"LineItemCount": 1,
+			"Status": "Unsubmitted",
+			"DateCreated": "2021-02-23T20:39:03.173+00:00",
+			"DateSubmitted": null,
+			"DateApproved": null,
+			"DateDeclined": null,
+			"DateCanceled": null,
+			"DateCompleted": null,
+			"Subtotal": 20,
+			"ShippingCost": 0,
+			"TaxCost": 0,
+			"PromotionDiscount": 0,
+			"Total": 20,
+			"IsSubmitted": false,
+			"xp": null
+		}
+	]
+}
+```
+
+Notice that the orders `LineItemCount`, `Subtotal` and `Total` have changed.

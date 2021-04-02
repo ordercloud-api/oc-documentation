@@ -44,7 +44,7 @@ const OrgHierarchyImage4: React.FunctionComponent = () => {
         }}
         className={classes.chip}
         icon={<Business />}
-        label="Buyer"
+        label="Supplier"
       />
       <Grid container justify="center" spacing={4}>
         <Grid item lg className={classes.containerChip}>
