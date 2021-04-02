@@ -14,12 +14,16 @@ Organizations, their relationships with one another, and how those relationships
 ## In the Beginning
 When OrderCloud first launched, it aimed to solve one specific problem: enabling a seller organization to provide B2B eCommerce services to one or more buyer organizations. In this model, the seller is king: they own and manage everything, from product catalogs to buyer organizations to application concerns like webhooks and API client IDs. They were also the sole recipient of all orders. This model also proved effective for B2C scenarios, where a single buyer “organization” acts as a container for consumer users.
 
-![Single Seller Multiple Buyer Order Flow](/images/knowledge-base/inline/marketplaces-in-ordercloud/orderflow1.png)
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/marketplaces-in-ordercloud/orderflow1.png" alt="Single Seller Multiple Buyer Order Flow"/>
+</figure>
 
 ## Enter Suppliers
 In the real world, a seller doesn’t always fulfill orders themselves. A sales organization might own customer accounts and provide eCommerce and other services, but separate supplier organizations might fulfill the physical product. OrderCloud has evolved to accommodate suppliers as a third type of organization. Suppliers can own products and catalogs and, perhaps most notably, receive purchase orders from sellers that contain line items originating from end buyers.
 
-![Single Seller Connecting Multiple Buyer and Suppliers Order Flow](/images/knowledge-base/inline/marketplaces-in-ordercloud/orderflow3.png)
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/marketplaces-in-ordercloud/orderflow3.png" alt="Single Seller Connecting Multiple Buyer and Suppliers Order Flow"/>
+</figure>
 
 ## Toward Marketplaces
 Now that we support networks consisting of a seller, multiple buyers, and multiple suppliers, we’re poised to handle additional scenarios common to marketplaces. If you want to implement an Amazon.com-like model where all orders flow to a single seller (Amazon in this analogy) but other entities may handle the actual fulfillment, this is a perfect fit. But we’re increasingly encountering scenarios where the relationship between buyers and end fulfillers is more transparent. In other words, buyers need to be able to order from multiple sellers.
@@ -34,7 +38,9 @@ As it turns out, a better answer was right in front of us, and it was mostly bui
 ## Rethinking the Seller
 Back to that singular controlling entity. In a world where orders are flowing directly from buyers to suppliers, does this organization even need to participate in commerce? Not necessarily. This could be a pure technology/application provider inviting sellers to join their marketplace, and to bring their own products and customers. While we’ve traditionally called this entity “the seller”, that makes less sense in this new world, and we’ve started using the term “marketplace owner” (or MPO) instead. They may or may not sell, and they may or may not fulfill. But they control the marketplace and everything within it. “Seller” could describe any organization that receives buyer orders, and may in fact be a better term than “supplier” in many marketplace scenarios.
 
-![MPO Order Flow](/images/knowledge-base/inline/marketplaces-in-ordercloud/orderflow2.png)
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/marketplaces-in-ordercloud/orderflow2.png" alt="MPO Order Flow"/>
+</figure>
 
 ## The Rules of Ownership
 In a multi-seller marketplace where a single entity doesn’t necessarily “own” everything, the rules around who can see and edit what become a bit more complicated. So we’re establishing some rules that will generally apply to anything that can be created/owned:
