@@ -199,9 +199,6 @@ class Footer extends React.Component<any> {
                     <OpenInNewOutlined fontSize="inherit" />
                   </Box>
                 </a>
-                <Link className={classes.footerLinks} to="/blog">
-                  Blog
-                </Link>
               </Box>
             </Grid>
             <Grid item xs={6} md={3}>
