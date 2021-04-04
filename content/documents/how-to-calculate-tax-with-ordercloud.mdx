@@ -4,8 +4,8 @@ title:          How to Calculate Tax with OrderCloud
 description:    This guide is designed to be an overview of how we support tax calculation integration and management with some focus on a particular vendor we recommend highly, Avalara.
 author:         sdavis
 publishDate:    2021-03-24
+priority:       5
 updatedDate:
-priority:       1
 tags:           ["Integrations"]
 ---
 
@@ -31,6 +31,7 @@ The Calculate an Order event has the property to provide the TaxTotal to be appl
 As I mentioned above, calculating tax is complex. Tackling this yourself isn’t a good idea. That’s why vendors like [Avalara](https://www.avalara.com/), [Vertex](https://www.vertexinc.com/) and [TaxJar](https://www.taxjar.com/) exist. At Four51, we don’t want to force you into a solution so we designed a simple and secure method for integrating your preferred tax vendor into your e-commerce solution.
 
 The generally recommended workflow for integrating a tax calculation vendor into your commerce solution is simple:
+
 1. Trigger the OrderCalculate Integration Event that is configured to point to your Middleware
 2. Middleware receives the request
 3. Middleware requests and is granted a token with the OverrideTax scoped role
