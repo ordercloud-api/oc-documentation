@@ -224,7 +224,7 @@ class Footer extends React.Component<any> {
                 </Link>
                 <a
                   className={classes.footerLinks}
-                  href="https://four51.io/privacy-policy/"
+                  href="https://www.sitecore.com/trust/privacy-policy"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
