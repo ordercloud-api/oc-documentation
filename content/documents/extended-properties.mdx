@@ -15,7 +15,7 @@ The reality of all enterprise platforms is the need to customize the data model.
 
 The entire xp object must be **8000 bytes** or less and must be a valid JSON object. Any key-value pairs of numbers, strings, booleans, arrays, and even other objects can be used.
 
-**Note, XP should be consistently typed per object.**  This means if you have add a custom property `specialField` on User and store a `string` value, every other User should have `specialField` populated with a `string` or be `null`.  If you create a User later where `specialField` stores an nested object instead, you'll want to go back an update all your Users or risk latent errors interacting with the API.
+**Note, XP should be consistently typed per object.**  This means if you add a custom property `specialField` on User and store a `string` value, every other User should have `specialField` populated with a `string` or be `null`.  If you create a User later where `specialField` stores an nested object instead, you'll want to go back an update all your Users or risk latent errors interacting with the API.
 
 This is very similar to how you might think about creating your own database tables, not all rows needs to have the same values optionally populated, but the structure needs to be consistent with XP for each object type.
 
