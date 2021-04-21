@@ -19,6 +19,7 @@ import { Alert } from '../components/Shared/Alert'
 import { isEmail } from 'validator'
 import LoadingIndicator from '../components/Shared/LoadingIndicator'
 import ReCAPTCHA from 'react-google-recaptcha'
+import { Link } from 'gatsby'
 
 interface SlackCommunityProps {
   classes: any
@@ -153,6 +154,18 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
                       Sign In
                     </Button>
                   </Box>
+                  <Typography
+                    style={{ width: 300 }}
+                    variant="body2"
+                    align="center"
+                  >
+                    By joining our Slack Community, you are agreeing to abide by
+                    the
+                    {` `}
+                    <Link to="/community-guidelines">
+                      OrderCloud Community Guidelines
+                    </Link>
+                  </Typography>
                 </form>
               </LoadingIndicator>
             </div>

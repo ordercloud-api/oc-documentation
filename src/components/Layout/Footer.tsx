@@ -98,7 +98,6 @@ class Footer extends React.Component<any> {
             justify="space-between"
             alignItems="flex-start"
           >
-            
             <Grid item xs={6} md={3}>
               <Box marginY={2} display="flex" flexDirection="column">
                 <Typography
@@ -200,9 +199,6 @@ class Footer extends React.Component<any> {
                     <OpenInNewOutlined fontSize="inherit" />
                   </Box>
                 </a>
-                <Link className={classes.footerLinks} to="/blog">
-                  Blog
-                </Link>
               </Box>
             </Grid>
             <Grid item xs={6} md={3}>
@@ -214,7 +210,7 @@ class Footer extends React.Component<any> {
                 >
                   More
                 </Typography>
-                <PortalLink className={classes.footerLinks} to="">
+                <PortalLink className={classes.footerLinks} to="/">
                   OrderCloud Portal
                 </PortalLink>
                 <Link className={classes.footerLinks} to="/release-notes">
@@ -228,7 +224,7 @@ class Footer extends React.Component<any> {
                 </Link>
                 <a
                   className={classes.footerLinks}
-                  href="https://four51.io/privacy-policy/"
+                  href="https://www.sitecore.com/trust/privacy-policy"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

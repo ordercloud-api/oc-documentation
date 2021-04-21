@@ -116,13 +116,14 @@ const DeveloperTools: FunctionComponent = () => {
       />
       <Container maxWidth="lg">
         <Grid container className={classes.cardWrapper} spacing={3}>
-        <Grid item md={4} sm={6} className={classes.paperRoot}>
+          <Grid item md={4} sm={6} className={classes.paperRoot}>
             <Paper elevation={3} className={classes.paperCard}>
               <Typography className={classes.paperTitleHeading} variant="h4">
                 JavaScript SDK
               </Typography>
               <Typography paragraph component="p">
-                Supports both TypeScript and JavaScript development with any of your favorite UI component libraries
+                Supports both TypeScript and JavaScript development with any of
+                your favorite UI component libraries
               </Typography>
               <Toolbar disableGutters>
                 <Button
@@ -153,7 +154,8 @@ const DeveloperTools: FunctionComponent = () => {
                 .NET C# SDK
               </Typography>
               <Typography paragraph component="p">
-                Get up and running fast with our innovative C# SDK to support creating and querying extensible objects for eCommerce
+                Get up and running fast with our innovative C# SDK to support
+                creating and querying extensible objects for eCommerce
               </Typography>
               <Toolbar disableGutters>
                 <Button
@@ -184,7 +186,8 @@ const DeveloperTools: FunctionComponent = () => {
                 .NET Catalyst Middleware
               </Typography>
               <Typography paragraph component="p">
-                A foundational library for crafting your own middleware extensions for webhooks and integrations
+                A foundational library for crafting your own middleware
+                extensions for webhooks and integrations
               </Typography>
               <Toolbar disableGutters>
                 <Button
@@ -199,7 +202,7 @@ const DeveloperTools: FunctionComponent = () => {
                 <Button
                   variant="outlined"
                   color="secondary"
-                  href="https://www.nuget.org/packages/ordercloud-dotnet-catalyst/1.0.0"
+                  href="https://www.nuget.org/packages/ordercloud-dotnet-catalyst"
                   target="_blank"
                   rel="noreferrer"
                   className={classes.btnSpacer}
@@ -215,7 +218,8 @@ const DeveloperTools: FunctionComponent = () => {
                 OrderCloud HeadStart
               </Typography>
               <Typography paragraph component="p">
-                A full implementation on OrderCloud with a buyer and admin app geared for bootstrapping your project or as a way to learn
+                A full implementation on OrderCloud with a buyer and admin app
+                geared for bootstrapping your project or as a way to learn
               </Typography>
               <Toolbar disableGutters>
                 <Button
@@ -236,7 +240,8 @@ const DeveloperTools: FunctionComponent = () => {
                 OrderCloud on GitHub
               </Typography>
               <Typography paragraph component="p">
-                Check out the many libraries and samples our teams have published to make building scalable eCommerce work for you
+                Check out the many libraries and samples our teams have
+                published to make building scalable eCommerce work for you
               </Typography>
               <Toolbar disableGutters>
                 <Button
@@ -257,7 +262,8 @@ const DeveloperTools: FunctionComponent = () => {
                 Postman Tutorial
               </Typography>
               <Typography paragraph component="p">
-                A sample project with code snippets you can reference and learn from, which is extremely basic, ideal for the curious
+                A sample project with code snippets you can reference and learn
+                from, which is extremely basic, ideal for the curious
               </Typography>
               <Toolbar disableGutters>
                 <Button
@@ -279,13 +285,17 @@ const DeveloperTools: FunctionComponent = () => {
           <Divider />
         </Box>
         <Typography variant="h2" align="center" color="secondary">
-            Open API Standards with Swagger
-          </Typography>
+          Open API Standards with Swagger
+        </Typography>
         <Box paddingY={3} paddingX={20} className={classes.boxMain}>
           <Typography>
-                Don't see a library for your language of choice?  OrderCloud is built with Open API standards and our SDKs are generated with libaries such as Swagger, and extended to make it even easier to develop applications.  If there's a project you have and are looking for another language, you can generate your own client.
+            Don't see a library for your language of choice? OrderCloud is built
+            with Open API standards and our SDKs are generated with libaries
+            such as Swagger, and extended to make it even easier to develop
+            applications. If there's a project you have and are looking for
+            another language, you can generate your own client.
           </Typography>
-          <br/>
+          <br />
           <Button
             variant="outlined"
             href="https://api.ordercloud.io/v1/openapi/v3"

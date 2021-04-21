@@ -30,8 +30,6 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
         author: {
           type: 'AuthorJson',
           resolve: (source, args, context, info) => {
-            // If you were linking by ID, you could use `getNodeById` to
-            // find the correct author:
             return context.nodeModel.getNodeById({
               id: source.author,
               type: 'AuthorJson',

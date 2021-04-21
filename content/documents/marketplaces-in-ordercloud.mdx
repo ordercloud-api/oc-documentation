@@ -1,0 +1,53 @@
+---
+type:           article
+title:          Marketplaces in OrderCloud
+description:    Moving beyond single-seller environments
+author:         tmenier
+publishDate:    2021-04-02
+updatedDate:    
+tags:           ["Concepts", "Sellers", "Suppliers", "Buyers", "Orders"]
+---
+
+Organizations, their relationships with one another, and how those relationships affect order flow have always been core tenets of OrderCloud. As these features continue to evolve, let's take a look at where we started, where we are now, and where we're headed.
+
+## In the Beginning
+When OrderCloud first launched, it aimed to solve one specific problem: enabling a seller organization to provide B2B eCommerce services to one or more buyer organizations. In this model, the seller is king: they own and manage everything, from product catalogs to buyer organizations to application concerns like webhooks and API client IDs. They were also the sole recipient of all orders. This model also proved effective for B2C scenarios, where a single buyer “organization” acts as a container for consumer users.
+
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/marketplaces-in-ordercloud/orderflow1.png" alt="Single Seller Multiple Buyer Order Flow"/>
+</figure>
+
+## Enter Suppliers
+In the real world, a seller doesn’t always fulfill orders themselves. A sales organization might own customer accounts and provide eCommerce and other services, but separate supplier organizations might fulfill the physical product. OrderCloud has evolved to accommodate suppliers as a third type of organization. Suppliers can own products and catalogs and, perhaps most notably, receive purchase orders from sellers that contain line items originating from end buyers.
+
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/marketplaces-in-ordercloud/orderflow3.png" alt="Single Seller Connecting Multiple Buyer and Suppliers Order Flow"/>
+</figure>
+
+## Toward Marketplaces
+Now that we support networks consisting of a seller, multiple buyers, and multiple suppliers, we’re poised to handle additional scenarios common to marketplaces. If you want to implement an Amazon.com-like model where all orders flow to a single seller (Amazon in this analogy) but other entities may handle the actual fulfillment, this is a perfect fit. But we’re increasingly encountering scenarios where the relationship between buyers and end fulfillers is more transparent. In other words, buyers need to be able to order from multiple sellers.
+
+## Rearchitect or Repurpose?
+When we looked at our current “seller is king” model and imagined what would happen if there were multiple such organizations in a single environment, things got messy quickly. Even in a decentralized marketplace with lots of buyers and sellers transacting directly, the need for a single entity to own and operate the marketplace as a whole still exists. After all, somebody built (or bought) an application that runs on top of OrderCloud, and they’re going to want to maintain sole control of it.
+
+So multiple “sellers” as we’ve defined them is out. Our next thought was yet another organization “type”, a sort of light-weight seller who can own product catalogs and take buyer orders but doesn’t own the marketplace. That could work, but is 4 org types needlessly complicated?
+
+As it turns out, a better answer was right in front of us, and it was mostly built already. We already have an entity that can fulfill orders, create products, and whose access to the marketplace is more or less limited to the things they own: **suppliers**. Direct relationships between buyers and suppliers in terms of visibility and order flow is all that was missing. This is not only simpler than adding a fourth org type, it’s also more flexible. Could the same organization take orders directly from a buyer and indirectly fulfill orders for another seller? Sure! Could a supplier create and manage their own buyers? Why not!
+
+## Rethinking the Seller
+Back to that singular controlling entity. In a world where orders are flowing directly from buyers to suppliers, does this organization even need to participate in commerce? Not necessarily. This could be a pure technology/application provider inviting sellers to join their marketplace, and to bring their own products and customers. While we’ve traditionally called this entity “the seller”, that makes less sense in this new world, and we’ve started using the term “marketplace owner” (or MPO) instead. They may or may not sell, and they may or may not fulfill. But they control the marketplace and everything within it. “Seller” could describe any organization that receives buyer orders, and may in fact be a better term than “supplier” in many marketplace scenarios.
+
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/marketplaces-in-ordercloud/orderflow2.png" alt="MPO Order Flow"/>
+</figure>
+
+## The Rules of Ownership
+In a multi-seller marketplace where a single entity doesn’t necessarily “own” everything, the rules around who can see and edit what become a bit more complicated. So we’re establishing some rules that will generally apply to anything that can be created/owned:
+
+1. Any organization (given the proper roles) can create and “own” things such as products, catalogs, and even buyer organizations.
+2. Exactly one organization owns the marketplace. They are omniscient, i.e. they can view and edit virtually anything in the marketplace.
+3. Permission to view/edit things follows a hierarchical ownership structure. For example, a seller (who is not the MPO) creates a Buyer. An administrative user within that buyer organization creates a shared address. Technically 3 different organizations could (with the proper roles) see and edit that address: the buyer, the seller who owns them, and the MPO.
+4. Ownership can be transferred from one organization to another, but _only_ by the MPO.
+
+## When is this coming?
+Soon! In recent months we’ve released the ability for suppliers to own things like products, catalogs, and shipments. Direct relationships between suppliers and buyers, including direct order flow, is well underway. Stay tuned for details!

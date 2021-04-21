@@ -3,6 +3,7 @@ type:           tutorial
 title:          Using Extended Properties
 description:    The reality of all enterprise platforms is the need to customize the data model. To accommodate this, OrderCloud designed a property called Extended Properties (XP) to allow enterprise customization of the OrderCloud data model.
 author:         rwatt
+priority:       5
 publishDate:    2015-11-09
 updatedDate:
 tags:           ["Extended Properties", "Integrations"]
@@ -10,9 +11,13 @@ tags:           ["Extended Properties", "Integrations"]
 
 The reality of all enterprise platforms is the need to customize the data model. To accommodate this, OrderCloud designed a property called Extended Properties (XP) to allow enterprise customization of the OrderCloud data model. OrderCloud exposes the xp property on most resources allowing you to build a JSON object containing your custom properties. The JSON object can be as complex and deeply-nested as necessary. Additionally, the xp property is available for filtering, sorting and searching in all list endpoints. Extended Properties allows you to overcome platform rigidity. To optimize the use of our data model, and to help you fully implement your B2B scenarios, we created a schema-less solution with `xp` and exposed it on virtually every API resource. We may not have `Product.YourSpecialDataPoint`, but we do have `Product.xp.YourSpecialDataPoint`.
 
-## Add, Update and Remove XP
+## What is XP?
 
 The entire xp object must be **8000 bytes** or less and must be a valid JSON object. Any key-value pairs of numbers, strings, booleans, arrays, and even other objects can be used.
+
+**Note, XP should be consistently typed per object.**  This means if you add a custom property `specialField` on User and store a `string` value, every other User should have `specialField` populated with a `string` or be `null`.  If you create a User later where `specialField` stores an nested object instead, you'll want to go back an update all your Users or risk latent errors interacting with the API.
+
+This is very similar to how you might think about creating your own database tables, not all rows needs to have the same values optionally populated, but the structure needs to be consistent with XP for each object type.
 
 ## Adding XP
 

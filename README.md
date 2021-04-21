@@ -1,98 +1,115 @@
-<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
-<p align="center">
-  <a href="https://www.gatsbyjs.org">
-    <img alt="Gatsby" src="https://www.gatsbyjs.org/monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby's default starter
-</h1>
+# Contributing to OrderCloud Documentation Content
 
+## Structure
+Each folder within `root/content` has a unique purpose and configuration that needs to be applied in order to work properly.
 
-Kick off your project with this default boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing fast with the blazing fast app generator for React.
+Configuration of a page is called `frontmatter` and is implemented between two lines containing `---`. For example, frontmatter containing a `title` property might look like this:
 
-_Have another more specific idea? You may want to check out our vibrant collection of [official and community-created starters](https://www.gatsbyjs.org/docs/gatsby-starters/)._
+```mdx
+---
+title: Example Page Title
+---
 
-## 🚀 Quick start
+Content
+```
 
-1.  **Create a Gatsby site.**
+### Discover 
+Location: `root/content/discover`
 
-    Use the Gatsby CLI to create a new site, specifying the default starter.
+Discover content is managed and approved by @jhookom at Four51. It is a flat folder full of `.mdx` files that need the following `frontmatter`.
 
-    ```sh
-    # create a new Gatsby site using the default starter
-    gatsby new my-default-starter https://github.com/gatsbyjs/gatsby-starter-default
-    ```
+| Property | Type | Required | Description |
+| ----------- | ----------- | ----------- | ---------- |
+| title | `string` | `true` | The title of the page, it will appear as the first `H1` tag in the content of the page as well as the page `<title>` element (suffixed with ` \| Four51 OrderCloud`) |
+| description | `string` | `true` | A short description of the page, this will be used in `meta[name="description]` tag for SEO purposes |
+| priority | `number` | `true` | The list order of the page, controls the order of the right hand menu when viewing discovery content |
 
-1.  **Start developing.**
+### Documents
+Location: `root/content/documents`
 
-    Navigate into your new site's directory and start it up.
+The documents folder controls **Knowledge base** content and is managed and approved by contributors at Four51. It is a flat folder full of `.mdx` files that need the following `frontmatter`.
 
-    ```sh
-    cd my-default-starter/
-    gatsby develop
-    ```
+| Property | Type | Required | Description |
+| ----------- | ----------- | ----------- | ---------- |
+| type | `enum` | `true` | Allows us to differentiate between articles and tutorials in the knowledge base, possible values: `article`, `tutorial`.
+| title | `string` | `true` | The title of the page, it will appear as the first `H1` tag in the content of the page as well as the page `<title>` element (suffixed with ` \| Four51 OrderCloud`) |
+| description | `string` | `true` | A short description of the page, this will be used in `meta[name="description]` tag for SEO purposes |
+| author | `string` | `true` | This is the author _identifier_, when set, Gatsby will query data in `root/src/data/author.json` to retrieve the author's name & title. Additionally, there should always be a `.jpg` image for each author entry where the name of the image is the `author.id`. |
+| publishDate | `date` | `true` | The date the document is first published using the format `YYYY-MM-DD`. |
+| updatedDate | `date` | `false` | If you are making changes to an existing document update this value using the format `YYYY-MM-DD`. |
+| tags | `string[]` | `true` | An array of strings that you would like this document to be filtered on. This also controls related articles, which will pull up documents with the same tag so be sure you check if a tag already exists for the topic you are thinking of. If you are unsure about what tag to use, consult @rwatt.
 
-1.  **Open the source code and start editing!**
+### Learn 
+Location: `root/content/learn`
 
-    Your site is now running at `http://localhost:8000`!
+Learn content is managed and approved by @rwatt at Four51. It is a two layered directory full of `.mdx` files that need the following `frontmatter`.
 
-    _Note: You'll also see a second link: _`http://localhost:8000/___graphql`_. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://www.gatsbyjs.org/tutorial/part-five/#introducing-graphiql)._
+| Property | Type | Required | Description |
+| ----------- | ----------- | ----------- | ---------- |
+| section | `enum` | `true` | This should match whatever folder you are putting the current document in. See othe articles for the correct value in each folder |
+| title | `string` | `true` | The title of the page, it will appear as the first `H1` tag in the content of the page as well as the page `<title>` element (suffixed with ` \| Four51 OrderCloud`) |
+| description | `string` | `true` | A short description of the page, this will be used in `meta[name="description]` tag for SEO purposes |
+| priority | `number` | `true` | The list order of the page, controls the order of the right hand menu for the current section when viewing learn content |
 
-    Open the `my-default-starter` directory in your code editor of choice and edit `src/pages/index.js`. Save your changes and the browser will update in real time!
+### Releaes Notes
+Locations:
+- **Portal Release Notes** - `root/content/portal-release-notes`
+- **Core API Release Notes** - `root/content/release-notes`
 
-## 🧐 What's inside?
+File names in these directories should follow a specific pattern: `vN.N.NNN.mdx`. 
 
-A quick look at the top-level files and directories you'll see in a Gatsby project.
+> Core API release notes should be built/released _after_ the API release is complete (this is so that the API reference can be generated using the new Open API spec).
 
-    .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
-    ├── .prettierrc
-    ├── gatsby-browser.js
-    ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package-lock.json
-    ├── package.json
-    └── README.md
+| Property | Type | Required | Description |
+| ----------- | ----------- | ----------- | ---------- |
+| apiVersion | `number` | `true` | The version of the API this release note is for - without the `v` prefix. |
+| date | `date` | `true` | The release date of the version this release note is for. `YYYY-MM-DD`. |
 
-1.  **`/node_modules`**: This directory contains all of the modules of code that your project depends on (npm packages) are automatically installed.
+## Writing Content
 
-2.  **`/src`**: This directory will contain all of the code related to what you will see on the front-end of your site (what you see in the browser) such as your site header or a page template. `src` is a convention for "source code".
+Follow the standard [markdown syntax](https://www.markdownguide.org/cheat-sheet/) while writing content. Raw HTML is supported, but not encouraged - sometimes it might be easier to write a `<table>` in HTML. It is also acceptable when using some of the custom components available in the gatsby project.
 
-3.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
+## Custom Components
+> Custom components need to be written in one line to avoid breaking the `.mdx` parser in Gatsby.
 
-4.  **`.prettierrc`**: This is a configuration file for [Prettier](https://prettier.io/). Prettier is a tool to help keep the formatting of your code consistent.
+### Content Link
+This is a component meant for creating a stylized CTA to external or internal content within your content. It will appear on it's own line unless wrapped in other HTML content (not recommended).
 
-5.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://www.gatsbyjs.org/docs/browser-apis/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
+Properties:
+- `type` (optional) - controls which icon will appear
+- `subtitle` - the smaller text on top of the components child content
+- `to` - the internal uri or external url the CTA should link to
+- `children` (inside the tag) - the larger text, generally the name of the destination
 
-6.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you'd like to include, etc. (Check out the [config docs](https://www.gatsbyjs.org/docs/gatsby-config/) for more detail).
+Example:
+```md
+<ContentLink type="bookmark" subtitle="API Reference" to="/api-reference/product-catalogs/products">OrderCloud Products</ContentLink>
+```
 
-7.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby Node APIs](https://www.gatsbyjs.org/docs/node-apis/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
+![Content Link Example]([/static/images/readme/contentLink.JPG])
 
-8.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://www.gatsbyjs.org/docs/ssr-apis/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
+### Code Example
+This component is useful in tutorials or guides that want to show a code example in multiple languages. Right now it supports `http`, `js`, `ts`, and `csharp`.
 
-9.  **`LICENSE`**: Gatsby is licensed under the MIT license.
+It is easiest to just show an example of a working `<CodeExample>` component without any content:
 
-10. **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. **(You won't change this file directly).**
+```md
+<CodeExample
+  title="Authenticating Subsequent API Requests"
+  description="More in-depth description of the code example"
+  content={{
+      http: `content`,
+      javascript: `content`,
+      typescript: `content`,
+      csharp: `content`
+  }}
+/>
+```
 
-11. **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project's name, author, etc). This manifest is how npm knows which packages to install for your project.
+`title` and `description` are _optional_. If you dont have an example for one of the 4 lanuguages, just keep it out of your `content` object.
 
-12. **`README.md`**: A text file containing useful reference information about your project.
+Using the interpolated string syntax will allow you to add new lines to your examples.
 
-## 🎓 Learning Gatsby
-
-Looking for more guidance? Full documentation for Gatsby lives [on the website](https://www.gatsbyjs.org/). Here are some places to start:
-
-- **For most developers, we recommend starting with our [in-depth tutorial for creating a site with Gatsby](https://www.gatsbyjs.org/tutorial/).** It starts with zero assumptions about your level of ability and walks through every step of the process.
-
-- **To dive straight into code samples, head [to our documentation](https://www.gatsbyjs.org/docs/).** In particular, check out the _Guides_, _API Reference_, and _Advanced Tutorials_ sections in the sidebar.
-
-## 💫 Deploy
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-default)
-
-<!-- AUTO-GENERATED-CONTENT:END -->
+> If you need an _empty line_ be sure to use **`\n`**. If there are any empty lines in your `.mdx` file between the beginning and end of the `<CodeExample/>` component the gatsby parser will break.
+> 
+> If you are ever unsure about how to implement this component, look at some of the articles within `root/content/learn` for examples.

@@ -23,12 +23,12 @@ For this reason many developers overlook the fact that they need to explicitly a
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    CatalogID: "BUYER_ORGANIATION",
+    CatalogID: "BUYER_ORGANIZATION",
     ProductID: "SHIRT"
 }`,
 javascript: `import { Catalogs } from "ordercloud-javascript-sdk";\n
 Catalogs.SaveProductAssignment({
-  CatalogID: "BUYER_ORGANIATION",
+  CatalogID: "BUYER_ORGANIZATION",
   ProductID: "SHIRT",
 })
   .then((response) => {
@@ -50,7 +50,7 @@ Catalogs.SaveProductAssignment(assignment)
 csharp: `using OrderCloud.SDK;\n
 var client = new OrderCloudClient(...);\n
 var assignment = new ProductCatalogAssignment {
-    CatalogID = "BUYER_ORGANIATION",
+    CatalogID = "BUYER_ORGANIZATION",
     ProductID = "SHIRT"
 };\n
 try {

@@ -48,7 +48,7 @@ Here we get a little more fine-grained with assignments, but still not all the w
 
 > "I want everybody to see everything except a specific category."
 
-`CategoryAssignment.Visible` and `CategoryAssignment.ViewAllProducts` have 3 possible values: `true`, `false`, or `null`. `null` means “inherit this setting from my parent”, i.e. the parent category or, in the case of top-level categories, the catalog. This is a very powerful concept - it means you turn on `ViewAllCategories` and `Vi.ewAllProducts` on the `CatalogAssignment`, and then turn off either or both anywhere down the category tree. Category-level settings, whether true or false, will always override their corresponding catalog-level settings.
+`CategoryAssignment.Visible` and `CategoryAssignment.ViewAllProducts` have 3 possible values: `true`, `false`, or `null`. `null` means “inherit this setting from my parent”, i.e. the parent category or, in the case of top-level categories, the catalog. This is a very powerful concept - it means you turn on `ViewAllCategories` and `ViewAllProducts` on the `CatalogAssignment`, and then turn off either or both anywhere down the category tree. Category-level settings, whether true or false, will always override their corresponding catalog-level settings.
 
 ## Scenario 6
 

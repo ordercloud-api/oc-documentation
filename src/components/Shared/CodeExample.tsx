@@ -90,12 +90,16 @@ export const codeExampleStore = configureStore({
   },
 })
 
+export type CodeExampleRootState = ReturnType<typeof codeExampleStore.getState>
+
 const CodeExample: FunctionComponent<CodeExampleProps> = (
   props: CodeExampleProps
 ) => {
   const { title, description, content, hide } = props
   const classes = useStyles()
-  const language = useSelector(state => state.codeExample.value)
+  const language = useSelector(
+    (state: CodeExampleRootState) => state.codeExample.value
+  )
   const dispatch = useDispatch()
 
   const handleLanguageChange = useCallback(

@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   ButtonBase,
   Container,
   createStyles,
@@ -10,7 +11,6 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemIcon,
   ListItemText,
   makeStyles,
   Paper,
@@ -18,40 +18,34 @@ import {
   Typography,
 } from '@material-ui/core/'
 import {
-  DeviceHub,
-  AttachMoneyTwoTone,
   AccountTreeTwoTone,
+  AttachMoneyTwoTone,
+  BookmarkTwoTone,
+  BuildTwoTone,
   BusinessTwoTone,
   CategoryTwoTone,
   Code,
-  MarkunreadMailboxTwoTone,
-  ShoppingCartTwoTone,
-  LocalShippingTwoTone,
+  CodeOutlined,
+  DeviceHub,
+  EmojiObjectsTwoTone,
   ExtensionTwoTone,
+  HelpTwoTone,
+  LocalShippingTwoTone,
+  MarkunreadMailboxTwoTone,
   PeopleTwoTone,
   PlaylistAddCheckTwoTone,
-  CodeOutlined,
   SchoolTwoTone,
-  BookmarkTwoTone,
-  BuildTwoTone,
-  EmojiObjectsTwoTone,
-  HelpTwoTone,
+  ShoppingCartTwoTone,
 } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import Prism from 'prismjs'
 import React, { useLayoutEffect } from 'react'
-import {
-  darkgrey,
-  flame,
-  seafoam,
-  mediumgrey,
-  sherpablue,
-} from '../../theme/ocPalette.constants'
+import { darkgrey, flame, sherpablue } from '../../theme/ocPalette.constants'
 import themeConstants from '../../theme/theme.constants'
-import ButtonLink from '../Shared/ButtonLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
 import Jumbotron from '../Shared/Jumbotron'
 import ListItemLink from '../Shared/ListItemLink'
+import { navigate } from '../Shared/PortalLink'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
 
@@ -140,14 +134,23 @@ const MainComponent: React.FunctionComponent = props => {
   return (
     <React.Fragment>
       <Jumbotron
-        // image={{
-        //   src: '/images/ordercloud_nobg.png',
-        //   alt: 'homepage background',
-        // }}
+        image={{
+          src: '/images/logos_horizontal_desktop.png',
+          alt: 'homepage background',
+        }}
         overlayed={true}
-        heading="YOUR B2B-FIRST ECOMMERCE° PLATFORM"
-        text="Design your own marketplace with an API-first, headless cloud platform for B2B, B2C, and B2X. We power custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."
+        heading="Four51 to be Acquired by Sitecore"
+        text={["Deal means we’ll be joining forces with the digital experience leader.", <br/>, <br/>, "With Four51 OrderCloud, design your own marketplace with an API-first, headless cloud platform for B2B, B2C, and B2X. We power custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."]}
         actions={[
+          <Button
+            key="knowledge"
+            href="https://www.four51.io/sitecore-acquires-boxever-and-four51"
+            variant="contained"
+            target="new"
+            style={{backgroundColor: '#fff'}}
+          >
+            Press Release
+          </Button>,
           <CustomButtonLink
             key="developers"
             to="/learn/getting-started/welcome-to-ordercloud"
@@ -156,14 +159,7 @@ const MainComponent: React.FunctionComponent = props => {
           >
             Developer Guide
           </CustomButtonLink>,
-          <CustomButtonLink
-            key="knowledge"
-            to="/knowledge-base"
-            variant="contained"
-            color="#fff"
-          >
-            Knowledge Base
-          </CustomButtonLink>,
+          
         ]}
       />
       <Hidden smUp>
@@ -607,47 +603,19 @@ await Orders.Submit("Outgoing", order.ID);`}
           justifyContent="center"
           paddingBottom={8}
         >
-          <CustomButtonLink
-            color={sherpablue[500]}
-            key="intro-to-ordercloud"
-            to="/register"
+          <Button
+            onClick={() => navigate('/register')}
+            color="primary"
             variant="contained"
           >
             Sign Up
-          </CustomButtonLink>
+          </Button>
           <div className={classes.spacer} />
-          <CustomButtonLink
-            key="main-concepts"
-            to="/main-concepts/organization-hierarchy"
-            variant="contained"
-            color={flame[500]}
-          >
+          <CustomButtonLink to="/slack" variant="contained" color={flame[500]}>
             Join Our Slack
           </CustomButtonLink>
         </Box>
       </Container>
-      {/* <Container maxWidth="md">
-        <Box paddingTop={7} paddingBottom={14}>
-          <Typography variant="h3">
-            Four51 OrderCloud™ is an API-first, headless eCommerce platform
-            offering nearly limitless customizations and endless freedom for
-            growth.
-          </Typography>
-          <Typography paragraph>
-            Your eCommerce data and infrastructure are available in the cloud as
-            building blocks via our RESTful API. Create best-of-breed commerce
-            applications that easily integrate with your back-end systems and
-            3rd party microservices. With OrderCloud, accelerate your commerce
-            transformation, increase your agility, and scale limitlessly.
-          </Typography>
-          <Typography>
-            OrderCloud powers custom eCommerce (B2B, B2C, B2X), order
-            management, and B2B marketplace applications for some of the world’s
-            most well-known brands - processing over 25 million transactions and
-            over $5 billion in revenue annually.
-          </Typography>
-        </Box>
-      </Container> */}
     </React.Fragment>
   )
 }
