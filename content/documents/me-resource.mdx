@@ -1,0 +1,25 @@
+---
+type:           article
+title:          Me and My Stuff
+description:    OrderCloud provides the Me Resource whose job it is to flatten these assignments for the currently authenticated user and just "show me what I can see" regardless at which level these assignments are made.
+author:         rwatt
+publishDate:    2015-02-24
+updatedDate:    
+tags:           ["Me", "Personalization", "Authentication"]
+---
+
+Multi-tiered assignments make up a powerful mechanism for customizing the buyer experience down to the individual user. But once configured, the buyer (and developer for that matter) wants a fast and intuitive experience that's more concerned with what they see rather than how or why they see it.
+
+## Easy Access to Inherited or Personal Data
+
+OrderCloud provides the <Link to="/api-reference/me-and-my-stuff">Me Resource</Link> whose job it is to flatten these assignments for the currently authenticated user and just "show me what I can see" regardless at which level these assignments are made.
+
+For example let's say your buyer user is assigned an address at the buyer level, and another address at the usergroup level. Instead of listing assignments at both of those levels and manually resolving the addresses yourself, you can simply make a list call as that buyer user to <Link to="/api-reference/me-and-my-stuff/my-addresses">me/addresses</Link> and quickly get the assigned addresses in one quick and fluid motion.
+
+## Ability to Admin Personal Resources
+
+In addition to being able to quickly get information about the currently authenticated user, the Me resource provides a set of admin endpoints for personal resources (Credit Cards and Addresses) that only that user can see. Not even admins have access to viewing the data created by these users without something like <Link to="/knowledge-base/impersonation">impersonation</Link>.
+
+## Conclusion
+
+We've seen how assignments can be made and flow down to the individual user. We've also seen just how easy it is to access those resolved assignments via the Me resource.

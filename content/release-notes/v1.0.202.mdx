@@ -1,0 +1,10 @@
+---
+apiVersion: 1.0.202
+date: 2021-04-21
+---
+
+Released on Tuesday, April 21st, 2021 at 3:45 PM.
+
+- **Bugfix:** ensure `Promotion.RedemptionCount` does not decrement prior to order submit.
+- **Bugfix:** addressed an issue where an error was thrown if you attempted to create a user with an insecure password but the user was still created. With this fix, if the password does not meet the minimum requirements for any org level `SecurityProfile.PasswordConfigs` or the OrderCloud minimum password requirements, the user will not be created. If the user is created successfully and you add the user to a group with stricter password requirements after the initial create, the user will be unable to authenticate with the password.
+- **Bugfix:** fixed an issue where a 500 error was being thrown on certain authentication attempts with an invalid password.

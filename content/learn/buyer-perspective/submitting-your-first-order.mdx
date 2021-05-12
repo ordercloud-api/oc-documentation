@@ -1,0 +1,103 @@
+---
+section: 'Buyer Perspective'
+title: 'Submitting Your First Order'
+description: 'Introduce yourself to API Resources and endpoints related to typical submission processes and how to submit your first Buyer Order.'
+priority: 4
+---
+
+In the previous guides you created an empty order and then populated it with a line item containing two of our Cotton T-shirt product.
+
+## Shipping Estimates
+In a normal order checkout process, one would expect to provide a shipping address and thereby have a choice of shipping providers to choose from. This is what the **Shipping Estimates** integration is for and will be covered in later documentation.
+
+<ContentLink to="/api-reference/seller/integration-events/estimate-shipping" type="bookmark" subtitle="API Reference">Integration Events: Estimate Shipping</ContentLink>
+
+## Order Calculate
+When a Shipper is selected or pre-configured by the application, at that point a **Order Calculate** would be run to update `ShippingCost` and `TaxCost` using a third party provider and elevated API roles. Again, this is beyond the scope of this guide and covered in later documentation.
+
+<ContentLink to="/api-reference/seller/integration-events/calculate" type="bookmark" subtitle="API Reference">Integration Events: Order Calculate</ContentLink>
+
+## Submitting the Order
+Once you have an order with at least one Line Item, you are able to use the **Order Submit** endpoint to change the Order's status from `Unsubmitted` to `Open`. Wherein the seller perspective or automation would take over fulfillment.
+
+<ContentLink to="/api-reference/orders-and-fulfillment/orders/submit" type="bookmark" subtitle="API Reference">Order Submit</ContentLink>
+
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/orders/Outgoing/INSERT_ORDER_ID_HERE/submit HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`,
+javascript: `import { Tokens, Orders } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+var orderId = "INSERT_ORDER_ID_HERE";\n
+Orders.Submit("Outgoing", orderId)
+  .then(response => {
+      // returns the submitted order object
+      console.log(response);
+  })
+  .catch(err => console.log(err));\n
+})
+.catch(err => console.log(err));`,
+typescript: `import { Tokens, Orders, Order, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+const orderId:string = "INSERT_ORDER_ID_HERE";\n
+Orders.Submit("Outgoing", orderId)
+  .then((response: Order) => {
+      // returns the submitted order object
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+// see previous example for configuring OrderCloudClient
+var client = new OrderCloudClient(...);\n
+Order response = await client.Orders.SubmitAsync("Outgoing", "INSERT_ORDER_ID_HERE");`}}
+/>
+
+The response should look something like this:
+
+```json
+{
+	"ID": "PKTiEFNEiEi9mEmC9cZCrw",
+	"FromUser": {
+		"ID": "BUYER_USER",
+		"Username": "buyer01",
+		"Password": null,
+		"FirstName": "Buyer",
+		"LastName": "User",
+		"Email": "buyer@email.com",
+		"Phone": null,
+		"TermsAccepted": null,
+		"Active": true,
+		"xp": null,
+		"AvailableRoles": null,
+		"DateCreated": "2021-02-08T23:09:14.82+00:00",
+		"PasswordLastSetDate": "2021-02-08T23:10:00.56+00:00"
+	},
+	"FromCompanyID": "BUYER_ORGANIZATION",
+	"ToCompanyID": "bClEeDV0f9GjjkGD",
+	"FromUserID": "BUYER_USER",
+	"BillingAddressID": null,
+	"BillingAddress": null,
+	"ShippingAddressID": null,
+	"Comments": null,
+	"LineItemCount": 1,
+	"Status": "Open",
+	"DateCreated": "2021-02-23T20:39:03.173+00:00",
+	"DateSubmitted": "2021-03-01T22:37:59.267+00:00",
+	"DateApproved": null,
+	"DateDeclined": null,
+	"DateCanceled": null,
+	"DateCompleted": null,
+	"Subtotal": 20,
+	"ShippingCost": 0,
+	"TaxCost": 0,
+	"PromotionDiscount": 0,
+	"Total": 20,
+	"IsSubmitted": true,
+	"xp": null
+}
+```
+
+The order now has `IsSubmitted` set to true, `Status` is set to "Open", and the `DateSubmitted` property has been set.
+
+Congratulations on submitting your first OrderCloud order! In the next chapter we will cover how the seller perspective can view this order and take it through the fulfillment process.

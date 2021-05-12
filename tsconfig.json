@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "skipLibCheck": false,
+        "skipLibCheck": true,
         "allowJs": true,
         "target": "es5",
         "module": "esnext",

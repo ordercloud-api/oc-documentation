@@ -1,0 +1,230 @@
+---
+section: 'Product Catalogs'
+title: 'Creating Your First Product'
+description: 'Follow this guide and create your first OrderCloud Product and get introduced to related API resources'
+priority: 1
+---
+
+Now that we've confirmed the default catalog in place with the `ViewAllProducts` setting set to true, we can begin populating it with products. We will continue operating from the seller perspective, which has the required roles for managing products, product assignments, and price schedules.
+
+## What is a Product?
+A product in OrderCloud represents a physical, digital, or abstract good that is offered for sale by a seller organization and is purchase-able by buyer users via an order. Creating a new product only requires a `Name`, everything else is optional; however, a product without an assigned or default price schedule is not purchase-able.
+
+## What is a Price Schedule?
+OrderCloud separates products from price to allow the same product to be sold across multiple channels at varying prices. A price schedule may include quantity price breaks, min and max quantity per order, whether to apply tax or shipping calculations, or to what type of order the price schedule applies.
+
+For simpler solutions, you can tie a product directly to a price schedule using the `DefaultPriceSchedule` property. Products with a `DefaultPriceSchedule` circumvent the need to create any product assignments between the buyers that access the product through a catalog with `ViewAllProducts` set to `true`. You can still create more specific product assignments if you wish to override the default price for a certain buyer party.
+
+## Creating the Product
+For our streamlined example we would like to create a purchase-able product in the easiest way possible. This means we will want to take advantage of the `DefaultPriceSchedule` field.
+
+First, let's create the product. Since we don't have a price schedule yet, we'll leave that field out for now.
+
+<CodeExample
+  title="Create a new product"
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/products HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    ID: "SHIRT",
+    Name: "Cotton T-Shirt",
+    Description: "A plain white, cotton shirt for everyday use.",
+    Active: true
+}`,
+javascript: `import { Products } from "ordercloud-javascript-sdk";\n
+Products.Create({
+    ID: "SHIRT",
+    Name: "Cotton T-Shirt",
+    Description: "A plain white, cotton shirt for everyday use.",
+    Active: true
+})
+.then(response => {
+    // returns the newly created product with default values added
+    console.log(response);
+})
+.catch(err => console.log(err));`,
+typescript: `import { Products, Product, OrderCloudError } from "ordercloud-javascript-sdk";\n
+var product: Product = {
+    ID: "SHIRT",
+    Name: "Cotton T-Shirt",
+    Description: "A plain white, cotton shirt for everyday use.",
+    Active: true
+}\n
+Products.Create(product)
+  .then((response: Product) => {
+      // returns the newly created product with default values added
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+var product = new Product {
+    ID = "SHIRT",
+    Name = "Cotton T-Shirt",
+    Description = "A plain white, cotton shirt for everyday use.",
+    Active = true
+};\n
+try {
+    Product response = await client.Products.CreateAsync(data);
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
+/>
+
+Your response should look something like this:
+
+```json
+{
+	"OwnerID": "xxxxxxxxxxxxxxxxxx",
+	"DefaultPriceScheduleID": null,
+	"AutoForward": false,
+	"ID": "SHIRT",
+	"Name": "Cotton T-Shirt",
+	"Description": "A plain white, cotton shirt for everyday use.",
+	"QuantityMultiplier": 1,
+	"ShipWeight": null,
+	"ShipHeight": null,
+	"ShipWidth": null,
+	"ShipLength": null,
+	"Active": true,
+	"SpecCount": 0,
+	"VariantCount": 0,
+	"ShipFromAddressID": null,
+	"Inventory": null,
+	"DefaultSupplierID": null,
+	"xp": null
+}
+```
+
+OrderCloud has taken care of defaulting certain non-nullable values:
+
+- **`OwnerID`** - The organization that owns this product (our seller organization ID)
+- **`QuantityMultipliier`** - This field does not affect any functionality. If we were selling a pack of 5 shirts, we may change this value to 5 to indicate that in the user experience.
+- **`AutoForward`** - This field is relevant to solutions that take advantage of suppliers, no need to worry about it now.
+
+In a real solution you would likely include things like inventory, shipping measurements, and ship-from address (for estimating shipping cost), but we are not going to be creating any integrations for this example so we left them blank.
+
+If the shirt came in mulitple sizes or colors, you would likely create a new spec and assign it to the product. _Once again, to keep this simple product specs and variants will be covered in future guides._
+
+### Adding a Default Price Schedule
+Now that we know what product we are working with, let's come up with a reasonable price for it. We do this by creating a new Price Schedule and then PATCH the product we created with the resulting price schedule ID.
+
+OrderCloud price schedules are another one of those flexible API resources that are covered more thoroughly in the knowledge base. 
+
+<ContentLink to="/knowledge-base/same-product-multiple-price-schedules" subtitle="Further Reading">One Product, Multiple Price Schedules</ContentLink>
+
+Their most basic form consists of an ID, Name, and one or more price breaks. Price breaks allow seller users to provide different prices based on the quantity being ordered.
+
+<CodeExample
+  title="Create a new price schedule"
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/priceschedules HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    ID: "SHIRT_PRICE",
+    Name: "Cotton T-Shirt Price",
+    PriceBreaks: [
+        {
+            Quantity: 1,
+            Price: 10
+        }
+    ]
+}`,
+javascript: `import { PriceSchedules } from "ordercloud-javascript-sdk";\n
+PriceSchedules.Create({
+    ID: "SHIRT_PRICE",
+    Name: "Cotton T-Shirt Price",
+    PriceBreaks: [
+        {
+            Quantity: 1,
+            Price: 10
+        }
+    ]
+})
+.then(response => {
+    // returns the newly created price schedule with default values added
+    console.log(response);
+})
+.catch(err => console.log(err));`,
+typescript: `import { PriceSchedules, PriceSchedule, OrderCloudError } from "ordercloud-javascript-sdk";\n
+var priceSchedule: PriceSchedule = {
+    ID: "SHIRT_PRICE",
+    Name: "Cotton T-Shirt Price",
+    PriceBreaks: [
+        {
+            Quantity: 1,
+            Price: 10
+        }
+    ]
+}\n
+PriceSchedules.Create(priceSchedule)
+  .then((response: PriceSchedule) => {
+      // returns the newly created price schedule with default values added
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+var priceSchedule = new PriceSchedule {
+    ID = "SHIRT_PRICE",
+    Name = "Cotton T-Shirt Price",
+    PriceBreaks = new [
+        new PriceBreak {
+            Quantity: 1,
+            Price: 10
+        }
+    ]
+};\n
+try {
+    PriceSchedule response = await client.PriceSchedules.CreateAsync(priceSchedule);
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
+/>
+
+<CodeExample
+  title="Update the default price schedule ID"
+  content={{
+    http: `PATCH https://sandboxapi.ordercloud.io/v1/products/SHIRT HTTP/1.1
+Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    DefaultPriceScheduleID: "SHIRT_PRICE"
+}`,
+javascript: `import { Products } from "ordercloud-javascript-sdk";\n
+Products.Patch("SHIRT", {
+    DefaultPriceScheduleID: "SHIRT_PRICE"
+})
+.then(response => {
+    // returns the updated product with DefaultPriceScheduleID added
+    console.log(response);
+})
+.catch(err => console.log(err));`,
+typescript: `import { Products, Product, OrderCloudError } from "ordercloud-javascript-sdk";\n
+var product: Partial<Product> = {
+    DefaultPriceScheduleID: "SHIRT_PRICE"
+}\n
+Products.Patch("SHIRT", product)
+  .then((response: Product) => {
+      // returns the updated product with DefaultPriceScheduleID added
+      console.log(response);
+  })
+  .catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+var product = new PartialProduct {
+    DefaultPriceScheduleID: "SHIRT_PRICE"
+};\n
+try {
+    Product response = await client.Products.PatchAsync("SHIRT", product);
+} catch(OrderCloudException ex) {
+    Console.WriteLine(ex.Message);
+}`
+}}
+/>
+
+Congratulations! You've just created your first OrderCloud product and price schedule. Your product isn't quite visible to your buyer user yet, though. Jump to the next guide and learn how to connect the final dots!

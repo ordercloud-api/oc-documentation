@@ -18,12 +18,12 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: theme.shape.borderRadius,
       padding: theme.spacing(0, 1.5),
       backgroundColor: props.darkMode
-        ? theme.palette.primary.dark
-        : theme.palette.grey[200],
+        ? 'rgba(0, 0, 0, 0.25)'
+        : theme.palette.grey[500],
     }),
     input: (props: any) => ({
+      fontFamily: theme.typography.h1.fontFamily,
       padding: theme.spacing(2, 1, 2, 0),
-      width: 200,
       transition: theme.transitions.create('width', {
         duration: theme.transitions.duration.shorter,
       }),
@@ -33,14 +33,28 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     }),
     adornment: (props: any) => ({
-      color: props.darkMode ? theme.palette.grey[600] : theme.palette.grey[500],
+      color: props.darkMode ? theme.palette.grey[400] : theme.palette.grey[500],
     }),
   })
 )
 
+interface OrderCloudSearchBoxProps {
+  onClick: (event: any) => void
+  onChange: () => void
+  onClose: () => void
+  refine: (refineBy: string) => void
+  noPopper: boolean
+  expanded: boolean
+  darkMode: boolean
+  currentRefinement: string
+  placeholder: string
+  classes?: {
+    searchRoot: string
+    searchInput: string
+  }
+}
 const OrderCloudSearchBox = ({
   currentRefinement,
-  isSearchStalled,
   refine,
   onClick,
   onChange,
@@ -50,7 +64,7 @@ const OrderCloudSearchBox = ({
   placeholder,
   classes,
   noPopper,
-}) => {
+}: OrderCloudSearchBoxProps) => {
   const classesSelf = useStyles({ darkMode, expanded })
   const inputRef = useRef<HTMLInputElement | undefined>()
 
@@ -58,7 +72,7 @@ const OrderCloudSearchBox = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     refine(event.currentTarget.value)
-    onChange(event)
+    onChange()
   }
 
   const handleInputClick = (event: React.MouseEvent) => {
@@ -72,7 +86,7 @@ const OrderCloudSearchBox = ({
     event.preventDefault()
     event.stopPropagation()
     refine('')
-    onClose(event)
+    onClose()
   }
 
   return (
@@ -84,7 +98,7 @@ const OrderCloudSearchBox = ({
         input: `${classesSelf.input} ${classes.searchInput}`,
         root: `${classesSelf.root} ${classes.searchRoot}`,
       }}
-      placeholder={placeholder || 'Search OrderCloud…'}
+      placeholder={placeholder || 'Search OrderCloud...'}
       inputProps={{ 'aria-label': 'search' }}
       inputRef={inputRef}
       startAdornment={

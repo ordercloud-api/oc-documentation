@@ -9,10 +9,10 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import { groupBy, map, sortBy } from 'lodash'
-import React, { useState } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { seafoam } from '../../theme/ocPalette.constants'
-import utility from '../../utility'
+import utility from '../../services/utility'
 import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
@@ -77,19 +77,31 @@ function ReleaseNotesComponent(props: any) {
   const release = data.allMdx.edges.filter(
     e => e.node.id === props.pathContext.nodeID
   )[0].node
-
   const [currentYear, setCurrentYear] = useState(release.frontmatter.year)
   const [currentMonth, setCurrentMonth] = useState(release.frontmatter.month)
 
+  useLayoutEffect(() => {
+    if (!props.location.hash) return
+    const el = document.getElementById(props.location.hash.split('#')[1])
+    if (!el) return
+    window.scrollTo(0, el.offsetTop)
+  }, [props.location.hash])
+
   const years = map(
-    groupBy(data.allMdx.edges.map(e => e.node), n => n.frontmatter.year),
+    groupBy(
+      data.allMdx.edges.map(e => e.node),
+      n => n.frontmatter.year
+    ),
     (nodes: any, y) => ({
       year: y,
       months: sortBy(
-        map(groupBy(nodes, n => n.frontmatter.month), (r, m) => ({
-          month: m,
-          releases: r,
-        })),
+        map(
+          groupBy(nodes, n => n.frontmatter.month),
+          (r, m) => ({
+            month: m,
+            releases: r,
+          })
+        ),
         m => Number(m.month) - 1
       ).reverse(),
     })
@@ -124,7 +136,7 @@ function ReleaseNotesComponent(props: any) {
                 className={`${classes.year} ${
                   y.year === currentYear ? classes.yearActive : undefined
                 }`}
-                variant="h3"
+                variant="h4"
                 component="h5"
                 onClick={onYearClick(y.year, y.months[0].month)}
               >

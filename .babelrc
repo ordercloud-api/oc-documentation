@@ -1,0 +1,10 @@
+{
+    "presets": ["babel-preset-gatsby"],
+    "plugins": [
+      ["prismjs", {
+        "languages": ["http", "json", "typescript", "javascript", "csharp"],
+        "theme": "tomorrow",
+        "css": true
+      }]
+    ]
+  }

@@ -1,0 +1,178 @@
+---
+section: 'Getting Started'
+title: 'Establishing API Access'
+description: 'Learn the minimum requirements necessary for making API calls outside of the Portal'
+priority: 3
+---
+
+Now that you have created your first organization and gained access to the API Console, you can begin the process of establishing API access for users within your organization. There are two main API resources relevant to establishing API access:
+
+- **API Clients** - API clients are access points to your organization's data. These access points have properties that control what parties can use it, how they can gain access, and for how long that access remains valid.
+- **Security Profiles** - Security profiles are groups of roles (permissions), each of which grant users access to specific API endpoints and functionality. This lets you lock down access to your organization at the _API_ level which is very powerful. If a request is made by a user without sufficient roles, they will receive a 403 Forbidden response.
+
+## Create a Shared API Client
+Open up the API Console tab that has your Portal user context activated for our new seller organization. In the resources menu, click on **Seller > API Clients**. This should activate something we call an **enhanced UI** for managing API Clients. Essentially, this is a more user-friendly alternative to building up JSON requests in the API Console. Resources in the left-hand menu with a lightning bolt icon next to them all have their own Enhanced UI.
+
+Click on _CREATE NEW API CLIENT_. You will be presented with a form that has quite a few settings available. Don't get overwhelmed by all of the options here, we will be configuring the simplest version of an API client to keep things light. If you want to read more about API clients in detail, you can read one of our more in-depth articles.
+
+<ContentLink to="/knowledge-base/api-clients" subtitle="Further Reading">API Clients</ContentLink>
+
+Choosing the right name for your API client is important. By picking something descriptive, future developers will better understand when they should be utilized. Let's call our new API client "Shared API Client" since it will be shared between all of the parties in our organization.
+
+Jump down to **Client Access Configuration** and make the following changes:
+
+![API Client Access Configuration](/images/learn/getting-started/establishing-1.jpg)
+
+We are leaving supplier access turned off because we will not be diving into the concept of suppliers in this walkthrough. By selecting **Allow All Sellers** and **Allow All Buyers** we are saying that any admin user (seller) and any buyer user (shopper) can authenticate using this new API client. It's worth noting that this type of API configuration that allows both buyers and sellers is not very common. Usually buyers and sellers sign into completely different applications so it makes more sense to create a separate API client for each. We're creating a shared API client here for simplicity.
+
+Submit the form by clicking _CREATE NEW API CLIENT_.
+
+## Create Your First Users
+For the purposes of this walkthrough we will want to be able to access the OrderCloud API from both the seller and buyer perspectives. Creating your first buyer user will take a few more steps as we still have to establish a buyer organization.
+
+### Create an Admin User
+In the left-hand resource menu select **Seller > Admin Users** and then in the operation selector where it says **GET /adminusers** click to select the _"Create a new admin user"_ option.
+
+![API Client Access Configuration](/images/learn/getting-started/establishing-2.jpg)
+
+This will pull up a form where you can either fill in each field individually, or paste in a JSON object of the entire request body. Copy and paste the following into the JSON field:
+
+```json
+{
+  "ID": "ADMIN",
+  "Username": "admin01",
+  "Password": "xxxxxxxxxxxx",
+  "FirstName": "Admin",
+  "LastName": "User",
+  "Email": "admin@email.com",
+  "Active": true
+}
+```
+
+> **A password must be between 10 and 100 characters long and contain at least one digit, uppercase character, lowercase character and a special character** Replace `Password` with something you will remember and take note of it - **you will need this later on**.
+
+Click _SEND_, you should see the API response appear on the right hand side.
+
+### Create Your First Buyer Organization and User
+In the left-hand resource menu select **Buyers > Buyers** and then in the operation selector where it says **GET /buyers** click to select the _"Create a new buyer"_ option.
+
+As with the last request, copy and paste the following into the JSON field and click _SEND_:
+
+```json
+{
+  "ID": "BUYER_ORGANIZATION",
+  "Name": "Example Buyer",
+  "Active": true
+}
+```
+
+Next, select **Buyers > Users** and choose _"Create a new user"_.
+
+Notice that there is a new **Parameters** section above the request body fields. Since we are creating a buyer user, we need to tell OrderCloud _which_ buyer organization to create the user in. Type in `BUYER_ORGANIZATION` as this was the ID we provided in the previous request.
+
+Now copy and paste the following into the JSON field:
+
+```json
+{
+  "ID": "BUYER_USER",
+  "Username": "buyer01",
+  "Password": "xxxxxxxxxxxx",
+  "FirstName": "Buyer",
+  "LastName": "User",
+  "Email": "buyer@email.com",
+  "Active": true
+}
+```
+
+> **A password should be between 10 and 100 characters long, and should contain at least one digit.** Replace `Password` with something you will remember and take note of it - **you will need this later on**.
+
+Click _SEND_.
+
+## Define and Assign Security Profiles
+We now have two different users, one admin and one buyer. If it wasn't already apparent, we will be using the admin user to **create our product catalogs and manage orders** and our buyer user to **shop product catalogs and submit orders**. This means that we will want to limit each user's available API roles differently by creating and assigning security profiles.
+
+> **Security Alert** - It is considered bad practice to grant the `FullAccess` role to any Security Profile. Clever users with this role available to them can completely remove data essential to your OrderCloud solution by making direct API calls, even if they are not supported by your application.
+
+<ContentLink to="/knowledge-base/security-profiles" subtitle="Further Reading">Security Profiles</ContentLink>
+
+### Create two Security Profiles
+Navigate to **Authentication and Authorization > Security Profiles** and choose _"Create a new Security Profile"_ from the operation selector.
+
+If you're viewing the enhanced UI click the lightning bolt icon on the left side of the toolbar to access the operation selector.
+
+![Turning off Enhanced UI](/images/learn/getting-started/establishing-3.jpg)
+
+
+Create the following security profiles:
+
+```json
+{
+  "ID": "ADMIN_PROFILE",
+  "Name": "Admin User Profile",
+  "Roles": [
+    "MeAdmin",
+    "PasswordReset",
+    "BuyerReader",
+    "OrderAdmin",
+    "CatalogAdmin",
+    "ProductAdmin",
+    "ProductAssignmentAdmin",
+    "PriceScheduleAdmin",
+    "ShipmentAdmin"
+  ]
+}
+```
+
+```json
+{
+  "ID": "BUYER_PROFILE",
+  "Name": "Buyer User Profile",
+  "Roles": [
+    "MeAdmin",
+    "PasswordReset",
+    "Shopper"
+  ]
+}
+```
+
+### Security Profile Assignment
+We now have two different users and two different profiles; however, we have not defined any sort of relationship between them. This is where assignments come into play. Staying in **Authentication and Authorization > Security Profiles**, choose _"Create or update a security profile assignment"_ from the operation selector.
+
+In general, it is a best practice to avoid assigning things directly to the user level, as this can result in cumbersome management experiences where every time a new user is created you have to create a new security profile assignment. Instead, let's assign the admin and buyer profiles to our seller and buyer organizations respectively.
+
+To assign our **Admin User Profile** to the entire seller organization (which will only be inherited by the admin users), copy and paste the following into the request body JSON field and click "SEND":
+
+```json
+{
+  "SecurityProfileID": "ADMIN_PROFILE"
+}
+```
+
+Now when you get a list of admin users, you will see the **Admin User Profile** roles appear in the user's `AvailableRoles` field.
+
+To assign our **Buyer User Profile** to the entire buyer organization, copy and paste the following into the JSON field and click "SEND":
+
+```json
+{
+  "SecurityProfileID": "BUYER_PROFILE",
+  "BuyerID": "BUYER_ORGANIZATION"
+}
+```
+
+Similarly here, when you list buyer users under `BUYER_ORGANIZATION`, you will see the **Buyer User Profile** roles appear in the user's `AvailableRoles` field.
+
+If we were to make additional assignments to other security profiles, you would see a union merge of all of the roles in any security profiles directly or indirectly assigned to each user in `AvailableRoles`.
+
+## Conclusion
+Woof! We covered quite a lot in this guide. Let's review everything we did to establish API access for our Admin and Buyer users.
+
+1. Created a shared API client that can be used by both sellers (admin users) and all buyers
+2. Created our first admin user, buyer organization, and buyer user
+3. Learned why not to use the `FullAccess` API role and the risks involved
+4. Created an admin security profile with the roles needed for catalog/product/order management
+5. Created a buyer security profile with the roles needed for a typical shopping experience
+6. Understood why it is recommended to avoid user-specific assignments
+7. Assigned our admin security profile to the seller organization
+8. Assigned our buyer security profile to the buyer organization
+
+Congratulations on getting this far - this is a huge step in understanding some of the most important concepts in OrderCloud. In the next and final guide of the "Getting Started" chapter, we will show you how to retrieve an access token for each user outside of the Portal using our OAuth 2.0 Password grant type and use that token to make our first bonafide OrderCloud API request!

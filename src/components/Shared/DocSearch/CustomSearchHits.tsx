@@ -16,34 +16,36 @@ import { groupBy, map } from 'lodash'
 import React from 'react'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { connectHits, Snippet } from 'react-instantsearch-dom'
-import service from '../../../utility'
+import service from '../../../services/utility'
 import DocSearchFooter from './DocSearchFooter'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      zIndex: 1,
-    },
+    root: (props: any) => ({
+      pointerEvents: props.open ? 'all' : 'none',
+      zIndex: theme.zIndex.appBar + 3,
+    }),
     caret: (props: any) => ({
       display: props.noPopper ? 'none' : undefined,
       position: 'absolute',
-      zIndex: 3,
+      zIndex: theme.zIndex.appBar + 2,
       color: props.darkMode
         ? theme.palette.primary.dark
         : theme.palette.background.paper,
       right: theme.spacing(3),
       fontSize: '4rem',
-      top: -theme.spacing(2.5),
+      margin: '-1rem 0 -1rem 0',
     }),
-    caretBackground: (props: any) => ({
-      display: props.noPopper ? 'none' : undefined,
-      position: 'absolute',
-      zIndex: 3,
-      color: 'rgba(0,0,0,0.1)',
-      right: theme.spacing(3),
-      fontSize: '4rem',
-      top: -theme.spacing(2.6),
-    }),
+    // caretBackground: (props: any) => ({
+    //   display: props.noPopper ? 'none' : undefined,
+    //   position: 'absolute',
+    //   zIndex: theme.zIndex.appBar + 1,
+    //   color: 'rgba(0,0,0,0.1)',
+    //   right: theme.spacing(3),
+    //   fontSize: '4rem',
+    //   lineHeight: '1rem',
+    //   // padding: '-1rem',
+    // }),
     inner: (props: any) => {
       const noPopperStyles: CSSProperties = {
         maxWidth: '100vw',
@@ -61,8 +63,8 @@ const useStyles = makeStyles((theme: Theme) =>
       }
     },
     paper: (props: any) => ({
-      zIndex: 2,
-      top: theme.spacing(2),
+      zIndex: theme.zIndex.appBar + 1,
+      top: '1.25rem',
       position: 'relative',
       background: props.darkMode
         ? theme.palette.primary.dark
@@ -72,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
       overflow: 'hidden',
     }),
     searchResultsScrollbar: {
-      zIndex: 3,
+      zIndex: theme.zIndex.appBar + 1,
       left: 'auto',
       right: 0,
       top: 0,
@@ -93,6 +95,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexFlow: 'column nowrap',
     },
     subheader: (props: any) => ({
+      // padding: theme.spacing(2),
       color: props.darkMode ? theme.palette.common.white : undefined,
       background: props.darkMode
         ? theme.palette.primary.dark
@@ -105,7 +108,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: props.darkMode ? theme.palette.common.white : undefined,
     }),
     hitItemSecondary: (props: any) => ({
-      color: props.darkMode ? theme.palette.primary.dark : undefined,
+      color: props.darkMode ? theme.palette.grey[400] : undefined,
     }),
   })
 )
@@ -134,20 +137,37 @@ function HitItem(hit, classes) {
     </ListItemLink>
   )
 }
+
+function ReferenceHitItem(hit, classes) {
+  return (
+    <ListItemLink button to={hit.link} key={hit.objectID}>
+      <Box display="flex" flexDirection="column">
+        <ListItemText
+          primary={<Snippet attribute="summary" hit={hit} tagName="mark" />}
+          classes={{
+            primary: classes.hitItemPrimary,
+            secondary: classes.hitItemSecondary,
+          }}
+        />
+      </Box>
+    </ListItemLink>
+  )
+}
 const OrderCloudSearchHits = ({
   hits,
   open,
   anchorEl,
   container,
-  darkMode,
   noPopper,
   classes,
 }) => {
-  const classesSelf = useStyles({ darkMode: false, noPopper })
+  const classesSelf = useStyles({ darkMode: false, noPopper, open })
   const sections = groupBy(hits, 'section')
   const inner = (
-    <div className={`${classesSelf.inner} ${classes.searchHits}`}>
-      <ArrowDropUp className={classesSelf.caretBackground} />
+    <div
+      id="searchHits"
+      className={`${classesSelf.inner} ${classes.searchHits}`}
+    >
       <ArrowDropUp className={classesSelf.caret} />
       <Paper
         className={`${classesSelf.paper} ${classes.searchHitsPaper}`}
@@ -181,10 +201,12 @@ const OrderCloudSearchHits = ({
                       component="div"
                       className={classesSelf.subheader}
                     >
-                      {section === 'undefined' ? 'OrderCloud Blog' : section}
+                      {section === 'undefined' ? 'Knowledge Base' : section}
                     </ListSubheader>
                     {items.map(hit => {
-                      return HitItem(hit, classesSelf)
+                      return hit.verb
+                        ? ReferenceHitItem(hit, classesSelf)
+                        : HitItem(hit, classesSelf)
                     })}
                   </React.Fragment>
                 )

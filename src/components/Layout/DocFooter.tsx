@@ -4,16 +4,17 @@ import {
   createStyles,
   Divider,
   Grid,
-  Theme,
   Typography,
   withStyles,
   withWidth,
+  Theme,
 } from '@material-ui/core'
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons'
 import { Link } from 'gatsby'
 import { flatten as _flatten } from 'lodash'
 import React from 'react'
 import { isWidthDown } from '@material-ui/core/withWidth'
+import ButtonLink from '../Shared/ButtonLink'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -44,8 +45,13 @@ const styles = (theme: Theme) =>
     },
     btnNavigation: {
       display: 'flex',
-      justifyContent: 'center',
       width: '100%',
+      '&-Previous': {
+        justifyContent: 'flex-start',
+      },
+      '&-Next': {
+        justifyContent: 'flex-end',
+      },
     },
     typographyMain: {
       marginBlockEnd: '1rem;',
@@ -65,6 +71,9 @@ const styles = (theme: Theme) =>
       margin: theme.spacing(2, 0),
     },
     questionsText: {
+      maxWidth: 600,
+      marginLeft: 'auto',
+      marginRight: 'auto',
       marginBottom: theme.spacing(3),
     },
     questionsBtn: {
@@ -88,9 +97,9 @@ class DocFooter extends React.Component<any> {
     const directionalButton = direction => {
       const newGuideIndex =
         direction === 'Previous' ? guideIndex - 1 : guideIndex + 1
-      return newGuideIndex > 0 && newGuideIndex < flatContents.length - 1 ? (
+      return newGuideIndex >= 0 && newGuideIndex <= flatContents.length - 1 ? (
         <Button
-          className={classes.btnNavigation}
+          className={`${classes.btnNavigation} ${classes.btnNavigation}-${direction}`}
           size="small"
           color="primary"
           component={buildDirectionLink(flatContents[newGuideIndex].path)}
@@ -173,13 +182,17 @@ class DocFooter extends React.Component<any> {
           </Typography>
           <Typography variant="body1" className={classes.questionsText}>
             If you have any questions, please ask our Developer Community on
-            Slack, or post your question on Stack Overflow using the tag "
-            <strong>ordercloud</strong>".
+            Slack, or post your question on Stack Overflow using the tag &quot;
+            <strong>ordercloud</strong>&quot;.
           </Typography>
 
-          <Button variant="outlined" className={classes.questionsBtn}>
+          <ButtonLink
+            variant="outlined"
+            className={classes.questionsBtn}
+            to="/slack"
+          >
             Join Our Community
-          </Button>
+          </ButtonLink>
 
           <Button
             variant="outlined"

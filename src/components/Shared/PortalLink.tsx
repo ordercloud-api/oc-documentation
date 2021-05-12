@@ -10,14 +10,21 @@ function withPrefix(path) {
   return [portalBaseUrl, normalizePath(path)].join(`/`)
 }
 
-function getBaseUrl() {
-  const protocol = window.location.protocol
+export function getBaseUrl() {
   const hostname = window.location.hostname
-  let port = ''
-  if (window.location.port) {
-    port = `:${window.location.port}`
+  if (hostname === 'localhost') {
+    return 'http://localhost:3000'
   }
-  return `${protocol}//${hostname}${port}`
+  if (hostname.includes('azurewebsites')) {
+    if (hostname.includes('test')) {
+      return 'https://oc-portal-test.azurewebsites.net'
+    }
+    return 'https://oc-portal.azurewebsites.net'
+  }
+  if (hostname.includes('ordercloud-qa')) {
+    return 'https://portal.ordercloud-qa.com'
+  }
+  return `https://portal.ordercloud.io`
 }
 
 function normalizePath(path) {
@@ -30,6 +37,7 @@ function normalizePath(path) {
 
 interface PortalLinkProps {
   to: string
+  className: string
 }
 
 export class PortalLink extends React.Component<PortalLinkProps> {
@@ -38,12 +46,20 @@ export class PortalLink extends React.Component<PortalLinkProps> {
   }
 
   public render() {
-    const { to, children } = this.props
-    return <Link onClick={() => navigate(to)}>{children}</Link>
+    const { to, children, className } = this.props
+    return (
+      <Link
+        style={{ cursor: 'pointer' }}
+        className={className}
+        onClick={() => navigate(to)}
+      >
+        {children}
+      </Link>
+    )
   }
 }
 
 export function navigate(path) {
-  var prefixedTo = withPrefix(path)
+  const prefixedTo = withPrefix(path)
   window.location.assign(prefixedTo)
 }

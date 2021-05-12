@@ -5,13 +5,10 @@ import classNames from 'classnames'
 import { darken, lighten, fade } from '@material-ui/core/styles'
 import { Link } from 'gatsby'
 
-interface CustomButtonProps extends ButtonProps {
-  color: any
-}
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: (props: any) => {
+      const contrastColor = theme.palette.getContrastText(props.color)
       return {
         backgroundColor: `${
           props.variant === 'contained' ? props.color : undefined
@@ -19,54 +16,55 @@ const useStyles = makeStyles((theme: Theme) =>
         borderColor: `${
           props.variant === 'outlined' ? props.color : undefined
         }`,
-        color: `${
-          props.variant === 'contained'
-            ? theme.palette.getContrastText(props.color)
-            : props.color
-        }`,
+        color: `${props.variant === 'contained' ? contrastColor : props.color}`,
         transition: theme.transitions.create(['color', 'background', 'border']),
         '&:hover': {
           backgroundColor: `${
             props.variant === 'contained'
-              ? darken(props.color, theme.palette.tonalOffset)
-              : fade(lighten(props.color, theme.palette.tonalOffset), 0.5)
+              ? darken(
+                  props.color,
+                  theme.palette.tonalOffset.valueOf() as number
+                )
+              : props.color
           }`,
-          color: `${
-            props.variant === 'outlined'
-              ? theme.palette.getContrastText(props.color)
-              : undefined
-          }`,
+          color: `${props.variant === 'outlined' ? contrastColor : undefined}`,
         },
       }
     },
   })
 )
 
-export const CustomButton: React.FunctionComponent<
-  CustomButtonProps
-> = props => {
-  const classes = useStyles({ color: props.color, variant: props.variant })
-  return (
-    <Button
-      {...props}
-      className={classNames(classes.root, props.className)}
-    ></Button>
-  )
-}
 
 interface CustomButtonLinkProps extends CustomButtonProps {
   to: string
+  component?: any
 }
-
-export const CustomButtonLink: React.FunctionComponent<
-  CustomButtonLinkProps
-> = (props: any) => {
+export const CustomButtonLink: React.FunctionComponent<CustomButtonLinkProps> = (
+  props: CustomButtonLinkProps
+) => {
+  const to = props.to
   return (
     <CustomButton
       component={React.forwardRef((props: any, ref: any) => {
-        return <Link {...props} to={props.to} ref={ref} />
+        return <Link {...props} to={to} ref={ref} />
       })}
       {...props}
     />
+  )
+}
+
+interface CustomButtonProps extends ButtonProps {
+  color: any
+}
+export const CustomButton: React.FunctionComponent<CustomButtonProps> = (
+  props: CustomButtonProps
+) => {
+  const { color, ...rest } = props
+  const classes = useStyles({ color: color, variant: props.variant })
+  return (
+    <Button
+      {...rest}
+      className={classNames(classes.root, props.className)}
+    ></Button>
   )
 }

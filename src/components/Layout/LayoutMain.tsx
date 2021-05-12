@@ -4,20 +4,22 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      minHeight: '100vh',
-      paddingBottom: theme.spacing(4),
-      flex: '1',
+      [theme.breakpoints.up('md')]: {
+        flex: '1 1 60%',
+        minHeight: '100vh',
+        width: '60%',
+        padding: theme.spacing(0, 4, 4, 3),
+      },
+      [theme.breakpoints.up('lg')]: {
+        paddingRight: theme.spacing(8),
+      },
     },
   })
 )
 
-const LayoutMain: React.FunctionComponent = props => {
+const LayoutMain: React.FunctionComponent = (props: { children: any }) => {
   const classes = useStyles({})
-  return (
-    <div className={classes.root}>
-      <div>{props.children}</div>
-    </div>
-  )
+  return <div className={classes.root}>{props.children}</div>
 }
 
 export default LayoutMain

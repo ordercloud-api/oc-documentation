@@ -1,0 +1,175 @@
+---
+type:           tutorial
+title:          Using Webhooks
+description:    The OrderCloud API supports user-defined HTTP callbacks, known as webhooks. You can choose exactly which OrderCloud API endpoints will trigger your hook, the roles to be passed onto the configured Base URL, and any additional configuration data OrderCloud may need to authenticate into 3rd party systems.
+author:         jhookom
+priority:       5
+publishDate:    2021-04-04
+updatedDate:    
+tags:           ["Integrations", "Webhooks"]
+---
+
+The OrderCloud API supports user-defined HTTP callbacks, known as webhooks. Webhooks are easy to register for your entire organization or on an application specific level. You can choose exactly which OrderCloud API endpoints will trigger your hook, the roles to be passed onto the configured Base URL, and any additional configuration data OrderCloud may need to authenticate into 3rd party systems.
+
+Webhooks can only be triggered by OrderCloud endpoints that write to the database (POST, PUT, PATCH, DELETE). The request body sent to the OrderCloud endpoint (if any) will be passed along to the webhooks that use it.
+
+There are two types of webhooks you can use with OrderCloud:
+
+- **Post-Hook** ideal for replicating state changes to another database (analytics) or firing other events, such as sending a text notification to a user
+- **Pre-Hook** used for validating incoming requests, such as validating an address being written or updated
+
+## Creating Your Webhook
+
+Webhooks can be written in any language to receive an HTTPS request, but we recommend you use [OrderCloud Catalyst](https://github.com/ordercloud-api/ordercloud-dotnet-sdk) to ease creation of strongly typed webhooks in C# (which also [includes examples](https://github.com/ordercloud-api/dotnet-catalyst-examples/blob/dev/Catalyst.Api/Controllers/WebhookController.cs)).
+
+<ContentLink to="/knowledge-base/start-dotnet-middleware-from-scratch" subtitle="Getting Started" type="bookmark">Creating Middleware</ContentLink>
+
+To better understand what OrderCloud sends in webhooks, here is an update to a buyer ``v1/buyers/buyer_10``:
+
+```json
+{
+ "Route": "v1/buyers/{buyerID}",
+ "RouteParams": {
+  "buyerID": "buyer_10"
+ },
+ "Verb": "PUT",
+ "Date": "2021-04-04T19:41:39.6504645+00:00",
+ "LogID": "71ce120a-17d5-4833-89f6-4f9a33ddd42f",
+ "UserToken": "...",
+ "Request": {
+  "Body": {
+   "Active": true,
+   "Name": "New Name Updated",
+   "xp": {
+    "segment": "Foo"
+   }
+  },
+  "Headers": null
+ },
+ "Response": {
+  "Body": {},
+  "Headers": null
+ },
+ "ConfigData": {
+  "config_key": "config_value"
+ }
+}
+```
+
+- **Route** the original route requested against OrderCloud
+- **RouteParams** the passed path identifiers for requests like PUT which update objects
+- **Verb** the type of request used
+- **Date** the timestamp of the request
+- **LogID** for correlating back to any support with OrderCloud
+- **UserToken** the JWT token of the user who requested the original request
+- **Request.Body** what was passed in the original request, be mindful that PATCH can be partially populated requests
+- **Reqeust.Headers** passed headers from the original request
+- **Response** if this was a Post-Webhook, then this would be populated with the response from OrderCloud
+- **ConfigData** optional data you configure with your original webhook within OrderCloud
+
+### Verifying the Webhook Request
+
+OrderCloud will optionally pass an ``x-oc-hash`` header which is a fingerprint for the request, based on a secret you can optionally define when you register your webhook in OrderCloud.  You may want to do this in order to verify that any request sent to your webhook can be trusted and is actually from OrderCloud.
+
+Verifying this fingerprint happens automatically when you use OrderCloud Catalyst, but you can do this yourself with a ``SHA256`` using your registered secret, and hashing the passed request and comparing the ``Base64`` value to the value passed in the ``x-oc-hash`` header.
+
+### Sending a Pre-hook Response
+
+Only applicable for pre-webhooks, you return a basic JSON structure on if you should ``proceed`` true or false, and an optional ``body`` which can be any JSON object or literal value.
+
+```json
+{
+  "proceed": false,
+  "body": {
+    "customMessage": "Not a Valid Address",
+    "suggestions": [
+      ...
+    ]
+  }
+}
+```
+
+If you set ``proceed`` to ``false``, then an error message will be sent back to the original caller and includes the ``body`` data you provided for the client to act upon or use.
+
+## Register Your Webhook
+
+Back in the <PortalLink to="/console">OrderCloud Console</PortalLink> create a new webhook
+
+![create_webhook](/images/knowledge-base/inline/using-webhooks/create_webhook.png)
+
+### General Information
+				
+- **Name** internally available name or label to use
+- **Description** optional information you want to add on your webhook
+- **Secret** relates to the ``x-oc-hash`` where OrderCloud will use this secret to generate a fingerprint you can validate against
+- **Payload URL** where your webhook is publically available
+- **Pre-hook** if you want this hook to fire before updating OrderCloud is done processing
+
+### API Client Assignments
+
+Webhooks will only fire for the API Clients you specify.  This is ideal when you may have multiple API clients setup, representing different store fronts and behavior.  If you want the webhook to fire for all your different API clients, then simply check each one in the portal UI.
+
+### Configuration Data
+
+These are optional key value pairs you can setup and will be passed with each request.  Think in terms of shared plugins where you may want to pass other registration or account information to a 3rd party tax or shipping service.
+
+### Trigger Events
+
+This is where you register one or more operations you want to attach your webhook to in OrderCloud.  Example, if you want to listen for all updates to Buyers, you would want to register POST, DELETE, PATCH, and PUT
+
+### Elevated Roles
+				
+Elevated roles are a used for passing along an `access_token` with higher permissions than the client that triggered the webhook. For instance, if the authenticated user only had the UserAdmin role but our Zap needs to list Categories and perform some other action, we would add CategoryReader to the elevated claims. For this example we will choose FullAccess here and save the webhook.
+
+### Webhook Registration Example
+
+The following example registers a webhook for all of the Buyer endpoints
+
+```json
+{
+	"ID": "...",
+	"Name": "sample-webhook",
+	"Description": "Sample Description",
+	"Url": "https://.../mywebhook",
+	"HashKey": "...",
+	"ElevatedRoles": [
+		"BuyerAdmin"
+	],
+	"ConfigData": {
+		"config_key": "config_value"
+	},
+	"BeforeProcessRequest": true,
+	"ApiClientIDs": [
+		"...."
+	],
+	"WebhookRoutes": [
+		{
+			"Route": "v1/buyers",
+			"Verb": "POST"
+		},
+		{
+			"Route": "v1/buyers/{buyerID}",
+			"Verb": "DELETE"
+		},
+		{
+			"Route": "v1/buyers/{buyerID}",
+			"Verb": "PATCH"
+		},
+		{
+			"Route": "v1/buyers/{buyerID}",
+			"Verb": "PUT"
+		}
+	]
+}
+```
+
+## Creating Reusable Plugins
+
+3rd parties looking to create reusable plugins to replicate data or validate data written to OrderCloud could offer URLs where support for multiple OrderCloud customers or organizations could be based on the following:
+
+- **Secret** an agreed secret that will be used to validate the incoming ``x-oc-hash`` header
+- **Config Data** you can specify one or more properties to be passed from OrderCloud which may represent your services ID the mutual customer is registered under
+
+Deployment of these services could either be through GitHub as integration code the customer could deploy themselves and freely modify to map extended properties (XP) or other fields they may map differently per instance, or as a global service endpoint that you host and OrderCloud customers simply point at and use.
+
+In both cases, the deployment would ideally be a serverless function which keeps cost and maintenance down to nothing to provide reusable integrations.

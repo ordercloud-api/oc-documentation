@@ -1,55 +1,69 @@
-import React from 'react'
-import Header, { navHeight } from './Header'
-import { ThemeProvider } from '@material-ui/styles'
-import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import {
   Box,
-  Theme,
-  makeStyles,
   createStyles,
-  Typography,
-  Table,
-  TableRow,
-  TableCell,
   CssBaseline,
+  Divider,
+  makeStyles,
+  Paper,
+  Table,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Theme,
+  Typography,
+  TypographyVariant,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
+import { ThemeProvider } from '@material-ui/styles'
 import { MDXProvider } from '@mdx-js/react'
-import { useStaticQuery, graphql } from 'gatsby'
-import utility from '../../utility'
-import IconButtonLink from '../Shared/IconButtonLink'
+import { RouteComponentProps } from '@reach/router'
+import { Link } from 'gatsby'
+import React from 'react'
 import { Helmet } from 'react-helmet'
-import Footer from './Footer'
+import { Provider } from 'react-redux'
 import { seafoam } from '../../theme/ocPalette.constants'
+import ORDERCLOUD_THEME from '../../theme/theme.constants'
+import AlertContainer from '../Shared/Alert'
+import CodeExample, { codeExampleStore } from '../Shared/CodeExample'
+import ContentLink from '../Shared/ContentLink'
+import IconButtonLink from '../Shared/IconButtonLink'
+import { PortalLink } from '../Shared/PortalLink'
+import Footer from './Footer'
+import Header, { navHeight, navHeightMobile } from './Header2'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageWrapper: {
       backgroundColor: 'white',
-      marginTop: navHeight, // spacing from top of page on mobile (due to horiz menu)
-      // paddingBottom: theme.spacing(4),
+      minHeight: `calc(100vh - ${navHeightMobile}px)`,
       [theme.breakpoints.up('md')]: {
-        marginTop: navHeight, // spacing from top of page on mobile (due to horiz menu)
-        marginBottom: theme.spacing(52.25),
-        // marginLeft: theme.spacing(7.5), // vertical nav width spacing
-        // marginTop: 0, // no horizontal nav to worry about
+        marginBottom: theme.spacing(0),
+        minHeight: `calc(100vh - ${navHeight}px)`,
       },
       '& img': {
         maxWidth: '100%',
       },
     },
-    html: {
-      // width: '100vw',
-    },
     body: {
+      height: ' 100%',
       maxWidth: '100vw',
       overflowX: 'hidden',
     },
     heading: {
       position: 'relative',
-      top: -theme.spacing(10),
-      marginTop: theme.spacing(11),
-      marginBottom: -theme.spacing(8),
+    },
+    headingSpan: {
+      display: 'block',
+      marginTop: -120,
+      paddingBottom: 120,
+      pointerEvents: 'none',
+    },
+    containerMain: {
+      zIndex: 1,
+      position: 'relative',
+    },
+    tableContainer: {
+      marginBottom: theme.spacing(3),
     },
   })
 )
@@ -66,7 +80,7 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const LayoutLink: React.FunctionComponent = (props: any) => {
+export const LayoutLink = (props: any) => {
   const classes = layoutLinkStyles({})
   if (!props.href) {
     console.error(
@@ -75,7 +89,7 @@ const LayoutLink: React.FunctionComponent = (props: any) => {
     )
     return <Typography variant="button">[BAD LINK] {props.children}</Typography>
   }
-  if (props.className === 'anchor') {
+  if (props.className === 'anchor' || props.href.indexOf('#') === 0) {
     return (
       <div className={classes.root}>
         <IconButtonLink {...props} to={props.href}>
@@ -84,138 +98,126 @@ const LayoutLink: React.FunctionComponent = (props: any) => {
       </div>
     )
   }
-  return <a href={props.href} children={props.children} />
+  return <a href={props.href}>{props.children}</a>
 }
 
-export default props => {
-  const classes = useStyles(props)
-  const data = useStaticQuery(graphql`
-    query {
-      allMdx(
-        sort: { order: ASC, fields: [frontmatter___priority] }
-        filter: { fileAbsolutePath: { glob: "**/content/docs/**/*.mdx" } }
-      ) {
-        totalCount
-        edges {
-          node {
-            id
-            fileAbsolutePath
-            frontmatter {
-              section
-              title
-              hidden
-            }
-          }
-        }
-      }
-    }
-  `)
-  const sections = utility.getSectionsFromDocsQuery(data)
-  return (
-    <ThemeProvider theme={ORDERCLOUD_THEME}>
-      <Helmet
-        meta={[
-          {
-            name: 'viewport',
-            content:
-              'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
-          },
-        ]}
-      >
-        <html className={classes.html} />
-        <body className={classes.body} />
-      </Helmet>
-      <CssBaseline />
-      <React.Fragment>
-        <Header
-          location={props.location}
-          siteTitle="OrderCloud Documentation"
-        />
-        <div className={classes.pageWrapper}>
-          <MDXProvider
-            components={{
-              h1: props => (
-                <Typography
-                  {...props}
-                  className={classes.heading}
-                  variant="h1"
-                />
-              ),
-              h2: props => (
-                <Typography
-                  {...props}
-                  className={classes.heading}
-                  variant="h2"
-                />
-              ),
-              h3: props => (
-                <Typography
-                  {...props}
-                  className={classes.heading}
-                  variant="h3"
-                />
-              ),
-              h4: props => (
-                <Typography
-                  {...props}
-                  className={classes.heading}
-                  variant="h4"
-                />
-              ),
-              h5: props => (
-                <Typography
-                  {...props}
-                  className={classes.heading}
-                  variant="h5"
-                />
-              ),
-              h6: props => (
-                <Typography
-                  {...props}
-                  className={classes.heading}
-                  variant="h6"
-                />
-              ),
-              blockquote: props => (
-                <Box
-                  paddingX={2}
-                  paddingTop={2}
-                  paddingBottom="1px"
-                  marginBottom={2}
-                  bgcolor={seafoam[100]}
-                  borderRadius={4}
-                >
-                  {props.children}
-                </Box>
-              ),
-              p: props => <Typography {...props} paragraph variant="body1" />,
-              ol: props => (
-                <Typography {...props} component="ol" variant="body1" />
-              ),
-              ul: props => (
-                <Typography {...props} component="ul" variant="body1" />
-              ),
-              a: LayoutLink,
-              table: props => <Table {...props} />,
-              tr: props => <TableRow {...props} />,
-              th: props => (
-                <TableCell variant="head" align={props.align || undefined}>
-                  {props.children}
-                </TableCell>
-              ),
-              td: props => (
-                <TableCell variant="body" align={props.align || undefined}>
-                  {props.children}
-                </TableCell>
-              ),
-            }}
-          >
-            {props.children}
-          </MDXProvider>
-        </div>
+interface LayoutProps extends RouteComponentProps {
+  children: any
+}
 
-        <Footer sections={sections}></Footer>
-      </React.Fragment>
-    </ThemeProvider>
+export default (props: LayoutProps) => {
+  const classes = useStyles(props)
+  const buildHeader = (variant: TypographyVariant) => (hProps: any) => {
+    return (
+      <Typography className={classes.heading} variant={variant}>
+        <span id={hProps.id} className={classes.headingSpan}></span>
+        {hProps.children}
+      </Typography>
+    )
+  }
+
+  return (
+    <Provider store={codeExampleStore}>
+      <ThemeProvider theme={ORDERCLOUD_THEME}>
+        <Helmet
+          meta={[
+            {
+              property: 'og:image',
+              content: '/images/meta/meta_thumbnail.jpg',
+            },
+            {
+              name: 'viewport',
+              content:
+                'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+            },
+            {
+              name: 'description',
+              content:
+                'OrderCloud powers custom eCommerce (B2B, B2C, B2X), order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and over $5 billion in revenue annually.',
+            },
+          ]}
+        >
+          <html />
+          <body className={classes.body} />
+        </Helmet>
+        <CssBaseline />
+        <AlertContainer />
+        <div className={classes.containerMain}>
+          <Header />
+          {/* <Header location={props.location} /> */}
+          <div className={classes.pageWrapper}>
+            <MDXProvider
+              components={{
+                Link,
+                PortalLink,
+                ContentLink,
+                CodeExample,
+                h1: buildHeader('h1'),
+                h2: buildHeader('h2'),
+                h3: buildHeader('h3'),
+                h4: buildHeader('h4'),
+                h5: buildHeader('h5'),
+                h6: buildHeader('h6'),
+                blockquote: blockquoteProps => (
+                  <Box
+                    paddingX={2}
+                    paddingTop={2}
+                    paddingBottom="1px"
+                    marginBottom={2}
+                    bgcolor={seafoam[100]}
+                    borderRadius={4}
+                  >
+                    {blockquoteProps.children}
+                  </Box>
+                ),
+                p: pProps => (
+                  <Typography {...pProps} paragraph variant="body1" />
+                ),
+                ol: olProps => (
+                  <Typography
+                    paragraph
+                    variant="body1"
+                    component="span"
+                    display="block"
+                  >
+                    <ol {...olProps} />
+                  </Typography>
+                ),
+                ul: ulProps => (
+                  <Typography
+                    paragraph
+                    variant="body1"
+                    component="span"
+                    display="block"
+                  >
+                    <ul {...ulProps} />
+                  </Typography>
+                ),
+                a: aProps => <LayoutLink {...aProps} />,
+                table: tableProps => (
+                  <TableContainer
+                    component={Paper}
+                    className={classes.tableContainer}
+                  >
+                    <Table {...tableProps} />
+                  </TableContainer>
+                ),
+                tr: trProps => <TableRow {...trProps} />,
+                th: thProps => (
+                  <TableCell variant="head">{thProps.children}</TableCell>
+                ),
+                td: tdProps => (
+                  <TableCell variant="body">{tdProps.children}</TableCell>
+                ),
+                hr: hrProps => <Divider {...hrProps} />,
+              }}
+            >
+              {props.children}
+            </MDXProvider>
+          </div>
+        </div>
+        <Footer />
+      </ThemeProvider>
+    </Provider>
   )
 }

@@ -1,38 +1,54 @@
-import React from 'react';
-import { Typography, makeStyles, Theme, createStyles, Chip } from '@material-ui/core';
-
-interface ApiRolesProps {
-  roles: string[]
-}
+import React from 'react'
+import {
+  Typography,
+  makeStyles,
+  Theme,
+  createStyles,
+  Chip,
+} from '@material-ui/core'
+import ApiHeading from './ApiHeading'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     rolesList: {
       display: 'flex',
-      flexFlow: 'row',
-      'margin-left': '-10px'
+      flexFlow: 'row wrap',
+      'margin-left': '-10px',
     },
     role: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(0.5),
       textAlign: 'center',
     },
   })
 )
 
-const ApiRoles: React.FunctionComponent<ApiRolesProps> = props => {
-  const { roles } = props;
-  const classes = useStyles({});
-  return (
-    roles.length ?
-      <React.Fragment>
-        <Typography variant="h4">Roles</Typography>
-        <div className={classes.rolesList}>
-          {roles.map(role =>
-            <Chip className={classes.role} variant="outlined" label={role}></Chip>
-          )}
-        </div>
-      </React.Fragment> : null
-  )
+interface ApiRolesProps {
+  roles: string[]
+}
+const ApiRoles: React.FunctionComponent<ApiRolesProps> = (
+  props: ApiRolesProps
+) => {
+  const { roles } = props
+  const classes = useStyles({})
+  return roles.length ? (
+    <React.Fragment>
+      <ApiHeading title="Roles" variant="h2" />
+      <Typography>
+        At least one of the roles below is required to access this endpoint
+      </Typography>
+      <div className={classes.rolesList}>
+        {roles.map(role => (
+          <Chip
+            className={classes.role}
+            key={role}
+            color="secondary"
+            variant="outlined"
+            label={role}
+          ></Chip>
+        ))}
+      </div>
+    </React.Fragment>
+  ) : null
 }
 
-export default ApiRoles;
+export default ApiRoles

@@ -1,0 +1,325 @@
+---
+title: 'Flexible Fulfillment'
+priority: 3
+description: 'Discover how to customize the fulfillment process within OrderCloud, including the order flow, supplier routing, and extending with custom logic.'
+---
+
+With OrderCloud, a developer can create and submit an order with less than ten lines of code.  While this section walks through the individual steps for you to leverage in crafting an online store, you can orchestrate this process without user interaction as part of automated fulfillment or integrations.
+
+As you read below, you’ll see that OrderCloud has quite a few extension points and steps you can integrate your own experience.  Customers have done simple B2C experiences, loyalty websites where payment is only in points for products, and B2B marketplaces with dozens of suppliers fulfilling orders.  We challenge you to bring a fulfillment model that OrderCloud can’t support.
+
+## Order Lifecycle
+Because OrderCloud is set up to support marketplaces with a mix of buyers and suppliers, the platform has the concept of incoming and outgoing orders, depending on who is interacting with the order.  We refer to this as **Order Direction** and it can be confusing to understand at first, but a critical underpinning to expand your ability to leverage a broader marketplace strategy with OrderCloud.
+
+Secondly, as part of the order lifecycle, OrderCloud supports multiple statuses with individual timestamps of when the status changed.  Some implementations may find it useful to extend to other statuses specific to operating their marketplaces.
+
+### Order Direction within Marketplaces
+While most commerce solutions built on OrderCloud may only use the interaction between the Buyer and Seller (you), OrderCloud also supports interacting with multiple Suppliers as a broader marketplace.
+
+This is also part of OrderCloud’s robust security in supporting lots of different ‘users’ in order lifecycle management.  The platform will take care of making sure only the right orders are visible based on the credentials used to access OrderCloud’s APIs.
+
+![Order Direction Depending on Credentials](/images/discover/792_oc_flexible_fulfillment-1.png)
+
+To walk through a basic example, a buyer creates a new order with the ID of `PO9123`.  
+
+**Buyer credentials** from your website access their order via the API call:
+
+```
+/orders/outgoing/PO9123
+```
+
+**Seller credentials** which administer your website would access the same order from the API call:
+
+```
+/orders/incoming/PO9123
+```
+
+The same concept applies when dealing with orders from the seller (you) to the supplier, and that will be covered in the section on _Order Fulfillment_.
+
+### Order Statuses
+Within OrderCloud, orders flow through various statuses, some are automatically handled for you based on coordinating other order updates, such as tracking which shipments have been applied to the order.
+
+<table>
+    <colgroup>
+        <col width="25%"/>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Triggered By</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>Unsubmitted</b></td>
+            <td>When the order is first created</td>
+            <td>Essentially the same as a ‘cart’ in any other commerce platform.</td>
+        </tr>
+        <tr>
+            <td><b>Open</b></td>
+            <td>When an order is submitted</td>
+            <td>After going through checkout and the user submits the order, it’s now in an open status</td>
+        </tr>
+        <tr>
+            <td><b>Awaiting Approval</b> <em>(Optional)</em></td>
+            <td>Submitted, but one or more rules must be approved first</td>
+            <td>Mainly for B2B solutions and the optional use  of approval rules within OrderCloud</td>
+        </tr>
+        <tr>
+            <td><b>Declined</b> <em>(Optional)</em></td>
+            <td>When an approver declines the order</td>
+            <td>Mainly for B2B solutions, an approver can decline the order</td>
+        </tr>
+        <tr>
+            <td><b>Completed</b></td>
+            <td>Submitted and all lines and quantities have been shipped</td>
+            <td>OrderCloud automatically updates this status as part of shipping updates</td>
+        </tr>
+        <tr>
+            <td><b>Canceled</b></td>
+            <td>Manually set to close and lock the order from any other modification</td>
+            <td>Essentially the same as a soft delete to keep the order in the system, but treat it as deleted</td>
+        </tr>
+    </tbody>
+</table>
+
+With each of these statuses, the order has supplementary fields to record when the status changed.  These timestamps and statuses can be used to query orders from the system, including providing user experiences with tabbed or filterable views over all their orders by status.
+
+For example, you (the seller) wants to find all unsubmitted orders (carts) created before a specific date, sorted by most recently created:
+
+```
+/orders/incoming?to=3/20/2021&sortBy=!DateCreated&Status=Unsubmitted
+```
+
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/orders-and-fulfillment/orders">OrderCloud Orders</ContentLink>
+
+## Checkout Process
+![Checkout Process Diagram](/images/discover/792_oc_flexible_fulfillment-2.png)
+
+1. **Build an Order** includes initial order creation and adding items to an order.
+2. **Estimate Shipping** includes how to plug in 3rd party shipping services to present options at checkout
+3. **Order Calculate** handles apply pricing and tax updates to the order based on your distribution model
+4. **Order Submit** handle out of the box and custom order validation as part of the submission
+5. **Order Forwarding** includes how to split orders across multiple suppliers to track fulfillment
+
+_For sake of simplicity, the aspect of approvals is left out in this flow._
+
+### Building an Order
+For both anonymous and logged in users, OrderCloud can support building an order with basic API calls, either directly from the front end experience (browser) or as orchestrated through your own middleware for greater control.
+
+- **Create an Order** - Based on the logged-in user, OrderCloud will default the buyer account, shipping address, and other information required at the header level. 
+- **Adding Lines** - Creating an order line only requires a product ID and quantity.  OrderCloud will automatically associate the product details and pricing.
+- **Changing Addresses** - Depending on the commerce solution, can allow the shopper to create and assign their own addresses, or for B2B commerce you can restrict them to a pre-defined list of addresses to ship to.
+
+As with all areas of OrderCloud, you can store any custom data you choose at the order or order line data.  Examples might be capturing additional user-entered information such as GL codes, comments, or inventory locations.
+
+<ContentLink subtitle="Developer Guide" to="/learn/buyer-perspective/creating-your-first-order">Creating Your First Order</ContentLink>
+
+### Estimate Shipping
+OrderCloud provides integration capabilities that allow you to plug in your own fulfillment and shipping logic from 3rd party services or driven by your own warehouse or ERP systems.  This flexibility will drive greater customer stickiness and the ability to evolve as new opportunities for fulfillment arise.
+
+You can:
+
+- **As a distributor**, provide one set of shipping options for the whole order
+- **As a retailer**, provide shipping or pick up options per order line
+- **As a marketplace**, provide shipping options per supplier on the order
+
+![Checkout Process Diagram](/images/discover/792_oc_flexible_fulfillment-1v.png)
+
+- **Shipment Estimate(s)** - To support diverse fulfillment strategies, you can bundle multiple shipment estimates for the customer to pick from.  An example might be to allow two lines to be picked up in-store, and another line offers ground, two-day, or next-day shipping.
+- **Select Shipping Method(s)** - Each shipping estimate can have multiple ship methods, such as pick up in-store, ground, two-day, or next-day shipping.  OrderCloud provides simple APIs to mark which ship method should be used for each line item, giving you ultimate flexibility for B2B and B2C commerce.
+
+Because you own this integration, you can customize applicable costs and adjustments to what fulfillment or shipping options you offer to which customers and what channels-- such as private fleet options for B2B customers and standard UPS for consumer channels.
+
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/seller/integration-events/estimate-shipping">Shipment Estimate API</ContentLink>
+
+### Order Calculation
+_This is an optional integration you can use._  Building an order can be very dynamic, sometimes adding multiple lines at once or importing dozens of order lines from a device or file.  To make your order processing efficient, you initiate calling the order calculate to re-process pricing, promotions, and taxes only when you need to.  This can be after each line added or updated asynchronously depending on the experience you need to provide to users.
+
+You can provide your own tax logic, and override line item totals, shipping, and promotions with this optional integration event.
+
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/seller/integration-events/calculate">Calculate Order Integration Event</ContentLink>
+
+### Apply Payments
+OrderCloud has built-in support for referencing cost centers, credit cards, and spending accounts.  These can be associated with individual users, user groups, or buyers to use as part of purchasing.
+
+- **Cost Centers** - Used for tracking associated orders and expenses back to cost centers.  This is really only for reporting, like general ledger codes, and doesn’t drive any specific logic out of the box.
+- **Credit Cards** - OrderCloud only stores the token and descriptive information in order to protect PCI data and leaves it up to you as to which payment gateway or provider you choose to use with your solution.
+- **Spending Accounts** - A flexible concept for associating a balance that might be part of a loyalty program or represent a virtual gift card, additionally for invoice or credit operations in B2B
+
+For any given order, you can apply one or more payments, such as a gift card, and cover the rest with a credit card or plugging in your own interpretations of various payment types.
+
+![Payments Diagram](/images/discover/792_oc_flexible_fulfillment-4.png)
+
+Payments can also store transactions underneath them to track subsequent ledger changes or events related to that payment.  For credit cards, you can track the original authorization amount, along with fund capture events.  If you need to then credit funds, you can leverage the transaction model on the original payment to manage and track this.
+
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/orders-and-fulfillment/payments">OrderCloud Payments</ContentLink>
+
+### Order Submit
+As part of order submission, we will validate the state of the order.  Applying custom order validation is completely do-able which is covered in the next section.
+
+Out of the box, OrderCloud will validate for the following:
+
+- The order wasn’t already submitted
+- If you are using Order Calculate integrations, guarantee it was run successfully
+- Validate that all Payments were accepted
+- Validate all promotions applied to the order
+- Check inventory availability for products setup with thresholds
+
+Once the order is submitted, you can pull the orders into your fulfillment system and/or split them automatically across multiple suppliers.  The aspect of downstream order synchronization is in a later section.
+
+<ContentLink subtitle="Developer Guide" to="/learn/buyer-perspective/submitting-your-first-order">Submitting Your First Order</ContentLink>
+
+## Order Fulfillment
+Once an order is submitted through the checkout process by the buyer, you (as the seller) can update the status of the order or incorporate separate suppliers into the fulfillment process directly. To learn about what happens before order submission, read the _Checkout Process_ section above.
+
+### Order Shipments
+Before we get into scenarios on who can do the shipment updates on the order, the idea of shipments in OrderCloud is pretty simple and handles most use cases:
+
+- A single shipment covers multiple lines or a whole order
+- Multiple shipments might be required for a single line to cover all quantity ordered
+
+![Order Shipments Diagram](/images/discover/792_oc_flexible_fulfillment-5.png)
+
+Shipment is a concept that can be used for other fulfillment methods, some customers have used this to note in-store pick up options and utilized OrderCloud’s extensible properties (XP) to store other metadata to craft any fulfillment experience necessary.
+
+Once all lines for all quantities have associated shipments with a shipment date populated, OrderCloud will move the status of the order to completed for you automatically.
+
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/orders-and-fulfillment/shipments">OrderCloud Shipments</ContentLink>
+
+### Buyer Preference in Fulfillment
+As covered in a previous section on _Estimate Shipping_, OrderCloud can provide any number of ways to communicate shipment options to the buyer at checkout.  This could’ve been to pick a fulfillment method for the whole order, per order line, or per supplier.
+
+This shipment preference data is stored with the original buyer order and can be accessed through OrderCloud APIs.  Depending on if you choose to do basic commerce or are setting up a more complex marketplace on OrderCloud, you can dictate what and how that buyer preference is communicated.
+
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/seller/integration-events/get-worksheet">Order Worksheets</ContentLink>
+
+### Seller Managed Fulfillment (Basic Commerce)
+OrderCloud can handle basic commerce scenarios that other platforms support.  The seller (you) may have systems in place, most likely an order management system (OMS) or enterprise resource planning system (ERP) such as NetSuite or SAP where your distribution and financials are centrally managed.  You simply want the order to land in your system to manage from there.
+
+![Order Shipments Diagram](/images/discover/792_oc_flexible_fulfillment-6.png)
+
+1. Buyer goes through checkout and submits an order
+2. The whole order is picked up and routed into the seller’s system
+3. Seller creates one or more shipments for the lines which are updated into OrderCloud
+4. OrderCloud updates the buyer order with new shipments, automatically moving to complete if everything is fulfilled
+5. OrderCloud makes the order updates available to notify the buyer
+
+### Supplier Managed Fulfillment (Marketplace)
+For more complex commerce and marketplace setups, you may want OrderCloud to split up the order for you across multiple suppliers or systems.  OrderCloud refers to this as supplier forwarding.
+
+#### Ways to Use Suppliers in OrderCloud
+The supplier concept in OrderCloud is just another layer you can distribute or break up an order to be managed through fulfillment.  The use of suppliers is optional, but some ideas for you to consider:
+
+- **Seller as the Supplier** - to future proof, you may configure yourself (the seller) as the only supplier in OrderCloud so you can add other suppliers later in parallel
+- **Individual Warehouses** - where orders can be broken up and routed to separate warehouses operating across the region to fulfill the order
+- **Individual Stores or Franchises** - you offer a common catalog of products that are available from any number of stores regionally, parts of the order can be routed to separate stores to offer curb-side pick-up or shipping
+- **Dropship Suppliers** - in a traditional marketplace sense, individual suppliers get their parts of the order routed directly to them for fulfillment as separate orders
+
+There’s nothing stopping you from using the concept of a supplier to represent all of the above scenarios in parallel to manage your marketplace.
+
+#### Coordinating Multiple 'Suppliers'
+While the below diagram is quite complex, the intention is to show what OrderCloud can manage by taking a single order from the buyer and managing multiple supplier-specific orders, and relating status updates back to the original buyer order for you.
+
+![Coordinating Multiple Suppliers](/images/discover/792_oc_flexible_fulfillment-7.png)
+
+1. Buyer goes through checkout and submits an order
+2. OrderCloud can automatically break up and forward the order by supplier, grouping one or more lines together into new, outgoing orders to individual suppliers or seller system(s)
+3. OrderCloud routes each supplier-specific order to the appropriate system for fulfillment through integrations or a common portal for suppliers to access
+4. Supplier (or seller) sends shipment updates for the order lines they fulfill
+5. OrderCloud automatically ties shipments per order line back to the original buyer’s order
+6. OrderCloud makes the order updates available to notify the buyer
+
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/orders-and-fulfillment/orders/forward">Order Forwarding</ContentLink>
+
+## Extending OrderCloud
+While OrderCloud provides out of the box order capture and validation, this section covers topics that require external integrations through deployed services to augment and customize the use of OrderCloud for your business.
+
+Example use cases for connecting your own logic:
+
+- Intercepting any product changes to format or build additional, custom attributes when suppliers maintain data
+- Intercepting order validation and submit logic with your own inventory and licensing policies for B2B use cases
+- Capturing order changes and replicating them to another data store for big-data analysis
+- Integrate user and buyer information changes with your CRM systems
+- Replicate any product changes to other search or personalization services to integrate with your online store
+
+### Custom Integrations
+For any domain object in OrderCloud, you can intercept API calls to validate or modify the data submitted. There are two ways to apply your own logic to any data changes or user input through APIs, may it be validating a newly created address or changing the details of a line item.
+
+Additionally, these ideas can be used to also replicated data, real-time into other (cloud) services and solutions.
+
+#### Webhooks 
+![Webhooks](/images/discover/792_oc_flexible_fulfillment-8.png)
+Webhooks are configured within OrderCloud directly.  They allow any interaction with OrderCloud to first call out to another service you own to validate or manipulate the request before any change is applied to an order, address, line item, user, etc. 
+
+Webhooks work over HTTPS and are language agnostic.  This means you can implement your logic in any language of choice and preferably deploy them as serverless functions in the cloud.
+
+<ContentLink subtitle="Developer Reading" type="code" to="/knowledge-base/using-webhooks">Using Webhooks</ContentLink>
+
+#### Middleware Proxies
+![Webhooks](/images/discover/792_oc_flexible_fulfillment-9.png)
+More complex solutions may have most of their website interactions first route through their own middleware or controllers.  That middleware, in turn, makes calls to OrderCloud.  This is very similar to employing WebHooks but is another option to consider depending on your architecture.
+
+A more common application of middleware is if you want to publish your own service which aggregates multiple calls into one service-- primarily complex ‘GET’ scenarios to produce net new object types for your clients to use.
+
+In both cases, it is recommended to leverage OrderCloud’s robust security architecture versus rolling your own.  OrderCloud handles the roles of buyers, admins, and suppliers, along with data rights authorization.    Again, you can choose to implement your services in any language of choice.
+
+### Integration Events
+While the previous two sections with webhooks and middleware proxies covered how to intercept and augment OrderCloud through direct API calls, Integration Events work on the same premise but are initiated indirectly due to coordinating things like order checkout and also includes more robust information in the request and response lifecycle.  Think of this as pointing OrderCloud to your own middleware services to own the logic of order intake.
+
+![Webhooks](/images/discover/792_oc_flexible_fulfillment-10.png)
+
+For checkout, integration events from OrderCloud to gather specific information from your own API endpoints:
+
+- **Order Calculate** - Based on the order, incorporate other price adjustments and apply tax
+- **Estimate Shipping** - Based on the order, create one or more ship estimates for the buyer to pick from
+- **Order Submit** - After the order is processed and submitted successfully
+- **Order Approved** - When an order is officially approved, specific to B2B implementations, same as Order Submit
+
+In all cases above, the message passed is what is called the **‘OrderWorksheet’** which is the order, lines, and additional metadata captured as part of these event calls (estimated shipping data, order calculate data, etc).
+
+### Handling Multiple Channels
+OrderCloud is set up to be your single platform for all commerce operations, including supporting multiple website experiences and customizations per channel.  An example might be one set of complex, order validation for B2B buyers in one web experience while applying a different set of logic for orders coming from B2C consumers on another web experience-- all managed from one OrderCloud instance.
+
+![Webhooks](/images/discover/792_oc_platform_overview-3.png)
+
+API Clients represent a specific channel that connects to OrderCloud.  For the following extension points, here’s how to consider managing custom logic per channel:
+
+- **Supplier Access** - which suppliers can access or use this API Client
+- **Buyer Access** - which buyers can access or use this API Client
+- **Security** - customize security, including token and anonymous shopping capabilities
+- **Webhooks** - they are associated with one or more API Clients, so you can control when the webhook is even fired by channel, you can even configure multiple webhooks for the same ‘thing'
+- **Integration Events** - per API client, you can specify which single Integration Event to use to guarantee only one Integration Event is fired per Client ID.  This is similar to saying ‘use this middleware service’ to delegate order processing logic to.
+
+<ContentLink subtitle="Further Reading" to="/knowledge-base/api-clients">Introduction to API Clients</ContentLink>
+
+### Synchronizing Orders
+For distributed systems, once the order is created within OrderCloud, you may be wondering how to get that order into other systems downstream.  As covered in Order Fulfillment, the orders can be passed or accessed by just you (the seller) or providing direct access to individual suppliers.
+
+#### Realtime Synchronization with Integration Events
+This is the preferred method.  By using Integration Events, you can receive the order after it’s been processed by OrderCloud, and the message includes a lot of additional metadata related to the checkout process you may want to use and store in your downstream systems.  Specifically, you would want Order Submit and if you’re using approvals, to monitor the Order Approved endpoint also.  See the above section on Integration Events.
+
+#### Realtime Synchronization with Webhooks
+As covered in the previous section, a common solution is to employ webhooks to intercept the order submission and create a copy into one or more systems or databases for processing. _See the above section on webhooks._
+
+#### Batch Synchronization
+Another approach is to leverage the list and filter APIs to query for submitted orders and apply your own flags or updates back on the order to indicate that it’s been replicated, along with any other downstream system identifiers needed for lookup.  
+
+_(Incoming and Outgoing Orders are covered under Order Lifecycle)_
+
+Query orders by most recently submitted, where you haven’t marked them as downloaded yet:
+
+```
+GET /orders/incoming?sortBy=!DateSubmitted&xp.Downloaded=!true
+```
+
+Once you have the list of orders, you can make any supplementary API calls to pull lines or buyer information associated with the order, finally then updating the order back to OrderCloud that you’ve completed downloading it:
+
+```
+PATCH /orders/incoming/{orderID}?xp.Downloaded=true&xp.SystemOrderID={ERP_ORDER_ID}
+```
+
+_Your implementation may end up using a combination of solutions to leverage both real-time and an intermittent batch pass before order cut off to catch anything which may have fallen out of your system SLA._
+
+<ContentLink subtitle="API Reference" type="bookmark" to="/api-reference/orders-and-fulfillment/orders">OrderCloud Orders</ContentLink>

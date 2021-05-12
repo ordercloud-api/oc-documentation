@@ -1,0 +1,11 @@
+{
+  "name": "gatsby-ordercloud-version",
+  "version": "1.0.0",
+  "description": "very simple plugin to get current ordercloud api version",
+  "main": "gatsby-node.js",
+  "author": "Four51",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  }
+}

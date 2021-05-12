@@ -7,6 +7,7 @@ import {
   Button,
   Box,
 } from '@material-ui/core'
+import ButtonLink from '../../Shared/ButtonLink'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,9 +31,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const DocSearchFooter: React.FunctionComponent<{ darkMode: boolean }> = ({
+interface DocSearchFooterProps {
+  darkMode: boolean
+}
+const DocSearchFooter: React.FunctionComponent<DocSearchFooterProps> = ({
   darkMode,
-}) => {
+}: DocSearchFooterProps) => {
   const classes = useStyles({ darkMode })
   return (
     <footer className={classes.root}>
@@ -40,13 +44,14 @@ const DocSearchFooter: React.FunctionComponent<{ darkMode: boolean }> = ({
         <Typography variant="h5" color="inherit" className={classes.title}>
           Trouble finding something?
         </Typography>
-        <Button
+        <ButtonLink
           size="small"
           variant={darkMode ? 'contained' : 'outlined'}
           className={classes.button}
+          to="/slack"
         >
           Join Our Community
-        </Button>
+        </ButtonLink>
 
         <Button
           className={classes.button}
