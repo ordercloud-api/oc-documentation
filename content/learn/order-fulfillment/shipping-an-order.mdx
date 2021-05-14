@@ -16,7 +16,7 @@ Let's go ahead and use the shorthand method of shipping and completing an order 
 <CodeExample
   title="Ship and complete an order"
   content={{
-    http: `GET https://sandboxapi.ordercloud.io/v1/orders/incoming/INSERT_ORDER_ID_HERE/complete HTTP/1.1
+    http: `GET https://sandboxapi.ordercloud.io/v1/orders/incoming/INSERT_ORDER_ID_HERE/ship HTTP/1.1
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
 javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
@@ -27,7 +27,7 @@ Orders.Ship("Incoming", "INSERT_ORDER_ID_HERE")
 })
 .catch(err => console.log(err));`,
 typescript: `import { Orders, Order, OrderCloudError } from "ordercloud-javascript-sdk";\n
-Orders.Complete("Incoming", "INSERT_ORDER_ID_HERE")
+Orders.Ship("Incoming", "INSERT_ORDER_ID_HERE")
   .then((response: Order) => {
       // returns the completed order
       console.log(response);
