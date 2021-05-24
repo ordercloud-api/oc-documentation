@@ -13,7 +13,8 @@ import {
 import { ChevronRight } from '@material-ui/icons'
 import { graphql, Link, StaticQuery } from 'gatsby'
 import React, { Fragment, FunctionComponent, useMemo } from 'react'
-import sitecoreLogo from '../../assets/svg/oclogo_dark.svg'
+import sitecoreLogo from '../../assets/images/sitecore_logo.svg'
+import { flame } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
@@ -155,12 +156,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
   return (
     <Fragment>
       <div className={classes.root}>
-        <AppBar
-          position="relative"
-          color="default"
-          elevation={0}
-          className={classes.appBar}
-        >
+        <AppBar position="relative" color="default" className={classes.appBar}>
           <Hidden xsDown>
             <div className={classes.appBarSecondary}>
               <Container maxWidth="lg">
