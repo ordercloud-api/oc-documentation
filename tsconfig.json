@@ -10,7 +10,7 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "lib": ["dom", "dom.iterable", "es2017", "esnext"],
-        "noEmit": true
+        "noEmit": true,
     },
     "include": ["./src/", "custom.d.ts"]
 }
