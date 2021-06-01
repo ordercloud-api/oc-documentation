@@ -9,11 +9,11 @@ updatedDate:
 tags:           ["Products", "Catalogs", "Product Facets", "Extended Properties", "Search"]
 ---
 
-It's been almost a year since we first [unveiled](https://ordercloud.io/blog/introducing-premium-search) our fancy new Elasticsearch-powered Premium Search for products. In that time we've transitioned everyone gradually (in order to deal with potentially breaking behavioral differences), seen some great implementations of new features like facets, made lots of tweaks to improve performance and scalability, and gotten a lot of good feedback. We've also been moving forward on some new features in this area, which I'll highlight here.
+It's been almost a year since we first [unveiled](https://ordercloud.io/knowledge-base/introducing-premium-search) our fancy new Elasticsearch-powered Premium Search for products. In that time we've transitioned everyone gradually (in order to deal with potentially breaking behavioral differences), seen some great implementations of new features like facets, made lots of tweaks to improve performance and scalability, and gotten a lot of good feedback. We've also been moving forward on some new features in this area, which I'll highlight here.
 
 ## Premium Search for Admin endpoints
 
-Premium Search is no longer just for "me". Bad jokes aside, this means that the same "engine" that powers `v1/me/products` (for building the buyer experience) will also serve `v1/products` so that the product admin experience can take advantage of the same features. Detailing these features point by point would be a bit redundant with the [original blog post on Premium Search](https://ordercloud.io/blog/introducing-premium-search), so instead I'd encourage you to review that post carefully to understand what this means for the admin side.
+Premium Search is no longer just for "me". Bad jokes aside, this means that the same "engine" that powers `v1/me/products` (for building the buyer experience) will also serve `v1/products` so that the product admin experience can take advantage of the same features. Detailing these features point by point would be a bit redundant with the [original article on Premium Search](knowledge-base/introducing-premium-search), so instead I'd encourage you to review that article carefully to understand what this means for the admin side.
 
 Like we did with the "me" endpoint, we're rolling out the admin side gradually, but on a more aggressive schedule, since the engine itself is already battle-hardened and proven to scale well. Here is our rollout plan:
 
