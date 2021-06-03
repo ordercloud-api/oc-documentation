@@ -42,6 +42,7 @@ import Prism from 'prismjs'
 import React, { useLayoutEffect } from 'react'
 import { darkgrey, flame, sherpablue } from '../../theme/ocPalette.constants'
 import themeConstants from '../../theme/theme.constants'
+import ButtonLink from '../Shared/ButtonLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
 import Jumbotron from '../Shared/Jumbotron'
 import ListItemLink from '../Shared/ListItemLink'
@@ -91,7 +92,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paperTitleHeading: {
       padding: theme.spacing(0, 0, 1),
-      color: sherpablue[500],
       fontWeight: 700,
       textAlign: 'left',
       minHeight: '2.5rem',
@@ -118,9 +118,6 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: '-5rem',
       },
     },
-    orangeTitle: {
-      color: flame[500],
-    },
   })
 )
 
@@ -134,32 +131,25 @@ const MainComponent: React.FunctionComponent = props => {
   return (
     <React.Fragment>
       <Jumbotron
-        image={{
-          src: '/images/logos_horizontal_desktop.png',
-          alt: 'homepage background',
-        }}
+        // image={{
+        //   src: '/images/logos_horizontal_desktop.png',
+        //   alt: 'homepage background',
+        // }}
         overlayed={true}
-        heading="Four51 to be Acquired by Sitecore"
-        text={["Deal means we’ll be joining forces with the digital experience leader.", <br/>, <br/>, "With Four51 OrderCloud, design your own marketplace with an API-first, headless cloud platform for B2B, B2C, and B2X. We power custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."]}
+        heading="SITECORE® OrderCloud™"
+        text={[
+          'With Sitecore® OrderCloud™, design your own commerce solution with an API-first, headless cloud platform for B2B, B2C, and B2X. OrderCloud powers custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually.',
+        ]}
         actions={[
-          <Button
-            key="knowledge"
-            href="https://www.four51.io/sitecore-acquires-boxever-and-four51"
-            variant="contained"
-            target="new"
-            style={{backgroundColor: '#fff'}}
-          >
-            Press Release
-          </Button>,
-          <CustomButtonLink
+          <ButtonLink
             key="developers"
             to="/learn/getting-started/welcome-to-ordercloud"
             variant="contained"
-            color={flame[600]}
+            size="large"
+            color="secondary"
           >
             Developer Guide
-          </CustomButtonLink>,
-          
+          </ButtonLink>,
         ]}
       />
       <Hidden smUp>
@@ -267,14 +257,10 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <CustomButtonLink
-                  fullWidth
-                  color={themeConstants.palette.secondary.main}
-                  to="/discover/define-your-marketplace"
-                  variant="outlined"
-                >
+                <ButtonLink fullWidth to="/discover/define-your-marketplace">
                   Read More
-                </CustomButtonLink>
+                  <img src="/images/icon-arrow.png" />
+                </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
@@ -327,14 +313,10 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <CustomButtonLink
-                  fullWidth
-                  color={themeConstants.palette.secondary.main}
-                  to="/discover/define-your-marketplace"
-                  variant="outlined"
-                >
+                <ButtonLink fullWidth to="/discover/define-your-marketplace">
                   Read More
-                </CustomButtonLink>
+                  <img src="/images/icon-arrow.png" />
+                </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
@@ -387,14 +369,10 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <CustomButtonLink
-                  fullWidth
-                  color={themeConstants.palette.secondary.main}
-                  to="/discover/personalized-shopping"
-                  variant="outlined"
-                >
+                <ButtonLink fullWidth to="/discover/personalized-shopping">
                   Read More
-                </CustomButtonLink>
+                  <img src="/images/icon-arrow.png" />
+                </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
@@ -447,14 +425,10 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <CustomButtonLink
-                  fullWidth
-                  color={themeConstants.palette.secondary.main}
-                  to="/discover/flexible-fulfillment"
-                  variant="outlined"
-                >
+                <ButtonLink fullWidth to="/discover/flexible-fulfillment">
                   Read More
-                </CustomButtonLink>
+                  <img src="/images/icon-arrow.png" />
+                </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
@@ -464,12 +438,12 @@ const MainComponent: React.FunctionComponent = props => {
         <Box paddingY={3} paddingX={20}>
           <Divider />
         </Box>
-        <Typography variant="h1" align="center" color="secondary">
+        <Typography variant="h1" align="center">
           Future-Proof with Headless Architecture
         </Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>
-            <Typography variant="h3" className={classes.orangeTitle}>
+            <Typography variant="h3">
               Our RESTful API was built
               <br />
               by developers, for developers.
@@ -489,18 +463,19 @@ const MainComponent: React.FunctionComponent = props => {
               <CustomButtonLink
                 color={themeConstants.palette.secondary.main}
                 to="/learn/ordercloud-basics/architecture"
-                variant="outlined"
+                variant="contained"
+                size="large"
               >
                 Learn the Basics
               </CustomButtonLink>
               <div className={classes.spacer} />
-              <CustomButtonLink
+              <ButtonLink
                 to="/learn/getting-started/welcome-to-ordercloud"
-                variant="contained"
-                color={flame[600]}
+                size="large"
               >
                 Start Coding
-              </CustomButtonLink>
+                <img src="/images/icon-arrow.png" />
+              </ButtonLink>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -538,11 +513,7 @@ await Orders.Submit("Outgoing", order.ID);`}
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Typography
-              variant="h3"
-              align="right"
-              className={classes.orangeTitle}
-            >
+            <Typography variant="h3" align="right">
               Open-source resources for developing
               <br />
               progressive web applications.
@@ -560,17 +531,15 @@ await Orders.Submit("Outgoing", order.ID);`}
               justifyContent="flex-end"
               marginTop={3}
             >
-              <CustomButtonLink
-                color={flame[500]}
-                to="/knowledge-base"
-                variant="contained"
-              >
+              <ButtonLink to="/knowledge-base" size="large">
                 Knowledge Base
-              </CustomButtonLink>
+                <img src="/images/icon-arrow.png" />
+              </ButtonLink>
               <div className={classes.spacer} />
               <CustomButtonLink
                 to="/developer-tools"
-                variant="outlined"
+                variant="contained"
+                size="large"
                 color={themeConstants.palette.secondary.main}
               >
                 Developer Tools
@@ -605,15 +574,21 @@ await Orders.Submit("Outgoing", order.ID);`}
         >
           <Button
             onClick={() => navigate('/register')}
-            color="primary"
+            color="secondary"
             variant="contained"
+            size="large"
           >
             Sign Up
           </Button>
           <div className={classes.spacer} />
-          <CustomButtonLink to="/slack" variant="contained" color={flame[500]}>
+          <ButtonLink
+            to="/slack"
+            size="large"
+            color="secondary"
+            variant="outlined"
+          >
             Join Our Slack
-          </CustomButtonLink>
+          </ButtonLink>
         </Box>
       </Container>
     </React.Fragment>
