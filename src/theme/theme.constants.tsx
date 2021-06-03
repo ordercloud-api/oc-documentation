@@ -97,6 +97,9 @@ export default createMuiTheme({
     },
   },
   props: {
+    MuiButton: {
+      disableElevation: true,
+    },
     MuiButtonBase: {
       disableRipple: true,
     },
@@ -146,7 +149,6 @@ export default createMuiTheme({
     MuiListItemText: {
       primary: {
         fontWeight: 600,
-        color: primaryColor,
       },
       secondary: {
         color: 'black',
@@ -161,6 +163,11 @@ export default createMuiTheme({
     MuiButton: {
       root: {
         textTransform: 'none',
+      },
+      label: {
+        '& > img': {
+          marginLeft: defaultTheme.spacing(1),
+        },
       },
     },
     MuiTypography: {
