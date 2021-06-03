@@ -47,7 +47,7 @@ export default function StaticPageTemplate(props: StaticPageTemplateProps) {
   return (
     <Layout location={props.location}>
       <Helmet
-        title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`}
+        title={`${doc.mdx.frontmatter.title} | Sitecore OrderCloud`}
         meta={[
           {
             name: 'description',

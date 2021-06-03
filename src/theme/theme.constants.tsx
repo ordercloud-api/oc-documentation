@@ -37,20 +37,20 @@ const error = brand_signal_error
 export default createMuiTheme({
   typography: {
     h1: {
-      fontSize: '2rem',
-      fontWeight: 600,
+      fontSize: '3rem',
+      fontWeight: 700,
     },
     h2: {
-      fontSize: '1.75rem',
-      fontWeight: 600,
+      fontSize: '2rem',
+      fontWeight: 700,
     },
     h3: {
       fontSize: '1.5rem',
-      fontWeight: 600,
+      fontWeight: 700,
     },
     h4: {
       fontSize: '1.25rem',
-      fontWeight: 500,
+      fontWeight: 600,
     },
     h5: {
       fontSize: '1.15rem',
@@ -63,6 +63,9 @@ export default createMuiTheme({
     subtitle1: {
       fontSize: '.875rem',
       lineHeight: 1.5,
+    },
+    button: {
+      fontWeight: 600,
     },
     fontFamily: [
       'AvenirNextR',
@@ -94,6 +97,9 @@ export default createMuiTheme({
     },
   },
   props: {
+    MuiButton: {
+      disableElevation: true,
+    },
     MuiButtonBase: {
       disableRipple: true,
     },
@@ -143,7 +149,6 @@ export default createMuiTheme({
     MuiListItemText: {
       primary: {
         fontWeight: 600,
-        color: primaryColor,
       },
       secondary: {
         color: 'black',
@@ -158,6 +163,11 @@ export default createMuiTheme({
     MuiButton: {
       root: {
         textTransform: 'none',
+      },
+      label: {
+        '& > img': {
+          marginLeft: defaultTheme.spacing(1),
+        },
       },
     },
     MuiTypography: {

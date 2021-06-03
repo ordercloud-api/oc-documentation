@@ -156,7 +156,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
   return (
     <Layout location={props.location}>
       <Helmet
-        title={`Knowledge Base | Four51 OrderCloud`}
+        title={`Knowledge Base | Sitecore OrderCloud`}
         meta={[
           {
             name: 'description',
