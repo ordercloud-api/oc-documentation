@@ -34,7 +34,7 @@ import Header, { navHeight, navHeightMobile } from './Header2'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageWrapper: {
-      backgroundColor: 'white',
+      backgroundColor: '#f6f6f6',
       minHeight: `calc(100vh - ${navHeightMobile}px)`,
       [theme.breakpoints.up('md')]: {
         marginBottom: theme.spacing(0),

@@ -100,7 +100,7 @@ const DeveloperTools: FunctionComponent = () => {
   return (
     <Layout>
       <Helmet
-        title={`Developer Tools | Four51 OrderCloud`}
+        title={`Developer Tools | Sitecore OrderCloud`}
         meta={[
           {
             name: 'description',
@@ -284,7 +284,7 @@ const DeveloperTools: FunctionComponent = () => {
         <Box paddingY={3} paddingX={20}>
           <Divider />
         </Box>
-        <Typography variant="h2" align="center" color="secondary">
+        <Typography variant="h2" align="center">
           Open API Standards with Swagger
         </Typography>
         <Box paddingY={3} paddingX={20} className={classes.boxMain}>
