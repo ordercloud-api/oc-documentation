@@ -112,7 +112,9 @@ var client = new OrderCloudClient(new OrderCloudClientConfig {
     },
     ApiUrl: "https://sandboxapi.ordercloud.io",
     AuthUrl: "https://sandboxapi.ordercloud.io"
-});`}}
+});
+// Now that the sdk is configured it will automatically acquire, cache and refresh tokens implicitly as needed
+`}}
 />
 
 If you request a scope that includes _more_ API roles than the user is assigned under `AvailableRoles` you will not recieve an error. Instead, the token will simply include whatever roles the user _does_ have in the requested scope. This allows you to maintain a single all encompassing scope variable for your implementation and use it for any authentication request.
