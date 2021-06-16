@@ -8,134 +8,91 @@ updatedDate:
 tags:           ["Concepts", "Marketplaces", "Suppliers", "Buyers", "Orders"]
 ---
 
-We recently shared our vision for <Link to="https://ordercloud.io/knowledge-base/marketplaces-in-ordercloud">Marketplaces in OrderCloud</Link> - the new features outlined below help get us closer to fulfilling that vision by enabling Marketplaces where buyers can select which Supplier they want to view pricing for and order directly from. Additionally Suppliers can now manage their own catalogs and set their own pricing on products they don’t own.  
+We recently shared our vision for <Link to="/knowledge-base/marketplaces-in-ordercloud">Marketplaces in OrderCloud</Link> - the new features outlined below help get us closer to fulfilling that vision by enabling Marketplaces where buyers can select which Supplier they want to view pricing for and order directly from. Additionally Suppliers can now manage their own catalogs and set their own pricing on products they don’t own.  
 
 
-##Supplier Ordering Overview 
+## Supplier Ordering Overview 
 
-There are two ways to route an order to a supplier: 
--Pass the SupplierID as the ToCompanyID on Order create 
---This property is only writable on POST or initial PUT. If no value is passed it will default to the Marketplace owner. 
---If an explicit relationship between the buyer and supplier has not been defined then Supplier.AllBuyersCanOrder must be true. 
---If the relationship is removed after the order was created, but prior to submit, an error will be thrown on validate and/or submit. 
--Forward the order to the Supplier after Submit 
+#### There are two ways to route an order to a supplier: 
+- Pass the `SupplierID` as the `ToCompanyID` on Order create.
+   - This property is only writable on `POST` or initial `PUT`. If no value is passed it will default to the Marketplace owner. 
+   - If an explicit relationship between the buyer and supplier has not been defined then `Supplier.AllBuyersCanOrder` must be true. 
+   - If the relationship is removed after the order was created, but prior to submit, an error will be thrown on validate and/or submit. 
+- Forward the order to the Supplier after Submit.
 
-In order to add a line item to an Order that will be received by a Supplier one of the following must be true about the LineItem.Product: 
+#### In order to add a line item to an Order that will be received by a Supplier one of the following must be true about the LineItem.Product: 
+1. Supplier is the `Product.DefaultSupplierID`
+2. Supplier owns the product 
+3. Marketplace Owner owns the product and opted-in the Supplier 
+4. Marketplace Owner owns the product and has `AllSuppliersCanSell` property with a value of true and the Supplier has opted-in to selling this product. 
 
-Supplier is the Product.DefaultSupplierID 
+#### When the Marketplace Owner has created an explicit relationship between the Supplier and Product, the Supplier is not required to set their own pricing, but if desired, they can do so in one of two ways: 
 
-Supplier owns the product 
+1. Create an explicit Product Assignment via `POST v1/products/assignments`
+2. Set Default Pricing via `PUT v1/products/{productID}/suppliers/{supplierID}?defaultPriceScheduleID={id}`
 
-Marketplace Owner opted-in the Supplier 
+#### When a Marketplace Owner has set `AllSuppliersCanSell` to true on a Product, this is an invitation for any Supplier in the marketplace to opt-in to selling the product, which they can do in one of two ways: 
+1. Create an explicit product assignment via `POST v1/products/assignments` if the Supplier wishes to set their own pricing.
+2. Call `PUT v1/products/{productID}/suppliers/{supplierID}` with or without the optional `defaultPriceScheduleID` route parameter. 
 
-Product is owned by the Marketplace Owner and has AllSuppliersCanSell property with a value of true and the Supplier has opted-in to selling this product. 
+## Marketplace Resource Ownership 
 
-When the Marketplace Owner has created an explicit relationship between the Supplier and Product, the Supplier is not required to set their own pricing, but if desired, they can do so in one of two ways: 
+Marketplace owners can read and administer all resources within their marketplace, even those resources owned by other parties. The Marketplace Owner can write to the `OwnerID` property.  
 
-Create an explicit Product Assignment via POST v1/products/assignments
+#### Suppliers are now able to own any of the following:  
 
-Set Default Pricing via PUT v1/products/{productID}/suppliers/{supplierID}?defaultPriceScheduleID={id} 
+- Catalogs 
+   - Suppliers can assign catalogs they own directly to buyers they have a relationship to. This functionality was previously reserved for Marketplace Owners only. 
+   - Suppliers can assign products owned by the Marketplace Owner, that they are opted-in to selling, to catalogs they own 
+- PriceSchedules (existing functionality)
+   - A supplier can only use PriceSchedules they own when setting pricing on a product, regardless of who owns the product 
+- Promotions 
+   - A Supplier owned promotion can only be used on an order where `Order.ToCompanyID` = `Promotion.OwnerID`. A promotion owned by the Marketplace Owner can be used on any order regardless of `Order.ToCompanyID`. 
+- Products (existing functionality)  
+- Shipments 
+- Specs 
 
-When a Marketplace Owner has set AllSuppliersCanSell to true on a Product, this is an invitation for any Supplier in the marketplace to opt-in to selling the product, which they can do in one of two ways: 
+## Marketplace Pricing 
+- Multiple ProductAssignments can now exist for the same Product/Party combination with different `PriceScheduleIDs`, as long as the price schedules are not owned by the same organization. 
+- Buyer users can get supplier specific pricing for a given Supplier by using the optional `SellerID` parameter on product `GET` routes (details below).
+- When multiple ProductAssignments exist for the same Product/Party combination LineItem pricing is calculated based on `Order.ToCompanyID`
+   - No need to pass any special parameter to get accurate pricing 
+- When requesting pricing for a given Supplier the following precedence applies: 
+   - An explicit ProductAssignment owned by the Supplier 
+   - The Supplier’s DefaultPriceSchedule (note: this may not be the `DefaultPriceScheduleID` of the product). 
+   - The Product’s DefaultPriceSchedule
 
-If the Supplier wishes to set their own pricing, create an explicit product assignment via POST v1/products/assignments.
+## New Properties 
+#### `Supplier.AllBuyersCanOrder`
+- Only writable by the Marketplace Owner. 
+- If false, buyers will only be able to set ToCompanyID on an order to the Marketplace Owner, or suppliers they have an explicit relationship to. 
 
-Call PUT v1/products/{productID}/suppliers/{supplierID} with or without the optional defaultPriceScheduleID route parameter. 
+#### `Products.AllSuppliersCanSell`
+- Only writable by the Marketplace Owner on products they own. 
+- If true, this is an “invitation” for any Supplier in the marketplace to opt-in to selling the product. Opt-in details provided above. 
 
-Marketplace Resource Ownership 
+## New (or enhanched) Routes 
+#### New `OrderDirection` - `GET v1/orders/all`:
+- Returns all orders to any orgs in your marketplace if you are the Marketplace Owner. Including Orders placed directly to Suppliers. 
+- Returns outgoing orders if you are a buyer user. 
+- Returns incoming orders if you are a supplier user. 
 
-Marketplace owners can read and administer all resources within their marketplace, even those resources owned by other parties. The Marketplace Owner can write to the OwnerID property.  
+#### New routes to read and administer buying relationships between parties:
+- `GET v1/suppliers/{supplierID}/buyers` 
+   - Marketplace Owner and Suppliers are authorized to access this route (only returns your own buyers if you are a supplier) 
+- `PUT v1/suppliers/{supplierID}/buyers/{buyerID}`
+   - Only Marketplace Owner are authorized to access this route. 
+- `DELETE v1/suppliers/{supplierID}/buyers/{buyerID}`
+   - Only Marketplace Owner are authorized to access this route. 
 
-Suppliers are now able to own any of the following:  
+#### New route for buyer users to read which Suppliers they have the ability to write to Order.ToCompanyID
+- `GET v1/me/sellers`
 
-Catalogs 
+#### Buyer users can get pricing for a given Supplier by using the optional sellerID parameter on these routes:
+- `GET v1/me/products?sellerID={sellerID}`
+- `GET v1/me/product/{productID}?sellerID={sellerID}`
 
-Suppliers can assign catalogs they own directly to buyers they have a relationship to. This functionality was previously reserved for Marketplace Owners only. 
-
-Suppliers can assign products owned by the Marketplace Owner, that they are opted-in to selling, to catalogs they own 
-
-PriceSchedules 
-
-A supplier can only use PriceSchedules they own when setting pricing on a product, regardless of who owns the product 
-
-Promotions 
-
-A Supplier owned promotion can only be used on an order where Order.ToCompanyID = Promotion.OwnerID. A promotion owned by the Marketplace Owner can be used on any order regardless of Order.ToCompanyID. 
-
-Products (existing functionality)  
-
-Shipments 
-
-Specs 
-
-  Marketplace Pricing 
-
-Multiple ProductAssignments can now exist for the same Product/Party combination with different PriceScheduleIDs, as long as the price schedules are not owned by the same Organization. 
-
-Buyer users can get supplier specific pricing for a given Supplier by using the optional SellerID parameter on product GET routes (details below).
-
-When multiple ProductAssignments exist for the same Product/Party combination LineItem pricing is calculated based on Order.ToCompanyID
-
-No need to pass any special parameter to get accurate pricing 
-
-When requesting pricing for a given Supplier the following precedence applies: 
-
-An explicit ProductAssignment owned by the Supplier 
-
-The Supplier’s DefaultPriceSchedule (note: this may not be the DefaultPriceScheduleID of the product). 
-
-The Product’s DefaultPriceSchedule
-
-New Properties 
-
-Supplier.AllBuyersCanOrder 
-
-Only writable by the Marketplace Owner. 
-
-If false, buyers will only be able to set ToCompanyID on an order to the Marketplace Owner, or suppliers they have an explicit relationship to. 
-
-Products.AllSuppliersCanSell 
-
-Only writable by the Marketplace Owner on products they own. 
-
-If true, this is an “invitation” for any Supplier in the marketplace to opt-in to selling the product. Opt-in details provided above. 
-
-New/Modified Routes 
-
-New OrderDirection: “all” - GET v1/orders/all 
-
-Returns both incoming and outgoing orders to any orgs in your marketplace if you are the Marketplace Owner. Including Orders placed directly to Suppliers. 
-
-Returns outgoing orders if you are a buyer user. 
-
-Returns incoming orders if you are a supplier user. 
-
-New routes to read and administer buying relationships between parties: 
-
-GET v1/suppliers/{supplierID}/buyers 
-
-Marketplace Owner and Suppliers are authorized to access this route (only returns your own buyers if you are a supplier) 
-
-PUT v1/suppliers/{supplierID}/buyers/{buyerID}
-
-Only Marketplace Owner are authorized to access this route. 
-
-DELETE v1/suppliers/{supplierID}/buyers/{buyerID}
-
-Only Marketplace Owner are authorized to access this route. 
-
-New route for buyer users to read which Suppliers they have the ability to write to Order.ToCompanyID
-
-GET v1/me/sellers
-
-Buyer users can get pricing for a given Supplier by using the optional sellerID parameter on these routes:
-
-GET v1/me/products?sellerID={sellerID}
-
-GET v1/me/product/{productID}?sellerID={sellerID}  
-
-New optional route parameter on PUT v1/products/{productID}/suppliers/{supplierID} of DefaultPriceScheduleID 
-
-Allows you to pass a PriceScheduleID owned by the supplier. Can be updated after the relationship already exists.
+#### New optional route parameter on `PUT v1/products/{productID}/suppliers/{supplierID}` of `DefaultPriceScheduleID` 
+- Allows you to pass a `PriceScheduleID` owned by the supplier. Can be updated after the relationship already exists.
 
  
