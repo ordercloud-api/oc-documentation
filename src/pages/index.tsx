@@ -5,7 +5,15 @@ import { Helmet } from 'react-helmet'
 
 export default () => (
   <Layout>
-    <Helmet title={`Sitecore OrderCloud`} />
+    <Helmet>
+      <title>Sitecore OrderCloud</title>
+      <link
+        rel="icon"
+        type="image/png"
+        href="/images/favicon.ico"
+        sizes="16x16"
+      />
+    </Helmet>
     <Main />
   </Layout>
 )

@@ -122,7 +122,14 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
             content: pageInfo.description || defaultDescription,
           },
         ]}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       {!pageContext.section && (
         <React.Fragment>
           <Jumbotron

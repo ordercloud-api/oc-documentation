@@ -78,7 +78,14 @@ export default function SlackCommunityComoponent(props: SlackCommunityProps) {
   return (
     <Layout>
       <div className={classes.slackLayout}>
-        <Helmet title={`Join the OrderCloud Slack Community`} />
+        <Helmet title={`Join the OrderCloud Slack Community`}>
+          <link
+            rel="icon"
+            type="image/png"
+            href="/images/favicon.ico"
+            sizes="16x16"
+          />
+        </Helmet>
         <Paper elevation={3} className={classes.cardSignIn}>
           <Box display="flex" flexDirection="column" alignItems="center">
             <SvgIcon viewBox="0 0  270 270" className={classes.svgIcon}>

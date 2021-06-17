@@ -121,7 +121,14 @@ function ReleaseNotesComponent(props: any) {
     <Layout location={location}>
       <Helmet
         title={`OrderCloud Release Notes - ${release.frontmatter.apiVersion}`}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h1">
