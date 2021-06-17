@@ -287,7 +287,7 @@ class Footer extends React.Component<any> {
                 <img className={classes.logo} src={footerLogo} alt="OC" />
               </Box>
               <Typography variant="body2" className={classes.Typography}>
-                © Copyright {currentYear}, Sitecore OrderCloud. All rights
+                © Copyright {currentYear}, Sitecore OrderCloud®. All rights
                 reserved.
               </Typography>
             </Grid>

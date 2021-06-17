@@ -1,6 +1,7 @@
 import {
   Container,
   createStyles,
+  fade,
   lighten,
   Paper,
   Theme,
@@ -8,8 +9,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React, { FunctionComponent } from 'react'
-import { seafoam } from '../../theme/ocPalette.constants'
-import ocPlatform from '../../assets/svg/four51-banner-bg.svg'
+import { base_color_1 } from '../../theme/theme.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,8 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
         borderRadius: 0,
         overflowY: 'hidden',
         overflowX: 'hidden',
-        backgroundImage:
-          'linear-gradient(-44deg, #28A7C5 0, #2AA1C8 27%, #2C96CE 66%, #3C8DD5 100%)',
+        backgroundColor: base_color_1,
         backgroundSize: '400% 400%',
         // background: `linear-gradient(${lighten(
         //   theme.palette.secondary.main,
@@ -115,7 +114,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     jumbotronText: ({ align }) => ({
-      color: seafoam[50],
+      color: fade('#ffffff', 0.8),
       maxWidth: align === 'center' ? 700 : 900,
       margin: align === 'center' ? '0 auto' : undefined,
       textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
