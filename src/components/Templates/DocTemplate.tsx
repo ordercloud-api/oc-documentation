@@ -75,7 +75,14 @@ export default function Template(props: DocTemplateProps) {
             content: doc.mdx.frontmatter.description,
           },
         ]}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <LayoutContainer>
         <LayoutMain>
           <Hidden mdDown>

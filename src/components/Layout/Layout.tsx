@@ -137,6 +137,12 @@ export default (props: LayoutProps) => {
             },
           ]}
         >
+          <link
+            rel="icon"
+            type="image/png"
+            href="/images/favicon.ico"
+            sizes="16x16"
+          />
           <html />
           <body className={classes.body} />
         </Helmet>

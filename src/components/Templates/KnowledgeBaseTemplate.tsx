@@ -151,7 +151,14 @@ export default function KnowledgeBaseTemplate(
             content: doc.mdx.frontmatter.description,
           },
         ]}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <LayoutContainer>
         <LayoutMain>
           <IconButtonLink
