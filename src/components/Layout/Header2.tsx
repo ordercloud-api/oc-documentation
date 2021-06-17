@@ -13,7 +13,8 @@ import {
 import { ChevronRight } from '@material-ui/icons'
 import { graphql, Link, StaticQuery } from 'gatsby'
 import React, { Fragment, FunctionComponent, useMemo } from 'react'
-import sitecoreLogo from '../../assets/svg/oclogo_dark.svg'
+import sitecoreLogo from '../../assets/svg/oc_sc_logo.svg'
+import sitecoreLogoIcon from '../../assets/svg/oc_sc_icon.svg'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
@@ -47,12 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
       padding: theme.spacing(0.5, 1, 1),
     },
-    logoIcon: {
-      width: theme.spacing(8),
-      height: theme.spacing(5),
-      [theme.breakpoints.down('md')]: {
-        marginRight: 'auto',
-      },
+    logoNormal: {
+      width: 170,
     },
     lockup: {
       color: theme.palette.text.primary,
@@ -183,12 +180,7 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
           <Container maxWidth="lg">
             <Toolbar disableGutters>
               <Link to="/" className={classes.logo}>
-                <img className={classes.logoIcon} src={sitecoreLogo}></img>
-                <h1 className={classes.lockup}>
-                  <span className={classes.trademark}>TM</span>
-                  <span className={classes.sitecoreText}>Sitecore</span>
-                  <span className={classes.ordercloudText}>OrderCloud</span>
-                </h1>
+                <img className={classes.logoNormal} src={sitecoreLogo}></img>
               </Link>
               <Hidden smDown>
                 <Button
