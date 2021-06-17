@@ -212,18 +212,18 @@ const toExport = {
         path: `${__dirname}/src`,
       },
     },
-    {
-      resolve: `gatsby-plugin-manifest`,
-      options: {
-        name: `Sitecore OrderCloud`,
-        short_name: `starter`,
-        start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
-        display: `minimal-ui`,
-        icon: `src/assets/svg/sitecore_logo.svg`,
-      },
-    },
+    // {
+    //   resolve: `gatsby-plugin-manifest`,
+    //   options: {
+    //     name: `Sitecore OrderCloud`,
+    //     short_name: `starter`,
+    //     start_url: `/`,
+    //     background_color: `#663399`,
+    //     theme_color: `#663399`,
+    //     display: `minimal-ui`,
+    //     icon: `src/assets/images/favicon.ico`,
+    //   },
+    // },
     {
       resolve: 'gatsby-plugin-mdx',
       options: {

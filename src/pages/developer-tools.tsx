@@ -108,7 +108,14 @@ const DeveloperTools: FunctionComponent = () => {
               'Build solutions the way you want with our growing library of developer tools',
           },
         ]}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <Jumbotron
         overlayed={true}
         heading="Developer Tools"
