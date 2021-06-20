@@ -16,7 +16,7 @@ Let's go ahead and use the shorthand method of shipping and completing an order 
 <CodeExample
   title="Ship and complete an order"
   content={{
-    http: `GET https://sandboxapi.ordercloud.io/v1/orders/incoming/INSERT_ORDER_ID_HERE/ship HTTP/1.1
+    http: `POST https://sandboxapi.ordercloud.io/v1/orders/incoming/INSERT_ORDER_ID_HERE/ship HTTP/1.1
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
 javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
