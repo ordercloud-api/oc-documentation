@@ -34,7 +34,7 @@ import Header, { navHeight, navHeightMobile } from './Header2'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     pageWrapper: {
-      backgroundColor: 'white',
+      backgroundColor: '#f6f6f6',
       minHeight: `calc(100vh - ${navHeightMobile}px)`,
       [theme.breakpoints.up('md')]: {
         marginBottom: theme.spacing(0),
@@ -137,6 +137,12 @@ export default (props: LayoutProps) => {
             },
           ]}
         >
+          <link
+            rel="icon"
+            type="image/png"
+            href="/images/favicon.ico"
+            sizes="16x16"
+          />
           <html />
           <body className={classes.body} />
         </Helmet>

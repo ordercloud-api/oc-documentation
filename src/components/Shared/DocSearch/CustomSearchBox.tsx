@@ -17,9 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: 1,
       borderRadius: theme.shape.borderRadius,
       padding: theme.spacing(0, 1.5),
-      backgroundColor: props.darkMode
-        ? 'rgba(0, 0, 0, 0.25)'
-        : theme.palette.grey[500],
     }),
     input: (props: any) => ({
       fontFamily: theme.typography.h1.fontFamily,
@@ -27,13 +24,9 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: theme.transitions.create('width', {
         duration: theme.transitions.duration.shorter,
       }),
-      color: props.darkMode ? theme.palette.common.white : undefined,
-      '&::placeholder': {
-        color: props.darkMode ? theme.palette.common.white : undefined,
-      },
     }),
     adornment: (props: any) => ({
-      color: props.darkMode ? theme.palette.grey[400] : theme.palette.grey[500],
+      color: theme.palette.text.primary,
     }),
   })
 )
