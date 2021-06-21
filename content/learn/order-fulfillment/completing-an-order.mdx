@@ -14,7 +14,7 @@ Let's go ahead and use the shorthand method of completing an order using the ID 
 <CodeExample
   title="Complete an order"
   content={{
-    http: `GET https://sandboxapi.ordercloud.io/v1/orders/incoming/myorderID/complete HTTP/1.1
+    http: `POST https://sandboxapi.ordercloud.io/v1/orders/incoming/myorderID/complete HTTP/1.1
 Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
 javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
