@@ -84,12 +84,16 @@ Marketplace owners can read and administer all resources within their marketplac
 - `DELETE v1/suppliers/{supplierID}/buyers/{buyerID}`
    - Only Marketplace Owner are authorized to access this endpoint. 
 
-#### New endpoint for buyer users to read which Suppliers they have the ability to write to Order.ToCompanyID:
+#### New endpoint for listing all "Sellers" relative to the current Buyer:
 - `GET v1/me/sellers`
+   - Includes Marketplace Owner and any Suppliers that this Buyer can order from.
+   - IDs of results represnt valid values for setting Order.ToCompanyID and can be used in product queries (below).
 
-#### Buyer users can get pricing for a given Supplier by using the optional sellerID parameter on these endpoints:
+#### New optional query parameter for getting Seller-specific view of product(s):
 - `GET v1/me/products?sellerID={sellerID}`
+   - Acts as a filter and to return Seller-specific pricing, if applicable.
 - `GET v1/me/product/{productID}?sellerID={sellerID}`
+   - Returns product with Seller-specific pricing, or 404 if the organization does not the sell this product directly to the current Buyer.
 
 #### New optional query parameter on `PUT v1/products/{productID}/suppliers/{supplierID}` of `DefaultPriceScheduleID`:
 - Allows you to pass a `PriceScheduleID` owned by the supplier. Can be updated after the relationship already exists.
