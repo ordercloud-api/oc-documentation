@@ -66,11 +66,11 @@ Marketplace owners can read and administer all resources within their marketplac
 - Only writable by the Marketplace Owner. 
 - If false, buyers will only be able to set ToCompanyID on an order to the Marketplace Owner, or suppliers they have an explicit relationship to. 
 
-#### `Products.AllSuppliersCanSell`
+#### `Product.AllSuppliersCanSell`
 - Only writable by the Marketplace Owner on products they own. 
 - If true, this is an “invitation” for any Supplier in the marketplace to opt-in to selling the product. Opt-in details provided above. 
 
-## New (or enhanched) endpoints 
+## New (or Enhanched) Endpoints 
 #### New `OrderDirection` - `GET v1/orders/all`:
 - Returns all orders to any orgs in your marketplace if you are the Marketplace Owner. Including Orders placed directly to Suppliers. 
 - Returns outgoing orders if you are a buyer user. 
@@ -84,14 +84,14 @@ Marketplace owners can read and administer all resources within their marketplac
 - `DELETE v1/suppliers/{supplierID}/buyers/{buyerID}`
    - Only Marketplace Owner are authorized to access this endpoint. 
 
-#### New endpoint for buyer users to read which Suppliers they have the ability to write to Order.ToCompanyID
+#### New endpoint for buyer users to read which Suppliers they have the ability to write to Order.ToCompanyID:
 - `GET v1/me/sellers`
 
 #### Buyer users can get pricing for a given Supplier by using the optional sellerID parameter on these endpoints:
 - `GET v1/me/products?sellerID={sellerID}`
 - `GET v1/me/product/{productID}?sellerID={sellerID}`
 
-#### New optional query parameter on `PUT v1/products/{productID}/suppliers/{supplierID}` of `DefaultPriceScheduleID` 
+#### New optional query parameter on `PUT v1/products/{productID}/suppliers/{supplierID}` of `DefaultPriceScheduleID`:
 - Allows you to pass a `PriceScheduleID` owned by the supplier. Can be updated after the relationship already exists.
 
  
