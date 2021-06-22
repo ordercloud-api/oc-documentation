@@ -34,7 +34,7 @@ We recently shared our vision for <Link to="/knowledge-base/marketplaces-in-ord
 
 #### When a Marketplace Owner has set `AllSuppliersCanSell` to true on a Product, this is an invitation for any Supplier in the marketplace to opt-in to selling the product, which they can do in one of two ways: 
 1. Create an explicit product assignment via `POST v1/products/assignments` if the Supplier wishes to set their own pricing.
-2. Call `PUT v1/products/{productID}/suppliers/{supplierID}` with or without the optional `defaultPriceScheduleID` route parameter. 
+2. Call `PUT v1/products/{productID}/suppliers/{supplierID}` with or without the optional `defaultPriceScheduleID` query parameter. 
 
 ## Marketplace Resource Ownership 
 Marketplace owners can read and administer all resources within their marketplace, even those resources owned by other parties. The Marketplace Owner can write to the `OwnerID` property.  
@@ -53,7 +53,7 @@ Marketplace owners can read and administer all resources within their marketplac
 
 ## Marketplace Pricing 
 - Multiple ProductAssignments can now exist for the same Product/Party combination with different `PriceScheduleIDs`, as long as the price schedules are not owned by the same organization. 
-- Buyer users can get supplier specific pricing for a given Supplier by using the optional `SellerID` parameter on product `GET` routes (details below).
+- Buyer users can get supplier specific pricing for a given Supplier by using the optional `SellerID` parameter on product `GET` endpoints (details below).
 - When multiple ProductAssignments exist for the same Product/Party combination LineItem pricing is calculated based on `Order.ToCompanyID`
    - No need to pass any special parameter to get accurate pricing 
 - When requesting pricing for a given Supplier the following precedence applies: 
@@ -70,28 +70,28 @@ Marketplace owners can read and administer all resources within their marketplac
 - Only writable by the Marketplace Owner on products they own. 
 - If true, this is an “invitation” for any Supplier in the marketplace to opt-in to selling the product. Opt-in details provided above. 
 
-## New (or enhanched) Routes 
+## New (or enhanched) endpoints 
 #### New `OrderDirection` - `GET v1/orders/all`:
 - Returns all orders to any orgs in your marketplace if you are the Marketplace Owner. Including Orders placed directly to Suppliers. 
 - Returns outgoing orders if you are a buyer user. 
 - Returns incoming orders if you are a supplier user. 
 
-#### New routes to read and administer buying relationships between parties:
+#### New endpoints to read and administer buying relationships between parties:
 - `GET v1/suppliers/{supplierID}/buyers` 
-   - Marketplace Owner and Suppliers are authorized to access this route (only returns your own buyers if you are a supplier) 
+   - Marketplace Owner and Suppliers are authorized to access this endpoint (only returns your own buyers if you are a supplier) 
 - `PUT v1/suppliers/{supplierID}/buyers/{buyerID}`
-   - Only Marketplace Owner are authorized to access this route. 
+   - Only Marketplace Owner are authorized to access this endpoint. 
 - `DELETE v1/suppliers/{supplierID}/buyers/{buyerID}`
-   - Only Marketplace Owner are authorized to access this route. 
+   - Only Marketplace Owner are authorized to access this endpoint. 
 
-#### New route for buyer users to read which Suppliers they have the ability to write to Order.ToCompanyID
+#### New endpoint for buyer users to read which Suppliers they have the ability to write to Order.ToCompanyID
 - `GET v1/me/sellers`
 
-#### Buyer users can get pricing for a given Supplier by using the optional sellerID parameter on these routes:
+#### Buyer users can get pricing for a given Supplier by using the optional sellerID parameter on these endpoints:
 - `GET v1/me/products?sellerID={sellerID}`
 - `GET v1/me/product/{productID}?sellerID={sellerID}`
 
-#### New optional route parameter on `PUT v1/products/{productID}/suppliers/{supplierID}` of `DefaultPriceScheduleID` 
+#### New optional query parameter on `PUT v1/products/{productID}/suppliers/{supplierID}` of `DefaultPriceScheduleID` 
 - Allows you to pass a `PriceScheduleID` owned by the supplier. Can be updated after the relationship already exists.
 
  
