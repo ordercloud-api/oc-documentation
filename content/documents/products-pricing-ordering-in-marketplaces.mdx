@@ -63,11 +63,12 @@ Marketplace owners can read and administer all resources within their marketplac
 
 ## New Properties 
 **`Supplier.AllBuyersCanOrder`**
-- Only writable by the Marketplace Owner. 
+- Only writable by the Marketplace Owner. If anyone other than the Marketplace Owner attempts to write to this property, it will be ignored.
 - If false, buyers will only be able to set ToCompanyID on an order to the Marketplace Owner, or suppliers they have an explicit relationship to. 
 
 **`Product.AllSuppliersCanSell`**
 - Only writable by the Marketplace Owner on products they own. 
+- If you attempt to set the value to `true` on a Supplier owned product, an error will be returned.
 - If true, this is an “invitation” for any Supplier in the marketplace to opt-in to selling the product. Opt-in details provided above. 
 
 **`PriceSchedule.SellerID`**
@@ -95,7 +96,8 @@ Marketplace owners can read and administer all resources within their marketplac
 
 **New optional query parameter for getting Seller-specific view of product(s):**
 - `GET v1/me/products?sellerID={sellerID}`
-   - Acts as a filter and to return Seller-specific pricing, if applicable.
+   - Acts as a filter to return Seller-specific pricing, if applicable.
+   - Only dictates what pricing is returned, will return products not owned by the seller, and products not assigned to any catalog the seller owns. Use OwnerID and CatalogID filters respectively to filter down results further.
 - `GET v1/me/product/{productID}?sellerID={sellerID}`
    - Returns product with Seller-specific pricing, or 404 if the organization does not the sell this product directly to the current Buyer.
 
