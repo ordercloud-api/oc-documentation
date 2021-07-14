@@ -98,7 +98,7 @@ csharp: `using OrderCloud.SDK;\n
 var client = new OrderCloudClient(new OrderCloudClientConfig {
     ClientId = "INSERT_SHARED_API_CLIENT_ID",
     Username = "admin01",
-    Password = "INSERT_ADMIN_USER_PASSWORD"
+    Password = "INSERT_ADMIN_USER_PASSWORD",
     Roles = new[] { 
         ApiRole.MeAdmin,
         ApiRole.PasswordReset,
@@ -110,8 +110,8 @@ var client = new OrderCloudClient(new OrderCloudClientConfig {
         ApiRole.PriceScheduleAdmin,
         ApiRole.ShipmentAdmin
     },
-    ApiUrl: "https://sandboxapi.ordercloud.io",
-    AuthUrl: "https://sandboxapi.ordercloud.io"
+    ApiUrl= "https://sandboxapi.ordercloud.io",
+    AuthUrl= "https://sandboxapi.ordercloud.io"
 });
 // Now that the sdk is configured it will automatically acquire, cache and refresh tokens implicitly as needed
 `}}

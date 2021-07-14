@@ -1,6 +1,7 @@
 import {
   Container,
   createStyles,
+  fade,
   lighten,
   Paper,
   Theme,
@@ -8,8 +9,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React, { FunctionComponent } from 'react'
-import { seafoam } from '../../theme/ocPalette.constants'
-import ocPlatform from '../../assets/svg/four51-banner-bg.svg'
+import { base_color_1 } from '../../theme/theme.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 30,
+        paddingTop: 60,
         [theme.breakpoints.up('sm')]: {
           paddingBottom: overlayed ? 120 : 50,
         },
@@ -30,23 +30,27 @@ const useStyles = makeStyles((theme: Theme) =>
         borderRadius: 0,
         overflowY: 'hidden',
         overflowX: 'hidden',
-        background: `linear-gradient(${lighten(
-          theme.palette.secondary.main,
-          0.0
-        )}, ${lighten(theme.palette.secondary.main, 0.6)})`,
-        // backgroundColor: sherpablue[500],
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        '-webkit-background-size': 'cover',
-        '-moz-background-size': 'cover',
-        '-o-background-size': 'cover',
-        '&>div': {
-          zIndex: 1,
-        },
+        backgroundColor: base_color_1,
+        backgroundSize: '400% 400%',
+        // background: `linear-gradient(${lighten(
+        //   theme.palette.secondary.main,
+        //   0.0
+        // )}, ${lighten(theme.palette.secondary.main, 0.6)})`,
       }
     },
-    jumbotronSecondary: {
-      backgroundColor: theme.palette.secondary.main,
+    jumbotronPattern: {
+      backgroundImage: `url(https://sitecorecdn.azureedge.net/-/media/sitecoresite/images/global/homepagerefresh/sitecore-pattern-cross-circle-white.svg)`,
+      content: '',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      height: '100%',
+      backgroundRepeat: 'repeat-y',
+      backgroundSize: '45%',
+      mixBlendMode: 'soft-light',
+      opacity: 1,
+      width: '100%',
+      backgroundPosition: 'right',
     },
     logo: {
       width: theme.spacing(40),
@@ -99,7 +103,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
     jumbotronHeading: {
       padding: 0,
-      textTransform: 'uppercase',
+      fontWeight: 700,
       marginTop: '.75rem',
       marginBottom: '0.5rem',
       color: 'white',
@@ -110,7 +114,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     jumbotronText: ({ align }) => ({
-      color: seafoam[50],
+      color: fade('#ffffff', 0.8),
       maxWidth: align === 'center' ? 700 : 900,
       margin: align === 'center' ? '0 auto' : undefined,
       textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
@@ -130,12 +134,8 @@ const Jumbotron: FunctionComponent<any> = ({
 }: any) => {
   const classes = useStyles({ overlayed, align })
   return (
-    <div
-      className={`${classes.jumbotron} ${
-        secondary ? classes.jumbotronSecondary : ''
-      }`}
-      style={{ height }}
-    >
+    <div className={classes.jumbotron} style={{ height }}>
+      <div className={classes.jumbotronPattern}></div>
       <Container>
         <Paper className={classes.jumbotronContainer}>
           {image && (
@@ -174,12 +174,6 @@ const Jumbotron: FunctionComponent<any> = ({
           )}
         </Paper>
       </Container>
-      <img
-        className={classes.jumbotronIcon}
-        aria-hidden="true"
-        src={ocPlatform}
-        alt="OrderCloud Platform Icon"
-      />
     </div>
   )
 }
