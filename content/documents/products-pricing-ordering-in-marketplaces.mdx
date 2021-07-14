@@ -10,36 +10,36 @@ tags:           ["Concepts", "Marketplaces", "Suppliers", "Buyers", "Orders"]
 
 We recently shared our vision for <Link to="/knowledge-base/marketplaces-in-ordercloud">Marketplaces in OrderCloud</Link> - the new features outlined below help get us closer to fulfilling that vision by enabling Marketplaces where buyers can select which Supplier they want to view pricing for and order directly from. Additionally Suppliers can now manage their own catalogs and set their own pricing on products they don’t own.
 
-*We're planning to release these features to Sandbox in the next few days and to production by the end of June 2021.*
+*We're planning to release these features to Sandbox in the next few days and to production by the end of July 2021.*
 
 
 ## Supplier Ordering Overview 
 
-#### There are two ways to route an order to a supplier: 
+**There are two ways to route an order to a supplier:** 
 - Pass the `SupplierID` as the `ToCompanyID` on Order create.
    - This property is only writable on `POST` or initial `PUT`. If no value is passed it will default to the Marketplace owner. 
    - If an explicit relationship between the buyer and supplier has not been defined then `Supplier.AllBuyersCanOrder` must be true. 
    - If the relationship is removed after the order was created, but prior to submit, an error will be thrown on validate and/or submit. 
 - Forward the order to the Supplier after Submit.
 
-#### In order to add a line item to an Order that will be received by a Supplier one of the following must be true about the LineItem.Product: 
+**In order to add a line item to an Order that will be received by a Supplier one of the following must be true about the LineItem.Product:** 
 1. Supplier is the `Product.DefaultSupplierID`
 2. Supplier owns the product 
 3. Marketplace Owner owns the product and opted-in the Supplier 
 4. Marketplace Owner owns the product and has `AllSuppliersCanSell` property with a value of true and the Supplier has opted-in to selling this product. 
 
-#### When the Marketplace Owner has created an explicit relationship between the Supplier and Product, the Supplier is not required to set their own pricing, but if desired, they can do so in one of two ways: 
+**When the Marketplace Owner has created an explicit relationship between the Supplier and Product, the Supplier is not required to set their own pricing, but if desired, they can do so in one of two ways:** 
 1. Create an explicit Product Assignment via `POST v1/products/assignments`
 2. Set Default Pricing via `PUT v1/products/{productID}/suppliers/{supplierID}?defaultPriceScheduleID={id}`
 
-#### When a Marketplace Owner has set `AllSuppliersCanSell` to true on a Product, this is an invitation for any Supplier in the marketplace to opt-in to selling the product, which they can do in one of two ways: 
+**When a Marketplace Owner has set `AllSuppliersCanSell` to true on a Product, this is an invitation for any Supplier in the marketplace to opt-in to selling the product, which they can do in one of two ways:** 
 1. Create an explicit product assignment via `POST v1/products/assignments` if the Supplier wishes to set their own pricing.
 2. Call `PUT v1/products/{productID}/suppliers/{supplierID}` with or without the optional `defaultPriceScheduleID` query parameter. 
 
-## Marketplace Resource Ownership 
-Marketplace owners can read and administer all resources within their marketplace, even those resources owned by other parties. The Marketplace Owner can write to the `OwnerID` property.  
+**Marketplace Resource Ownership** 
+Marketplace owners can read and administer all resources within their marketplace, even those resources owned by other parties. The Marketplace Owner can write to the `OwnerID` property on POST or initial PUT (OwnerID cannot be updated after that point).  
 
-#### Suppliers are now able to own any of the following:  
+**Suppliers are now able to own any of the following:**  
 - Catalogs 
    - Suppliers can assign catalogs they own directly to buyers they have a relationship to. This functionality was previously reserved for Marketplace Owners only. 
    - Suppliers can assign products owned by the Marketplace Owner, that they are opted-in to selling, to catalogs they own 
@@ -62,21 +62,26 @@ Marketplace owners can read and administer all resources within their marketplac
    - The Product’s DefaultPriceSchedule
 
 ## New Properties 
-#### `Supplier.AllBuyersCanOrder`
-- Only writable by the Marketplace Owner. 
+**`Supplier.AllBuyersCanOrder`**
+- Only writable by the Marketplace Owner. If anyone other than the Marketplace Owner attempts to write to this property, it will be ignored.
 - If false, buyers will only be able to set ToCompanyID on an order to the Marketplace Owner, or suppliers they have an explicit relationship to. 
 
-#### `Product.AllSuppliersCanSell`
+**`Product.AllSuppliersCanSell`**
 - Only writable by the Marketplace Owner on products they own. 
+- If you attempt to set the value to `true` on a Supplier owned product, an error will be returned.
 - If true, this is an “invitation” for any Supplier in the marketplace to opt-in to selling the product. Opt-in details provided above. 
 
+**`PriceSchedule.SellerID`**
+- Only writable by the Marketplace Owner on POST or initial PUT.
+- Must be passed into ProductAssignment Create or Delete if MPO wants to administer ProductAssignments for another Seller.
+
 ## New (or Enhanched) Endpoints 
-#### New `OrderDirection` - `GET v1/orders/all`:
+**New `OrderDirection` - `GET v1/orders/all`:**
 - Returns all orders to any orgs in your marketplace if you are the Marketplace Owner. Including Orders placed directly to Suppliers. 
 - Returns outgoing orders if you are a buyer user. 
 - Returns incoming orders if you are a supplier user. 
 
-#### New endpoints to read and administer buying relationships between parties:
+**New endpoints to read and administer buying relationships between parties:**
 - `GET v1/suppliers/{supplierID}/buyers` 
    - Marketplace Owner and Suppliers are authorized to access this endpoint (only returns your own buyers if you are a supplier) 
 - `PUT v1/suppliers/{supplierID}/buyers/{buyerID}`
@@ -84,18 +89,19 @@ Marketplace owners can read and administer all resources within their marketplac
 - `DELETE v1/suppliers/{supplierID}/buyers/{buyerID}`
    - Only Marketplace Owner are authorized to access this endpoint. 
 
-#### New endpoint for listing all "Sellers" relative to the current Buyer:
+**New endpoint for listing all "Sellers" relative to the current Buyer:**
 - `GET v1/me/sellers`
    - Includes Marketplace Owner and any Suppliers that this Buyer can order from.
    - IDs of results represent valid values for setting Order.ToCompanyID and can be used in product queries (below).
 
-#### New optional query parameter for getting Seller-specific view of product(s):
+**New optional query parameter for getting Seller-specific view of product(s):**
 - `GET v1/me/products?sellerID={sellerID}`
-   - Acts as a filter and to return Seller-specific pricing, if applicable.
+   - Acts as a filter to return Seller-specific pricing, if applicable.
+   - Only dictates what pricing is returned, will return products not owned by the seller, and products not assigned to any catalog the seller owns. Use OwnerID and CatalogID filters respectively to filter down results further.
 - `GET v1/me/product/{productID}?sellerID={sellerID}`
    - Returns product with Seller-specific pricing, or 404 if the organization does not the sell this product directly to the current Buyer.
 
-#### New optional query parameter on `PUT v1/products/{productID}/suppliers/{supplierID}` of `DefaultPriceScheduleID`:
+**New optional query parameter on `PUT v1/products/{productID}/suppliers/{supplierID}` of `DefaultPriceScheduleID`:**
 - Allows you to pass a `PriceScheduleID` owned by the supplier. Can be updated after the relationship already exists.
 
  
