@@ -8,12 +8,12 @@ priority: 2
 From the Portal dashboard you can get to the API console by selecting a recent tab or clicking on "NEW TAB" within the widget. Once the console loads, you will notice a list of API resources on your left, along with a prompt for you to "SELECT A CONTEXT".
 
 ## What is an API Console Context?
-Every interaction with the OrderCloud API requires a user context. Each contributing Portal user has their own unique context that is defined by their relationship and level of access to the organization. The API Console also allows Portal users with impersonation access to select a more specific **core** user context - meaning they are able to interact with the OrderCloud API as if they were a user _within_ the seller organization.
+Every interaction with the OrderCloud API requires a user context. Each contributing Portal user has their own unique context that is defined by their relationship and level of access to the marketplace. The API Console also allows Portal users with impersonation access to select a more specific **core** user context - meaning they are able to interact with the OrderCloud API as if they were a user _within_ the marketplace.
 
 Since we haven't created any core users at this point, we will be using your Portal user context which should be that of an owner.
 
 ### Select Your First Context
-Click "SELECT A CONTEXT". This will present a list of your available seller organizations. Choose the organization that we created in the last article. At this point, the context selector should close and you will automatically be authenticated using the **FullAccess** API Role provided to you as the owner.
+Click "SELECT A CONTEXT". This will present a list of your available marketplaces. Choose the marketplace that we created in the last article. At this point, the context selector should close and you will automatically be authenticated using the **FullAccess** API Role provided to you as the owner.
 
 ### Validate Your Context
 Navigate down to **Me and My Stuff > Me** API resource on the lefthand navigation. Select it and you should see the toolbar at the top change to _"Get the currently authenticated user"_. Click the "SEND" button and look at the data that comes back. It should look something like this:
@@ -45,7 +45,7 @@ Navigate down to **Me and My Stuff > Me** API resource on the lefthand navigatio
 This is what we call a "Default User" - it is essentially an admin user that will have the same level of data access as your Portal user. Don't be alarmed if `AvailableRoles` is empty - as the owner of the organization it is implied that you have `FullAccess`.
 
 ### Portal User Context and Default Users
-The default user you are authenticated as right now does not actually exist in the system, your seller organization is brand new and essentially empty. If you scroll up on the left-hand resources menu to click on **Seller > Admin Users** which opens the _"Get a list of admin users"_ request. Click "SEND" and you will see an empty list response like this:
+The default user you are authenticated as right now does not actually exist in the system, your marketplace is brand new and essentially empty. If you scroll up on the left-hand resources menu to click on **Seller > Admin Users** which opens the _"Get a list of admin users"_ request. Click "SEND" and you will see an empty list response like this:
 
 ```json
 {
@@ -63,4 +63,4 @@ The default user you are authenticated as right now does not actually exist in t
 }
 ```
 
-In other words, you are not actually interacting with the OrderCloud API as you would in a normal implementation. In order to remedy this, we must first create some core users and establish a definition of _how_ they can interact with your seller organization.
+In other words, you are not actually interacting with the OrderCloud API as you would in a normal implementation. In order to remedy this, we must first create some core users and establish a definition of _how_ they can interact with your marketplace.
