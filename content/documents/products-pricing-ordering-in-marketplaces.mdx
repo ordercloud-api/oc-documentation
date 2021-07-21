@@ -20,7 +20,7 @@ We recently shared our vision for <Link to="/knowledge-base/marketplaces-in-ord
    - This property is only writable on `POST` or initial `PUT`. If no value is passed it will default to the Marketplace owner. 
    - If an explicit relationship between the buyer and supplier has not been defined then `Supplier.AllBuyersCanOrder` must be true. 
    - If the relationship is removed after the order was created, but prior to submit, an error will be thrown on validate and/or submit. 
-- Forward the order to the Supplier after Submit.
+- Forward the order to the Supplier after Submit. Currently only possible if Supplier is the `DefaultSupplierID` on the Product.
 
 **In order to add a line item to an Order that will be received by a Supplier one of the following must be true about the LineItem.Product:** 
 1. Supplier is the `Product.DefaultSupplierID`
