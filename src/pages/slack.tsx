@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'relative',
       alignItems: 'center',
       justifyContent: 'center',
-      height: `calc(60vh - ${navHeight}px)`,
+      height: `calc(100vh - ${navHeight}px)`,
       overflow: 'hidden',
       backgroundColor: 'rgba(28, 33, 41, 0.05)',
       backgroundImage: `url(${BackgroundImage})`,
@@ -66,9 +66,6 @@ const useStyles = makeStyles((theme: Theme) =>
       '-webkit-background-size': 'cover',
       '-moz-background-size': 'cover',
       '-o-background-size': 'cover',
-      [theme.breakpoints.up('md')]: {
-        padding: '6rem 10rem',
-      },
     },
     cardSignIn: {
       padding: theme.spacing(3, 4, 5),
