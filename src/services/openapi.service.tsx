@@ -169,6 +169,11 @@ const MeSubSections = [
     paths: ['/me', '/me/register', '/me/password'],
   },
   {
+    name: 'My Sellers',
+    'x-section-id': 'MeAndMyStuff',
+    paths: ['/me/sellers'],
+  },
+  {
     name: 'My Cost Centers',
     'x-section-id': 'MeAndMyStuff',
     paths: ['/me/costcenters'],
