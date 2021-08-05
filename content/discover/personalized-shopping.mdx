@@ -25,7 +25,7 @@ OrderCloud has the capability to power rich search experiences, including facete
 - **Filtering** - You can pass specific conditions to filter on any product attribute, including any custom properties you assign to your products.
 - **Sorting** - You can sort by one or more fields, including custom fields you have on your products.  When you sort over multiple fields, you can specify sort priority such as ascending or descending.
 
-<ContentLink to="/api-reference/me-and-my-stuff/products/list" subtitle="API Reference" type="bookmark">Me and My Stuff: Product List</ContentLink>
+<ContentLink to="/api-reference/me-and-my-stuff/my-products/list-products" subtitle="API Reference" type="bookmark">Me and My Stuff: Product List</ContentLink>
 
 ### Versatile Taxonomies
 Categories are a way to define your product hierarchy, which can be of arbitrary depth.  Thinking in terms of a large retail store, you may have top-level categories like Home Goods, Grocery, Electronics, Clothing, and Toys-- with subsequent subcategories to help guide users through the browsing process.
@@ -80,7 +80,7 @@ You can also use this as a store designation, so different stores supply the sam
 ## Variable Pricing
 OrderCloud supports offering different prices for the same product.  You can offer one price for a laptop to an educational buyer-organization and another price to a regular consumer.  While this might seem elaborate for a basic, B2C web site; OrderCloud will automatically use the right price in your shopping website based on the user logged in.  _In other words, it’s no problem to start simple and add more price complexity later without having to re-engineer your shopping website._
 
-<ContentLink to="/api-reference/me-and-my-stuff/products" subtitle="API Reference" type="bookmark">Me and My Stuff: Products</ContentLink>
+<ContentLink to="/api-reference/me-and-my-stuff/my-products" subtitle="API Reference" type="bookmark">Me and My Stuff: My Products</ContentLink>
 
 ### Price Schedules
 A price schedule is a price assigned to the combination of a product and a buyer or group of users.    This means OrderCloud will automatically include the right price for the shopper as they use your website, depending on which buyer or user group they are part of.  With price schedules, you can also store tax, shipping applicability, and quantity breaks; along with custom attributes specific to your business operations.
@@ -90,7 +90,7 @@ To read through specific implementation scenarios with our API, check out [how t
 ### Price Breaks
 As part of customizing price schedules, you can customize pricing relative to the quantity ordered.  So if you buy 9 or less, the price may be $4 each, but if you buy 10 or more, the price becomes $3 each.  Between price schedules and price breaks, OrderCloud will automatically set the correct price on the buyer’s order.  Going a step further, price breaks can be set up to be used on a per order line basis, or cumulatively for the total quantity ordered of that product across multiple lines; which is ideal for certain B2B buyers.
 
-<ContentLink to="/api-reference/price-schedules/save-price-break" subtitle="API Reference" type="bookmark">OrderCloud Price Breaks</ContentLink>
+<ContentLink to="/api-reference/product-catalogs/price-schedules/save-price-break" subtitle="API Reference" type="bookmark">OrderCloud Price Breaks</ContentLink>
 
 ### Price Markups
 Relative to product variants and specs, you can assign specific markups or adjustments to the total price of the product.  An example might be charging more for the gold leaf option vs. matte finish, or allowing the buyer to choose the upgraded vehicle sound system as part of the ordering process.
