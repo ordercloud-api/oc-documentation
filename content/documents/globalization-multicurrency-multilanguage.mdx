@@ -21,6 +21,7 @@ The `Locale` resource is assignable to Buyers and Buyer User Groups. Both `Curre
 - The `Language` property will not control any OrderCloud behavior, but is provided to make the process of building a multi-language UI easier for the developer. 
 - The `Currency` property will impact a few OrderCloud behaviors (outlined below).
 - A `Locale` object will be returned on both the `User` resource and the `MeUser` resource. If no `Locale` is assigned, the object will be null.
+- Only ever assign one Locale per party (Buyer or UserGroup). Assigning multiple to the same party is considered a misconfiguration and will yield unexpected results
 - `Locale` will drive a few different behaviors around products and ordering:
    - A user will only see product pricing in the` Currency` from their assigned `Locale`, if no `Locale` is assigned, they will only be able to view pricing where `Currency` is null.
    - A user will only be able to create a `LineItem` if the `LineItem.Product` has pricing available in the `Currency` from their assigned `Locale`. If no `Locale` is assigned, they will only be able to create a `LineItem` if the `LineItem.Product` has pricing available where `Currency` is null.
@@ -54,3 +55,7 @@ The `Locale` resource is assignable to Buyers and Buyer User Groups. Both `Curre
 - Writable, can be null
 - Calling POST v1/products/assignments with a PriceScheduleID will require that the party being assigned has a Locale with a Currency that matches the PriceSchedule.
 - Modifying Currency on a PriceSchedule will first do a check to ensure it is not assigned to any parties, and will throw an error if so.
+
+`User.Locale`
+- Read-only
+- Helpful for displaying correct information in the UI based on a user's Language and/or Currency
