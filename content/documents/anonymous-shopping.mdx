@@ -29,7 +29,7 @@ Now, scroll down to the bottom of the detail for that API Client until you get t
 Once your application is set up with a template user, we're ready to authenticate anonymously. Using the Client Credentials grant-type and only a client_id, make a request to the OrderCloud OAuth server:
 
 ```http
-POST https://auth.ordercloud.io/oauth/token HTTP/1.1
+POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
 client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&scope=ProductReader CategoryReader MeAddressAdmin MeCreditCardAdmin&grant_type=client_credentials
 ```
 
