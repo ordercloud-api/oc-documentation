@@ -69,16 +69,16 @@ export default createMuiTheme({
     },
     fontFamily: [
       'AvenirNextR',
-      // '-apple-system',
-      // 'BlinkMacSystemFont',
-      // '"Segoe UI"',
-      // 'Roboto',
-      // '"Helvetica Neue"',
-      // 'Arial',
-      // 'sans-serif',
-      // '"Apple Color Emoji"',
-      // '"Segoe UI Emoji"',
-      // '"Segoe UI Symbol"',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
     ].join(','),
   },
   shape: {
@@ -110,9 +110,9 @@ export default createMuiTheme({
         a: {
           color: primaryColor,
           textDecoration: 'none',
-          // '&:hover': {
-          //   textDecoration: 'underline'
-          // }
+          '&:hover': {
+            textDecoration: 'underline',
+          },
         },
         code: {
           whiteSpace: 'pre-wrap',
@@ -141,11 +141,6 @@ export default createMuiTheme({
         backgroundColor: sherpablue[500],
       },
     },
-    // MuiButton: {
-    //   label: {
-    //     paddingTop: navigator.appVersion.includes('Mac') ? 2 : undefined,
-    //   },
-    // },
     MuiListItemText: {
       primary: {
         fontWeight: 600,

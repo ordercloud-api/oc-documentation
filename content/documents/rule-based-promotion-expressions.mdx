@@ -52,7 +52,7 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
 
 **15% off all line items with a product assigned to a given CategoryID:**    
 `EligibleExpression`: *"item.product.incategory('Bikes')"*  
-`ValueExpression`: *"item.Subtotal \* .15"*
+`ValueExpression`: *"item.LineSubtotal \* .15"*
 
 **10% off when all products are on sale with a maximum promotion discount of $20 (utilizing product xp):**  
 `EligibleExpression`: *"items.all(Product.xp.OnSale = true)"*  
