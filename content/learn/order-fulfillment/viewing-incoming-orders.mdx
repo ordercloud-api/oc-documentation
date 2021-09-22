@@ -89,7 +89,7 @@ We can see that the order should now be `Incoming`. Let's go ahead and list inco
   title="List incoming orders as an admin user"
   content={{
     http: `GET https://sandboxapi.ordercloud.io/v1/orders/incoming?Status=Open HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
 javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
 Orders.List("Incoming", { filters: { Status: "Open" } })
