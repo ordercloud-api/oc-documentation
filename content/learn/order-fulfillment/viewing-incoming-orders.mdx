@@ -72,9 +72,11 @@ var client = new OrderCloudClient(new OrderCloudClientConfig {
     Roles = new[] { 
         ApiRole.OrderAdmin
     },
-	ApiUrl: "https://sandboxapi.ordercloud.io",
+	  ApiUrl: "https://sandboxapi.ordercloud.io",
     AuthUrl: "https://sandboxapi.ordercloud.io"
-});`}}
+});
+// Now that the sdk is configured it will automatically acquire, cache and refresh tokens implicitly as needed
+`}}
 />
 
 Now that we are operating under a seller perspective, interacting with orders has changed a little bit. In pervious guides we covered **Order Direction** and so far have been using `Outgoing`. Looking at the flow below:

@@ -156,7 +156,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
   return (
     <Layout location={props.location}>
       <Helmet
-        title={`Knowledge Base | Four51 OrderCloud`}
+        title={`Knowledge Base | Sitecore OrderCloud`}
         meta={[
           {
             name: 'description',
@@ -164,7 +164,14 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
               'A central hub for articles and tutorials on various OrderCloud API resources and topics.',
           },
         ]}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <LayoutContainer>
         <LayoutMain>
           <Hidden mdDown>

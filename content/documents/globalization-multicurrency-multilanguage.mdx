@@ -1,0 +1,62 @@
+---
+type:           article
+title:          Globalization for Marketplaces
+description:    Overview of new features to enable configuration of multi-currency and multi-language Marketpalces.
+author:         mposthumus
+priority:       1
+publishDate:    2021-09-13
+tags:           ["Concepts", "Marketplaces", "Buyers", "Orders", "PriceSchedules"]
+---
+
+These features are now available in a UAT region in the Sitecore OrderCloud Portal. If you would like access to test out these features and provide feedback please reach out in Sitecore Community Slack #ordercloud-support channel. You can register for [Slack](https://docs.google.com/forms/d/1bAVDgP5-FhFh8ohPchHtifq-rz7EBkuPojAzdEofJyo/viewform?edit_requested=true) here if you haven’t already.
+
+## New Resource: `Locale`
+```json
+"Locale": {
+  "ID": "en-US-USD",
+  "Currency": "USD",
+  "Language": "en-US"
+}
+```
+The `Locale` resource is assignable to Buyers and Buyer User Groups. Both `Currency` and `Language` are string properties with a maximum length of 100. We recommend using [ISO-4217](https://en.wikipedia.org/wiki/ISO_4217) currency codes and [ISO-639-1](https://en.wikipedia.org/wiki/ISO_639-1) language code - [ISO-3166](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) Country Codes respectively for compatibility with other platforms such as payment processors, tax calculation services, and content management systems. The ID property is writable and follows the same convention as all other [writable IDs](https://ordercloud.io/learn/ordercloud-basics/conventions#writeable-ids) in OrderCloud. 
+- The `Language` property will not control any OrderCloud behavior, but is provided to make the process of building a multi-language UI easier for the developer. 
+- The `Currency` property will impact a few OrderCloud behaviors (outlined below).
+- A `Locale` object will be returned on both the `User` resource and the `MeUser` resource. If no `Locale` is assigned, the object will be null.
+- Only ever assign one Locale per party (Buyer or UserGroup). Assigning multiple to the same party is considered a misconfiguration and will yield unexpected results
+- `Locale` will drive a few different behaviors around products and ordering:
+   - A user will only see product pricing in the` Currency` from their assigned `Locale`, if no `Locale` is assigned, they will only be able to view pricing where `Currency` is null.
+   - A user will only be able to create a `LineItem` if the `LineItem.Product` has pricing available in the `Currency` from their assigned `Locale`. If no `Locale` is assigned, they will only be able to create a `LineItem` if the `LineItem.Product` has pricing available where `Currency` is null.
+   - A user will only be able to create and submit an `Order` with a `Currency` from their assigned `Locale`. If a user's `Locale` changes between the time an `Order` is created and submitted, submitting the order will fail.
+
+## New Endpoints
+- `GET v1/locales/{localeID}`
+- `GET v1/locales`
+- `POST v1/locales`
+- `PUT v1/locales`
+- `PATCH v1/locales/{localeID}`
+- `DELETE v1/locales/{localeID}`
+- `GET v1/locales/assignments`
+- `POST v1/locales/assignments`
+- `DELETE v1/locales/{localeID}/assignments`
+
+## New Properties
+`Order.Currency`  
+- Read-only
+- Inherited from the Order.FromUser's assigned Locale, if no Locale is assigned, the property will be null.
+
+`Payment.Currency`
+- Read-only
+- Inherited from Order.Currency
+
+`Payment.Transaction.Currency`
+- Writable, can be null
+- Can be used when you have multiple currencies in the same payment. For example, the presentment currency (currency of the charge to the customer) could be different than the settlement currency (currency of the destination account).
+
+`PriceSchedule.Currency`
+- Writable, can be null
+- Calling POST v1/products/assignments with a PriceScheduleID will require that the party being assigned has a Locale with a Currency that matches the PriceSchedule.
+- Modifying Currency on a PriceSchedule will first do a check to ensure it is not assigned to any parties, and will throw an error if so.
+
+`User.Locale`
+- Read-only
+- Helpful for displaying correct information in the UI based on a user's Language and/or Currency

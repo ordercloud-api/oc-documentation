@@ -1,0 +1,30 @@
+---
+type:           article
+title:          OrderCloud Regions
+description:    The Portal supports managing marketplaces across multiple regions. As Sitecore OrderCloud continues to expand globally, the ability to quickly spin up a marketplace in a physical location near client operations will be critical.
+author:         rwatt
+publishDate:    2020-08-31
+updatedDate:    2020-09-08
+tags:           ["Portal", "Environments", "Concepts", "Regions"]
+---
+
+As of [Portal version 1.0.74](/portal-release-notes/v1.0.74) the user experience supports managing marketplaces across multiple regions. Up until [this release](/portal-release-notes/v1.0.74) all marketplaces were created in the "Azure Us West" region. Currently, the Core OrderCloud API is only available in a single region ("Azure Us West"); however, as Sitecore OrderCloud continues to expand globally, the ability to quickly spin up a marketplace in a physical location near client operations will be critical. 
+
+## What is a Region?
+
+A region represents a physical location where the Core OrderCloud API is hosted and made available through 3 distinct environments. Each region has all three environments and the relative rules between these environments remain consistent from region to region. For example, the production environment in "Azure Us West" region is copied to the staging environment in "Azure Us West" every Sunday - the same holds true for the production and staging environments in every other region.
+
+You can read more about [OrderCloud environments here](/knowledge-base/ordercloud-environments).
+
+## What Regions can I access?
+
+All Portal users will continue to have access to create marketplaces in "Azure Us West" Sandbox. This represents the original "Sandbox environment" before [Portal 1.0.74](/portal-release-notes/v1.0.74) that any user could create a marketplace in for free.
+
+As Sitecore OrderCloud establishes new regions, Portal Users may request access to specific environments in each region from the Sitecore OrderCloud team. Meaning, you won't immediately have access to create in "Azure Us Central" Sandbox once it is created, that ability must be requested and approved.
+
+As before, each environment has its own API URL, purpose, and behavior. The current production, staging, and sandbox URLs remain unchanged. When a new region is established, three new base API urls will be made available for clients accessing marketplaces in said region.
+
+> Note: Just like the environment, a marketplace region **cannot be changed** after it is created. 
+
+## Conclusion
+Stay tuned for future updates about new OrderCloud regions. If you have any questions or concerns, please don't hesitate to reach out in the [OrderCloud Slack Community](https://ordercloud.io/slack).

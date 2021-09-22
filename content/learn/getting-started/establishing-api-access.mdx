@@ -5,19 +5,19 @@ description: 'Learn the minimum requirements necessary for making API calls outs
 priority: 3
 ---
 
-Now that you have created your first organization and gained access to the API Console, you can begin the process of establishing API access for users within your organization. There are two main API resources relevant to establishing API access:
+Now that you have created your first marketplace and gained access to the API Console, you can begin the process of establishing API access for users within your marketplace. There are two main API resources relevant to establishing API access:
 
-- **API Clients** - API clients are access points to your organization's data. These access points have properties that control what parties can use it, how they can gain access, and for how long that access remains valid.
-- **Security Profiles** - Security profiles are groups of roles (permissions), each of which grant users access to specific API endpoints and functionality. This lets you lock down access to your organization at the _API_ level which is very powerful. If a request is made by a user without sufficient roles, they will receive a 403 Forbidden response.
+- **API Clients** - API clients are access points to your marketplace data. These access points have properties that control what parties can use it, how they can gain access, and for how long that access remains valid.
+- **Security Profiles** - Security profiles are groups of roles (permissions), each of which grant users access to specific API endpoints and functionality. This lets you lock down access to your marketplace at the _API_ level which is very powerful. If a request is made by a user without sufficient roles, they will receive a 403 Forbidden response.
 
 ## Create a Shared API Client
-Open up the API Console tab that has your Portal user context activated for our new seller organization. In the resources menu, click on **Seller > API Clients**. This should activate something we call an **enhanced UI** for managing API Clients. Essentially, this is a more user-friendly alternative to building up JSON requests in the API Console. Resources in the left-hand menu with a lightning bolt icon next to them all have their own Enhanced UI.
+Open up the API Console tab that has your Portal user context activated for our new marketplace. In the resources menu, click on **Seller > API Clients**. This should activate something we call an **enhanced UI** for managing API Clients. Essentially, this is a more user-friendly alternative to building up JSON requests in the API Console. Resources in the left-hand menu with a lightning bolt icon next to them all have their own Enhanced UI.
 
 Click on _CREATE NEW API CLIENT_. You will be presented with a form that has quite a few settings available. Don't get overwhelmed by all of the options here, we will be configuring the simplest version of an API client to keep things light. If you want to read more about API clients in detail, you can read one of our more in-depth articles.
 
 <ContentLink to="/knowledge-base/api-clients" subtitle="Further Reading">API Clients</ContentLink>
 
-Choosing the right name for your API client is important. By picking something descriptive, future developers will better understand when they should be utilized. Let's call our new API client "Shared API Client" since it will be shared between all of the parties in our organization.
+Choosing the right name for your API client is important. By picking something descriptive, future developers will better understand when they should be utilized. Let's call our new API client "Shared API Client" since it will be shared between all of the parties in our marketplace.
 
 Jump down to **Client Access Configuration** and make the following changes:
 
