@@ -24,7 +24,7 @@ First, let's create the product. Since we don't have a price schedule yet, we'll
   title="Create a new product"
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/products HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
     ID: "SHIRT",
@@ -121,7 +121,7 @@ Their most basic form consists of an ID, Name, and one or more price breaks. Pri
   title="Create a new price schedule"
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/priceschedules HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
     ID: "SHIRT_PRICE",
@@ -190,7 +190,7 @@ try {
   title="Update the default price schedule ID"
   content={{
     http: `PATCH https://sandboxapi.ordercloud.io/v1/products/SHIRT HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
     DefaultPriceScheduleID: "SHIRT_PRICE"

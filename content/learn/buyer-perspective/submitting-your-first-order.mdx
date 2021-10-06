@@ -25,7 +25,7 @@ Once you have an order with at least one Line Item, you are able to use the **Or
 <CodeExample
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/orders/Outgoing/INSERT_ORDER_ID_HERE/submit HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
 javascript: `import { Tokens, Orders } from "ordercloud-javascript-sdk";\n
 Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n

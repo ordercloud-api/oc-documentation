@@ -69,7 +69,7 @@ const ApiExampleModel = (props: { operation: ApiOperation }) => {
       return `${operation.verb.toUpperCase()} https://api.ordercloud.io/v1${
         operation.path
       } HTTP/1.1
-Authentication: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
+Authorization: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
 Content-Type: application/json; charset=UTF-8`
     }
   }, [operation])
