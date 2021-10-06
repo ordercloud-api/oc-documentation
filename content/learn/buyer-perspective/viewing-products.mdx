@@ -14,7 +14,7 @@ Let's retrieve a list of products available to our buyer user.
   title="Get a list of buyer products"
   content={{
     http: `GET https://sandboxapi.ordercloud.io/v1/me/products HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
 javascript: `import { Tokens, Me } from "ordercloud-javascript-sdk";\n
 Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n

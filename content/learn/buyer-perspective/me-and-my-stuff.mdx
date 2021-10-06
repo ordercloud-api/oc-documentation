@@ -108,7 +108,7 @@ Let's confirm we are in the correct perspective by getting the currently authent
   title="Get the currently authenticated user"
   content={{
     http: `GET https://sandboxapi.ordercloud.io/v1/me HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
 javascript: `import { Me } from "ordercloud-javascript-sdk";\n
 Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
