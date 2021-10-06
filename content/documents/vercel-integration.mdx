@@ -1,0 +1,74 @@
+---
+type:           tutorial
+title:          Vercel Integration
+description:    Get a live NextJS storefront in 5 minutes with Vercel
+author:         oheywood
+priority:       9
+publishDate:    2021-10-01
+updatedDate:    
+tags:           ["Integrations", "NextJS", "Hosting", "Vercel"]
+---
+
+## Why Vercel?
+
+Taking full advantage of OrderCloud's composibility means integrating with other great software - like [Vercel](https://vercel.com/docs/concepts). Vercel is a hosting platform focused on frontend frameworks and static sites associated with the popular [NextJS](https://nextjs.org/) framework. OrderCloud and Vercel complement each other well. 
+
+- Ordercloud and Vercel both enable rapid custom frontend development (mainly in javascript) by abstacting out complex concerns (commerce and hosting, respectively). 
+- Vercel's built-in [serverless functions](https://vercel.com/docs/concepts/functions/introduction) offer a familiar javascript environment to build the secure middleware integrations most OrderCloud solutions require.    
+- Vercel's NextJS [static site generation](https://nextjs.org/docs/basic-features/pages) is well-suited to commerce use-casese, unlocking fast page loads via CDN (built-in to vercel) and great SEO for product pages. 
+- Well aware of that, Vercel maintains an open source example [commerce storefront](https://github.com/vercel/commerce) in NextJS that connects to multiple commerce engines like OrderCloud. 
+
+## Get a live storefront in 5 minutes
+
+1. If you haven't already, [sign up for OrderCloud](https://portal.ordercloud.io/register) and [sign up for Vercel](https://vercel.com/signup?next=%2Fregister)! Both are free and quick. You will also need a github, gitlab or bitbucket account. 
+
+2. Visit the [vercel commerce github](https://github.com/vercel/commerce) and fork it to your source control account.
+
+3. Create a new vercel project and connect it to the forked repository. Then go to Integrations -> Browse Marketplace -> OrderCloud, or [this link](https://vercel.com/integrations/ordercloud), and click "Add Integration".
+
+4. Follow the prompts to authenticate to OrderCloud. Then connect your new vercel project to the option "Seed a new marketplace". 
+
+5. Once seeding is complete, you will be returned to Vercel. Deploy or Redeploy the project and you have a live storefront with cart, checkout, and example products.  
+
+## How does the Integration work? 
+
+The OrderCloud integration is part of the Vercel integration marketplace. It can link your vercel projects each to one OrderCloud marketplace. This link consists of 2 [API Client](https://ordercloud.io/knowledge-base/api-clients) resources created in Ordercloud and 6 Environment Variable](https://vercel.com/docs/concepts/projects/environment-variables) resources created in Vercel.
+
+**OrderCloud API Clients** 
+
+```
+{
+    ID: <generated>, 
+    AppName: Vercel-Middleware-Connector,
+    Active: true,
+    ClientSecret: <generated> 
+    AccessTokenDuration: 600,
+    RefreshTokenDuration: 43200
+}
+{
+    ID: <generated>,
+    AppName: Vercel-Storefront-Connector,
+    Active: true,
+    AllowAnyBuyer: true,
+    IsAnonBuyer: true,
+    AccessTokenDuration: 600,
+    RefreshTokenDuration: 43200
+}
+```
+
+**Vercel Environment Variables** 
+
+```
+ORDERCLOUD_MARKETPLACE_ID
+ORDERCLOUD_MARKETPLACE_NAME
+ORDERCLOUD_STOREFRONT_CLIENT_ID
+ORDERCLOUD_MIDDLEWARE_CLIENT_ID
+ORDERCLOUD_MIDDLEWARE_CLIENT_SECRET
+COMMERCE_PROVIDER ("ordercloud")
+```
+
+If you select the "Seed a new marketplace" option of the integration, a new marketplace will be created and seeded with this [data template](https://github.com/ordercloud-api/ordercloud-seed/blob/main/seeds/Vercel-B2C.yml). Since this template already contains API Clients with names `Vercel-Middleware-Connector` and `Vercel-Storefront-Connector`, they will not be overwritten and everything will "just work". However, if you choose to connect to an existing OrderCloud marketplace, you will have to make sure these newly created API Clients are connected to organizations and default users you desire.
+
+Similarly, if your project code is forked from Vercel Commerce, the environment variables above will be expected. However, if you connect other code it is your responsibility to consume those variables appropriately. `ORDERCLOUD_MIDDLEWARE_CLIENT_SECRET` especially should not be exposed to the front end.  
+
+The integration "just works" when the Vercel Commerce code and matching seed template are used. However, it can be used to connect a custom storefront with a matching custom ordercloud configuration. 
