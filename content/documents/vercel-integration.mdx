@@ -32,19 +32,22 @@ Taking full advantage of OrderCloud's composibility means integrating with other
 
 ## How does the Integration work? 
 
-The OrderCloud integration is part of the Vercel integration marketplace. It can link your vercel projects each to one OrderCloud marketplace. This link consists of 2 [API Client](https://ordercloud.io/knowledge-base/api-clients) resources created in Ordercloud and 6 Environment Variable](https://vercel.com/docs/concepts/projects/environment-variables) resources created in Vercel.
+The OrderCloud integration is part of the Vercel integration marketplace. It can link your vercel projects each to one OrderCloud marketplace. This link consists of 2 [API Client](https://ordercloud.io/knowledge-base/api-clients) resources created in Ordercloud and 6 [Environment Variable](https://vercel.com/docs/concepts/projects/environment-variables) resources created in Vercel.
 
 **OrderCloud API Clients** 
 
-```
+```json
 {
     ID: <generated>, 
     AppName: Vercel-Middleware-Connector,
     Active: true,
+    AllowSeller: true,
     ClientSecret: <generated> 
     AccessTokenDuration: 600,
     RefreshTokenDuration: 43200
 }
+```
+```json
 {
     ID: <generated>,
     AppName: Vercel-Storefront-Connector,

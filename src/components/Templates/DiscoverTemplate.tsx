@@ -83,7 +83,9 @@ export default function Template(props: DiscoverTemplateProps) {
             </Breadcrumbs>
           </Hidden>
           <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
-          <MDXRenderer>{doc.mdx.body}</MDXRenderer>
+          <div id="RENDER_BOX">
+            <MDXRenderer>{doc.mdx.body}</MDXRenderer>
+          </div>
           <DiscoverFooter contents={articles} currentGuide={absolutePath} />
         </LayoutMain>
         <LayoutMenu>
