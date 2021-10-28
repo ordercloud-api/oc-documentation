@@ -134,7 +134,9 @@ function ReleaseNotesComponent(props: any) {
           <Typography variant="h1">
             API v{release.frontmatter.apiVersion} Release Notes
           </Typography>
-          <MDXRenderer>{release.body}</MDXRenderer>
+          <div id="RENDER_BOX">
+            <MDXRenderer>{release.body}</MDXRenderer>
+          </div>
         </LayoutMain>
         <LayoutMenu>
           {years.map(y => (

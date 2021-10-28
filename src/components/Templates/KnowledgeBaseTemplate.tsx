@@ -81,6 +81,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     renderBox: {
       paddingBottom: theme.spacing(20),
+      '& a': {
+        color: theme.palette.secondary[500],
+      },
     },
     backButton: {
       float: 'right',
@@ -198,7 +201,7 @@ export default function KnowledgeBaseTemplate(
               </Typography>
             </div>
           </Box>
-          <div className={classes.renderBox}>
+          <div id="RENDER_BOX" className={classes.renderBox}>
             <MDXRenderer>{doc.mdx.body}</MDXRenderer>
           </div>
         </LayoutMain>

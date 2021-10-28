@@ -2,12 +2,11 @@
 type:           article
 title:          Order Checkout Integration Event
 description:    With many ecommerce systems, what a customer pays for tax and shipping, or how their promotion discount is applied to their order can be difficult to determine at the time they’re checking out. The Order Checkout Integration Event was designed to make these calculations and estimations more customizable to better suit your business needs.
-author:         jilse, asnyder
-priority:       5
-publishDate:    2021-10-05
-updatedDate:
-tags:           ["Order", "Checkout", "Integration" ]
-
+author:         jilse
+priority:       1
+publishDate:    2021-10-06
+updatedDate:	2021-10-12
+tags:           ["Orders", "Checkout", "Integrations" ]
 ---
 
 When it comes to the itemized costs that determine the total amount a user pays for their order, many companies have long established requirements and preferences for how taxes, shipping costs, and/or promotion discounts are applied. Often times there are existing relationships to third party vendors that calculate these costs. Given the vast options for third party vendors and business specific requirements, there is not a "one-size-fits-all" solution to calculating these individual costs that amount to an order total. 
@@ -45,7 +44,8 @@ Calls triggered from OrderCloud to the custom implemented routes defined below c
 	- OrderCloud platform calls the shipping options integration service to get possible ship methods (FedEx next day, UPS ground, USPS priority), etc.
 4.  Present the user with the potential ship methods
 5.  Call `POST /v1/orders/{direction}/{orderID}/shipmethods` in order to store ship method selections by the end user
-```JSON
+
+```json
 {
     "ShipMethodSelections": [
         {
@@ -55,6 +55,7 @@ Calls triggered from OrderCloud to the custom implemented routes defined below c
     ]
 }
 ```
+
 6.  Required call to `POST /v1/orders/{direction}/{orderID}/calculate`
 	- OrderCloud platform calls integration URL to get shipping total if it’s different from basic SUM of shipments in step 5, unit price overrides, and tax total.
 7.  Any change to the order total automatically nulls the shipment options and order calculation data. While subscribed to this service, the order can’t be submitted if OrderCalculate has not been called or if the order has changed since the last OrderCalculate call. Changes include updating the order shipping costs, tax costs, promotion discounts, shipping address, line item quantity, unit price, cost center, or xp of either the order or line items. If the calculation is not up to date, the user must return to step 3 or step 6 if shipping is not used
@@ -77,7 +78,8 @@ Receives all the order data and is responsible for returning a list of potential
 Returns shipping total as a result of either selected shipping methods (if the shipping step was triggered) or the value included in the request body, tax total, and any unit price overrides beyond the default price schedules as a result of manual unit price adjustments or promotion overrides. There is also an optional space to return arbitrary json data (XP) that can be used to track, for instance, how the tax and shipping totals were calculated. For example, each line item and shipment could have different tax rates applied to them with each different jurisdiction requiring their share of the tax. This call returns the OrderCloud Order Worksheet object. 
 
 Sample request body
-```JSON
+
+```json
 {
 	"ShippingTotal": null,
 	"TaxTotal": null,
