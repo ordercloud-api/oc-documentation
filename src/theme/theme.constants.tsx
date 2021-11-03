@@ -114,6 +114,9 @@ export default createMuiTheme({
             textDecoration: 'underline',
           },
         },
+        '#RENDER_BOX a': {
+          color: darken(secondaryColor, 0.25),
+        },
         code: {
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-all',

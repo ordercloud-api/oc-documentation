@@ -64,7 +64,7 @@ export default function StaticPageTemplate(props: StaticPageTemplateProps) {
       </Helmet>
       <Container maxWidth="md">
         <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
-        <div className={classes.renderBox}>
+        <div id="RENDER_BOX" className={classes.renderBox}>
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
         </div>
       </Container>

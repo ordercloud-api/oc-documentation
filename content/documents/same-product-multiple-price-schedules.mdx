@@ -30,7 +30,7 @@ Lets assume there is no tax or shipping costs, and the minimum order quantity is
 <CodeExample
   content={{
     http: `POST https://sandboxapi.OrderCloud/v1/priceschedules
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8\n
 {
   "ID": "enterprise-priceschedule-id"
@@ -104,7 +104,7 @@ Next, lets make a similar call, but change the `ID` and `PriceBreaks` fields to 
 
 ```
 POST https://api.OrderCloud/v1/priceschedules
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 
 {
@@ -128,7 +128,7 @@ Now that we have our two price schedules created, the next step is to create two
 
 ```
 POST https://api.OrderCloud/v1/products/assignments
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 
 {
@@ -142,7 +142,7 @@ Now that our connection between the **Enterprise** USB Cord Price Schedule, the 
 
 ```
 POST https://api.OrderCloud/v1/products/assignments HTTP/1.1
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 
 {

@@ -101,7 +101,9 @@ export default function Template(props: DocTemplateProps) {
               Last Updated {doc.mdx.frontmatter.updatedOnDate}
             </Typography>
           )} */}
-          <MDXRenderer>{doc.mdx.body}</MDXRenderer>
+          <div id="RENDER_BOX">
+            <MDXRenderer>{doc.mdx.body}</MDXRenderer>
+          </div>
           <DocFooter contents={sections} currentGuide={absolutePath} />
         </LayoutMain>
         <LayoutMenu>

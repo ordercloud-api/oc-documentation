@@ -1,0 +1,112 @@
+---
+type:           article
+title:          Order Checkout Integration Event
+description:    With many ecommerce systems, what a customer pays for tax and shipping, or how their promotion discount is applied to their order can be difficult to determine at the time they’re checking out. The Order Checkout Integration Event was designed to make these calculations and estimations more customizable to better suit your business needs.
+author:         jilse
+priority:       1
+publishDate:    2021-10-06
+updatedDate:	2021-10-12
+tags:           ["Orders", "Checkout", "Integrations" ]
+---
+
+When it comes to the itemized costs that determine the total amount a user pays for their order, many companies have long established requirements and preferences for how taxes, shipping costs, and/or promotion discounts are applied. Often times there are existing relationships to third party vendors that calculate these costs. Given the vast options for third party vendors and business specific requirements, there is not a "one-size-fits-all" solution to calculating these individual costs that amount to an order total. 
+
+Shipping costs vary depending on vendor, product type, materials used in packaging at the time of fulfillment, as well as other factors. 
+
+Promotion discounts may only apply to one item and therefore should only affect the price of that item and not the order as a whole. 
+
+A group of users within your organization may be tax exempt and aren’t subject to regular tax laws as your other users. 
+
+The Order Checkout Integration event was designed to make these calculations and estimates more customizable to better suit your business needs. With the integration event configured for your API Client, certain OrderCloud endpoints relative to the checkout process hook into predefined routes you expose in your hosted middleware application, allowing you more control over how the order total is calculated. Creating and calculating an order is normally broken down into a few steps: 
+
+1. Selecting items for the cart with potential item level configurations
+2. Breaking the items up into potential shipments taking into account
+     a. Ship from address
+     b. Ship to address
+     c. Lead time for production
+     d. Date needed by customer
+     e. Etc.
+3. Selecting shipping method typically based on price and delivery time
+4. Applying tax to items and shipments
+5. Calculating line level price breaks
+6. Applying promotion discounts to the eligible item(s)
+
+## Triggering
+
+Each step of the Order Checkout Integration process is explicitly triggered by calling an endpoint in the OrderCloud API, typically via front-end application. Technically, the need to call the integration event could be derived by OrderCloud and called when anything about the order is changed, but consider what this would mean for the workload of calculating the order: if a user adds three line items to the order with one click in the front-end app, this is still three separate add to order calls to the OrderCloud API. OrderCloud would have to call out to the integration event three times and each of those calls may incur usage fees for services like Avalara tax. Also, the end user would have to wait for this intensive call to execute three times instead of only once. Instead of trying to assume when an application would like a calculation performed, the integration event is explicitly triggered via `POST /v1/orders/{direction}/{orderID}/calculate`.  
+
+Calls triggered from OrderCloud to the custom implemented routes defined below can be verified using the header `X-oc-hash` containing a signature constructed using the integration event hash key and serialized JSON payload. X-oc-hash is the Base64 string resulting from the computed hash code of the encoded JSON data using a new instance of the HMACSHA256 class using the encoded Integration Event hash key. 
+
+### A typical order checkout with the integration enabled:
+1.  Add items to order
+2.  Set ship-to address(es)
+3.  If shipper selection is used, call `POST /v1/orders/{direction}/{orderID}/estimateshipping`
+	- OrderCloud platform calls the shipping options integration service to get possible ship methods (FedEx next day, UPS ground, USPS priority), etc.
+4.  Present the user with the potential ship methods
+5.  Call `POST /v1/orders/{direction}/{orderID}/shipmethods` in order to store ship method selections by the end user
+
+```json
+{
+    "ShipMethodSelections": [
+        {
+            "ShipEstimateID": "testingShipmentItem1",
+            "ShipMethodID": "ShipMethod1"
+        }
+    ]
+}
+```
+
+6.  Required call to `POST /v1/orders/{direction}/{orderID}/calculate`
+	- OrderCloud platform calls integration URL to get shipping total if it’s different from basic SUM of shipments in step 5, unit price overrides, and tax total.
+7.  Any change to the order total automatically nulls the shipment options and order calculation data. While subscribed to this service, the order can’t be submitted if OrderCalculate has not been called or if the order has changed since the last OrderCalculate call. Changes include updating the order shipping costs, tax costs, promotion discounts, shipping address, line item quantity, unit price, cost center, or xp of either the order or line items. If the calculation is not up to date, the user must return to step 3 or step 6 if shipping is not used
+8.  Call `POST /v1/orders/{direction}/{orderID}/submit` to submit the order in OrderCloud and to send the entire Order Worksheet to the integration endpoint. This is the opportunity to import the order, in real time, into a back-office system or initiate order fulfillment
+
+## Order Worksheet
+
+One of the additional benefits of this integration is that the data that goes into calculating an order’s tax and shipping and any other data returned from the integration endpoints is captured in the Order Worksheet. It can be used later for, just to name a few, remitting taxes or calculating refunds. This is otherwise very difficult if tax or shipping are only stored at the order level. At any point in the order flow and as a historical reference, the document is available at `GET /v1/orders/{direction}/{orderID}/worksheet`
+
+## Implementation
+
+Implementing the Order Checkout Integration Event in your marketplace requires creating an OrderCheckout Integration Event Type, connecting it to an existing API Client by PATCHing the OrderCheckoutIntegrationEventID value, and hosting a total of five potential endpoints in your application that will be triggered by certain OrderCloud endpoints, depending on your use case, all of which are triggered by the OrderCloud platform at the appropriate times. 
+
+**`/ShippingRates`**
+*Triggered via `POST v1/orders/{direction}/{orderID}/estimateshipping`*
+Receives all the order data and is responsible for returning a list of potential shipments. Each shipment contains a list of line items and a list of potential shipping methods and each shipping method has a price. The shipping options are presented to the end user for their selection. This call returns the OrderCloud Order Worksheet object.
+
+**`/OrderCalculate`**
+*Triggered via `POST v1/orders/{direction}/{orderID}/calculate`*
+Returns shipping total as a result of either selected shipping methods (if the shipping step was triggered) or the value included in the request body, tax total, and any unit price overrides beyond the default price schedules as a result of manual unit price adjustments or promotion overrides. There is also an optional space to return arbitrary json data (XP) that can be used to track, for instance, how the tax and shipping totals were calculated. For example, each line item and shipment could have different tax rates applied to them with each different jurisdiction requiring their share of the tax. This call returns the OrderCloud Order Worksheet object. 
+
+Sample request body
+
+```json
+{
+	"ShippingTotal": null,
+	"TaxTotal": null,
+	"LineItemOverrides": [
+		{
+			"LineItemID": "sampleLineItemID",
+			"UnitPrice": 6.00,
+			"PromotionOverrides": [
+				{
+					"PromotionID": "samplePromoID",
+					"Amount": 3.00
+				}
+			]
+		}
+	],
+	"xp": {}
+}
+```
+
+**`/OrderSubmit`**
+*Triggered via `POST v1/orders/{direction}/{orderID}/submit`*
+Any custom, post-order submit logic can be handled in a method exposed by this endpoint in your middleware. This is the opportunity to import the order, in real time, into a back-office system or initiate order fulfillment. This call returns the OrderCloud Order object. 
+
+**`/OrderSubmitForApproval`**
+*Triggered via `POST v1/orders/{direction}/{orderID}/submit`*
+Similar to order submit, however this is triggered in the event the order submitted was subject to an approval rule. This call returns the OrderCloud Order object.
+
+**`/OrderApproved`**
+*Triggered via `POST v1/orders/{direction}/{orderID}/approve`*
+Any custom, post-order approved logic can be handled in a method exposed by this endpoint in your middleware. This is the opportunity to import the order, in real time, into a back-office system or initiate order fulfillment. This call returns the OrderCloud Order object.

@@ -27,7 +27,7 @@ API Reference: <Link to="/api-reference/buyers/users/create">Create a new user</
 
 ```http
 POST https://api.ordercloud.io/buyers/{buyerID}/users HTTP/1.1
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 
   {
@@ -57,7 +57,7 @@ API Reference: <Link to="/api-reference/buyers/users/save">Create or update a us
 
 ```http
 PUT https://api.ordercloud.io/buyers/{buyerID}/users/{userID} HTTP/1.1
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 
   {
@@ -92,7 +92,7 @@ API Reference: <Link to="/api-reference/buyers/users/patch">Partially update a u
 
 ```http
 PATCH https://api.ordercloud.io/buyers/newbuyer/users/userID HTTP/1.1
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 
   {
@@ -113,7 +113,7 @@ API Reference: <Link to="/api-reference/buyers/users/get">Get a single user</Lin
 
 ```http
 GET https://api.ordercloud.io/buyers/{buyerID}/users/{userID} HTTP/1.1
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 
   {
@@ -145,7 +145,7 @@ API Reference: <Link to="/api-reference/buyers/users/save">Create or update a us
 
 ```http
 PUT https://api.ordercloud.io/buyers/{buyerID}/users/{userID} HTTP/1.1
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 
   {
@@ -173,7 +173,7 @@ Not only can xp be used to extend the functionality of your application, but you
 
 ```http
 GET https://api.ordercloud.io/buyers/newbuyer/users?xp.EmploymentDetails.Department=Tech HTTP/1.1
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 ```
 
