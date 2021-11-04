@@ -12,7 +12,7 @@ tags:           ["Locale", "Currency", "Language", "Integrations"]
 In November, a new [Locale](https://ordercloud.io/knowledge-base/globalization-multicurrency-multilanguage) feature was released to simplify globalization efforts for solutions where commerce spans across regions with different currencies and languages*. Review this guide for the use case that matches your business most, and look at the examples for recommendations on how to model your solution.
 
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/locale_use_guide/locale_1.jpg" alt="Locale Use Case Selector"/>
+<img src="/images/knowledge-base/inline/locale-use-guide/locale_1.jpg" alt="Locale Use Case Selector"/>
 <figcaption>Figure 1</figcaption>
 </figure>
 
@@ -31,9 +31,10 @@ In the example below, we have a franchisor that has franchise locations in both 
 
 **User Group level Locale assignments:**
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/locale_use_guide/locale_2.jpg" alt="User Group Level Locale Assignments"/>
+<img src="/images/knowledge-base/inline/locale-use-guide/locale_2.jpg" alt="User Group Level Locale Assignments"/>
 <figcaption>Figure 2</figcaption>
 </figure>
+<img src="/images/knowledge-base/inline/start-dotnet-middleware-from-scratch/local_debug_profile.png" alt="Add app settings locally in Visual Studio"/>
 
 You’ll see that separate User Groups represent each franchise location, but for simplicity of assignments, a User Group was also created to represent all USA locations and another one for all Canada locations. The USA and Canada User Groups are assigned to the Locale that aligns with each. Having the USA and Canada User Groups help limit the amount of [Price Schedule > Party > Product assignments](https://ordercloud.io/api-reference/product-catalogs/products/save-assignment) that need to be made to ensure products are showing in the correct currency to Buyers. Additionally, if a new franchise location opens, those users just need to be a part of the USA or Canada User Group to inherit all of the proper pricing in the correct currency.
 
@@ -41,7 +42,7 @@ Depending on your business requirements, it’s possible you can manage your Loc
 
 **Buyer level Local assignments:**
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/locale_use_guide/locale_3.jpg" alt="Buyer Level Locale Assignments"/>
+<img src="/images/knowledge-base/inline/locale-use-guide/locale_3.jpg" alt="Buyer Level Locale Assignments"/>
 <figcaption>Figure 3</figcaption>
 </figure>
 
@@ -55,13 +56,13 @@ In the example below we have a direct Manufacture to Consumer B2C site. The manu
 
 **User Group level Locale assignments:**
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/locale_use_guide/locale_4.jpg" alt="User Group Level Locale Assignments"/>
+<img src="/images/knowledge-base/inline/locale-use-guide/locale_4.jpg" alt="User Group Level Locale Assignments"/>
 <figcaption>Figure 4</figcaption>
 </figure>
 
 **Buyer level Local assignments:**
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/locale_use_guide/locale_5.jpg" alt="Buyer Level Locale Assignments"/>
+<img src="/images/knowledge-base/inline/locale-use-guide/locale_5.jpg" alt="Buyer Level Locale Assignments"/>
 <figcaption>Figure 5</figcaption>
 </figure>
 
@@ -86,7 +87,7 @@ Remember that Pricing has an order of operations, and the most specific price as
 
 Let’s take a look at the added red components below. User 4 will see the $12.99 CAD price (assigned specifically to their User Group), instead of the $11.99 CAD price (assigned to the Buyer).
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/locale_use_guide/locale_6.jpg" alt="Product with same currency, different prices"/>
+<img src="/images/knowledge-base/inline/locale-use-guide/locale_6.jpg" alt="Product with same currency, different prices"/>
 <figcaption>Figure 6</figcaption>
 </figure>
 
