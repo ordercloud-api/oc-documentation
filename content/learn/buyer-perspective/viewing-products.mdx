@@ -108,11 +108,10 @@ Another interesting part of this response model is the `Facets` property within 
 <ContentLink to="/knowledge-base/introducing-premium-search" 
 subtitle="Futher Reading">Introducing Premium Search</ContentLink>
 
-## Browsing Other Catalogs
-The buyer product list request provides a way for buyer users to browser other product catalogs (when assigned to more than just their organizations default catalog). This can be done using the `CatalogID` option.
-
-### Browsing by Category
-If one of these other catalogs had categories in it, one would be able to filter buyer products by category using the `CategoryID` property.
+## Filtering the Buyer Products
+The buyer product list request will return all products, regardless of which catalog they belong to, given the necessary assignments have been configured. With this in mind, you may want to filter buyer products for a given scenario. Some common applications of filtering include:
+- **Browse by Catalog** - To return only buyer products for a specific catalog, set the `CatalogID` parameter value accordingly.
+- **Browse by Category** - If our buyer organization's default catalog or other catalog contained products assigned to categories, then we can filter buyer products to a given category by specifying both the `CatalogID` and `CategoryID` parameters to identify the unique category.
 
 <ContentLink to="/api-reference/me-and-my-stuff/my-products/list-products#parameters" type="bookmark" subtitle="API Reference">Buyer Product List Parameters</ContentLink>
 
