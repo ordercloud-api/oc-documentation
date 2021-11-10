@@ -33,5 +33,10 @@
         "id": "oheywood",
         "name": "Oliver Heywood",
         "title": "Senior Developer"
+    },
+    {
+        "id": "awilson",
+        "name": "Ashley Wilson",
+        "title": "Product Manager"
     }
 ]
