@@ -27,10 +27,10 @@ First, let's create the product. Since we don't have a price schedule yet, we'll
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    ID: "SHIRT",
-    Name: "Cotton T-Shirt",
-    Description: "A plain white, cotton shirt for everyday use.",
-    Active: true
+    "ID": "SHIRT",
+    "Name": "Cotton T-Shirt",
+    "Description": "A plain white, cotton shirt for everyday use.",
+    "Active": true
 }`,
 javascript: `import { Products } from "ordercloud-javascript-sdk";\n
 Products.Create({
@@ -124,9 +124,9 @@ Their most basic form consists of an ID, Name, and one or more price breaks. Pri
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    ID: "SHIRT_PRICE",
-    Name: "Cotton T-Shirt Price",
-    PriceBreaks: [
+    "ID": "SHIRT_PRICE",
+    "Name": "Cotton T-Shirt Price",
+    "PriceBreaks": [
         {
             Quantity: 1,
             Price: 10
@@ -193,7 +193,7 @@ try {
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    DefaultPriceScheduleID: "SHIRT_PRICE"
+    "DefaultPriceScheduleID": "SHIRT_PRICE"
 }`,
 javascript: `import { Products } from "ordercloud-javascript-sdk";\n
 Products.Patch("SHIRT", {
