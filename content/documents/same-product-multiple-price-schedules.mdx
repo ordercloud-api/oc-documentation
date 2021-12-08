@@ -18,7 +18,7 @@ How would we go about achieving this effect you might ask?  After reviewing the 
 
 1. In our example, we will be assigning price schedules to products and parties at the Buyer level, however you can get even more granular than that, and assign Product/Price Schedule combinations at the User Group level within a single Buyer.  This allows you further flexibility within your product visibility.
 
-2. This guide assumes that all products, categories and catalogs have been created successfully, with proper assignments.  Make sure that your product is assigned to a catalog that the buyer's users have access to, or you will have issues when trying to create your product assignments.  To verify that your product is assigned to your catalog, you can call `GET https://api.OrderCloud/v1/catalogs/productassignments`.
+2. This guide assumes that all products, categories and catalogs have been created successfully, with proper assignments.  Make sure that your product is assigned to a catalog that the buyer's users have access to, or you will have issues when trying to create your product assignments.  To verify that your product is assigned to your catalog, you can call `GET https://sandboxapi.ordercloud.io/v1/catalogs/productassignments`.
 
 
 ## Create a Price Schedule
@@ -29,11 +29,11 @@ Lets assume there is no tax or shipping costs, and the minimum order quantity is
 
 <CodeExample
   content={{
-    http: `POST https://sandboxapi.OrderCloud/v1/priceschedules
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+    http: `POST https://sandboxapi.ordercloud.io/v1/priceschedules HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8\n
 {
-  "ID": "enterprise-priceschedule-id"
+  "ID": "enterprise-priceschedule-id",
   "Name": "USB Cord",
   "MinQuantity": 1,
   "PriceBreaks": [
@@ -102,11 +102,11 @@ try {
 
 Next, lets make a similar call, but change the `ID` and `PriceBreaks` fields to adjust for the **Startup** configurations.  The call should look like this: 
 
-```
-POST https://api.OrderCloud/v1/priceschedules
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
-Content-Type: application/json; charset=UTF-8
-
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/priceschedules HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
 {
   "ID": "startup-priceschedule-id",
   "Name": "USB Cord",
@@ -117,8 +117,63 @@ Content-Type: application/json; charset=UTF-8
       "Price": 5.99
     }
   ]
+}`,
+javascript: `import { PriceSchedules } from "ordercloud-javascript-sdk";\n
+PriceSchedules.Create({
+  ID: "startup-priceschedule-id",
+  Name: "USB Cord",
+  MinQuantity: 1,
+  PriceBreaks: [
+    {
+      Quantity: 1,
+      Price: 5.99,
+    },
+  ],
+})
+.then((buyerList) => {
+    console.log(buyerList);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { PriceSchedule, PriceSchedules, OrderCloudError } from "ordercloud-javascript-sdk";\n
+PriceSchedules.Create({
+  ID: "startup-priceschedule-id",
+  Name: "USB Cord",
+  MinQuantity: 1,
+  PriceBreaks: [
+    {
+      Quantity: 1,
+      Price: 5.99,
+    },
+  ],
+})
+.then((pricescheduleList: PriceSchedule) => {
+  console.log(pricescheduleList);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var priceSchedule = new PriceSchedule
+{
+    ID = "startup-priceschedule-id",
+    Name = "USB Cord",
+    MinQuantity = 1,
+    PriceBreaks = new List<PriceBreak>
+    {
+        new PriceBreak
+        {
+            Quantity = 1,
+            Price = 5.99M
+        }
+    }
+};
+try {
+  PriceSchedule response = await PriceSchedules.Create(data);
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
 }
-```
+`
+}}
+/>
 
 
 
@@ -126,37 +181,39 @@ Content-Type: application/json; charset=UTF-8
 
 Now that we have our two price schedules created, the next step is to create two different product assignments based on party.  By making these product assignments, we are creating a special relationships between the product, a price schedule and different parties.  Lets first assign the enterprise USB Cord price schedule and the CloudTech 'Buyer' party that is subject to **Enterprise** pricing.  Both of these `POST` calls should garner `204 No Content` responses if successful.
 
-```
-POST https://api.OrderCloud/v1/products/assignments
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
-Content-Type: application/json; charset=UTF-8
-
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/products/assignments HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
 {
   "ProductID": "usb-product-id",
   "BuyerID": "cloudtech",
   "PriceScheduleID": "enterprise-priceschedule-id"
-}
-```
+}`
+}}
+/>
 
 Now that our connection between the **Enterprise** USB Cord Price Schedule, the CloudTech 'Buyer' and the USB Cord product has been made, lets wire up our second assignment.
 
-```
-POST https://api.OrderCloud/v1/products/assignments HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
-Content-Type: application/json; charset=UTF-8
-
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/products/assignments HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
 {
   "ProductID": "usb-product-id",
   "BuyerID": "computerdudes",
   "PriceScheduleID": "startup-priceschedule-id"
-}
-```
+}`
+}}
+/>
 
 Now that all of our assignments have been made, lets verify that we have successfully created special relationships between our two different buyers, two different price schedules and our product: USB Cord.  The next steps require that you authenticate as specific users.  To check the contents of your authentication token, visit [JWT.io](https://jwt.io).
 
-In the context of Jane Doe from CloudTech, call `GET https://api.OrderCloud/v1/me/products/usb-product-id`, you should see the USB Cord product returned at the price of `"Price": 3.99`.
+In the context of Jane Doe from CloudTech, call `GET https://sandboxapi.ordercloud.io/v1/me/products/usb-product-id`, you should see the USB Cord product returned at the price of `"Price": 3.99`.
 
-In the context of John Deer from ComputerDudes, call `GET https://api.OrderCloud/v1/me/products/usb-product-id`, you should see the same product returned at a _different_ price of `"Price": 5.99`.
+In the context of John Deer from ComputerDudes, call `GET https://sandboxapi.ordercloud.io/v1/me/products/usb-product-id`, you should see the same product returned at a _different_ price of `"Price": 5.99`.
 
 
 ## Conclusion
