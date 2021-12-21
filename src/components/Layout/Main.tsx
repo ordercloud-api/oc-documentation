@@ -23,6 +23,7 @@ import {
   BookmarkTwoTone,
   BuildTwoTone,
   BusinessTwoTone,
+  CallMade,
   CategoryTwoTone,
   Code,
   CodeOutlined,
@@ -40,7 +41,11 @@ import {
 import { Link } from 'gatsby'
 import Prism from 'prismjs'
 import React, { useLayoutEffect } from 'react'
-import { darkgrey, flame, sherpablue } from '../../theme/ocPalette.constants'
+import {
+  darkgrey,
+  sherpablue,
+  sizzlingred,
+} from '../../theme/ocPalette.constants'
 import themeConstants from '../../theme/theme.constants'
 import ButtonLink from '../Shared/ButtonLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
@@ -64,9 +69,6 @@ const useStyles = makeStyles((theme: Theme) =>
       right: theme.spacing(4),
       top: theme.spacing(3),
     },
-    spacer: {
-      width: theme.spacing(1),
-    },
     root: {
       minHeight: `calc(100vh - ${navHeightMobile + 409}px)`,
       [theme.breakpoints.up('md')]: {
@@ -78,7 +80,17 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     buttonBase: {
+      transition: 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
       borderRadius: theme.shape.borderRadius,
+      '&:hover': {
+        textDecoration: 'none',
+        transform: 'translateY(-3px)',
+      },
+    },
+    buttonEndArrowIcon: {
+      fontSize: '1rem !important',
+      fill: sizzlingred[300],
+      transform: 'rotate(45deg)', // <CallMade/> icon most accurately matches Sitecore guidelines; however, it needs to be rotated.
     },
     paperCard: {
       position: 'relative',
@@ -116,6 +128,11 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       [theme.breakpoints.up('md')]: {
         marginTop: '-5rem',
+      },
+    },
+    List: {
+      '& .MuiButtonBase-root': {
+        textDecortation: 'none',
       },
     },
   })
@@ -257,9 +274,18 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <ButtonLink fullWidth to="/discover/define-your-marketplace">
+                <ButtonLink
+                  fullWidth
+                  to="/discover/define-your-marketplace"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
+                >
                   Read More
-                  <img src="/images/icon-arrow.png" />
                 </ButtonLink>
               </Paper>
             </ButtonBase>
@@ -313,9 +339,18 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <ButtonLink fullWidth to="/discover/define-your-marketplace">
+                <ButtonLink
+                  fullWidth
+                  to="/discover/define-your-marketplace"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
+                >
                   Read More
-                  <img src="/images/icon-arrow.png" />
                 </ButtonLink>
               </Paper>
             </ButtonBase>
@@ -369,9 +404,18 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <ButtonLink fullWidth to="/discover/personalized-shopping">
+                <ButtonLink
+                  fullWidth
+                  to="/discover/personalized-shopping"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
+                >
                   Read More
-                  <img src="/images/icon-arrow.png" />
                 </ButtonLink>
               </Paper>
             </ButtonBase>
@@ -425,9 +469,18 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <ButtonLink fullWidth to="/discover/flexible-fulfillment">
+                <ButtonLink
+                  fullWidth
+                  to="/discover/flexible-fulfillment"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
+                >
                   Read More
-                  <img src="/images/icon-arrow.png" />
                 </ButtonLink>
               </Paper>
             </ButtonBase>
@@ -448,7 +501,7 @@ const MainComponent: React.FunctionComponent = props => {
               <br />
               by developers, for developers.
             </Typography>
-            <Typography variant="h5">
+            <Typography variant="h5" color="textSecondary">
               OrderCloud’s proven architecture has enabled developers from
               around the world to bring powerful B2B applications to life. We
               aim to provide unmatched interopability by using standardized W3C
@@ -459,6 +512,7 @@ const MainComponent: React.FunctionComponent = props => {
               flexDirection="row"
               flexWrap="noWrap"
               marginTop={3}
+              style={{ gap: 16 }}
             >
               <CustomButtonLink
                 color={themeConstants.palette.secondary.main}
@@ -468,13 +522,18 @@ const MainComponent: React.FunctionComponent = props => {
               >
                 Learn the Basics
               </CustomButtonLink>
-              <div className={classes.spacer} />
               <ButtonLink
                 to="/learn/getting-started/welcome-to-ordercloud"
                 size="large"
+                endIcon={
+                  <CallMade
+                    fontSize="small"
+                    aria-hidden="true"
+                    className={classes.buttonEndArrowIcon}
+                  />
+                }
               >
                 Start Coding
-                <img src="/images/icon-arrow.png" />
               </ButtonLink>
             </Box>
           </Grid>
@@ -518,7 +577,7 @@ await Orders.Submit("Outgoing", order.ID);`}
               <br />
               progressive web applications.
             </Typography>
-            <Typography variant="h5" align="right">
+            <Typography variant="h5" align="right" color="textSecondary">
               A headless architecture allows solution creators to choose the
               development stack that works best for their workflow. Our
               knowledge base and growing library of developer tools make
@@ -530,12 +589,8 @@ await Orders.Submit("Outgoing", order.ID);`}
               flexWrap="noWrap"
               justifyContent="flex-end"
               marginTop={3}
+              style={{ gap: 16 }}
             >
-              <ButtonLink to="/knowledge-base" size="large">
-                Knowledge Base
-                <img src="/images/icon-arrow.png" />
-              </ButtonLink>
-              <div className={classes.spacer} />
               <CustomButtonLink
                 to="/developer-tools"
                 variant="contained"
@@ -544,6 +599,19 @@ await Orders.Submit("Outgoing", order.ID);`}
               >
                 Developer Tools
               </CustomButtonLink>
+              <ButtonLink
+                to="/knowledge-base"
+                size="large"
+                endIcon={
+                  <CallMade
+                    fontSize="small"
+                    aria-hidden="true"
+                    className={classes.buttonEndArrowIcon}
+                  />
+                }
+              >
+                Knowledge Base
+              </ButtonLink>
             </Box>
           </Grid>
         </Grid>
@@ -560,7 +628,13 @@ await Orders.Submit("Outgoing", order.ID);`}
         >
           Create Your Free Account Today!
         </Typography>
-        <Typography variant="h5" paragraph component="p" align="center">
+        <Typography
+          variant="h5"
+          paragraph
+          component="p"
+          align="center"
+          color="textSecondary"
+        >
           OrderCloud provides a sandbox environment so you can start coding
           without payment right now.
         </Typography>
@@ -571,6 +645,7 @@ await Orders.Submit("Outgoing", order.ID);`}
           alignItems="center"
           justifyContent="center"
           paddingBottom={8}
+          style={{ gap: 16 }}
         >
           <Button
             onClick={() => navigate('/register')}
@@ -580,7 +655,6 @@ await Orders.Submit("Outgoing", order.ID);`}
           >
             Sign Up
           </Button>
-          <div className={classes.spacer} />
           <ButtonLink
             to="/slack"
             size="large"

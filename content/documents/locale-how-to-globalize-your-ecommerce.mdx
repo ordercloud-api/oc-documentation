@@ -9,7 +9,7 @@ updatedDate:
 tags:           ["Locale", "Currency", "Language", "Integrations"]
 ---
 
-In November, a new [Locale](https://ordercloud.io/knowledge-base/globalization-multicurrency-multilanguage) feature was released to simplify globalization efforts for solutions where commerce spans across regions with different currencies and languages*. Review this guide for the use case that matches your business most, and look at the examples for recommendations on how to model your solution.
+In November, a new [Locale](https://ordercloud.io/knowledge-base/globalization-multicurrency-multilanguage) feature was released to simplify globalization efforts for solutions where commerce spans across regions with different currencies and languages. Review this guide for the use case that matches your business most, and look at the examples for recommendations on how to model your solution.
 
 <figure class="blog-figure">
 <img src="/images/knowledge-base/inline/locale-use-guide/locale_1.jpg" alt="Locale Use Case Selector"/>
@@ -34,7 +34,6 @@ In the example below, we have a franchisor that has franchise locations in both 
 <img src="/images/knowledge-base/inline/locale-use-guide/locale_2.jpg" alt="User Group Level Locale Assignments"/>
 <figcaption>Figure 2</figcaption>
 </figure>
-<img src="/images/knowledge-base/inline/start-dotnet-middleware-from-scratch/local_debug_profile.png" alt="Add app settings locally in Visual Studio"/>
 
 You’ll see that separate User Groups represent each franchise location, but for simplicity of assignments, a User Group was also created to represent all USA locations and another one for all Canada locations. The USA and Canada User Groups are assigned to the Locale that aligns with each. Having the USA and Canada User Groups help limit the amount of [Price Schedule > Party > Product assignments](https://ordercloud.io/api-reference/product-catalogs/products/save-assignment) that need to be made to ensure products are showing in the correct currency to Buyers. Additionally, if a new franchise location opens, those users just need to be a part of the USA or Canada User Group to inherit all of the proper pricing in the correct currency.
 
@@ -91,7 +90,7 @@ Let’s take a look at the added red components below. User 4 will see the $12.9
 <figcaption>Figure 6</figcaption>
 </figure>
 
-**Q: How do I sent a Default Locale or Currency for my buyers?**
+**Q: How do I set a Default Locale or Currency for my buyers?**
 
 A: Setting a Default Locale can be done in a few different ways, and it is up to the implementer on how to handle it. Some may want to default the Locale based on a geo-location method, such as checking the Buyer’s IP address, and determining Locale from there. Another option is to hardcode the application to always authenticate new visitors as the Default Context User associated with your default Locale.
 

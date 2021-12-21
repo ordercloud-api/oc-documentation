@@ -23,8 +23,8 @@ For this reason many developers overlook the fact that they need to explicitly a
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    CatalogID: "BUYER_ORGANIZATION",
-    ProductID: "SHIRT"
+    "CatalogID": "BUYER_ORGANIZATION",
+    "ProductID": "SHIRT"
 }`,
 javascript: `import { Catalogs } from "ordercloud-javascript-sdk";\n
 Catalogs.SaveProductAssignment({
