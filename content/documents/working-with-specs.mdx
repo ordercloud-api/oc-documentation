@@ -55,7 +55,7 @@ Content-Type: application/json; charset=UTF-8;\n
 
 #### Spec Options
 
-Spec options represent the available options that can be selected for an option spec.
+Spec options represent the available options that can be selected for an options spec.
 
 <CodeExample
   title="Creating a spec option"
@@ -152,7 +152,7 @@ Content-Type: application/json; charset=UTF-8;\n
 
 >When assigning specs to multiple products it is important to understand that the product will inherit the spec in its entirety.
 >
->For option specs, a product may only require a subset of the spec options or require its own unique spec option. In these cases it is usually worth creating a unique spec for that product rather than handling unavailable options on a product by product basis.
+>For options specs, a product may only require a subset of the spec options or require its own unique spec option. In these cases it is usually worth creating a unique spec for that product rather than handling unavailable options on a product by product basis.
 
 ## Spec Features
 
@@ -162,7 +162,7 @@ Setting the spec to be required ensures that the product cannot be added to an o
 
 ### Default Values
 
-Setting the `DefaultValue` or `DefaultOptionID` acts as the fallback when a spec expects either a value for open text specs or an option id for option specs.
+Setting the `DefaultValue` or `DefaultOptionID` acts as the fallback when a spec expects either a value for open text specs or an option id for options specs.
 
 >The `DefaultOptionID` cannot be assigned on the initial creation of the spec as no options exist yet. Similarly, the options cannot be created before the spec exists. Therefore the `DefaultOptionID` will need to be PATCHed out once the spec and option have been created.
 
@@ -176,7 +176,7 @@ Open text does not just apply to the spec level configuration. Selecting an opti
 
 ### Price Markup
 
-When a user inputs a value for an open text spec or selects a value from an option spec, an additional cost may be incurred. Spec options have price markup properties to cater for these price adjustments. `PriceMarkupType`s determine how the product price will be impacted, while the `PriceMarkup` specifies the value to be used in calculations.
+When a user inputs a value for an open text spec or selects a value from an options spec, an additional cost may be incurred. Spec options have price markup properties to cater for these price adjustments. `PriceMarkupType`s determine how the product price will be impacted, while the `PriceMarkup` specifies the value to be used in calculations.
 
 The available `PriceMarkupType`s are as follows:
 
