@@ -25,12 +25,12 @@ The `AllowOpenText` property provides the user the option of inputting text asso
 <CodeExample
   title="Creating an open text spec"
   content={{
-    http: `POST https://sandboxapi.ordercloud.io/v1/specs HTTP/1.1
+    http: `POST https://{{environment}.ordercloud.io/v1/specs HTTP/1.1
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    "ID": "OPEN_TEXT_SPEC",
-    "Name": "Open Text Spec",
+    "ID": "ENGRAVING",
+    "Name": "Name Engraving",
     "AllowOpenText": true
 }`
 }}
@@ -43,12 +43,12 @@ To give the user the ability to modify a product configuration while still limit
 <CodeExample
   title="Creating an options spec"
   content={{
-    http: `POST https://sandboxapi.ordercloud.io/v1/specs HTTP/1.1
+    http: `POST https://{{environment}.ordercloud.io/v1/specs HTTP/1.1
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    "ID": "OPTIONS_SPEC",
-    "Name": "Options Spec"
+    "ID": "DESIGN_TEMPLATES",
+    "Name": "Design Templates"
 }`
 }}
 />
@@ -60,29 +60,29 @@ Spec options represent the available options that can be selected for an option 
 <CodeExample
   title="Creating a spec option"
   content={{
-    http: `POST https://sandboxapi.ordercloud.io/v1/specs/PREDEFINED_OPTIONS_SPEC/options HTTP/1.1
+    http: `POST https://{{environment}.ordercloud.io/v1/specs/PREDEFINED_OPTIONS_SPEC/options HTTP/1.1
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    "ID": "SPEC_OPTION_1",
-    "Name": "Spec Option 1"
+    "ID": "MODERN_TECH",
+    "Name": "Blue and Black Modern Tech Specialist Landscape Double-Sided Business Card"
 }`
 }}
 />
 
 ### Variant Spec
 
-A variant spec is the option spec with the difference that it slices a product along each spec option to create a unique variant product per option, e.g. a television with different sizes each representing a variant product.
+A variant spec is an option spec that intends to slice a product across each spec option to create a unique variant product per option, e.g. a television with different sizes each representing a variant product.
 
 <CodeExample
   title="Creating a variant spec"
   content={{
-    http: `POST https://sandboxapi.ordercloud.io/v1/specs HTTP/1.1
+    http: `POST https://{{environment}.ordercloud.io/v1/specs HTTP/1.1
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    "ID": "VARIANT_SPEC",
-    "Name": "Variant Spec",
+    "ID": "SIZE",
+    "Name": "Size",
     "DefinesVariant": true,
     "Required": true
 }`
@@ -93,12 +93,12 @@ Content-Type: application/json; charset=UTF-8;\n
 
 #### Generate Variants
 
-Once spec product assignments have been defined for a product, the variants can then be generated under the products resource.
+Once variant specs have been assigned to a product, the variants can then be generated under the products resource.
 
 <CodeExample
   title="Generating product variants"
   content={{
-    http: `POST https://sandboxapi.ordercloud.io/v1/products/INSERT_PRODUCT_ID_HERE/variants/generate  HTTP/1.1
+    http: `POST https://{{environment}.ordercloud.io/v1/products/{PRODUCTID}/variants/generate  HTTP/1.1
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`
 }}
@@ -117,7 +117,7 @@ For example, let's take a product that is assigned 2 variant specs. The first sp
 
 >When generating variants, setting the `overwriteExisting=true` parameter will regenerate the product's variants, removing invalid variants and reseting existing variants. Any existing data enrichment to the variants will need to be re-applied after regenerating variants to avoid unwanted data loss.
 
->In some instances, one or more of the generated variants may not represent a valid product. To manage this, any unwanted variants be pathed to have their `active` property set to `false`.
+>In some instances, one or more of the generated variants may not represent a valid product. To manage this, any unwanted variants can be patched to have their `Active` property set to `false`.
 
 #### Variant IDs
 
@@ -125,7 +125,7 @@ Variants will commonly represent a unique product, which requires a unique SKU o
 
 #### Disambiguating Properties
 
-As properties at the product level may not be appropriate for the variants, so the variant model contains a subset of properties for variant-specific values; most notably `Name` and `Description`.
+Properties at the product level may not be appropriate for the variants, so the variant model contains a subset of properties for variant-specific values; most notably `Name` and `Description`.
 
 #### Inventory
 
@@ -135,16 +135,16 @@ For products with variants, inventory can be managed at the product level, to ma
 
 ## Spec Product Assignments
 
-Specs have a one to many relationship with products, which can facilitate in avoiding duplicating spec data and overall maintenance. For example, a number of products may be available with the same design options and an option spec named `design-templates` houses all available designs. With each of the products being assigned the `design templates` spec, not only will they share the available options, but any updates to the spec will also be applied to all assigned products.
+Specs have a one to many relationship with products, which can facilitate in avoiding duplicating spec data and overall maintenance. For example, a number of products may be available with the same design options and an option spec, e.g. `DESIGN_TEMPLATES` houses all available designs. With each of the products being assigned the `DESIGN_TEMPLATES` spec, not only will they share the available options, but any updates to the spec will also be applied to all assigned products.
 
 <CodeExample
   title="Creating a spec product assignment"
   content={{
-    http: `POST https://sandboxapi.ordercloud.io/v1/specs/productassignments HTTP/1.1
+    http: `POST https://{{environment}.ordercloud.io/v1/specs/productassignments HTTP/1.1
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    "SpecID": "VARIANT_SPEC",
+    "SpecID": "SIZE",
     "ProductID": "MY_PRODUCT"
 }`
 }}
