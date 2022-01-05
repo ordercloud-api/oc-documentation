@@ -234,7 +234,7 @@ const toExport = {
                 }
               }
             `,
-            output: "/api-rss.xml",
+            output: "/rss/release-notes.xml",
             title: "OrderCloud API Release Notes",
             link: "https://feeds.feedburner.com/gatsby/blog",
           },
@@ -272,7 +272,7 @@ const toExport = {
                 }
               }
             `,
-            output: "/portal-rss.xml",
+            output: "/rss/portal-release-notes.xml",
             title: "OrderCloud Portal Release Notes",
             link: "https://feeds.feedburner.com/gatsby/blog",
           }
