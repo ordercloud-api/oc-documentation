@@ -86,7 +86,7 @@ Example:
 <ContentLink type="bookmark" subtitle="API Reference" to="/api-reference/product-catalogs/products">OrderCloud Products</ContentLink>
 ```
 
-![Content Link Example]([/static/images/readme/contentLink.JPG])
+![Content Link Example](/static/images/readme/contentLink.JPG)
 
 ### Code Example
 This component is useful in tutorials or guides that want to show a code example in multiple languages. Right now it supports `http`, `js`, `ts`, and `csharp`.
