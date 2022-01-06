@@ -5,7 +5,7 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core'
-import { ExpandLess, ExpandMore, RssFeed } from '@material-ui/icons'
+import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import { groupBy, map, sortBy } from 'lodash'
