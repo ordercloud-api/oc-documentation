@@ -106,7 +106,7 @@ It is easiest to just show an example of a working `<CodeExample>` component wit
 />
 ```
 
-`title` and `description` are _optional_. If you dont have an example for one of the 4 lanuguages, just keep it out of your `content` object.
+`title` and `description` are _optional_. If you dont have an example for one of the 4 languages, just keep it out of your `content` object.
 
 Using the interpolated string syntax will allow you to add new lines to your examples.
 
