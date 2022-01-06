@@ -13,7 +13,7 @@ const RSSFeedLink: React.FunctionComponent<RSSFeedLinkProps> = (
   const classes = useStyles(props)
   const to = props.to
   return (
-    <Link to={to}><Typography className={classes.rssLink} variant="body2"><RssFeed fontSize="small" /> Subscribe to RSS Feed</Typography></Link>
+    <a href={to}><Typography className={classes.rssLink} variant="body2"><RssFeed fontSize="small" /> Subscribe to RSS Feed</Typography></a>
   )
 }
 
