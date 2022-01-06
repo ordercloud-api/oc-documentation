@@ -16,24 +16,24 @@ Content
 ### Discover 
 Location: `root/content/discover`
 
-Discover content is managed and approved by @jhookom at Four51. It is a flat folder full of `.mdx` files that need the following `frontmatter`.
+Discover content is managed and approved by @jhookom at Sitecore. It is a flat folder full of `.mdx` files that need the following `frontmatter`.
 
 | Property | Type | Required | Description |
 | ----------- | ----------- | ----------- | ---------- |
 | title | `string` | `true` | The title of the page, it will appear as the first `H1` tag in the content of the page as well as the page `<title>` element (suffixed with ` \| Sitecore OrderCloud`) |
-| description | `string` | `true` | A short description of the page, this will be used in `meta[name="description]` tag for SEO purposes |
+| description | `string` | `true` | A short description of the page, this will be used in `meta[name="description"]` tag for SEO purposes |
 | priority | `number` | `true` | The list order of the page, controls the order of the right hand menu when viewing discovery content |
 
 ### Documents
 Location: `root/content/documents`
 
-The documents folder controls **Knowledge base** content and is managed and approved by contributors at Four51. It is a flat folder full of `.mdx` files that need the following `frontmatter`.
+The documents folder controls **Knowledge base** content and is managed and approved by contributors at Sitecore. It is a flat folder full of `.mdx` files that need the following `frontmatter`.
 
 | Property | Type | Required | Description |
 | ----------- | ----------- | ----------- | ---------- |
 | type | `enum` | `true` | Allows us to differentiate between articles and tutorials in the knowledge base, possible values: `article`, `tutorial`.
 | title | `string` | `true` | The title of the page, it will appear as the first `H1` tag in the content of the page as well as the page `<title>` element (suffixed with ` \| Sitecore OrderCloud`) |
-| description | `string` | `true` | A short description of the page, this will be used in `meta[name="description]` tag for SEO purposes |
+| description | `string` | `true` | A short description of the page, this will be used in `meta[name="description"]` tag for SEO purposes |
 | author | `string` | `true` | This is the author _identifier_, when set, Gatsby will query data in `root/src/data/author.json` to retrieve the author's name & title. Additionally, there should always be a `.jpg` image for each author entry where the name of the image is the `author.id`. |
 | publishDate | `date` | `true` | The date the document is first published using the format `YYYY-MM-DD`. |
 | updatedDate | `date` | `false` | If you are making changes to an existing document update this value using the format `YYYY-MM-DD`. |
@@ -42,16 +42,16 @@ The documents folder controls **Knowledge base** content and is managed and appr
 ### Learn 
 Location: `root/content/learn`
 
-Learn content is managed and approved by @rwatt at Four51. It is a two layered directory full of `.mdx` files that need the following `frontmatter`.
+Learn content is managed and approved by @rwatt at Sitecore. It is a two layered directory full of `.mdx` files that need the following `frontmatter`.
 
 | Property | Type | Required | Description |
 | ----------- | ----------- | ----------- | ---------- |
-| section | `enum` | `true` | This should match whatever folder you are putting the current document in. See othe articles for the correct value in each folder |
+| section | `enum` | `true` | This should match whatever folder you are putting the current document in. See other articles for the correct value in each folder |
 | title | `string` | `true` | The title of the page, it will appear as the first `H1` tag in the content of the page as well as the page `<title>` element (suffixed with ` \| Sitecore OrderCloud`) |
-| description | `string` | `true` | A short description of the page, this will be used in `meta[name="description]` tag for SEO purposes |
+| description | `string` | `true` | A short description of the page, this will be used in `meta[name="description"]` tag for SEO purposes |
 | priority | `number` | `true` | The list order of the page, controls the order of the right hand menu for the current section when viewing learn content |
 
-### Releaes Notes
+### Release Notes
 Locations:
 - **Portal Release Notes** - `root/content/portal-release-notes`
 - **Core API Release Notes** - `root/content/release-notes`
