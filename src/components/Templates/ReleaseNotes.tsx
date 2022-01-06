@@ -5,7 +5,7 @@ import {
   Theme,
   Typography,
 } from '@material-ui/core'
-import { ExpandLess, ExpandMore } from '@material-ui/icons'
+import { ExpandLess, ExpandMore, RssFeed } from '@material-ui/icons'
 import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import { groupBy, map, sortBy } from 'lodash'
@@ -17,6 +17,7 @@ import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
+import RSSFeedLink from '../Shared/RSSFeedLink'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -205,6 +206,7 @@ function ReleaseNotesComponent(props: any) {
               </Collapse>
             </React.Fragment>
           ))}
+          <RSSFeedLink to="/rss/release-notes.xml" />
         </LayoutMenu>
       </LayoutContainer>
     </Layout>

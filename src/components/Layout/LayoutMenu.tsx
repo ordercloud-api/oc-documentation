@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingRight: 999,
       backgroundColor: theme.palette.background.default,
       borderLeft: `1px solid ${theme.palette.divider}`,
-      height: `calc(100vh - ${theme.spacing(8)}px)`,
+      height: `calc(100vh - ${theme.spacing(11)}px)`,
     },
     content: {
       padding: theme.spacing(4, 2.5, 4, 2.5),
