@@ -302,7 +302,10 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
                 </Box>
                 <Typography variant="caption" display="block">
                   {`${
-                    node.frontmatter.updatedDate ? 'Updated' : 'Published'
+                    node.frontmatter.updatedDate !==
+                    node.frontmatter.publishDate
+                      ? 'Updated'
+                      : 'Published'
                   } by ${node.frontmatter.author.name} on ${node.frontmatter
                     .updatedDate || node.frontmatter.publishDate}`}
                 </Typography>
