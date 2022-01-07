@@ -94,8 +94,8 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
     query {
       allMdx(
         sort: {
-          order: [ASC, DESC]
-          fields: [frontmatter___priority, frontmatter___publishDate]
+          order: [DESC, DESC]
+          fields: [frontmatter___updatedDate, frontmatter___publishDate]
         }
         filter: { fileAbsolutePath: { glob: "**/content/documents/**/*.mdx" } }
       ) {
