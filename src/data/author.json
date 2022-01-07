@@ -43,5 +43,10 @@
         "id": "asutherland",
         "name": "Andrew Sutherland",
         "title": "Partner Technical Advisor"
+    },
+    {
+        "id": "dsteinmetz",
+        "name": "DJ Steinmetz",
+        "title": "Senior Developer"
     }
 ]
