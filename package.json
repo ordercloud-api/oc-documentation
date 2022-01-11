@@ -31,6 +31,7 @@
     "gatsby-plugin-manifest": "^4.4.0",
     "gatsby-plugin-material-ui": "^3.0.1",
     "gatsby-plugin-mdx": "^3.4.0",
+    "gatsby-plugin-no-sourcemaps": "^4.5.0",
     "gatsby-plugin-offline": "^5.4.0",
     "gatsby-plugin-react-helmet": "^5.4.0",
     "gatsby-plugin-sharp": "^4.4.0",
@@ -78,7 +79,6 @@
     "gatsby-plugin-typescript-checker": "^1.1.1",
     "ngrok": "^4.2.2",
     "prettier": "^2.5.1",
-    "source-map-support": "^0.5.16",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
