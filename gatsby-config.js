@@ -183,6 +183,7 @@ const toExport = {
     `gatsby-plugin-sharp`,
     `gatsby-plugin-typescript`,
     `gatsby-plugin-typescript-checker`,
+    `gatsby-plugin-no-sourcemaps`,
     `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-plugin-feed`,
