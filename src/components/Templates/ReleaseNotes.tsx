@@ -84,11 +84,9 @@ const useStyles = makeStyles((theme: Theme) =>
 function ReleaseNotesComponent(props: ReleaseNotesTemplateProps) {
   const { data, location } = props
   const classes = useStyles(props)
-  const release = data.allMdx.edges.filter(
   const release = data?.allMdx?.edges?.filter(
     e => e?.node?.id === props?.pageContext?.nodeID
   )[0]?.node
-  const [currentMonth, setCurrentMonth] = useState(release.frontmatter.month)
   const [currentYear, setCurrentYear] = useState(release?.frontmatter?.year)
   const [currentMonth, setCurrentMonth] = useState(release?.frontmatter?.month)
 
