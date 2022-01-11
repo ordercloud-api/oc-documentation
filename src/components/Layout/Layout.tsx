@@ -81,7 +81,7 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const LayoutLink = (props: any) => {
+export const LayoutLink: React.FC = (props: any) => {
   const classes = layoutLinkStyles({})
   if (!props.href) {
     console.error(
@@ -103,7 +103,7 @@ export const LayoutLink = (props: any) => {
 }
 
 interface LayoutProps extends RouteComponentProps {
-  children: any
+  children?: any
 }
 
 export default (props: LayoutProps) => {

@@ -80,7 +80,7 @@ const OrgHierarchyImage1: React.FunctionComponent = () => {
           icon={<Group />}
           label="User Group"
         />
-        <Grid container justify="center" spacing={2}>
+        <Grid container justifyContent="center" spacing={2}>
           <Grid item sm className={classes.ContainerChip}>
             <Chip
               color="primary"
