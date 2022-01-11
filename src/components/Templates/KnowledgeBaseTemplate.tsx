@@ -118,12 +118,12 @@ export default function KnowledgeBaseTemplate(
   const doc = data // data from page query
   // const articles = useDiscoverSections()
   const classes = useStyles()
-  const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
+  const absolutePath = utility.resolvePath(doc?.mdx?.fileAbsolutePath)
   const relatedDocuments = filter(
     useRelatedDocuments(
-      doc.mdx.frontmatter.tags.filter(t => t !== 'Best Practices')
+      doc?.mdx?.frontmatter?.tags?.filter(t => t !== 'Best Practices')
     ),
-    d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath
+    d => d?.fileAbsolutePath !== doc?.mdx?.fileAbsolutePath
   )
 
   useLayoutEffect(() => {
@@ -136,22 +136,22 @@ export default function KnowledgeBaseTemplate(
   }, [props.location.hash])
 
   const headings = React.useMemo(() => {
-    return doc.mdx.headings.map(h => ({
+    return doc?.mdx?.headings.map(h => ({
       ...h,
       id: transformHeadingToId(h.value),
     }))
-  }, [doc.mdx.headings])
+  }, [doc?.mdx?.headings])
 
   const activeId = useActiveId(headings.map(h => h.id))
 
   return (
     <Layout location={props.location}>
       <Helmet
-        title={`${doc.mdx.frontmatter.title} | Sitecore OrderCloud`}
+        title={`${doc?.mdx?.frontmatter?.title} | Sitecore OrderCloud`}
         meta={[
           {
             name: 'description',
-            content: doc.mdx.frontmatter.description,
+            content: doc?.mdx?.frontmatter?.description,
           },
         ]}
       >
@@ -168,9 +168,9 @@ export default function KnowledgeBaseTemplate(
             className={classes.backButton}
             to={`/knowledge-base${
               location.state &&
-              location.state.selectedTags &&
-              location.state.selectedTags.length
-                ? `?t=${location.state.selectedTags.join(',')}`
+              (location.state as any).selectedTags &&
+              (location.state as any).selectedTags.length
+                ? `?t=${(location.state as any).selectedTags.join(',')}`
                 : ''
             }`}
           >
@@ -182,12 +182,12 @@ export default function KnowledgeBaseTemplate(
               <Link to="/knowledge-base">Knowledge Base</Link>
             </Breadcrumbs>
           </Hidden>
-          <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
+          <Typography variant="h1">{doc?.mdx?.frontmatter?.title}</Typography>
           <SuggestEditButton path={absolutePath} />
           <Box display="flex" mb={3} alignItems="center">
             <Avatar
-              alt={doc.mdx.frontmatter.author.name}
-              src={`/images/authors/${doc.mdx.frontmatter.author.id}.jpg`}
+              alt={doc?.mdx?.frontmatter?.author?.name}
+              src={`/images/authors/${doc?.mdx?.frontmatter?.author?.id}.jpg`}
             ></Avatar>
             <div style={{ paddingLeft: 8 }}>
               <Typography color="textSecondary">
@@ -196,7 +196,7 @@ export default function KnowledgeBaseTemplate(
                   doc.mdx.frontmatter.publishDate
                     ? 'Updated'
                     : 'Published'
-                } by ${doc.mdx.frontmatter.author.name}`}
+                } by ${doc?.mdx?.frontmatter?.author?.name}`}
               </Typography>
               <Typography color="textSecondary">
                 {doc.mdx.frontmatter.updatedDate !==
@@ -267,7 +267,7 @@ export default function KnowledgeBaseTemplate(
                       component={Link}
                       state={{
                         selectedTags:
-                          location.state && location.state.selectedTags,
+                          location.state && (location.state as any).selectedTags,
                       }}
                       to={utility.resolvePath(t.fileAbsolutePath)}
                       key={t.id}

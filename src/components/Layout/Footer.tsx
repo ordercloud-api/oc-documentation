@@ -94,7 +94,7 @@ class Footer extends React.Component<any> {
             className={classes.footerContent}
             container
             spacing={3}
-            justify="space-between"
+            justifyContent="space-between"
             alignItems="flex-start"
           >
             <Grid item xs={6} md={3}>

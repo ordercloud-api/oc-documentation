@@ -306,8 +306,8 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
                     node.frontmatter.publishDate
                       ? 'Updated'
                       : 'Published'
-                  } by ${node.frontmatter.author.name} on ${node.frontmatter
-                    .updatedDate || node.frontmatter.publishDate}`}
+                  } by ${node?.frontmatter?.author?.name} on ${node?.frontmatter
+                    ?.updatedDate || node?.frontmatter?.publishDate}`}
                 </Typography>
               </Fragment>
             }

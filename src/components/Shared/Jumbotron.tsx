@@ -1,7 +1,7 @@
 import {
+  alpha,
   Container,
   createStyles,
-  fade,
   lighten,
   Paper,
   Theme,
@@ -114,7 +114,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     jumbotronText: ({ align }) => ({
-      color: fade('#ffffff', 0.8),
+      color: alpha('#ffffff', 0.8),
       maxWidth: align === 'center' ? 700 : 900,
       margin: align === 'center' ? '0 auto' : undefined,
       textShadow: '1px 1px 2px rgba(0,0,0,0.25)',

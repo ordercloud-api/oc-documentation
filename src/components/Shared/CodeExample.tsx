@@ -13,12 +13,9 @@ import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
 import { configureStore, createSlice } from '@reduxjs/toolkit'
 import Prism from 'prismjs'
 import React, {
-  createContext,
-  Fragment,
   FunctionComponent,
   useCallback,
   useMemo,
-  useState,
 } from 'react'
 
 interface CodeExampleContent {
@@ -113,7 +110,7 @@ const CodeExample: FunctionComponent<CodeExampleProps> = (
   const currentContent = useMemo(() => {
     let l = language
     if (!l || !content[l]) {
-      l = Object.keys(content)[0]
+      l = Object.keys(content)[0] as keyof CodeExampleContent
     }
     return Prism.highlight(content[l], Prism.languages[l], l)
   }, [language, content])

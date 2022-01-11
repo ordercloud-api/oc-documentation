@@ -120,7 +120,7 @@ const OrgHierarchyImage5: React.FunctionComponent = () => {
         icon={<Business />}
         label="Company"
       />
-      <Grid container justify="space-evenly" spacing={4}>
+      <Grid container justifyContent="space-evenly" spacing={4}>
         <Grid item lg className={classes.gridContainerChip}>
           <Chip
             color="primary"
@@ -154,7 +154,7 @@ const OrgHierarchyImage5: React.FunctionComponent = () => {
         <Grid item lg className={classes.gridContainerChip}>
           <Grid
             container
-            justify="center"
+            justifyContent="center"
             className={classes.gridContainerChip}
             spacing={2}
           >

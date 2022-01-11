@@ -87,7 +87,7 @@ const OrgHierarchyImage2 = props => {
         label="Seller Organization"
       />
       {/* container of three cards */}
-      <Grid container justify="center" spacing={3}>
+      <Grid container justifyContent="center" spacing={3}>
         {/* first card container */}
         <Grid item xs={12} lg={4} className={classes.containerChip}>
           {/* first card surface */}

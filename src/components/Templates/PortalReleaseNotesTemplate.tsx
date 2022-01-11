@@ -76,7 +76,7 @@ function PortalReleaseNotesComponent(props: any) {
   const { data, location } = props
   const classes = useStyles(props)
   const release = data.allMdx.edges.filter(
-    e => e.node.id === props.pathContext.nodeID
+    e => e.node.id === props.pageContext.nodeID
   )[0].node
   const [currentYear, setCurrentYear] = useState(release.frontmatter.year)
   const [currentMonth, setCurrentMonth] = useState(release.frontmatter.month)

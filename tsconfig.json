@@ -11,6 +11,7 @@
         "isolatedModules": true,
         "lib": ["dom", "dom.iterable", "es2017", "esnext"],
         "noEmit": true,
+        "types": ["node", "webrtc"]
     },
     "include": ["./src/", "custom.d.ts"]
 }

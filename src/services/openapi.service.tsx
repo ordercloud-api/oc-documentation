@@ -19,7 +19,7 @@ async function tryGetParsedSpec() {
   const MAX_RETRIES = 3
   for (let index = 1; index <= MAX_RETRIES; index++) {
     try {
-      return await SwaggerParser.dereference(
+      return await (SwaggerParser as any).dereference(
         'https://api.ordercloud.io/v1/openapi/v3'
       )
     } catch (err) {

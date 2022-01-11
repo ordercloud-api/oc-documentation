@@ -148,7 +148,7 @@ class DiscoverFooter extends React.Component<any> {
           className={classes.gridContainer}
           container
           spacing={width === 'md' || width === 'lg' || width === 'xl' ? 3 : 0}
-          justify="space-between"
+          justifyContent="space-between"
           alignItems="stretch"
         >
           <Grid className={classes.gridItem} item xs={6}>

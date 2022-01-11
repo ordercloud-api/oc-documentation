@@ -46,7 +46,7 @@ const OrgHierarchyImage3: React.FunctionComponent = () => {
         icon={<Business />}
         label="Buyer"
       />
-      <Grid container justify="center" spacing={4}>
+      <Grid container justifyContent="center" spacing={4}>
         <Grid item lg className={classes.containerChip}>
           <Paper className={classes.secondaryContainer}>
             <Chip
@@ -58,7 +58,7 @@ const OrgHierarchyImage3: React.FunctionComponent = () => {
               icon={<Group />}
               label="Buyer User Group"
             />
-            <Grid container justify="center" spacing={2}>
+            <Grid container justifyContent="center" spacing={2}>
               <Grid item lg className={classes.containerChip}>
                 <Chip
                   color="primary"
@@ -106,7 +106,7 @@ const OrgHierarchyImage3: React.FunctionComponent = () => {
               icon={<Group />}
               label="Buyer User Group"
             />
-            <Grid container justify="center" spacing={2}>
+            <Grid container justifyContent="center" spacing={2}>
               <Grid item lg className={classes.containerChip}>
                 <Chip
                   color="primary"
