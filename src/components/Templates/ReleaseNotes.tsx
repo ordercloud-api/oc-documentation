@@ -18,6 +18,15 @@ import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
 import RSSFeedLink from '../Shared/RSSFeedLink'
+import { INode, IQueryResult } from '../../pages/release-notes'
+import { RouteComponentProps } from '@reach/router'
+
+interface ReleaseNotesTemplateProps extends RouteComponentProps {
+  data: IQueryResult;
+  theme: Theme;
+  location: any;
+  pageContext: any;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -72,14 +81,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-function ReleaseNotesComponent(props: any) {
+function ReleaseNotesComponent(props: ReleaseNotesTemplateProps) {
   const { data, location } = props
   const classes = useStyles(props)
   const release = data.allMdx.edges.filter(
-    e => e.node.id === props.pathContext.nodeID
-  )[0].node
-  const [currentYear, setCurrentYear] = useState(release.frontmatter.year)
+  const release = data?.allMdx?.edges?.filter(
+    e => e?.node?.id === props?.pageContext?.nodeID
+  )[0]?.node
   const [currentMonth, setCurrentMonth] = useState(release.frontmatter.month)
+  const [currentYear, setCurrentYear] = useState(release?.frontmatter?.year)
+  const [currentMonth, setCurrentMonth] = useState(release?.frontmatter?.month)
 
   useLayoutEffect(() => {
     if (!props.location.hash) return
@@ -93,7 +104,7 @@ function ReleaseNotesComponent(props: any) {
       data.allMdx.edges.map(e => e.node),
       n => n.frontmatter.year
     ),
-    (nodes: any, y) => ({
+    (nodes: INode[], y) => ({
       year: y,
       months: sortBy(
         map(
@@ -121,7 +132,7 @@ function ReleaseNotesComponent(props: any) {
   return (
     <Layout location={location}>
       <Helmet
-        title={`OrderCloud Release Notes - ${release.frontmatter.apiVersion}`}
+        title={`OrderCloud Release Notes - ${release?.frontmatter?.apiVersion}`}
       >
         <link
           rel="icon"
@@ -133,69 +144,69 @@ function ReleaseNotesComponent(props: any) {
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h1">
-            API v{release.frontmatter.apiVersion} Release Notes
+            API v{release?.frontmatter?.apiVersion} Release Notes
           </Typography>
           <div id="RENDER_BOX">
-            <MDXRenderer>{release.body}</MDXRenderer>
+            <MDXRenderer>{release?.body}</MDXRenderer>
           </div>
         </LayoutMain>
         <LayoutMenu>
-          {years.map(y => (
+          {years?.map(y => (
             <React.Fragment key={y.year}>
               <Typography
                 className={`${classes.year} ${
-                  y.year === currentYear ? classes.yearActive : undefined
+                  y?.year === currentYear ? classes.yearActive : undefined
                 }`}
                 variant="h4"
                 component="h5"
                 onClick={onYearClick(y.year, y.months[0].month)}
               >
-                {y.year}
-                {y.year === currentYear ? <ExpandLess /> : <ExpandMore />}
+                {y?.year}
+                {y?.year === currentYear ? <ExpandLess /> : <ExpandMore />}
               </Typography>
-              <Collapse in={y.year === currentYear}>
+              <Collapse in={y?.year === currentYear}>
                 <div className={classes.months}>
-                  {y.months.map(m => (
-                    <React.Fragment key={`${y.year}_${m.month}`}>
+                  {y?.months.map(m => (
+                    <React.Fragment key={`${y?.year}_${m?.month}`}>
                       <Typography
                         className={`${classes.month} ${
-                          y.year === currentYear && m.month === currentMonth
+                          y?.year === currentYear && m?.month === currentMonth
                             ? classes.monthActive
                             : undefined
                         }`}
                         variant="button"
                         component="h6"
-                        onClick={onMonthClick(y.year, m.month)}
+                        onClick={onMonthClick(y?.year, m?.month)}
                       >
                         {new Date(
                           Number(y.year),
                           Number(m.month) - 1,
                           1
                         ).toLocaleString('default', { month: 'long' })}
-                        {y.year === currentYear && m.month === currentMonth ? (
+                        {y?.year === currentYear && m?.month === currentMonth ? (
                           <ExpandLess />
                         ) : (
                           <ExpandMore />
                         )}
                       </Typography>
                       <Collapse
-                        in={y.year === currentYear && m.month === currentMonth}
+                        in={y?.year === currentYear && m?.month === currentMonth}
                       >
                         <div className={classes.releases}>
-                          {m.releases.map(r => (
+                          {m?.releases?.map(r => (
                             <Link
                               key={r.id}
-                              to={utility.resolvePath(r.fileAbsolutePath)}
+                              to={utility.resolvePath(r?.fileAbsolutePath)}
                               className={classes.releaseLink}
                             >
                               <Typography
                                 variant="body1"
                                 className={`${classes.release} ${
-                                  r.id === release.id
+                                  r?.id === release?.id
                                     ? classes.releaseActive
                                     : undefined
                                 }`}
-                              >{`v${r.frontmatter.apiVersion}`}</Typography>
+                              >{`v${r?.frontmatter?.apiVersion}`}</Typography>
                             </Link>
                           ))}
                         </div>

@@ -23,7 +23,6 @@ async function tryGetParsedSpec() {
         'https://api.ordercloud.io/v1/openapi/v3'
       )
     } catch (err) {
-      console.log(err)
       if (index === MAX_RETRIES) {
         throw Error(`Failed to download spec after ${MAX_RETRIES} tries`)
       }
