@@ -113,3 +113,16 @@ Using the interpolated string syntax will allow you to add new lines to your exa
 > If you need an _empty line_ be sure to use **`\n`**. If there are any empty lines in your `.mdx` file between the beginning and end of the `<CodeExample/>` component the gatsby parser will break.
 > 
 > If you are ever unsure about how to implement this component, look at some of the articles within `root/content/learn` for examples.
+
+## Running the project locally
+
+It may be desirable to view and test your changes locally before making a pull request to make sure everything will look as expected. This section will highlight the necessary steps for achieving that.
+
+### Requirements
+- [Node](https://nodejs.org/en/)
+- [Yarn](https://yarnpkg.com/getting-started/install)
+
+1. Run `yarn install` to install project dependencies
+2. Run `yarn start` to run the project locally
+   1. This takes ~5 minutes to load initially, subsequent changes are much quicker
+   2. Once the process is complete your browser window will open to the local application
