@@ -121,6 +121,8 @@ It may be desirable to view and test your changes locally before making a pull r
 ### Requirements
 - [Node](https://nodejs.org/en/)
 
+> **Important Note!** - Contributors that had run the project locally before 1/18/2022 will have to remove the `node_modules` folder before switching to an NPM-only development workflow. Follow the instructions below after removing that folder.
+
 > You will need to acquire the environment variables necessary to run locally. These are available in LastPass or by request from Robert Watt (row@sitecore.net)
 
 1. Run `npm install` to install project dependencies
