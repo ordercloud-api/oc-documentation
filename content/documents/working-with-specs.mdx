@@ -1,0 +1,210 @@
+---
+type:           article
+title:          Working with Product Specs
+description:    Creating complex products with specs.
+author:         asutherland
+publishDate:    2021-12-21
+updatedDate:    2021-12-21
+tags:           ["Products", "Variants", "Specs", "Options"]
+---
+
+## What is a Spec?
+
+While a product may have a number of properties that provide details about the product, a spec refers to a product specification that typically allows the user to either provide some text input or choose from options, which can result in customising the product and/or selecting a variation of the product.
+
+For example, when selling a pen we may request a name to be engraved on the side, providing a customised product, whereas a television may offer different sizes representing variant products.
+
+## Spec Types
+
+The configuration of a spec defines how a user will interact with a product it has been assigned to. Specs can generally be categorised under one of the following types:
+
+### Open Text Spec
+
+The `AllowOpenText` property provides the user the option of inputting text associated to the product, e.g. a name to be engraved onto a pen.
+
+<CodeExample
+  title="Creating an open text spec"
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/specs HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    "ID": "ENGRAVING",
+    "Name": "Name Engraving",
+    "AllowOpenText": true
+}`
+}}
+/>
+
+### Options Spec
+
+To give the user the ability to modify a product configuration while still limiting their selection, a spec with options can be created, e.g. business cards may have a number of design templates to choose from.
+
+<CodeExample
+  title="Creating an options spec"
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/specs HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    "ID": "DESIGN_TEMPLATES",
+    "Name": "Design Templates"
+}`
+}}
+/>
+
+#### Spec Options
+
+Spec options represent the available options that can be selected for an options spec.
+
+<CodeExample
+  title="Creating a spec option"
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/specs/DESIGN_TEMPLATES/options HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    "ID": "MODERN_TECH",
+    "Name": "Blue and Black Modern Tech Specialist Landscape Double-Sided Business Card"
+}`
+}}
+/>
+
+### Variant Spec
+
+A variant spec is an options spec that intends to slice a product across each spec option to create a unique variant product per option, e.g. a television with different sizes each representing a variant product.
+
+<CodeExample
+  title="Creating a variant spec"
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/specs HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    "ID": "SIZE",
+    "Name": "Size",
+    "DefinesVariant": true,
+    "Required": true
+}`
+}}
+/>
+
+>Variant specs must be marked as `Required` as the product object by itself no longer represents a unique product, but as housing for related variant products and cannot be added to an order without specifying a specific variant product.
+
+#### Generate Variants
+
+Once variant specs have been assigned to a product, the variants can then be generated under the products resource.
+
+<CodeExample
+  title="Generating product variants"
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/products/{productID}/variants/generate  HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`
+}}
+/>
+
+Where multiple variant specs are assigned to a product, a matrix of variants is created. The amount of variants created can be calculated using the formula (spec A's option count) \* (spec B's option count) \* (spec C's option count) and so on. As you can see, the more variant specs assigned to a product, and the more options per spec, the greater scale of variants will be generated.
+
+For example, let's take a product that is assigned 2 variant specs. The first spec is *Color*, containing options *Red* and *Blue*. The second spec is *Size*, which will have options of *Small*, *Medium*, and *Large*. This would result in the following generated variants, each with their own unique spec option combination.
+
+1. Red, Small
+1. Red, Medium
+1. Red, Large
+1. Blue, Small
+1. Blue, Medium
+1. Blue, Large
+
+>When generating variants, setting the `overwriteExisting=true` parameter will regenerate the product's variants, removing invalid variants and reseting existing variants. Any existing data enrichment to the variants will need to be re-applied after regenerating variants to avoid unwanted data loss.
+
+>In some instances, one or more of the generated variants may not represent a valid product. To manage this, any unwanted variants can be patched to have their `Active` property set to `false`.
+
+#### Variant IDs
+
+Variants will commonly represent a unique product, which requires a unique SKU or identifier. While the variant generation also generates the variant's `ID`, this can be overwritten using the PUT/PATCH resource.
+
+#### Disambiguating Properties
+
+Properties at the product level may not be appropriate for the variants, so the variant model contains a subset of properties for variant-specific values; most notably `Name` and `Description`.
+
+#### Inventory
+
+For products with variants, inventory can be managed at the product level, to manage inventory across all variants, or at the variant level, to manage inventory for each product variant.
+
+>Variant level inventory management requires that the product's `Inventory.VariantLevelTracking` property be set to `true`. The variant model's `Inventory` can then be used to manage variant-specific inventory data. 
+
+## Spec Product Assignments
+
+Specs have a one to many relationship with products, which can facilitate in avoiding duplicating spec data and overall maintenance. For example, a number of products may be available with the same design options and an option spec, e.g. `DESIGN_TEMPLATES` houses all available designs. With each of the products being assigned the `DESIGN_TEMPLATES` spec, not only will they share the available options, but any updates to the spec will also be applied to all assigned products.
+
+<CodeExample
+  title="Creating a spec product assignment"
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/specs/productassignments HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    "SpecID": "SIZE",
+    "ProductID": "MY_PRODUCT"
+}`
+}}
+/>
+
+>When assigning specs to multiple products it is important to understand that the product will inherit the spec in its entirety.
+>
+>For options specs, a product may only require a subset of the spec options or require its own unique spec option. In these cases it is usually worth creating a unique spec for that product rather than handling unavailable options on a product by product basis.
+
+## Spec Features
+
+### Required Flag
+
+Setting the spec to be required ensures that the product cannot be added to an order unless the spec has been defined.
+
+### Default Values
+
+Setting the `DefaultValue` or `DefaultOptionID` acts as the fallback when a spec expects either a value for open text specs or an option id for options specs.
+
+>The `DefaultOptionID` cannot be assigned on the initial creation of the spec as no options exist yet. Similarly, the options cannot be created before the spec exists. Therefore the `DefaultOptionID` will need to be PATCHed out once the spec and option have been created.
+
+>The `DefaultValue` and `DefaultOptionID` are also available when creating spec product assignments to override these values per product.
+
+## Option Features
+
+### Open Text
+
+Open text does not just apply to the spec level configuration. Selecting an option that has the `IsOpenText` set to `true` will allow the user to input text in the same manner, which can also leverage the other features of option specs like price markup.
+
+### Price Markup
+
+When a user inputs a value for an open text spec or selects a value from an options spec, an additional cost may be incurred. Spec options have price markup properties to cater for these price adjustments. `PriceMarkupType`s determine how the product price will be impacted, while the `PriceMarkup` specifies the value to be used in calculations.
+
+The available `PriceMarkupType`s are as follows:
+
+* **NoMarkup**: The default option that will not modify the product price.
+
+* **AmountPerQuantity**: Updates the product price with an amount, multiplied by the quantity of the product.
+
+* **AmountTotal**: A fixed amount to be added to the product price regardless of product quantity.
+
+>When calculating the `lineitem.UnitPrice`, the spec option's `PriceMarkup` is divided by the `lineitem.Quantity`, while the `lineitem.LineSubtotal` will be calculated based on the `Price` resolved from the price schedule of the product and not the `UnitPrice`. 
+>
+>This is important to note as rounding on the `UnitPrice` will mean that `UnitPrice` * `Quantity` will not necessary equal the `LineSubtotal`, however the `LineSubtotal` will still be correct in calculating totals for the order.
+
+* **Percentage**: Increases the product price by the defined value as a percentage.
+
+#### Pricing Summary
+
+The following table represents the line item subtotals for price markups on a product with a base price of $50 and a `PriceMarkup` of 10 (where the value type of the `PriceMarkup` is dependent on `PriceMarkupType`).
+
+| PriceMarkupType       | PriceMarkup | Quantity 1 | Quantity 10 |
+|-----------------------|-------------|------------|-------------|
+| **NoMarkup**          | 10*         | $50        | $500        |
+| **AmountPerQuantity** | ($) 10      | $60        | $600        |
+| **AmountTotal**       | ($) 10      | $60        | $510        |
+| **Percentage**        | 10 (%)      | $55        | $550        |
+
+>\* Although a `PriceMarkup` can be applied to a variant option with `PriceMarkupType` as `NoMarkup`, this value will be ignored during pricing calculations.
+
+## Conclusion
+
+Although the flexibility in configuring product specs and options is extremely powerful in OrderCloud, the initial process can seem overwhelming and convoluted. With adequate knowledge of their workings, as described in this article, creating complex products should now be a straightforward process.

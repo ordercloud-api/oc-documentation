@@ -192,12 +192,17 @@ export default function KnowledgeBaseTemplate(
             <div style={{ paddingLeft: 8 }}>
               <Typography color="textSecondary">
                 {`${
-                  doc.mdx.frontmatter.updatedDate ? 'Updated' : 'Published'
+                  doc.mdx.frontmatter.updatedDate !==
+                  doc.mdx.frontmatter.publishDate
+                    ? 'Updated'
+                    : 'Published'
                 } by ${doc.mdx.frontmatter.author.name}`}
               </Typography>
               <Typography color="textSecondary">
-                {doc.mdx.frontmatter.updatedDate ||
-                  doc.mdx.frontmatter.publishDate}
+                {doc.mdx.frontmatter.updatedDate !==
+                doc.mdx.frontmatter.publishDate
+                  ? doc.mdx.frontmatter.updatedDate
+                  : doc.mdx.frontmatter.publishDate}
               </Typography>
             </div>
           </Box>

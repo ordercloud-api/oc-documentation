@@ -27,10 +27,10 @@ First, let's create the product. Since we don't have a price schedule yet, we'll
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    ID: "SHIRT",
-    Name: "Cotton T-Shirt",
-    Description: "A plain white, cotton shirt for everyday use.",
-    Active: true
+    "ID": "SHIRT",
+    "Name": "Cotton T-Shirt",
+    "Description": "A plain white, cotton shirt for everyday use.",
+    "Active": true
 }`,
 javascript: `import { Products } from "ordercloud-javascript-sdk";\n
 Products.Create({
@@ -94,6 +94,7 @@ Your response should look something like this:
 	"ShipFromAddressID": null,
 	"Inventory": null,
 	"DefaultSupplierID": null,
+	"AllSuppliersCanSell": false,
 	"xp": null
 }
 ```
@@ -101,7 +102,7 @@ Your response should look something like this:
 OrderCloud has taken care of defaulting certain non-nullable values:
 
 - **`OwnerID`** - The organization that owns this product (our seller organization ID)
-- **`QuantityMultipliier`** - This field does not affect any functionality. If we were selling a pack of 5 shirts, we may change this value to 5 to indicate that in the user experience.
+- **`QuantityMultiplier`** - This field does not affect any functionality. If we were selling a pack of 5 shirts, we may change this value to 5 to indicate that in the user experience.
 - **`AutoForward`** - This field is relevant to solutions that take advantage of suppliers, no need to worry about it now.
 
 In a real solution you would likely include things like inventory, shipping measurements, and ship-from address (for estimating shipping cost), but we are not going to be creating any integrations for this example so we left them blank.
@@ -124,12 +125,12 @@ Their most basic form consists of an ID, Name, and one or more price breaks. Pri
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    ID: "SHIRT_PRICE",
-    Name: "Cotton T-Shirt Price",
-    PriceBreaks: [
+    "ID": "SHIRT_PRICE",
+    "Name": "Cotton T-Shirt Price",
+    "PriceBreaks": [
         {
-            Quantity: 1,
-            Price: 10
+            "Quantity": 1,
+            "Price": 10
         }
     ]
 }`,
@@ -193,7 +194,7 @@ try {
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    DefaultPriceScheduleID: "SHIRT_PRICE"
+    "DefaultPriceScheduleID": "SHIRT_PRICE"
 }`,
 javascript: `import { Products } from "ordercloud-javascript-sdk";\n
 Products.Patch("SHIRT", {

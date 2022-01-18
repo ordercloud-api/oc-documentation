@@ -185,6 +185,101 @@ const toExport = {
     `gatsby-plugin-typescript-checker`,
     `gatsby-transformer-sharp`,
     {
+      resolve: `gatsby-plugin-feed`,
+      options: {
+        query: `
+        {
+          site {
+            siteMetadata {
+              title
+              description
+              siteUrl
+              site_url: siteUrl
+            }
+          }
+        }
+        `,
+        feeds: [
+          {
+            serialize: ({ query: { site, allMdx } }) => {
+              return allMdx.nodes.map(node => {
+                return Object.assign({}, node.frontmatter, {
+                  title: "API v" + node.frontmatter.apiVersion + " Release Notes",
+                  date: node.frontmatter.date,
+                  url: site.siteMetadata.siteUrl + "/release-notes/v" + node.frontmatter.apiVersion,
+                })
+              })
+            },
+            query: `
+              {
+                allMdx(
+                  sort: { order: DESC, fields: [frontmatter___date] }
+                  filter: {
+                    fileAbsolutePath: { glob: "**/content/release-notes/**/*.mdx" }
+                  }
+                ) {
+                  nodes {
+                    id
+                    fileAbsolutePath
+                    body
+                    mdxAST
+                    frontmatter {
+                      apiVersion
+                      date: date(formatString: "MMMM DD, YYYY")
+                      year: date(formatString: "YYYY")
+                      month: date(formatString: "MM")
+                      day: date(formatString: "DD")
+                    }
+                  }
+                }
+              }
+            `,
+            output: "/rss/release-notes.xml",
+            title: "OrderCloud API Release Notes",
+            link: "https://feeds.feedburner.com/gatsby/blog",
+          },
+          {
+            serialize: ({ query: { site, allMdx } }) => {
+              return allMdx.nodes.map(node => {
+                return Object.assign({}, node.frontmatter, {
+                  title: "API v" + node.frontmatter.apiVersion + " Release Notes",
+                  date: node.frontmatter.date,
+                  url: site.siteMetadata.siteUrl + "/portal-release-notes/v" + node.frontmatter.apiVersion,
+                })
+              })
+            },
+            query: `
+              {
+                allMdx(
+                  sort: { order: DESC, fields: [frontmatter___date] }
+                  filter: {
+                    fileAbsolutePath: { glob: "**/content/portal-release-notes/**/*.mdx" }
+                  }
+                ) {
+                  nodes {
+                    id
+                    fileAbsolutePath
+                    body
+                    mdxAST
+                    frontmatter {
+                      apiVersion
+                      date: date(formatString: "MMMM DD, YYYY")
+                      year: date(formatString: "YYYY")
+                      month: date(formatString: "MM")
+                      day: date(formatString: "DD")
+                    }
+                  }
+                }
+              }
+            `,
+            output: "/rss/portal-release-notes.xml",
+            title: "OrderCloud Portal Release Notes",
+            link: "https://feeds.feedburner.com/gatsby/blog",
+          }
+        ],
+      },
+    },
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `images`,

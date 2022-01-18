@@ -116,6 +116,7 @@ export default createMuiTheme({
         },
         '#RENDER_BOX a': {
           color: darken(secondaryColor, 0.25),
+          fontWeight: defaultTheme.typography.fontWeightMedium,
         },
         code: {
           whiteSpace: 'pre-wrap',

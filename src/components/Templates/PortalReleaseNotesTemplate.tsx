@@ -17,6 +17,7 @@ import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
+import RSSFeedLink from '../Shared/RSSFeedLink'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -205,6 +206,7 @@ function PortalReleaseNotesComponent(props: any) {
               </Collapse>
             </React.Fragment>
           ))}
+          <RSSFeedLink to="/rss/portal-release-notes.xml" />
         </LayoutMenu>
       </LayoutContainer>
     </Layout>
