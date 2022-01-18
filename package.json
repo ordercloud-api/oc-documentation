@@ -4,6 +4,10 @@
   "description": "A simple starter to get up and developing quickly with Gatsby",
   "version": "1.0.37",
   "author": "Rob Watt <rwatt@four51.com>",
+  "engines": {
+    "node": "^16.13.2",
+    "npm": "^8.1.2"
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
