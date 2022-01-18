@@ -4,7 +4,7 @@ title:          Understanding Orders
 description:    The central concept within OrderCloud is not surprisingly the order. This is the object where buyers, sellers, products, payments, and almost everything come together to form a business transaction.
 author:         sdavis
 publishDate:    2016-03-09
-updatedDate:    2016-03-09
+updatedDate:    2022-01-14
 tags:           ["Orders", "Line Items", "Shipments", "Promotions", "Approval Rules", "Buyer Addresses", "Payments"]
 ---
 
@@ -12,17 +12,29 @@ The central concept within OrderCloud is not surprisingly the order. This is the
 
 ## Order Direction
 
-A key feature of the Order resource is the order "direction". The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, marketplace owner, supplier. What changes however is the order _direction_. An order is generally thought to flow like this:
+A key feature of the Order resource is the order "direction". The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, marketplace owner (MPO), or supplier. What changes however is the order _direction_. A good way to think about order direction is to first thing about how an order moves from the entity that submits the order all the way through to the entity that fulfills the order and then think about how direction appears from a specific user's perspective.
 
-Buyer ➔ Marketplace Owner
+#### Buyer to MPO Order Transaction
+The simplest way a transaction can occur in OrderCloud is from a buyer directly to an MPO. In this scenario, the optional supplier entity is not present, and a diagram of the flow can be depicted like this:
 
-and _optionally_ (remember suppliers are optional)
+Buyer ➔ MPO
 
-Buyer ➔ Marketplace Owner ➔ Supplier
+From the buyer's perspective, the Order is "Outgoing", and conversely from the MPO's perspective the order is "Incoming".
 
-In a supplier-less organization, this relationship is simple. A buyer creates an order that goes **to** the marketplace owner to fulfill. From the perspective of the buyer user that order is "outgoing" and from the perspective of the marketplace owner this order is "incoming". To the buyer user the notion of incoming orders doesn't exist, in the say way that a supplier does not have any outgoing orders. They're at the edges of this flow.
+#### Order Forwarding Order Transaction
+If an order can contain line items with products from many suppliers (`product.DefaultSupplierID`) then an order can be [forwarded](https://ordercloud.io/api-reference/orders-and-fulfillment/orders/forward) to each supplier. This means that the order flows through the seller, but then immediately goes to each supplier for fulfillment. Now our diagram now looks like this:
 
-If we introduce a supplier to the mix then the relationship is essentially the same for the buyer however now the marketplace owner can see orders coming to them _from the buyer_ by using the "incoming" order direction, and additionally can see orders going to the supplier by using the "outgoing" order direction. Both "incoming" _and_ "outgoing" orders mean something to the marketplace owner. The supplier can only see orders coming to them to fulfill.
+Buyer ➔ MPO ➔ Supplier
+
+The flow is essentially the same for the buyer, however now the MPO can see orders coming to them _from the buyer_ by using the "Incoming" order direction, and additionally can see orders going to the supplier by using the "Outgoing" order direction. Both "Incoming" _and_ "Outgoing" orders mean something to the MPO
+
+#### Buyer to Supplier Order Transaction
+
+As of [API 1.0.214](https://ordercloud.io/release-notes/v1.0.214) it is possible to submit orders from a buyer directly to a supplier. Now our diagram looks like this:
+
+Buyer ➔ Supplier
+
+The buyer sees a direction of "Outgoing", and the supplier sees a direction of "Incoming" however the MPO is left completely out of the flow. Remember though, that the MPO, as the owner of the Marketplace *must* have visibility to orders even if they aren't directly involved in the transaction. To support this, we've introduced the order direction "All". The "All" direction, can be used by any entity (buyer, seller, supplier) and will appropriately select the correct direction for that entity. MPOs can and should still use "Incoming"/"Outgoing" if they have marketplaces where orders are forwarded.
 
 ## Statuses
 
@@ -35,10 +47,18 @@ Throughout a workflow an order undergoes various status changes:
 - Completed: Submitted and all the line items on the order have been shipped
 - Canceled: Order can no longer be submitted
 
-> Once and order is canceled, it is effectively DEAD and no further actions can be taken on it
-
+> Once an order is canceled, it is effectively DEAD and no further actions can be taken on it
 
 We've made it easy for you by tracking these changes as well as the time the status changes. A status is often time changed by the API automatically under certain conditions (e.g. all the quantities on all the lines are shipped so the platform changes the order status to 'Complete')
+
+## Abandoned Order Cleanup Policy
+As a means of ensuring top notch performance, the platform has some policies around automatically cleaning up any unsubmitted orders that have been inactive for some period. The length of time that an order remains in existence depends on several parameters outlined below which are fixed across the platform and not configurable per customer.
+
+| User Type             | Has Line Items? | Valid for |
+|-----------------------|-----------------|-----------|
+| Anonymous OR Profiled | No              | 24 hours  |
+| Anonymous             | Yes             | 7 days    |
+| Profiled              | Yes             | 90 days   |
 
 ## Interactions with other resources
 
