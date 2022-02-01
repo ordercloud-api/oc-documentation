@@ -1,0 +1,92 @@
+---
+type:           tutorial
+title:          Managing Inventory with OrderCloud
+description:    OrderCloud's InventoryRecords resource gives you flexibility to set-up product inventory in a way that meets your businesses’ fulfillment workflows.
+author:         awilson
+publishDate:    2022-02-04
+updatedDate:    2022-02-04    
+tags:           ["Inventory", "Fulfillment", "Checkout", "Variants"]
+---
+
+Manufacturers, Distributors, and Retailers all have very unique inventory requirements. OrderCloud's InventoryRecords resource, introduced in early 2022, gives you flexibility to set-up product inventory in a way that meets your businesses’ fulfillment workflows. Consider these questions before you begin so you can find the scenario below that most closely aligns with your business.
+
+ - Where is inventory for my products located? Multiple locations or a single location?
+-   Will my business grow its fulfillment locations in the future?
+-   Do my buyers need to see how much inventory is on-hand at each location when browsing products?
+-   Do my buyers get to choose where the product fulfills from when making a purchase? If the answer is “No”, who or what determines where a product is fulfilled from?
+-   How do I want buyers to locate products in-stock?
+
+It will help to review [this technical overview](https://ordercloud.io/knowledge-base/multi-location-inventory) for better understanding of the InventoryRecords resource before you begin.
+
+## Scenario 1: All products fulfill from the same location
+
+If your products only have a single inventory amount, you can use the Inventory object on the Product resource to manage your inventory. For a refresher, take a look at the [API Reference guide](https://ordercloud.io/api-reference/product-catalogs/products/create), specifically, the Inventory object on Products.
+
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/inventory-use-guide/inventory_records_1.jpg" alt="Inventory Scenario 1"/>
+<figcaption>Scenario 1</figcaption>
+</figure>
+
+Simply, set the quantity available for each Product, then determine if you want to make the inventory amount visible in your frontend experience. OrderCloud will take care of validating if enough inventory is available when a user submits their order based on your settings, as well as decrementing the proper amount when the order is placed.
+
+## Scenario 2: Multi-location retailer offering Buy Online Pick-up in Store fulfillment
+
+For retailers that sell the same products at many different locations, and want to offer pick-up fulfillment, shoppers need to know if the item is in-stock at their preferred pick-up location. To do this, inventory for products must be managed at a location basis. Use InventoryRecords to handle this.
+
+InventoryRecords are always created in the context of a Product. A single product can have relationships to multiple InventoryRecords, which represent groups of inventories. Each InventoryRecord must also have an `AddressID`. In this scenario, retail locations should be represented by Suppliers, each with their own Supplier Address. Then, products will have an InventoryRecord tied to each Supplier Address. Like this:
+
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/inventory-use-guide/inventory_records_2.jpg" alt="Inventory Scenario 2"/>
+<figcaption>Scenario 2</figcaption>
+</figure>
+
+Once InventoryRecords are set-up to represent stock-on-hand for each retailer, shoppers will want to see the inventory counts for each location. Use the InventoryRecords endpoints and Product search filters to accomplish this.
+
+ “I’d like to buy Product X. Show me all of the locations that have this product, and their availability.”
+
+    GET v1/products/{productID}/inventoryrecords
+
+“Is Product X available at Location Y?”
+
+    GET /v1/products/{productID}/inventoryrecords/{inventoryRecordID}
+
+“I want to see only products that are available at Store A and Store B.”
+
+    GET v1/me/products?InventoryRecord.AddressID={addressA}|{addressB}&InventoryRecord.QuantityAvailable=>0
+
+Finally, to properly decrement inventory when using InventoryRecords, there must be a value passed to `LineItem.InventoryRecordID` when the LineItem is added to an Order, and the Order is Submitted. If this is left null, no inventory will be decremented. The InventoryRecord related to the pick-up location that the shopper selects must be set on `LineItem.InventoryRecordID`.
+
+## Scenario 3: Manufacture or distributor with products in multiple fulfillment centers
+
+There are many reasons a business can have multiple fulfillment centers or warehouses. What’s important is your business's workflows or fulfillment logic to determine where line items of an Order will fulfill from.
+
+First, the set-up of your inventory will be very similar to Scenario 2. A Product will have a relationship to multiple InventoryRecords – each representing the fulfillment center in which that product resides in. In this case, the InventoryRecord may have an Admin AddressID, instead of a Supplier AddressID.
+
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/inventory-use-guide/inventory_records_3.jpg" alt="Inventory Scenario 3"/>
+<figcaption>Scenario 3</figcaption>
+</figure>
+
+In the previous Buy Online Pick-up in Store scenario, the Buyer chooses the store they want to buy and pick-up from (fulfillment location), so the Buyer is setting `LineItem.InventoryRecordID`. For this scenario, your business logic must determine the fulfillment location and set `LineItem.InventoryRecordID`.
+
+For example, if your business always ships from the warehouse closest to the Buyer’s Ship To address, your code will need functions to determine the closest warehouse, and then set the correct InventoryRecord on `LineItem.InventoryRecordID` for each Line Item. Similarly, if your business ships from the warehouse with the oldest inventory, the warehouse with the most inventory, or any other factor, you can add custom logic in your solution to appropriately set the `InventoryRecordID` for the LineItem so that inventory is decremented from the correct location. These scenarios will involve custom logic managed with events or in middleware.
+
+## Scenario 4: Track inventory on all product variations
+
+Whether your variants have inventory stored in one location or many, OrderCloud supports managing stock-on-hand at the variant level. To do this, you must have `Product.Inventory.VariantLevelTracking` = `true`.
+
+For single-location inventory, you will set the inventory amount directly on the variant using the Product Variant endpoints. For multi-location inventory, you will use the `InventoryRecords` endpoints that require the `VariantID` to set inventory amounts for each variant at each location. Here is how a variant’s inventory using InventoryRecords would look:
+
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/inventory-use-guide/inventory_records_4.jpg" alt="Inventory Scenario 4"/>
+<figcaption>Scenario 4</figcaption>
+</figure>
+
+## Other Takeaways
+
+ - Notice that when using InventoryRecords, the `Product.Inventory.QuantityAvailable` reflects the sum of `QuantityAvailable` values across all InventoryRecords tied to that product. This allows you to see the aggregate inventory for that product.
+-   OrderCloud will allow you to have multiple InventoryRecords with the same `AddressID` for one product. You might use this concept if you have two (or more) groups of inventory at a single location that you need to fulfill from separately.
+-   The OrderCloud platform is not going limit any product visibility based on inventory natively, however you can add query parameters to your Product List calls to get the results you desire. For example, if you only want to show products with inventory on-hand, try this: `GET v1/me/products?Inventory.QuantityAvailable>0`.
+-   Remember, if you are using InventoryRecords and `LineItem.InventoryRecordID` is left null when an order is submitted, no inventory will be decremented.
+    
+With a little planning and practice, you can map your inventory strategy in no time!
