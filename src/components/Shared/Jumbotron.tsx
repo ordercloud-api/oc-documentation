@@ -118,6 +118,7 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: align === 'center' ? 700 : 900,
       margin: align === 'center' ? '0 auto' : undefined,
       textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
+      lineHeight: 1.5,
     }),
   })
 )

@@ -38,5 +38,15 @@
         "id": "awilson",
         "name": "Ashley Wilson",
         "title": "Product Manager"
+    },
+    {
+        "id": "asutherland",
+        "name": "Andrew Sutherland",
+        "title": "Partner Technical Advisor"
+    },
+    {
+        "id": "dsteinmetz",
+        "name": "DJ Steinmetz",
+        "title": "Senior Developer"
     }
 ]
