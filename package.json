@@ -4,6 +4,10 @@
   "description": "A simple starter to get up and developing quickly with Gatsby",
   "version": "1.0.37",
   "author": "Rob Watt <rwatt@four51.com>",
+  "engines": {
+    "node": "^16.13.2",
+    "npm": "^8.1.2"
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
@@ -24,6 +28,7 @@
     "gatsby-image": "^2.2.37",
     "gatsby-plugin-algolia": "^0.5.0",
     "gatsby-plugin-catch-links": "^2.1.21",
+    "gatsby-plugin-feed": "^4.4.0",
     "gatsby-plugin-google-analytics": "^2.1.36",
     "gatsby-plugin-google-gtag": "^2.8.0",
     "gatsby-plugin-manifest": "^2.2.34",
@@ -41,7 +46,7 @@
     "gatsby-transformer-json": "^2.2.22",
     "gatsby-transformer-remark": "^2.6.45",
     "gatsby-transformer-sharp": "^2.3.9",
-    "prismjs": "^1.17.1",
+    "prismjs": "^1.25.0",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-custom-scrollbars": "^4.2.1",

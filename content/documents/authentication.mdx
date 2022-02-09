@@ -3,7 +3,6 @@ type:           tutorial
 title:          Authentication
 description:    OrderCloud's authentication system is built on top of an open authorization standard called OAuth2 which is increasingly becoming an industry standard for security and permission-based application experiences.
 author:         jilse
-priority:       5
 publishDate:    2015-12-15
 updatedDate:    2021-02-26
 tags:           ["Authentication", "API Clients", "Security Profiles", "OpenID Connects"]
@@ -26,6 +25,8 @@ This is the most common, a user logs in with their username and password.  A suc
 - Username
 - Password
 - Grant Type (set to `password`)
+
+Note: If a ClientSecret is defined on the API Client, it will be required for all OAuth workflows
 
 <CodeExample
   title="Password Grant-Type Workflow"

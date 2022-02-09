@@ -1,0 +1,60 @@
+---
+type:           article
+title:          Multi-Location Inventory
+description:    Overview of new feature to allow tracking of product inventory across multiple locations.
+author:         mposthumus
+publishDate:    2022-01-04
+updatedDate:    2022-01-04
+tags:           ["Concepts", "Marketplaces", "Products", "Inventory"]
+---
+
+New feature to allow tracking of product inventory across multiple locations. 
+
+## New Resource: `InventoryRecord`
+
+```json
+"InventoryRecord" : {
+  "ID": "",
+  "OwnerID": "",
+  "AddressID": "",
+  "Address": {...}, //read-only Address object
+  "OrderCanExceed": false,
+  "QuantityAvailable": 0,
+  "LastUpdated": "2022-01-04T00:00:00.00+00:00",
+  "xp": {}
+}
+```
+
+The `InventoryRecord` resource exists only in the context of a given Product, and can be extended to Product Variants.
+- The ID property is writable and follows the same convention as all other [writable IDs](https://ordercloud.io/learn/ordercloud-basics/conventions#writeable-ids) in OrderCloud.
+- The `OwnerID` property is writable only by the Marketplace Owner. Otherwise this ID reflects the Supplier that created the Inventory Record.
+- The `Product.Inventory` object will remain on the Product resource, even if Inventory Records are associated with the given Product.
+   - If any InventoryRecords exist for a product, `Product.Inventory.QuantityAvailable` will be the derived sum of all `InventoryRecord.QuantityAvailable`.  If you write to it, the value will never be returned unless all InventoryRecords are deleted.
+- `Address` is a read-only object derived from the `AddressID` given.
+- Multiple InventoryRecords for the same Product/Address combination are allowed. This can be useful if you need to track different inventory levels for different fulfillment methods.
+- The `AddressID` used to create an `InventoryRecord` must be owned by the `OwnerID`.
+- InventoryRecords are not returned on the Product resource; however, you can use filters on InventoryRecord information in product queries, e.g. `v1/me/products?InventoryRecord.AddressID={address1}|{address2}&InventoryRecord.QuantityAvailable=>5`.
+
+## New Endpoints 
+
+Products
+- `GET v1/products/{productID}/inventoryrecords`
+- `GET v1/products/{productID}/inventoryrecords/{inventoryRecordID}`
+- `POST v1/products/{productID}/inventoryrecords`
+- `PUT v1/products/{productID}/inventoryrecords/{inventoryRecordID}`
+- `PATCH v1/products/{productID}/inventoryrecords/{inventoryRecordID}`
+- `DELETE v1/products/{productID}/inventoryrecords/{inventoryRecordID}`
+
+Variants
+- `GET v1/products/{productID}/variants/{variantID}/inventoryrecords`
+- `GET v1/products/{productID}/variants/{variantID}/inventoryrecords/{inventoryRecordID}`
+- `POST v1/products/{productID}/variants/{variantID}/inventoryrecords`
+- `PUT v1/products/{productID}/variants/{variantID}/inventoryrecords/{inventoryRecordID}`
+- `PATCH v1/products/{productID}/variants/{variantID}/inventoryrecords/{inventoryRecordID}`
+- `DELETE v1/products/{productID}/variants/{variantID}/inventoryrecords/{inventoryRecordID}`
+
+## New Property
+ `LineItem.InventoryRecordID`
+- Only writable prior to submitting an order
+- References the `InventoryRecord` that will be decremented on submit.
+- If using Inventory Records for a given Product, you must provide an `InventoryRecordID` on the `LineItem` in order to track inventory. If any Inventory Records exist for a Product on a `LineItem` where `InventoryRecordID` is null, no inventory will be decremented on order submit.
