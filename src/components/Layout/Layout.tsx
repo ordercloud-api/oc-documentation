@@ -82,6 +82,8 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
 )
 
 export const LayoutLink = (props: any) => {
+  const handleCopyClick = () => navigator.clipboard.writeText(`${window.location}`)
+
   const classes = layoutLinkStyles({})
   if (!props.href) {
     console.error(
@@ -92,7 +94,7 @@ export const LayoutLink = (props: any) => {
   }
   if (props.className === 'anchor' || props.href.indexOf('#') === 0) {
     return (
-      <div className={classes.root}>
+      <div className={classes.root} onClick={handleCopyClick}>
         <IconButtonLink {...props} to={props.href}>
           <LinkIcon />
         </IconButtonLink>
