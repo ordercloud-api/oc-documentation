@@ -4,7 +4,7 @@ title:          Vercel Integration
 description:    Get a live NextJS storefront in 5 minutes with Vercel
 author:         oheywood
 publishDate:    2021-10-01
-updatedDate:    2022-01-28    
+updatedDate:    2022-02-28    
 tags:           ["Integrations", "NextJS", "Hosting", "Vercel"]
 ---
 
@@ -60,7 +60,7 @@ The OrderCloud integration is part of the Vercel integration marketplace. It can
 
 Why two API clients to connect to OrderCloud? The OrderCloud API offers extreme flexibility in commerce use cases. The trade-off is that custom solutions must bring their own definitions of the various user roles and permissions they want to support. OrderCloud provides tools for controlling which users can take what API actions and which users can authenticate through which API clients. However, making those configuration choices and then securely connecting your custom code are a complexity that falls on the solution implementor. With this Vercel integration, you get a pre-coded storefront and a pre-configured data template. We've made the user roles and security decisions for you by choosing a very common pattern. 
 
-The `Vercel-Storefront-Connector` client is for buyer users. It is used to authenticate requests to ordercloud that render the storefront like the PLP, PDP, Cart, Checkout, etc. It is given limitted API permissions - for example, you can't use it to change product features or read orders accross users. These would be inappropriate things for a buyer to do. Because its permissions are limitted, it is safe to expose the details to a client browser. It is the safer, more common method, being used to make the vast majority of requests to OrderCloud. The `Vercel-Middleware-Connector` client, on the other hand, is given full API access. It can read or modify any piecce of data in the OrderCloud marketplace. It is only used inside serverless functions which do pre-canned actions after appropriate security checks. In this app it is used in only 1 place, to set Payment.Accepted to true after user's credit card details are considered captured. 
+The `Vercel-Storefront-Connector` client is for buyer users. It is used to authenticate requests to ordercloud that render the storefront like the PLP, PDP, Cart, Checkout, etc. It is given limitted API permissions - for example, you can't use it to change product features or read orders accross users. These would be inappropriate things for a buyer to do. Because its permissions are limitted, it is safe to expose the details to a client browser. It is the safer, more common method, being used to make the vast majority of requests to OrderCloud. The `Vercel-Middleware-Connector` client, on the other hand, is given full API access. It can read or modify any piecce of data in the OrderCloud marketplace. Accordingly, it also requires a Client Secret which should never be public. It is only used inside serverless functions which do pre-canned actions after appropriate security checks. In this app it is used in only 1 place, to set Payment.Accepted to true after user's credit card details are considered captured. 
 
 Hopefully this explains why 2 API Clients are needed by this integration.   
 
