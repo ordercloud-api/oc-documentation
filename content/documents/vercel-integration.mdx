@@ -73,7 +73,7 @@ ORDERCLOUD_MARKETPLACE_NAME
 ORDERCLOUD_BUYER_CLIENT_ID
 ORDERCLOUD_MIDDLEWARE_CLIENT_ID
 ORDERCLOUD_MIDDLEWARE_CLIENT_SECRET
-COMMERCE_PROVIDER ("ordercloud")
+COMMERCE_PROVIDER ("@vercel/commerce-ordercloud")
 ```
 
 If you select the "Seed a new marketplace" option of the integration, a new marketplace will be created and seeded with this [data template](https://github.com/ordercloud-api/ordercloud-seed/blob/main/seeds/Vercel-B2C.yml). Since this template already contains API Clients with names `Vercel-Middleware-Connector` and `Vercel-Storefront-Connector`, they will not be overwritten and everything will "just work". However, if you choose to connect to an existing OrderCloud marketplace, you will have to make sure these newly created API Clients are connected to organizations and default users you desire.
