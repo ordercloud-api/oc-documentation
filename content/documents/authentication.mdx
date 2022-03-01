@@ -3,7 +3,6 @@ type:           tutorial
 title:          Authentication
 description:    OrderCloud's authentication system is built on top of an open authorization standard called OAuth2 which is increasingly becoming an industry standard for security and permission-based application experiences.
 author:         jilse
-priority:       5
 publishDate:    2015-12-15
 updatedDate:    2021-02-26
 tags:           ["Authentication", "API Clients", "Security Profiles", "OpenID Connects"]
@@ -15,7 +14,7 @@ Access tokens are what gives you _access_ to parts of the API and must be append
 
 ## OrderCloud Workflows
 
-OrderCloud's authentication system is built on top of an open authorization standard called [OAuth2](https://oauth.net/2/) which is increasingly becoming an industry standard for security and permission-based application experiences. OAuth2 provides five different workflows (ways of getting an access token). Additionally, OrderCloud has support for OpenID connect which is an authorization standard built on top of OAuth2 which enables single-sign-on and brings our grand tally up to 6 workflows.
+OrderCloud's authentication system is built on top of an open authorization standard called [OAuth2](https://oauth.net/2/) which is increasingly becoming an industry standard for security and permission-based application experiences. OAuth2 provides five different workflows (ways of getting an access token). Additionally, OrderCloud has support for OpenID connect which is an authentication standard built on top of OAuth2 which enables single-sign-on and brings our grand tally up to 6 workflows.
 
 ### Password Grant Type Workflow
 
@@ -26,6 +25,8 @@ This is the most common, a user logs in with their username and password.  A suc
 - Username
 - Password
 - Grant Type (set to `password`)
+
+Note: If a ClientSecret is defined on the API Client, it will be required for all OAuth workflows
 
 <CodeExample
   title="Password Grant-Type Workflow"
@@ -92,7 +93,9 @@ var client = new OrderCloudClient(new OrderCloudClientConfig {
     },
     ApiUrl: "https://sandboxapi.ordercloud.io",
     AuthUrl: "https://sandboxapi.ordercloud.io"
-});`}}
+});
+// Now that the sdk is configured it will automatically acquire, cache and refresh tokens implicitly as needed
+`}}
 />
 
 ### Client Credentials Workflow
@@ -107,7 +110,7 @@ A successful authentication request with this workflow requires the following in
 - Grant Type (set to `client_credentials`)
 
 ```http
-POST https://auth.ordercloud.io/oauth/token HTTP/1.1
+POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: text/html; charset=UTF-8
 
 client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=client_credentials&client_secret=xxxxxxxxxxxxx&scope=Shopper
@@ -130,7 +133,7 @@ A successful authentication request with this workflow requires the following in
 - Grant Type (set to `refresh_token`)
 
 ```http
-POST https://auth.ordercloud.io/oauth/token HTTP/1.1
+POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: text/html; charset=UTF-8
 
 client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=refresh_token&refresh_token=xxxxxxxx-xxxxxxxx-xxxx-xxxxxxx&scope=Shopper
@@ -150,7 +153,7 @@ A successful authentication request with this workflow requires the following in
 - Grant Type (set to `password`)
 
 ```http
-POST https://auth.ordercloud.io/oauth/token HTTP/1.1
+POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: text/html; charset=UTF-8
 
 client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=client_credentials&client_secret=xxxxxxxxxxxxx&scope=Shopper
@@ -234,7 +237,7 @@ For example:
 ```http
 GET https://api.ordercloud.io/v1/buyers HTTP/1.1
 
-Authentication: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
+Authorization: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
 Content-Type: application/json; charset=UTF-8
 ```
 

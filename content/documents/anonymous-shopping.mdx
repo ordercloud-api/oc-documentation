@@ -24,18 +24,20 @@ Now, scroll down to the bottom of the detail for that API Client until you get t
 
 ![Default Context User](/images/knowledge-base/inline/anonymous-shopping/default_context_user.png)
 
+Finally, scroll down a bit further and make sure "Anonymous Buyer Enabled?" is toggled on.
+
 ## Authenticating Anonymous Users
 
 Once your application is set up with a template user, we're ready to authenticate anonymously. Using the Client Credentials grant-type and only a client_id, make a request to the OrderCloud OAuth server:
 
 ```http
-POST https://auth.ordercloud.io/oauth/token HTTP/1.1
+POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
 client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&scope=ProductReader CategoryReader MeAddressAdmin MeCreditCardAdmin&grant_type=client_credentials
 ```
 
 You will receive a standard OAuth response that contains an access_token you can use for the duration of the anonymous shopping experience.
 
-> Note: Anonymous access_tokens have a fixed duration of 1 week, access token duration set on the API Client has no affect on anonymous users. Refresh tokens are not available to anonymous users.
+> Note: Anonymous access_tokens have a fixed duration of 1 week, access token duration set on the API Client has no effect on anonymous users. Refresh tokens are not available to anonymous users.
 
 It is important to note that while it is possible to fully submit an order using this token, there isn't a secure way to let the anonymous user view historical order data. If this is required for your project, you should consider profiling your users at some point before submitting an order.
 
@@ -49,7 +51,7 @@ API Reference: <Link to="/api-reference/me-and-my-stuff/me/register">Register an
 
 ```http
 POST https://api.ordercloud.io/v1/me/register?anonUserToken=eyJ0eXAi0iJKV1QiLCJhbGci0iJ9... HTTP/1.1
-Authentication: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
+Authorization: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
 Content-Type: application/json
 
 {

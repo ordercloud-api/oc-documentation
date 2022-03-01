@@ -59,14 +59,21 @@ export default function Template(props: DiscoverTemplateProps) {
   return (
     <Layout location={props.location}>
       <Helmet
-        title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`}
+        title={`${doc.mdx.frontmatter.title} | Sitecore OrderCloud`}
         meta={[
           {
             name: 'description',
             content: doc.mdx.frontmatter.description,
           },
         ]}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <LayoutContainer>
         <LayoutMain>
           <Hidden mdDown>
@@ -76,7 +83,9 @@ export default function Template(props: DiscoverTemplateProps) {
             </Breadcrumbs>
           </Hidden>
           <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
-          <MDXRenderer>{doc.mdx.body}</MDXRenderer>
+          <div id="RENDER_BOX">
+            <MDXRenderer>{doc.mdx.body}</MDXRenderer>
+          </div>
           <DiscoverFooter contents={articles} currentGuide={absolutePath} />
         </LayoutMain>
         <LayoutMenu>

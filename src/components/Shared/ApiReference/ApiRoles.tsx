@@ -38,13 +38,7 @@ const ApiRoles: React.FunctionComponent<ApiRolesProps> = (
       </Typography>
       <div className={classes.rolesList}>
         {roles.map(role => (
-          <Chip
-            className={classes.role}
-            key={role}
-            color="secondary"
-            variant="outlined"
-            label={role}
-          ></Chip>
+          <Chip className={classes.role} key={role} label={role}></Chip>
         ))}
       </div>
     </React.Fragment>

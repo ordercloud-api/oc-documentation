@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
       }
       return {
         width: 500,
-        height: 500,
+        height: 415,
         transformOrigin: 'top right',
         ...(props.noPopper ? noPopperStyles : {}),
       }

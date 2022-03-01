@@ -17,6 +17,7 @@ import Layout from '../Layout/Layout'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
+import RSSFeedLink from '../Shared/RSSFeedLink'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -121,13 +122,22 @@ function PortalReleaseNotesComponent(props: any) {
     <Layout location={location}>
       <Helmet
         title={`OrderCloud Portal Release Notes - ${release.frontmatter.apiVersion}`}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <LayoutContainer>
         <LayoutMain>
           <Typography variant="h1">
             Portal v{release.frontmatter.apiVersion} Release Notes
           </Typography>
-          <MDXRenderer>{release.body}</MDXRenderer>
+          <div id="RENDER_BOX">
+            <MDXRenderer>{release.body}</MDXRenderer>
+          </div>
         </LayoutMain>
         <LayoutMenu>
           {years.map(y => (
@@ -196,6 +206,7 @@ function PortalReleaseNotesComponent(props: any) {
               </Collapse>
             </React.Fragment>
           ))}
+          <RSSFeedLink to="/rss/portal-release-notes.xml" />
         </LayoutMenu>
       </LayoutContainer>
     </Layout>

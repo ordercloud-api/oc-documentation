@@ -10,7 +10,7 @@ In this chapter we've investigated your default buyer catalog and created a new 
 ## Connecting the dots
 To make the product visible in our example we must assign it directly to the default buyer catalog. This is called a product-catalog assignment. 
 
-In other scenarios this assignment is created automatically when you assign products to a category within a catalog, similar to when you update a buyer organizations `DefaultCatalogID` and OrderCloud creates the buyer-catalog assignment for you.
+In other scenarios this assignment is created automatically when you assign products to a category within a catalog, similar to when you update a buyer organization's `DefaultCatalogID` and OrderCloud creates the buyer-catalog assignment for you.
 
 <ContentLink to="/knowledge-base/product-visibility" subtitle="Further Reading">Product Visibility</ContentLink>
 
@@ -19,12 +19,12 @@ For this reason many developers overlook the fact that they need to explicitly a
 <CodeExample
   title="Assign the product to the default catalog"
   content={{
-    http: `PUT https://sandboxapi.ordercloud.io/v1/catalogs/productassignments HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+    http: `POST https://sandboxapi.ordercloud.io/v1/catalogs/productassignments HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    CatalogID: "BUYER_ORGANIZATION",
-    ProductID: "SHIRT"
+    "CatalogID": "BUYER_ORGANIZATION",
+    "ProductID": "SHIRT"
 }`,
 javascript: `import { Catalogs } from "ordercloud-javascript-sdk";\n
 Catalogs.SaveProductAssignment({

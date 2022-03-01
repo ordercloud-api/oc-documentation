@@ -14,18 +14,18 @@ Let's go ahead and use the shorthand method of completing an order using the ID 
 <CodeExample
   title="Complete an order"
   content={{
-    http: `GET https://sandboxapi.ordercloud.io/v1/orders/incoming/myorderID/complete HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+    http: `POST https://sandboxapi.ordercloud.io/v1/orders/incoming/myorderID/complete HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;`,
 javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
-Orders.Complete("Incoming", "INSERT_ORDER_ID_HERE")
+Orders.Complete("Incoming", "INSERT_ORDER_ID_HERE", {})
 .then(response => {
     // returns the completed order
     console.log(response);
 })
 .catch(err => console.log(err));`,
 typescript: `import { Orders, Order, OrderCloudError } from "ordercloud-javascript-sdk";\n
-Orders.Complete("Incoming", "INSERT_ORDER_ID_HERE")
+Orders.Complete("Incoming", "INSERT_ORDER_ID_HERE", {})
   .then((response: Order) => {
       // returns the completed order
       console.log(response);
@@ -34,7 +34,7 @@ Orders.Complete("Incoming", "INSERT_ORDER_ID_HERE")
 csharp: `using OrderCloud.SDK;\n
 var client = new OrderCloudClient(...);\n
 try {
-    Order response = await client.Orders.CompleteAsync("Incoming", "INSERT_ORDER_ID_HERE")
+    Order response = await client.Orders.CompleteAsync("Incoming", "INSERT_ORDER_ID_HERE", new Shipment())
 } catch(OrderCloudException ex) {
     Console.WriteLine(ex.Message);
 }`

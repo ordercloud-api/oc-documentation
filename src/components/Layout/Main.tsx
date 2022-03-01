@@ -23,6 +23,7 @@ import {
   BookmarkTwoTone,
   BuildTwoTone,
   BusinessTwoTone,
+  CallMade,
   CategoryTwoTone,
   Code,
   CodeOutlined,
@@ -40,8 +41,13 @@ import {
 import { Link } from 'gatsby'
 import Prism from 'prismjs'
 import React, { useLayoutEffect } from 'react'
-import { darkgrey, flame, sherpablue } from '../../theme/ocPalette.constants'
+import {
+  darkgrey,
+  sherpablue,
+  sizzlingred,
+} from '../../theme/ocPalette.constants'
 import themeConstants from '../../theme/theme.constants'
+import ButtonLink from '../Shared/ButtonLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
 import Jumbotron from '../Shared/Jumbotron'
 import ListItemLink from '../Shared/ListItemLink'
@@ -63,9 +69,6 @@ const useStyles = makeStyles((theme: Theme) =>
       right: theme.spacing(4),
       top: theme.spacing(3),
     },
-    spacer: {
-      width: theme.spacing(1),
-    },
     root: {
       minHeight: `calc(100vh - ${navHeightMobile + 409}px)`,
       [theme.breakpoints.up('md')]: {
@@ -77,7 +80,17 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     buttonBase: {
+      transition: 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
       borderRadius: theme.shape.borderRadius,
+      '&:hover': {
+        textDecoration: 'none',
+        transform: 'translateY(-3px)',
+      },
+    },
+    buttonEndArrowIcon: {
+      fontSize: '1rem !important',
+      fill: sizzlingred[300],
+      transform: 'rotate(45deg)', // <CallMade/> icon most accurately matches Sitecore guidelines; however, it needs to be rotated.
     },
     paperCard: {
       position: 'relative',
@@ -91,7 +104,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paperTitleHeading: {
       padding: theme.spacing(0, 0, 1),
-      color: sherpablue[500],
       fontWeight: 700,
       textAlign: 'left',
       minHeight: '2.5rem',
@@ -118,8 +130,10 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: '-5rem',
       },
     },
-    orangeTitle: {
-      color: flame[500],
+    List: {
+      '& .MuiButtonBase-root': {
+        textDecortation: 'none',
+      },
     },
   })
 )
@@ -134,32 +148,25 @@ const MainComponent: React.FunctionComponent = props => {
   return (
     <React.Fragment>
       <Jumbotron
-        image={{
-          src: '/images/logos_horizontal_desktop.png',
-          alt: 'homepage background',
-        }}
+        // image={{
+        //   src: '/images/logos_horizontal_desktop.png',
+        //   alt: 'homepage background',
+        // }}
         overlayed={true}
-        heading="Four51 to be Acquired by Sitecore"
-        text={["Deal means we’ll be joining forces with the digital experience leader.", <br/>, <br/>, "With Four51 OrderCloud, design your own marketplace with an API-first, headless cloud platform for B2B, B2C, and B2X. We power custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually."]}
+        heading="Sitecore OrderCloud"
+        text={[
+          'With Sitecore OrderCloud®, design your own commerce solution with an API-first, headless cloud platform for B2B, B2C, and B2X. OrderCloud powers custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually.',
+        ]}
         actions={[
-          <Button
-            key="knowledge"
-            href="https://www.four51.io/sitecore-acquires-boxever-and-four51"
-            variant="contained"
-            target="new"
-            style={{backgroundColor: '#fff'}}
-          >
-            Press Release
-          </Button>,
-          <CustomButtonLink
+          <ButtonLink
             key="developers"
             to="/learn/getting-started/welcome-to-ordercloud"
             variant="contained"
-            color={flame[600]}
+            size="large"
+            color="secondary"
           >
             Developer Guide
-          </CustomButtonLink>,
-          
+          </ButtonLink>,
         ]}
       />
       <Hidden smUp>
@@ -267,14 +274,19 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <CustomButtonLink
+                <ButtonLink
                   fullWidth
-                  color={themeConstants.palette.secondary.main}
                   to="/discover/define-your-marketplace"
-                  variant="outlined"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
                 >
                   Read More
-                </CustomButtonLink>
+                </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
@@ -327,14 +339,19 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <CustomButtonLink
+                <ButtonLink
                   fullWidth
-                  color={themeConstants.palette.secondary.main}
                   to="/discover/define-your-marketplace"
-                  variant="outlined"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
                 >
                   Read More
-                </CustomButtonLink>
+                </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
@@ -387,14 +404,19 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <CustomButtonLink
+                <ButtonLink
                   fullWidth
-                  color={themeConstants.palette.secondary.main}
                   to="/discover/personalized-shopping"
-                  variant="outlined"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
                 >
                   Read More
-                </CustomButtonLink>
+                </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
@@ -447,14 +469,19 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <CustomButtonLink
+                <ButtonLink
                   fullWidth
-                  color={themeConstants.palette.secondary.main}
                   to="/discover/flexible-fulfillment"
-                  variant="outlined"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
                 >
                   Read More
-                </CustomButtonLink>
+                </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
@@ -464,17 +491,17 @@ const MainComponent: React.FunctionComponent = props => {
         <Box paddingY={3} paddingX={20}>
           <Divider />
         </Box>
-        <Typography variant="h1" align="center" color="secondary">
+        <Typography variant="h1" align="center">
           Future-Proof with Headless Architecture
         </Typography>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>
-            <Typography variant="h3" className={classes.orangeTitle}>
+            <Typography variant="h3">
               Our RESTful API was built
               <br />
               by developers, for developers.
             </Typography>
-            <Typography variant="h5">
+            <Typography variant="h5" color="textSecondary">
               OrderCloud’s proven architecture has enabled developers from
               around the world to bring powerful B2B applications to life. We
               aim to provide unmatched interopability by using standardized W3C
@@ -485,22 +512,29 @@ const MainComponent: React.FunctionComponent = props => {
               flexDirection="row"
               flexWrap="noWrap"
               marginTop={3}
+              style={{ gap: 16 }}
             >
               <CustomButtonLink
                 color={themeConstants.palette.secondary.main}
                 to="/learn/ordercloud-basics/architecture"
-                variant="outlined"
+                variant="contained"
+                size="large"
               >
                 Learn the Basics
               </CustomButtonLink>
-              <div className={classes.spacer} />
-              <CustomButtonLink
+              <ButtonLink
                 to="/learn/getting-started/welcome-to-ordercloud"
-                variant="contained"
-                color={flame[600]}
+                size="large"
+                endIcon={
+                  <CallMade
+                    fontSize="small"
+                    aria-hidden="true"
+                    className={classes.buttonEndArrowIcon}
+                  />
+                }
               >
                 Start Coding
-              </CustomButtonLink>
+              </ButtonLink>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -538,16 +572,12 @@ await Orders.Submit("Outgoing", order.ID);`}
             </Paper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Typography
-              variant="h3"
-              align="right"
-              className={classes.orangeTitle}
-            >
+            <Typography variant="h3" align="right">
               Open-source resources for developing
               <br />
               progressive web applications.
             </Typography>
-            <Typography variant="h5" align="right">
+            <Typography variant="h5" align="right" color="textSecondary">
               A headless architecture allows solution creators to choose the
               development stack that works best for their workflow. Our
               knowledge base and growing library of developer tools make
@@ -559,22 +589,29 @@ await Orders.Submit("Outgoing", order.ID);`}
               flexWrap="noWrap"
               justifyContent="flex-end"
               marginTop={3}
+              style={{ gap: 16 }}
             >
               <CustomButtonLink
-                color={flame[500]}
-                to="/knowledge-base"
-                variant="contained"
-              >
-                Knowledge Base
-              </CustomButtonLink>
-              <div className={classes.spacer} />
-              <CustomButtonLink
                 to="/developer-tools"
-                variant="outlined"
+                variant="contained"
+                size="large"
                 color={themeConstants.palette.secondary.main}
               >
                 Developer Tools
               </CustomButtonLink>
+              <ButtonLink
+                to="/knowledge-base"
+                size="large"
+                endIcon={
+                  <CallMade
+                    fontSize="small"
+                    aria-hidden="true"
+                    className={classes.buttonEndArrowIcon}
+                  />
+                }
+              >
+                Knowledge Base
+              </ButtonLink>
             </Box>
           </Grid>
         </Grid>
@@ -591,7 +628,13 @@ await Orders.Submit("Outgoing", order.ID);`}
         >
           Create Your Free Account Today!
         </Typography>
-        <Typography variant="h5" paragraph component="p" align="center">
+        <Typography
+          variant="h5"
+          paragraph
+          component="p"
+          align="center"
+          color="textSecondary"
+        >
           OrderCloud provides a sandbox environment so you can start coding
           without payment right now.
         </Typography>
@@ -602,18 +645,24 @@ await Orders.Submit("Outgoing", order.ID);`}
           alignItems="center"
           justifyContent="center"
           paddingBottom={8}
+          style={{ gap: 16 }}
         >
           <Button
             onClick={() => navigate('/register')}
-            color="primary"
+            color="secondary"
             variant="contained"
+            size="large"
           >
             Sign Up
           </Button>
-          <div className={classes.spacer} />
-          <CustomButtonLink to="/slack" variant="contained" color={flame[500]}>
+          <ButtonLink
+            to="/slack"
+            size="large"
+            color="secondary"
+            variant="outlined"
+          >
             Join Our Slack
-          </CustomButtonLink>
+          </ButtonLink>
         </Box>
       </Container>
     </React.Fragment>

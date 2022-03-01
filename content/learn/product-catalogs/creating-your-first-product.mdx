@@ -16,7 +16,7 @@ OrderCloud separates products from price to allow the same product to be sold ac
 For simpler solutions, you can tie a product directly to a price schedule using the `DefaultPriceSchedule` property. Products with a `DefaultPriceSchedule` circumvent the need to create any product assignments between the buyers that access the product through a catalog with `ViewAllProducts` set to `true`. You can still create more specific product assignments if you wish to override the default price for a certain buyer party.
 
 ## Creating the Product
-For our streamlined example we would like to create a purshase-able product in the easiest way possible. That means we will want to take advantage of the `DefaultPriceSchedule` field.
+For our streamlined example we would like to create a purchase-able product in the easiest way possible. This means we will want to take advantage of the `DefaultPriceSchedule` field.
 
 First, let's create the product. Since we don't have a price schedule yet, we'll leave that field out for now.
 
@@ -24,13 +24,13 @@ First, let's create the product. Since we don't have a price schedule yet, we'll
   title="Create a new product"
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/products HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    ID: "SHIRT",
-    Name: "Cotton T-Shirt",
-    Description: "A plain white, cotton shirt for everyday use.",
-    Active: true
+    "ID": "SHIRT",
+    "Name": "Cotton T-Shirt",
+    "Description": "A plain white, cotton shirt for everyday use.",
+    "Active": true
 }`,
 javascript: `import { Products } from "ordercloud-javascript-sdk";\n
 Products.Create({
@@ -94,6 +94,7 @@ Your response should look something like this:
 	"ShipFromAddressID": null,
 	"Inventory": null,
 	"DefaultSupplierID": null,
+	"AllSuppliersCanSell": false,
 	"xp": null
 }
 ```
@@ -101,7 +102,7 @@ Your response should look something like this:
 OrderCloud has taken care of defaulting certain non-nullable values:
 
 - **`OwnerID`** - The organization that owns this product (our seller organization ID)
-- **`QuantityMultipliier`** - This field does not affect any functionality. If we were selling a pack of 5 shirts, we may change this value to 5 to indicate that in the user experience.
+- **`QuantityMultiplier`** - This field does not affect any functionality. If we were selling a pack of 5 shirts, we may change this value to 5 to indicate that in the user experience.
 - **`AutoForward`** - This field is relevant to solutions that take advantage of suppliers, no need to worry about it now.
 
 In a real solution you would likely include things like inventory, shipping measurements, and ship-from address (for estimating shipping cost), but we are not going to be creating any integrations for this example so we left them blank.
@@ -121,15 +122,15 @@ Their most basic form consists of an ID, Name, and one or more price breaks. Pri
   title="Create a new price schedule"
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/priceschedules HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    ID: "SHIRT_PRICE",
-    Name: "Cotton T-Shirt Price",
-    PriceBreaks: [
+    "ID": "SHIRT_PRICE",
+    "Name": "Cotton T-Shirt Price",
+    "PriceBreaks": [
         {
-            Quantity: 1,
-            Price: 10
+            "Quantity": 1,
+            "Price": 10
         }
     ]
 }`,
@@ -190,10 +191,10 @@ try {
   title="Update the default price schedule ID"
   content={{
     http: `PATCH https://sandboxapi.ordercloud.io/v1/products/SHIRT HTTP/1.1
-Authentication: Bearer INSERT_ACCESS_TOKEN_HERE
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
 Content-Type: application/json; charset=UTF-8;\n
 {
-    DefaultPriceScheduleID: "SHIRT_PRICE"
+    "DefaultPriceScheduleID": "SHIRT_PRICE"
 }`,
 javascript: `import { Products } from "ordercloud-javascript-sdk";\n
 Products.Patch("SHIRT", {

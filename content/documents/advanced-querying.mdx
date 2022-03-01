@@ -3,9 +3,8 @@ type:           article
 title:          Advanced Querying
 description:    Most OrderCloud resources have list endpoints that can return thousands, even hundreds of thousands of items. We understand that effectively querying this data is not only practical but necessary and have built an assortment of API tools to help pinpoint and extract the exact data you and your users need.
 author:         tmenier
-priority:       5
 publishDate:    2016-11-24
-updatedDate:
+updatedDate:    2021-09-23
 tags:           ["Products", "Users", "Orders", "Search" ]
 ---
 
@@ -172,3 +171,5 @@ When it's necessary to paginate through many items (generally anything > page 30
 2. Keep track of the `ID` of the last item returned in the list
 3. In subsequent calls, always request `page=1&pageSize=100&sortBy=ID&ID=>{lastID}`
 4. Stop paginating when the query returns an empty `Items` array
+
+*Important note*: For resources using premium search (products, and soon orders), this method yields unexpected results if you store IDs as different number types. For example `82020` and `85919200509` cannot be accurately compared and sorted because the first ID is identified as an integer and the second as a long. To work around this limitation you could store IDs with leading `0`s so they are all identified as the same type. So instead of `82020`, you would set the ID to `00000082020`.

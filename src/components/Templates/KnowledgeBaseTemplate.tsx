@@ -81,6 +81,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     renderBox: {
       paddingBottom: theme.spacing(20),
+      '& a': {
+        color: theme.palette.secondary[500],
+      },
     },
     backButton: {
       float: 'right',
@@ -144,14 +147,21 @@ export default function KnowledgeBaseTemplate(
   return (
     <Layout location={props.location}>
       <Helmet
-        title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`}
+        title={`${doc.mdx.frontmatter.title} | Sitecore OrderCloud`}
         meta={[
           {
             name: 'description',
             content: doc.mdx.frontmatter.description,
           },
         ]}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <LayoutContainer>
         <LayoutMain>
           <IconButtonLink
@@ -182,16 +192,21 @@ export default function KnowledgeBaseTemplate(
             <div style={{ paddingLeft: 8 }}>
               <Typography color="textSecondary">
                 {`${
-                  doc.mdx.frontmatter.updatedDate ? 'Updated' : 'Published'
+                  doc.mdx.frontmatter.updatedDate !==
+                  doc.mdx.frontmatter.publishDate
+                    ? 'Updated'
+                    : 'Published'
                 } by ${doc.mdx.frontmatter.author.name}`}
               </Typography>
               <Typography color="textSecondary">
-                {doc.mdx.frontmatter.updatedDate ||
-                  doc.mdx.frontmatter.publishDate}
+                {doc.mdx.frontmatter.updatedDate !==
+                doc.mdx.frontmatter.publishDate
+                  ? doc.mdx.frontmatter.updatedDate
+                  : doc.mdx.frontmatter.publishDate}
               </Typography>
             </div>
           </Box>
-          <div className={classes.renderBox}>
+          <div id="RENDER_BOX" className={classes.renderBox}>
             <MDXRenderer>{doc.mdx.body}</MDXRenderer>
           </div>
         </LayoutMain>

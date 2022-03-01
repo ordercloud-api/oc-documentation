@@ -36,7 +36,7 @@ For organizations that differentiate with a unique value proposition to individu
 - Manage multiple suppliers, automatically forwarding orders for fulfillment
 - Setup personalized pricing depending on the buyer or user group that is ordering
 - Extensible payment options for credit cards, purchasing accounts, or B2B credit services
-- Optionally extend into B2C on the same organization setup
+- Optionally extend into B2C on the same marketplace setup
 
 ### Retail / Franchise
 While targeting consumers with traditional, B2C shopping experiences is expected, managing the needs of complex retail and franchise operations can require a solution more akin to OrderCloud.  Many of our customers first tried a simplified, B2C platform and found it difficult to customize their needs for centralized control over all their store operations, requiring customized portals and fully extensible business logic that OrderCloud offers.
@@ -65,7 +65,7 @@ While there may be different motivations for going direct to consumers, dependin
 - Established additional portals to automate operations and reduce costs
 
 ### Combining Strategies with OrderCloud
-Flexibility is a clear advantage with OrderCloud, and there’s nothing to stop you from starting with one market strategy and pivoting to another within the same ‘instance’ of OrderCloud for your organization.  Let's walk through the example of a B2B company opening up to other resellers or direct to consumers.
+Flexibility is a clear advantage with OrderCloud, and there’s nothing to stop you from starting with one market strategy and pivoting to another within the same ‘instance’ of OrderCloud for your marketplace.  Let's walk through the example of a B2B company opening up to other resellers or direct to consumers.
 
 ![Diagram of B2B vs. B2C Relationships](/images/discover/792_oc_define_marketplace-5.png)
 
@@ -180,7 +180,7 @@ OrderCloud is highly extensible.  The table below describes high-level concepts 
 Most all of OrderCloud’s APIs allow you to query by any segmentation or persona property you assign.  This handles use cases such as finding all buyers tied to a sales region or triggering different content or promotions during shopping depending on properties on the logged-in user and their associated buyer account.
 
 ### CRM Integration
-To mirror the setup of your CRM and sales operations, you can assign any number of customized properties as mentioned before.  An example below might be for a medical manufacturer business running on OrderCloud who wants to tightly manage what products are distributed to what buyer how those buyer accounts are managed.
+To mirror the setup of your CRM and sales operations, you can assign any number of customized properties as mentioned before.  An example below might be for a medical manufacturer business running on OrderCloud who wants to tightly manage what products are distributed to what buyer and how those buyer accounts are managed.
 
 With OrderCloud, you can manage your customers in your CRM system and dynamically load or sync them for use in your omnichannel commerce operations.
 
@@ -250,7 +250,7 @@ These extensible properties are available for you to use in the websites you dev
   description="This example will return all your Buyers who are in your ‘USNW’ sales region"
   content={{
     http: `GET https://sandboxapi.ordercloud.io/buyers?filters=xp.MySalesRegion=USNW HTTP/1.1
-Authentication: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8`,
 javascript: `import { Buyers } from "ordercloud-javascript-sdk";\n
 Buyers.List({ filters: { 'xp.MySalesRegion': 'USNW' } })

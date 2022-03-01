@@ -94,8 +94,8 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
     query {
       allMdx(
         sort: {
-          order: [ASC, DESC]
-          fields: [frontmatter___priority, frontmatter___publishDate]
+          order: [DESC, DESC]
+          fields: [frontmatter___updatedDate, frontmatter___publishDate]
         }
         filter: { fileAbsolutePath: { glob: "**/content/documents/**/*.mdx" } }
       ) {
@@ -156,7 +156,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
   return (
     <Layout location={props.location}>
       <Helmet
-        title={`Knowledge Base | Four51 OrderCloud`}
+        title={`Knowledge Base | Sitecore OrderCloud`}
         meta={[
           {
             name: 'description',
@@ -164,7 +164,14 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
               'A central hub for articles and tutorials on various OrderCloud API resources and topics.',
           },
         ]}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <LayoutContainer>
         <LayoutMain>
           <Hidden mdDown>
@@ -295,7 +302,10 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
                 </Box>
                 <Typography variant="caption" display="block">
                   {`${
-                    node.frontmatter.updatedDate ? 'Updated' : 'Published'
+                    node.frontmatter.updatedDate !==
+                    node.frontmatter.publishDate
+                      ? 'Updated'
+                      : 'Published'
                   } by ${node.frontmatter.author.name} on ${node.frontmatter
                     .updatedDate || node.frontmatter.publishDate}`}
                 </Typography>

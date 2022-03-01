@@ -4,7 +4,7 @@ title:          Introducing Line Item-Level Promotions
 description:    Automatically apply specific promos/discount amounts to specific line items
 author:         tmenier
 publishDate:    2020-05-15
-updatedDate:    
+updatedDate:    2020-05-15    
 tags:           ["Promotions", "Line Items", "Best Practices", "Rules Engine"]
 ---
 
@@ -20,11 +20,11 @@ To remove any ambiguity (a central theme of this feature), you must first declar
 
 ## The Fun Part: Expressions
 
-(If you've gotten this far but didn't follow the link at the beginning of this post, it might be a good time for a [refresher](https://ordercloud.io/guides/rule-based-promotion-expressions) on promo expressions.)
+(If you've gotten this far but didn't follow the link at the beginning of this post, it might be a good time for a [refresher](https://ordercloud.io/knowledge-base/rule-based-promotion-expressions) on promo expressions.)
 
 The existing `items` functions aren't quite enough to determine which item(s) to associate with a promo. Simple example: buy product X and get product Y for free. You can imagine writing your `EligibleExpression` with a pair of `items.any`, and it'll work, but we won't know which of the 2 items to tie the discount to.
 
-Enter the new `item` (singular) token. When used in an `EligibleExpression`, think of it as sort of a selector of the line item(s) that you want the promo applied to. Any property of the full-blown `LineItem` model is valid on `item` in an expression, as is the `incategory` function. In the example above, the `EligibleExpression` would be:
+Enter the new `item` (singular) token. When used in an `EligibleExpression`, think of it as sort of a selector of the line item (or multiple line items) that you want the promo applied to. Any property of the full-blown `LineItem` model is valid on `item` in an expression, as is the `incategory` function. In the example above, the `EligibleExpression` would be:
 
 ```
 item.ProductID = 'Y' and items.any(ProductID = 'X')

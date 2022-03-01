@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core'
 import { OpenInNewOutlined } from '@material-ui/icons'
 import { mediumgrey, sherpablue } from '../../theme/ocPalette.constants'
-import ocOrange from '../../../src/assets/images/four51-logo-geo--full-color-white.svg'
+import footerLogo from '../../assets/svg/Sitecore_logo_RGB_white.svg'
 import { PortalLink } from '../Shared/PortalLink'
 
 const styles = (theme: Theme) =>
@@ -26,9 +26,9 @@ const styles = (theme: Theme) =>
         left: 0,
         right: 0,
       },
-      backgroundColor: sherpablue[500],
+      backgroundColor: '#232323',
       borderTop: '2px solid',
-      borderColor: mediumgrey[100],
+      borderColor: '#232323',
       ...theme.typography.body2,
     },
     inner: {
@@ -54,10 +54,9 @@ const styles = (theme: Theme) =>
       justifySelf: 'flex-start',
     },
     sectionTitle: {
-      textTransform: 'uppercase',
       letterSpacing: theme.spacing(0.2),
-      fontWeight: 600,
-      color: sherpablue[300],
+      fontWeight: 700,
+      color: 'white',
     },
     footerLogo: {
       maxWidth: 50,
@@ -190,7 +189,7 @@ class Footer extends React.Component<any> {
                 </a>
                 <a
                   className={classes.footerLinks}
-                  href="https://twitter.com/Four51ecommerce"
+                  href="https://twitter.com/Sitecore"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -199,9 +198,28 @@ class Footer extends React.Component<any> {
                     <OpenInNewOutlined fontSize="inherit" />
                   </Box>
                 </a>
-                <Link className={classes.footerLinks} to="/blog">
-                  Blog
-                </Link>
+                <a
+                  className={classes.footerLinks}
+                  href="https://www.youtube.com/user/sitecorechannel"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  YouTube
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <a
+                  className={classes.footerLinks}
+                  href="https://www.linkedin.com/company/sitecore/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Linkedin
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
               </Box>
             </Grid>
             <Grid item xs={6} md={3}>
@@ -221,13 +239,13 @@ class Footer extends React.Component<any> {
                 </Link>
                 <Link
                   className={classes.footerLinks}
-                  to="/portal-release-notes/v1.0.52"
+                  to="/portal-release-notes"
                 >
                   Portal Release Notes
                 </Link>
                 <a
                   className={classes.footerLinks}
-                  href="https://four51.io/privacy-policy/"
+                  href="https://www.sitecore.com/trust/privacy-policy"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -238,7 +256,7 @@ class Footer extends React.Component<any> {
                 </a>
                 <a
                   className={classes.footerLinks}
-                  href="https://four51.io/contact-us"
+                  href="https://www.sitecore.com/company/contact-us"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -249,11 +267,11 @@ class Footer extends React.Component<any> {
                 </a>
                 <a
                   className={classes.footerLinks}
-                  href="https://four51.io/"
+                  href="https://www.sitecore.com/products/sitecore-commerce"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Four51
+                  Sitecore
                   <Box marginLeft={0.5} display="flex" alignItems="center">
                     <OpenInNewOutlined fontSize="inherit" />
                   </Box>
@@ -266,10 +284,11 @@ class Footer extends React.Component<any> {
                 alignItems="center"
                 justifyContent="flex-start"
               >
-                <img className={classes.logo} src={ocOrange} alt="OC" />
+                <img className={classes.logo} src={footerLogo} alt="OC" />
               </Box>
               <Typography variant="body2" className={classes.Typography}>
-                © {currentYear} OrderCloud All rights reserved.
+                © Copyright {currentYear}, Sitecore OrderCloud®. All rights
+                reserved.
               </Typography>
             </Grid>
           </Grid>

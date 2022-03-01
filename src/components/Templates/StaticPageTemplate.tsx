@@ -47,17 +47,24 @@ export default function StaticPageTemplate(props: StaticPageTemplateProps) {
   return (
     <Layout location={props.location}>
       <Helmet
-        title={`${doc.mdx.frontmatter.title} | Four51 OrderCloud`}
+        title={`${doc.mdx.frontmatter.title} | Sitecore OrderCloud`}
         meta={[
           {
             name: 'description',
             content: doc.mdx.frontmatter.description,
           },
         ]}
-      />
+      >
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/favicon.ico"
+          sizes="16x16"
+        />
+      </Helmet>
       <Container maxWidth="md">
         <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
-        <div className={classes.renderBox}>
+        <div id="RENDER_BOX" className={classes.renderBox}>
           <MDXRenderer>{doc.mdx.body}</MDXRenderer>
         </div>
       </Container>
