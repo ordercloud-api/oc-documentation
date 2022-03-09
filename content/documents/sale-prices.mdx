@@ -1,0 +1,170 @@
+---
+type:           article
+title:          Sale Prices using Price Schedules
+description:    Overview of new feature to allow sale prices for products. Price schedules can be used to provide sale pricing while optionally using a date/time range to control the application of the sale price.
+author:         sc-roblloyd
+publishDate:    2022-03-03
+updatedDate:    2022-03-03
+tags:           ["Concepts", "Products", "Price Schedules"]
+---
+
+Sale Pricing is new additional functionality added on top of the existing PriceSchedule and PriceBreak. These changes allow for sale prices to be applied, optionally using a set start and end date. 
+
+## Updated Resource: `PriceSchedule`
+
+```json
+"PriceSchedule" : {
+	"OwnerID": "marketplaceownerID",
+	"ID": "priceschedule1",
+	"Name": "Price Schedule One",
+	"ApplyTax": false,
+	"ApplyShipping": false,
+	"MinQuantity": 1,
+	"MaxQuantity": null,
+	"UseCumulativeQuantity": false,
+	"RestrictedQuantity": false,
+	"SaleStart": "2022-03-02T00:00:00.00+00:00", // NEW - optional
+	"SaleEnd": "2022-03-02T00:00:00.00+00:00", // NEW - optional
+	"IsOnSale": true, // NEW - readonly - determined by SaleStart/SaleEnd date OR existance of PriceBreak.SalePrice
+	"PriceBreaks": [
+		{
+			"Quantity": 1,
+			"Price": 20,
+			"SalePrice": 15 // NEW - optional
+		}
+	],
+	"Currency": null,
+	"xp": {}
+}
+```
+If sale pricing is active, that sale price is used to determine the line item unit price.
+
+## New Properties
+
+`PriceSchedule.SaleStart`
+- Used to define the start date to be used for a `PriceBreak.SalePrice` to be active.
+- Optional.
+- Stored date/time will be converted to UTC.
+
+`PriceSchedule.SaleEnd`
+- Used to define the end date to be used for a `PriceBreak.SalePrice` to be active.
+- Optional.
+- Stored date/time will be converted to UTC.
+
+`PriceSchedule.IsOnSale`
+- Readonly boolean that will be set to true if the PriceSchedule has active Sale Pricing.
+- This value is calculated based on if the current date/time is within the `PriceSchedule.SaleStart` and `PriceSchedule.SaleEnd` date/time range and whether a `PriceBreak.SalePrice` exists.
+
+`PriceBreak.SalePrice`
+- Sale Price that will override the `PriceBreak.Price` if the current date/time is within the `PriceSchedule.SaleStart` and `PriceSchedule.SaleEnd` date/time range.
+
+## Current Limitations
+
+At this time, the `PriceSchedule.IsOnSale` property is not searchable or filterable as it is a calculated value.
+
+## Tutorial
+
+Price schedules offer many ways to price your products, please refer to <Link to="knowledge-base/same-product-multiple-price-schedules">Same Product, Multiple Price Schedules</Link> prior to following this tutorial. 
+
+There are multiple ways to provide sale prices to your products with price schedules, lets take a look at an example scenario below.
+
+> Using the examples from <Link to="knowledge-base/same-product-multiple-price-schedules">Same Product, Multiple Price Schedules</Link>, I want to provide a time based sale price to the **"ProductID": "usb-product-id"** product.
+
+After reviewing the considerations below, lets go through the steps of acheiving this!
+
+## Considerations
+
+1. In our example, we will be modifying price schedules that were created in the previous example. If you follow those steps the required products, categories and catalogs have been created successfully, with proper assignments.
+
+## Modify the Price Schedules
+
+From the previous example, we should have two price schedules for the "USB Cord" product.
+
+Lets check to ensure the PriceSchedules exist
+
+Our calls to the OrderCloud API should look like this (If successful, our call should return a `200` response and the PriceSchedule):
+
+<CodeExample
+  title="Verify PriceSchedules exist"
+  content={{
+    http: `GET https://sandboxapi.ordercloud.io/v1/priceschedules/enterprise-priceschedule-id HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`
+}}
+/>
+
+<CodeExample
+  title="Verify PriceSchedules exist"
+  content={{
+    http: `GET https://sandboxapi.ordercloud.io/v1/priceschedules/startup-priceschedule-id HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;`
+}}
+/>
+
+## Add Sale Pricing for each PriceSchedule
+
+Now that we have determined that both the `PriceSchedule`s exist, lets add some sale pricing with some date and time restrictions.
+For this next step, we will assign a `SalePrice`, `SaleStart` and `SaleEnd` values for `enterprise-priceschedule-id`.
+Lets assign a `SalePrice` of **2.99** for a 1 month duration starting from now.
+> Note: Modify the `SaleStart` and `SaleEnd` dates to be valid for your scenario.
+> Note: As `SaleStart` is optional, by not setting a value for `SaleStart` the `SalePrice` would be valid immediately (As long as the `SaleEnd` date is in the future).
+
+<CodeExample
+  content={{
+    http: `PATCH https://sandboxapi.ordercloud.io/v1/priceschedules/enterprise-priceschedule-id HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "SaleStart": "2022-03-03T00:00:00.00+00:00",
+  "SaleEnd": "2022-04-03T00:00:00.00+00:00"
+  "PriceBreaks": [
+    {
+      "Quantity": 1,
+      "Price": 3.99,
+      "SalePrice": 2.99
+    }
+  ]
+}`
+}}
+/>
+
+For this next step, lets assign a `SalePrice` and `SaleStart` and `SaleEnd` values for `startup-priceschedule-id`.
+Lets assign a `SalePrice` of **4.99** for a 1 month duration starting from next month.
+**Note:** Modify the `SaleStart` and `SaleEnd` dates to be valid for your scenario.
+
+<CodeExample
+  content={{
+    http: `PATCH https://sandboxapi.ordercloud.io/v1/priceschedules/startup-priceschedule-id HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "SaleStart": "2022-04-03T00:00:00.00+00:00",
+  "SaleEnd": "2022-05-03T00:00:00.00+00:00"
+  "PriceBreaks": [
+    {
+      "Quantity": 1,
+      "Price": 5.99,
+      "SalePrice": 4.99
+    }
+  ]
+}`
+}}
+/>
+
+## Verify Valid Pricing
+
+Now lets verify that we have successfully created two different price schedules with `SalePrice`s and our product: USB Cord.
+The next steps require that you authenticate as specific users.  To check the contents of your authentication token, visit [JWT.io](https://jwt.io).
+
+Lets verify the sale price gets returned.
+In the context of Jane Doe from CloudTech, call `GET https://sandboxapi.ordercloud.io/v1/me/products/usb-product-id`, you should see the USB Cord product returned at the sale price of `"Price": 2.99`.
+
+Lets verify that the product is not on sale
+In the context of John Deer from ComputerDudes, call `GET https://sandboxapi.ordercloud.io/v1/me/products/usb-product-id`, you should see the same product returned at a _different_ price of `"Price": 5.99`.
+
+
+## Conclusion
+
+Congratulations!  You now have the knowledge and background to make informed decisions about how to structure your Product -- multiple Price Schedule -- Sale Pricing, and how to make those assignments via the OrderCloud API.
+
