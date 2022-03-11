@@ -23,6 +23,8 @@ OrderCloud uses OAuth 2.0 for token-based authentication. This means that each A
 
 In the example below we are retrieving, and in some examples also storing an access token using the ID of the API Client we created in the last guide. Notice that we are also requesting a certain "scope" or list of OrderCloud API roles that we think the user should have access to.
 
+Note: If a ClientSecret is defined on the API Client, it will be required for all OAuth workflows
+
 <CodeExample
   title="Password Grant-Type Workflow"
   content={{

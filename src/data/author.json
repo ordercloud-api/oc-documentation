@@ -33,5 +33,25 @@
         "id": "oheywood",
         "name": "Oliver Heywood",
         "title": "Senior Developer"
+    },
+    {
+        "id": "awilson",
+        "name": "Ashley Wilson",
+        "title": "Product Manager"
+    },
+    {
+        "id": "asutherland",
+        "name": "Andrew Sutherland",
+        "title": "Partner Technical Advisor"
+    },
+    {
+        "id": "dsteinmetz",
+        "name": "DJ Steinmetz",
+        "title": "Senior Developer"
+    },
+    {
+        "id": "sc-roblloyd",
+        "name": "Rob Lloyd",
+        "title": "Senior Developer"
     }
 ]

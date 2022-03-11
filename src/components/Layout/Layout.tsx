@@ -21,7 +21,7 @@ import { Link } from 'gatsby'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import { Provider } from 'react-redux'
-import { seafoam } from '../../theme/ocPalette.constants'
+import { seafoam, mediumgrey } from '../../theme/ocPalette.constants'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import AlertContainer from '../Shared/Alert'
 import CodeExample, { codeExampleStore } from '../Shared/CodeExample'
@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       '& img': {
         maxWidth: '100%',
+        border: `1px solid ${mediumgrey[100]}`,
       },
     },
     body: {
@@ -81,6 +82,8 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
 )
 
 export const LayoutLink = (props: any) => {
+  const handleCopyClick = () => navigator.clipboard.writeText(`${window.location}`)
+
   const classes = layoutLinkStyles({})
   if (!props.href) {
     console.error(
@@ -91,7 +94,7 @@ export const LayoutLink = (props: any) => {
   }
   if (props.className === 'anchor' || props.href.indexOf('#') === 0) {
     return (
-      <div className={classes.root}>
+      <div className={classes.root} onClick={handleCopyClick}>
         <IconButtonLink {...props} to={props.href}>
           <LinkIcon />
         </IconButtonLink>
