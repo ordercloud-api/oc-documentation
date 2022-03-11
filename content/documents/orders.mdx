@@ -51,14 +51,15 @@ Throughout a workflow an order undergoes various status changes:
 
 We've made it easy for you by tracking these changes as well as the time the status changes. A status is often time changed by the API automatically under certain conditions (e.g. all the quantities on all the lines are shipped so the platform changes the order status to 'Complete')
 
-## Abandoned Order Cleanup Policy
-As a means of ensuring top notch performance, the platform has some policies around automatically cleaning up any unsubmitted orders that have been inactive for some period. The length of time that an order remains in existence depends on several parameters outlined below which are fixed across the platform and not configurable per customer.
+## Unsubmitted Order Cleanup
+As a means of ensuring top notch performance, OrderCloud routinely removes unsubmitted orders based on a combination of factors that are outlined below. This policy does not apply to orders that have been submitted.
 
-| User Type             | Has Line Items? | Valid for |
-|-----------------------|-----------------|-----------|
-| Anonymous OR Profiled | No              | 24 hours  |
-| Anonymous             | Yes             | 7 days    |
-| Profiled              | Yes             | 90 days   |
+| User Type             | Has Line Items? | Retention Policy              |
+|-----------------------|-----------------|-------------------------------|
+| All                   | No              | 24 hours                      |
+| Anonymous             | Yes             | 7 days                        |
+| Profiled              | Yes             | 90 days from LastUpdated date |  
+
 
 ## Interactions with other resources
 
