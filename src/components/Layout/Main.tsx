@@ -504,8 +504,8 @@ const MainComponent: React.FunctionComponent = props => {
             <Typography variant="h5" color="textSecondary">
               OrderCloud’s proven architecture has enabled developers from
               around the world to bring powerful B2B applications to life. We
-              aim to provide unmatched interopability by using standardized W3C
-              web standards, extensible data models, and rich feature-sets.
+              aim to provide unmatched interoperability by using standardized
+              W3C web standards, extensible data models, and rich feature-sets.
             </Typography>
             <Box
               display="flex"
