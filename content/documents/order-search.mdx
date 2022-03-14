@@ -1,0 +1,53 @@
+---
+type:           article
+title:          Premium Search for Orders
+description:    Signifcant enhancements to querying orders and line items.
+author:         tmenier
+publishDate:    2022-03-05
+updatedDate:    2022-03-05
+tags:           ["Orders", "Line Items", "Search"]
+---
+
+Many of the the Elasticsearch-backed capabilities currently [available](https://ordercloud.io/knowledge-base/introducing-premium-search) only for products are now being rolled out for orders. Here are the details of these new capabilities.
+
+## Better search and filtering for existing orders endpoint
+
+With premium search, the existing `GET v1/orders/{direction}` endpoint will be enhanced with the following capabilities:
+
+- "Fuzzy" natural-language search on fields like `Order.Comments`, along with intelligent ranking of search results based on relevance.
+- Support for filtering on line item-level properties, even nested ones, e.g. `GET v1/orders/incoming?LineItems.Product.Name=xyz`
+- Support for filtering on any other nested fields, e.g. `BillingAddress.City=Chicago`.
+- Support for field-level "OR" filters, e.g. `Name|ID=xyz`.
+- Support for [the `searchType` parameter](https://ordercloud.io/knowledge-base/new-for-premium-search#new-searchtype-parameter) currenly only available for products.
+- All xp fields are searchable and filter-able automatically; there's no need to define xp indexes.
+- Improved performance, especially in more complex scenarios involving xp filters, etc.
+
+## Query line items across orders
+
+Until now, line items could only be queried for a single order using the endpoint `v1/orders/{direction}/{id}/lineitems`. This can be limitting in scenarios such as pulling sales numbers for a given product. Querying line items across orders is now possible via the new endpoint `v1/lineitems/{direction}`. In addition to filtering on line item fields (top-level or nested), you can also filter on order-level fields by using the `Order` prefix:
+
+`GET v1/lineitems/incoming?Product.ID=xyz&Order.DateSubmitted>1/1/2022`
+
+Along with the usual `LineItem` fields returned in the order-specific endpoint, queries across orders will include an `OrderID` field. 
+
+## Some limitations and gotchas
+
+Like with most good things in life, the new capabilities come with a few notable strings attached.
+
+1. The new functionality is available for submitted orders only. (Note that orders awaiting approval are not considered submitted.) A direct consequence of this is that it is no longer possible to query submitted and unsubmitted orders in the same call. Submitted is the default unless any of the following filters is used: `IsSubmitted=True`, `Status=Unsubmitted`, or `Status=AwaitingApproval`.
+
+2. Since search now follows a natural-language paradigm, expected results could differ slightly from the exact character sequence matching that you get today if you "search" orders. You should be able to mimic today's behavior by using filters with wildcards, although as always we recommend against filter patterns that _start_ with a wildcard, as these do not tend to perform well with larger data sets.
+
+3. Like with products, you need to be aware that lists of submitted orders will be served from a cache that is not guaranteed to be up-to-the-moment current with changes you make. Changes to submitted orders should normally take between a few seconds and a few minutes to be reflected in search/list results.
+
+4. Also like with products, you'll need to be careful about keeping your xp schemas consistent. Introducing new xp fields shouldn't cause problems, but changing the data type of existing fields might. If the underlying Elasticsearch index cannot coerce values into types already inferred on previous orders, it may reject the entire order from being indexed.
+
+5. Sorting line items across orders currently requires the sort-by list to start with an order-level field. So, `sortBy=Product.ID` is not allowed across orders; `sortBy=Order.DateSubmitted,Product.ID` is allowed.
+
+6. Although you can filter line items across orders by both order-level and item-level fields, you cannot include both in an "OR" expression. For example, `ShippingAddress.City|Order.BillingAddress.City=Chicago` is not allowed.
+
+## How do I test this?
+
+We're rolling this out on a marketplace-by-martetplace basis, similar to how we [rolled out premium search for products](https://ordercloud.io/knowledge-base/introducing-premium-search), if you've been with us that long. This will allow you to test for breaking changes in a non-production environment before going live. But unlike with products, where most customers tested in our [sandbox environment](https://ordercloud.io/knowledge-base/ordercloud-environments#sandbox), we highly recommend [**staging**](https://ordercloud.io/knowledge-base/ordercloud-environments#staging) to test orders. Why? Becasue every week your production data is restored to this environment. Although many customers have processes for sync'ing their product catalogs to their sandbox environments, few do the same with orders and therefore do not have realistic order data to test against.
+
+To request enabling order search for any environment (production or otherwise), please reach out to your OrderCloud support contact.
