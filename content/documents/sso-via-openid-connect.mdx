@@ -154,11 +154,11 @@ Using the token response from your IDP, you can decode the token and use the dat
 ```
 
 **`/syncuser`** (Optional)
-Called after a user enters their credentials in the IDP on subseuqnt attempts to access your application after having done so successfully at least once. This endpoint will only be called if `CallSyncUserIntegrationEvent` is `true` in your OpenID Connect config. It will receive the following request body from OrderCloud:
+Called after a user enters their credentials in the IDP on subsequent attempts to access your application after having done so successfully at least once. This endpoint will only be called if `CallSyncUserIntegrationEvent` is `true` in your OpenID Connect config. It will receive the following request body from OrderCloud:
 
 ```json
   "ExistingUser": {}, // existing OrderCloud user
-  "OpenIdConnect": {}, // your OpenID Connect configruation you created
+  "OpenIdConnect": {}, // your OpenID Connect configuration you created
   "TokenResponse": {
     "id_token": "eyJhbGciOiJSU...", // token from your IDP
     "access_token": "ya29.a0ARrdaM92vGZsFj"

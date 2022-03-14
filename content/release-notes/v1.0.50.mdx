@@ -13,7 +13,7 @@ auth: `https://stagingauth.ordercloud.io`
 
 devcenter: [https://staging-account.ordercloud.io](https://staging-account.ordercloud.io)
 
-Production data will be copied down to the Staging environment weekly, on Sundays. In Staging, all webhooks will have their assignments deleted to disable them initially. Please update your webhooks and integrations in Staging to point somewhere other than Production ASAP. On the production release, no staging data will be transfered to production.
+Production data will be copied down to the Staging environment weekly, on Sundays. In Staging, all webhooks will have their assignments deleted to disable them initially. Please update your webhooks and integrations in Staging to point somewhere other than Production ASAP. On the production release, no staging data will be transferred to production.
 
 This was released to Production on May 4th at 8:00 PM Central.
 
@@ -21,7 +21,7 @@ This was released to Production on May 4th at 8:00 PM Central.
 
 - Payments have a new boolean field, `Accepted`. `PUT` has been removed from Payments, and `PATCH` can never edit `Type`, `CreditCardID`, and `SpendingAccountID`.
   - Only users with OrderAdmin or FullAccess roles will be able to create or update the `Accepted` property.
-  - If the `Accepted` property is true AND the order has been submited, a Shopper cannot patch the payment but a user with OrderAdmin or FullAccess can.
+  - If the `Accepted` property is true AND the order has been submitted, a Shopper cannot patch the payment but a user with OrderAdmin or FullAccess can.
   - If the `Accepted` property is true AND the payment type is a credit card, a Shopper cannot patch the payment but a user with OrderAdmin or FullAccess can.
   - If the `Accepted` property is true, the order has not been submitted, and the payment type is not a credit card, either a Shopper or OrderAdmin CAN patch the payment.
   - If `Accepted` is false, any user with either role can patch all other fields except the 3 listed above.
