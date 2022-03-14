@@ -25,7 +25,7 @@ Sale Pricing is new additional functionality added on top of the existing PriceS
 	"RestrictedQuantity": false,
 	"SaleStart": "2022-03-02T00:00:00.00+00:00", // NEW - optional
 	"SaleEnd": "2022-03-02T00:00:00.00+00:00", // NEW - optional
-	"IsOnSale": true, // NEW - readonly - determined by SaleStart/SaleEnd date OR existence of PriceBreak.SalePrice
+	"IsOnSale": true, // NEW - readonly - determined from current date/time falling within SaleStart/SaleEnd date AND existence of PriceBreak.SalePrice
 	"PriceBreaks": [
 		{
 			"Quantity": 1,
