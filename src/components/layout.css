@@ -32,7 +32,7 @@ code {
   text-align: center;
   background-color: #20abad;
   color: #e4f5f5;
-  font-family: "Geometria",
+  font-family: "AvenirNextR", "Roboto",
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
     sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -40,11 +40,23 @@ code {
 .card__404 {
   display: flex;
   flex-flow: column nowrap;
-  margin-top: -5vh;
+  margin-top: -10vh;
 }
 
 .card__404>* {
   margin: 0;
+}
+.card__404 img {
+  border: none !important;
+}
+
+
+.levitate {
+  transition: transform 1s ease-in-out;
+}
+
+.levitate:hover {
+  transform: translateY(-15px);
 }
 
 .card__404 h1 {
@@ -57,12 +69,15 @@ code {
   padding: 1rem 2rem;
   border-radius: .25rem;
   margin-top: 1rem;
-  transition: background-color .3s;
+  transition: background-color .25s ease;
   color: #e4f5f5;
   text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 .card__404 a:hover {
+  text-decoration: none;
   background-color: #189a9c;
 }
 
