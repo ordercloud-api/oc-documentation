@@ -46,6 +46,14 @@ Like with most good things in life, the new capabilities come with a few notable
 
 6. Although you can filter line items across orders by both order-level and item-level fields, you cannot include both in an "OR" expression. For example, `ShippingAddress.City|Order.BillingAddress.City=Chicago` is not allowed.
 
+## What's the deal with Meta.NextPageKey?
+
+You may have noticed a new field recently started appearing in the `Meta` section of list responses: `NextPageKey`. Although it's now part of the standard response model for lists, the truth is we haven't implemented anywhere except line items across orders (yet), so anytime it's null it should be ignored. But for line items across orders, ***it can and should be used as a higher-performance alternative to standard paging***.
+
+How is it used? Say you make a request for the first page of line items, specifying `pageSize=100`. Instead of passing `page=2&pageSize=100` to fetch the next page, grab the value from `Meta.NextPageKey` in page 1's response and pass it as `pageKey` in the URI of your page 2 request. As a matter of best practice, don't pass `page` or `pageSize` when using `pageKey`. These values are already encoded in `pageKey` based on the previous request, along with some other metadata that OrderCloud can leverage to improve the performance of the next page fetch.
+
+But keep in mind that "higher performance" is not the same thing as "high performance". Paging through large volumes of data is still inherently slow the deeper you go, even with this enhancement. We therefore strongly recommend using filters to break up large data sets. In the case of orders and line items, using `Order.DateSubmitted` to fetch in groups of date ranges is often a great choice.
+
 ## How do I test this?
 
 We're rolling this out on a marketplace-by-martetplace basis, similar to how we [rolled out premium search for products](https://ordercloud.io/knowledge-base/introducing-premium-search), if you've been with us that long. This will allow you to test for breaking changes in a non-production environment before going live. But unlike with products, where most customers tested in our [sandbox environment](https://ordercloud.io/knowledge-base/ordercloud-environments#sandbox), we highly recommend [**staging**](https://ordercloud.io/knowledge-base/ordercloud-environments#staging) to test orders. Why? Becasue every week your production data is restored to this environment. Although many customers have processes for sync'ing their product catalogs to their sandbox environments, few do the same with orders and therefore do not have realistic order data to test against.
