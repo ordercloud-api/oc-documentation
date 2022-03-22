@@ -50,7 +50,7 @@ A final potential "gotcha" that hopefully won't come to fruition but is worth me
 
 ## What's the deal with Meta.NextPageKey?
 
-You may have noticed a new field recently started appearing in the `Meta` section of list responses: `NextPageKey`. Although it's now part of the standard response model for lists, the truth is we haven't implemented anywhere except line items across orders (yet), so anytime it's null it should be ignored. But for line items across orders, ***it can and should be used as a higher-performance alternative to standard paging***.
+You may have noticed a new field recently started appearing in the `Meta` section of list responses: `NextPageKey`. Although it's now part of the standard response model for lists, the truth is we haven't implemented it anywhere except line items across orders (yet), so anytime it's null it should be ignored. But for line items across orders, ***it can and should be used as a higher-performance alternative to standard paging***.
 
 How is it used? Say you make a request for the first page of line items, specifying `pageSize=100`. Instead of passing `page=2&pageSize=100` to fetch the next page, grab the value from `Meta.NextPageKey` in page 1's response and pass it as `pageKey` in the URI of your page 2 request. As a matter of best practice, don't pass `page` or `pageSize` when using `pageKey`. These values are already encoded in `pageKey` based on the previous request, along with some other metadata that OrderCloud can leverage to improve the performance of the next page fetch.
 
