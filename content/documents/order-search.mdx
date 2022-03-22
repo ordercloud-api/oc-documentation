@@ -46,6 +46,8 @@ Like with most good things in life, the new capabilities come with a few notable
 
 6. Although you can filter line items across orders by both order-level and item-level fields, you cannot include both in an "OR" expression. For example, `ShippingAddress.City|Order.BillingAddress.City=Chicago` is not allowed.
 
+A final potential "gotcha" that hopefully won't come to fruition but is worth mentioning is that for the first few months (until such a time that it's no longer opt-in), Order Search should be considered a "beta" feature and subject to change. We don't take that lightly and will make every effort to avoid it, and any planned change will be communicated far in advance. Breaking API changes are highly unlikely; the slightly more likely scenarios would be needing to impose tighter limits on things like result set sizes due to performance concerns.
+
 ## What's the deal with Meta.NextPageKey?
 
 You may have noticed a new field recently started appearing in the `Meta` section of list responses: `NextPageKey`. Although it's now part of the standard response model for lists, the truth is we haven't implemented anywhere except line items across orders (yet), so anytime it's null it should be ignored. But for line items across orders, ***it can and should be used as a higher-performance alternative to standard paging***.
