@@ -4,11 +4,11 @@ title:          Premium Search for Orders
 description:    Signifcant enhancements to querying orders and line items.
 author:         tmenier
 publishDate:    2022-03-05
-updatedDate:    2022-03-05
+updatedDate:    2022-03-22
 tags:           ["Orders", "Line Items", "Search"]
 ---
 
-Many of the Elasticsearch-backed capabilities currently [available](https://ordercloud.io/knowledge-base/introducing-premium-search) only for products are now being rolled out for orders. Here are the details of these new capabilities.
+Many of the Elasticsearch-backed capabilities currently [available](https://ordercloud.io/knowledge-base/introducing-premium-search) only for products are now being rolled out for orders and line items. Here are the details of these new capabilities.
 
 ## Better search and filtering for existing orders endpoint
 
@@ -28,7 +28,9 @@ Until now, line items could only be queried for a single order using the endpoin
 
 `GET v1/lineitems/incoming?Product.ID=xyz&Order.DateSubmitted>1/1/2022`
 
-Along with the usual `LineItem` fields returned in the order-specific endpoint, queries across orders will include an `OrderID` field. 
+Along with the usual `LineItem` fields returned in the order-specific endpoint, queries across orders will include an `OrderID` field.
+
+The line items endpoint also benefits from the enhanced search capabilities listed above for the orders endpoint.
 
 ## Some limitations and gotchas
 
@@ -38,9 +40,9 @@ Like with most good things in life, the new capabilities come with a few notable
 
 2. Since search now follows a natural-language paradigm, expected results could differ slightly from the exact character sequence matching that you get today if you "search" orders. You should be able to mimic today's behavior by using filters with wildcards, although as always we recommend against filter patterns that _start_ with a wildcard, as these do not tend to perform well with larger data sets.
 
-3. Like with products, you need to be aware that lists of submitted orders will be served from a cache that is not guaranteed to be up-to-the-moment current with changes you make. Changes to submitted orders should normally take between a few seconds and a few minutes to be reflected in search/list results.
+3. Like with products, you need to be aware that lists of submitted orders and line items will be served from a cache that is not guaranteed to be up-to-the-moment current with changes you make. Changes to submitted orders should normally take between a few seconds and a few minutes to be reflected in search/list results.
 
-4. Also like with products, you'll need to be careful about keeping your xp schemas consistent. Introducing new xp fields shouldn't cause problems, but changing the data type of existing fields might. If the underlying Elasticsearch index cannot coerce values into types already inferred on previous orders, it may reject the entire order from being indexed.
+4. Also like with products, you'll need to be careful about keeping your xp schemas consistent. Introducing new xp fields shouldn't cause problems, but changing the data type of existing fields might. If the underlying Elasticsearch index cannot coerce values into types already inferred on previous orders, it may reject the entire order from being indexed; likewise for line items.
 
 5. Sorting line items across orders currently requires the sort-by list to start with an order-level field. So, `sortBy=Product.ID` is not allowed across orders; `sortBy=Order.DateSubmitted,Product.ID` is allowed.
 
