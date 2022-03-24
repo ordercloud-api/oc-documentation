@@ -9,7 +9,7 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import { groupBy, map, sortBy } from 'lodash'
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, Fragment } from 'react'
 import { Helmet } from 'react-helmet'
 import { seafoam } from '../../theme/ocPalette.constants'
 import utility from '../../services/utility'
@@ -75,6 +75,9 @@ const useStyles = makeStyles((theme: Theme) =>
 function PortalReleaseNotesComponent(props: any) {
   const { data, location } = props
   const classes = useStyles(props)
+  if (!props.pathContext) {
+    return <Fragment></Fragment>  
+    }
   const release = data.allMdx.edges.filter(
     e => e.node.id === props.pathContext.nodeID
   )[0].node

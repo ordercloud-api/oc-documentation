@@ -1,6 +1,6 @@
 const React = require('react')
 const fs = require('fs')
-const styleContents = fs.readFileSync('./src/styles/placeholder.css')
+const styleContents = typeof window !== `undefined` ? fs.readFileSync('./src/styles/placeholder.css') : null
 /**
  * Implement Gatsby's SSR (Server Side Rendering) APIs in this file.
  *
