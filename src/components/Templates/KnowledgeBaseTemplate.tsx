@@ -168,9 +168,9 @@ export default function KnowledgeBaseTemplate(
             className={classes.backButton}
             to={`/knowledge-base${
               location.state &&
-              location.state.selectedTags &&
-              location.state.selectedTags.length
-                ? `?t=${location.state.selectedTags.join(',')}`
+              location.state['selectedTags'] &&
+              location.state['selectedTags'].length
+                ? `?t=${location.state?.['selectedTags'].join(',')}`
                 : ''
             }`}
           >
@@ -267,7 +267,7 @@ export default function KnowledgeBaseTemplate(
                       component={Link}
                       state={{
                         selectedTags:
-                          location.state && location.state.selectedTags,
+                          location.state && location.state['selectedTags'],
                       }}
                       to={utility.resolvePath(t.fileAbsolutePath)}
                       key={t.id}

@@ -1,4 +1,4 @@
-import SwaggerParser from 'swagger-parser'
+import SwaggerParser from "@apidevtools/swagger-parser";
 import { groupBy, keyBy, mapValues, values, flatten } from 'lodash'
 import {
   OrderCloudProps,
