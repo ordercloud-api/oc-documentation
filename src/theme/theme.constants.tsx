@@ -118,6 +118,11 @@ export default createMuiTheme({
           color: darken(secondaryColor, 0.25),
           fontWeight: defaultTheme.typography.fontWeightMedium,
         },
+        '#RENDER_BOX img': {
+          display: 'block',
+          maxWidth: '100%',
+          height: 'auto',
+        },
         code: {
           whiteSpace: 'pre-wrap',
           wordBreak: 'break-all',
