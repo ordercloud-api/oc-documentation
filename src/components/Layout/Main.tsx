@@ -525,7 +525,7 @@ const MainComponent: React.FunctionComponent = props => {
         </Grid>
       </Container>
       <Container maxWidth="lg">
-        <Box pt={6} pb={3}>
+        <Box pt={6} pb={3} px={20}>
           <Divider />
         </Box>
         <Typography variant="h1" align="center">
