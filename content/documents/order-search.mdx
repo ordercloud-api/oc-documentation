@@ -36,7 +36,7 @@ The line items endpoint also benefits from the enhanced search capabilities list
 
 Like with most good things in life, the new capabilities come with a few notable strings attached.
 
-1. The new functionality is available for submitted orders only. (Note that orders awaiting approval are not considered submitted.) A direct consequence of this is that it is no longer possible to query submitted and unsubmitted orders in the same call. Submitted is the default unless any of the following filters is used: `IsSubmitted=True`, `Status=Unsubmitted`, or `Status=AwaitingApproval`.
+1. The new functionality is available for submitted orders only. (Note that orders awaiting approval are not considered submitted.) A direct consequence of this is that it is no longer possible to query submitted and unsubmitted orders in the same call. Submitted is the default unless any of the following filters is used: `IsSubmitted=False`, `Status=Unsubmitted`, or `Status=AwaitingApproval`.
 
 2. Since search now follows a natural-language paradigm, expected results could differ slightly from the exact character sequence matching that you get today if you "search" orders. You should be able to mimic today's behavior by using filters with wildcards, although as always we recommend against filter patterns that _start_ with a wildcard, as these do not tend to perform well with larger data sets.
 
