@@ -54,6 +54,13 @@ import ListItemLink from '../Shared/ListItemLink'
 import { navigate } from '../Shared/PortalLink'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
+import logoAngular from '../../assets/svg/technology-logos/angular.svg'
+import logoJavascript from '../../assets/svg/technology-logos/js.svg'
+import logoTypescript from '../../assets/svg/technology-logos/ts.svg'
+import logoCSharp from '../../assets/svg/technology-logos/csharp.svg'
+import logoNext from '../../assets/svg/technology-logos/nextjs.svg'
+import logoReact from '../../assets/svg/technology-logos/react.svg'
+import logoVue from '../../assets/svg/technology-logos/vue.svg'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -79,9 +86,10 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: 1,
       flexGrow: 1,
     },
-    buttonBase: {
+    paperCardAction: {
       transition: 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
       borderRadius: theme.shape.borderRadius,
+      display: 'flex',
       '&:hover': {
         textDecoration: 'none',
         transform: 'translateY(-3px)',
@@ -93,20 +101,28 @@ const useStyles = makeStyles((theme: Theme) =>
       transform: 'rotate(45deg)', // <CallMade/> icon most accurately matches Sitecore guidelines; however, it needs to be rotated.
     },
     paperCard: {
-      position: 'relative',
+      width: '100%',
+      display: 'flex',
       flexFlow: 'column nowrap',
-      alignItems: 'center',
-      maxWidth: '100vw',
+      alignItems: 'flex-start',
       padding: theme.spacing(3),
       [theme.breakpoints.up('md')]: {
         height: '100%',
+        minHeight: 375,
+      },
+    },
+    btnCardAction: {
+      alignSelf: 'flex-end',
+      marginTop: 'auto',
+      padding: theme.spacing(1, 2),
+      [theme.breakpoints.up('lg')]: {
+        marginTop: theme.spacing(2),
       },
     },
     paperTitleHeading: {
-      padding: theme.spacing(0, 0, 1),
+      padding: 0,
+      margin: theme.spacing(1.5, 0),
       fontWeight: 700,
-      textAlign: 'left',
-      minHeight: '2.5rem',
     },
     paperTitleSubheading: {
       color: darkgrey[500],
@@ -130,9 +146,30 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: '-5rem',
       },
     },
+    iconTech: {
+      height: 75,
+      width: 75,
+      overflow: 'hidden',
+      boxShadow: theme.shadows[1],
+      display: 'flex',
+      flexFlow: 'row wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: theme.spacing(2),
+      '& img': {
+        height: 'auto',
+        maxWidth: '100%',
+      },
+    },
     List: {
       '& .MuiButtonBase-root': {
         textDecortation: 'none',
+      },
+    },
+    marginTopMd: {
+      marginTop: theme.spacing(5),
+      [theme.breakpoints.up('md')]: {
+        marginTop: theme.spacing(10),
       },
     },
   })
@@ -227,7 +264,7 @@ const MainComponent: React.FunctionComponent = props => {
         <Grid container className={classes.cardWrapper} spacing={3}>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
             <ButtonBase
-              className={classes.buttonBase}
+              className={classes.paperCardAction}
               component={Link}
               to="/discover/platform-overview"
             >
@@ -275,7 +312,7 @@ const MainComponent: React.FunctionComponent = props => {
                   </List>
                 </Hidden>
                 <ButtonLink
-                  fullWidth
+                  className={classes.btnCardAction}
                   to="/discover/define-your-marketplace"
                   endIcon={
                     <CallMade
@@ -292,7 +329,7 @@ const MainComponent: React.FunctionComponent = props => {
           </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
             <ButtonBase
-              className={classes.buttonBase}
+              className={classes.paperCardAction}
               component={Link}
               to="/discover/define-your-marketplace"
             >
@@ -340,7 +377,7 @@ const MainComponent: React.FunctionComponent = props => {
                   </List>
                 </Hidden>
                 <ButtonLink
-                  fullWidth
+                  className={classes.btnCardAction}
                   to="/discover/define-your-marketplace"
                   endIcon={
                     <CallMade
@@ -357,7 +394,7 @@ const MainComponent: React.FunctionComponent = props => {
           </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
             <ButtonBase
-              className={classes.buttonBase}
+              className={classes.paperCardAction}
               component={Link}
               to="/discover/personalized-shopping"
             >
@@ -405,7 +442,7 @@ const MainComponent: React.FunctionComponent = props => {
                   </List>
                 </Hidden>
                 <ButtonLink
-                  fullWidth
+                  className={classes.btnCardAction}
                   to="/discover/personalized-shopping"
                   endIcon={
                     <CallMade
@@ -422,7 +459,7 @@ const MainComponent: React.FunctionComponent = props => {
           </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
             <ButtonBase
-              className={classes.buttonBase}
+              className={classes.paperCardAction}
               component={Link}
               to="/discover/flexible-fulfillment"
             >
@@ -470,7 +507,7 @@ const MainComponent: React.FunctionComponent = props => {
                   </List>
                 </Hidden>
                 <ButtonLink
-                  fullWidth
+                  className={classes.btnCardAction}
                   to="/discover/flexible-fulfillment"
                   endIcon={
                     <CallMade
@@ -488,13 +525,13 @@ const MainComponent: React.FunctionComponent = props => {
         </Grid>
       </Container>
       <Container maxWidth="lg">
-        <Box paddingY={3} paddingX={20}>
+        <Box pt={6} pb={3} px={20}>
           <Divider />
         </Box>
         <Typography variant="h1" align="center">
           Future-Proof with Headless Architecture
         </Typography>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} sm={6}>
             <Typography variant="h3">
               Our RESTful API was built
@@ -512,7 +549,7 @@ const MainComponent: React.FunctionComponent = props => {
               flexDirection="row"
               flexWrap="noWrap"
               marginTop={3}
-              style={{ gap: 16 }}
+              style={{ gap: 24 }}
             >
               <CustomButtonLink
                 color={themeConstants.palette.secondary.main}
@@ -538,17 +575,46 @@ const MainComponent: React.FunctionComponent = props => {
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <figure>
-              <img
-                style={{ maxWidth: '100%' }}
-                src="/images/oc_homepage_logos.png"
-                alt="Languages and Frameworks"
-              />
-            </figure>
+            <Typography
+              gutterBottom
+              color="textSecondary"
+              variant="body2"
+              align="center"
+            >
+              <em>Use any stack with OrderCloud</em>
+            </Typography>
+            <Box
+              display="flex"
+              justifyContent="center"
+              flexWrap="wrap"
+              style={{ gap: 16 }}
+            >
+              <div className={classes.iconTech}>
+                <img src={logoJavascript} title="Javascript" alt="JS Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoTypescript} title="Typescript" alt="TS Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoCSharp} title="C#" alt="C# Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoNext} title="Next" alt="Next Logo" />
+              </div>
+              <div style={{ flexBasis: '100%' }} aria-hidden="true"></div>
+              <div className={classes.iconTech}>
+                <img src={logoReact} title="React" alt="React Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoAngular} title="Angular" alt="Angular Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoVue} title="Vue" alt="Vue Logo" />
+              </div>
+            </Box>
           </Grid>
         </Grid>
-        <Box height="100px"></Box>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} className={classes.marginTopMd}>
           <Grid item xs={12} sm={6}>
             <Paper
               elevation={5}

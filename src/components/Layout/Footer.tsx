@@ -10,7 +10,7 @@ import {
   Theme,
 } from '@material-ui/core'
 import { OpenInNewOutlined } from '@material-ui/icons'
-import { mediumgrey, sherpablue } from '../../theme/ocPalette.constants'
+import { mediumgrey } from '../../theme/ocPalette.constants'
 import footerLogo from '../../assets/svg/Sitecore_logo_RGB_white.svg'
 import { PortalLink } from '../Shared/PortalLink'
 
