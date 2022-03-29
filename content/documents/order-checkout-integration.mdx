@@ -76,7 +76,7 @@ Receives all the order data and is responsible for returning a list of potential
 *Triggered via `POST v1/orders/{direction}/{orderID}/calculate`*
 Returns shipping total as a result of either selected shipping methods (if the shipping step was triggered) or the value included in the request body, tax total, and any unit price overrides beyond the default price schedules as a result of manual unit price adjustments or promotion overrides. There is also an optional space to return arbitrary json data (XP) that can be used to track, for instance, how the tax and shipping totals were calculated. For example, each line item and shipment could have different tax rates applied to them with each different jurisdiction requiring their share of the tax. This call returns the OrderCloud Order Worksheet object. 
 
-Sample request body
+Sample response body
 
 ```json
 {
