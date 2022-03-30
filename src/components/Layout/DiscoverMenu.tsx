@@ -83,7 +83,7 @@ const findActiveArticle = (articles: Article[], path: string) => {
 }
 
 const stripSpecialChars = (string: string) => {
-  return string.replace(/[^\w\d\s]/g, '')
+  return string.replace(/[^\w\d\s\-\`]/g, '')
 }
 
 export const transformHeadingToId = (string: string) => {

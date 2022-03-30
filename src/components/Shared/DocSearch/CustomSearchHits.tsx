@@ -10,7 +10,7 @@ import {
   Theme,
 } from '@material-ui/core'
 import { ArrowDropUp } from '@material-ui/icons'
-import { createStyles, makeStyles, CSSProperties } from '@material-ui/core'
+import { createStyles, makeStyles } from '@material-ui/core'
 import { Link } from 'gatsby'
 import { groupBy, map } from 'lodash'
 import React from 'react'
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
     //   // padding: '-1rem',
     // }),
     inner: (props: any) => {
-      const noPopperStyles: CSSProperties = {
+      const noPopperStyles: any = {
         maxWidth: '100vw',
         position: 'fixed',
         left: 0,
