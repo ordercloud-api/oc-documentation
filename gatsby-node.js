@@ -24,27 +24,20 @@ exports.onCreateWebpackConfig = ({ actions }) => {
 
 exports.createSchemaCustomization = ({ actions, schema }) => {
   const { createTypes } = actions
-  const typeDefs = [
-    'type Mdx implements Node { frontmatter: Frontmatter }',
-    schema.buildObjectType({
-      name: 'Frontmatter',
-      fields: {
-        author: {
-          type: 'AuthorJson',
-          resolve: async (source, args, context, info) => {
-            // console.log(JSON.stringify(context.nodeModel, null, 2))
-            var temp2 = await context.nodeModel.findOne({ username: source.author })
-            console.log(JSON.stringify(temp2, null, 2));
-            // var temp = context.nodeModel.getNodeById({
-            //   id: source.author,
-            //   type: 'AuthorJson',
-            // })
-            // console.log('nodeModel', JSON.stringify(temp, null, 2))
-            return temp2
-          },
-        },
-      },
-    }),
-  ]
-  createTypes(typeDefs)
+  createTypes(`
+    type Mdx implements Node {
+      frontmatter: MdxFrontmatter
+    }
+
+    type MdxFrontmatter {
+      author: AuthorJson @link(from: "author" by:"username")
+    }
+
+    type AuthorJson implements Node {
+      id: ID!
+      username: String!
+      name: String!
+      title: String! 
+    }`
+  )
 }

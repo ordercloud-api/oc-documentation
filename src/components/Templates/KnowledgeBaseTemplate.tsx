@@ -188,7 +188,7 @@ export default function KnowledgeBaseTemplate(
             {doc.mdx.frontmatter.author && (
               <Avatar
                 alt={doc.mdx.frontmatter.author.name}
-                src={`/images/authors/${doc.mdx.frontmatter.author.id}.jpg`}
+                src={`/images/authors/${doc.mdx.frontmatter.author.username}.jpg`}
               ></Avatar>
             )}
             <div style={{ paddingLeft: 8 }}>
@@ -304,7 +304,7 @@ export const query = graphql`
         publishDate(formatString: "MMMM Do, YYYY")
         updatedDate(formatString: "MMMM Do, YYYY")
         author {
-          id
+          username
           name
           title
         }

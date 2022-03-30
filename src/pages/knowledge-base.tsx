@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface DocumentAuthor {
   id: string
+  username: string
   name: string
   title: string
 }
