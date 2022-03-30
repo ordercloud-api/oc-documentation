@@ -16,8 +16,6 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
-    "@material-ui/styles": "^4.11.2",
-    "@material-ui/system": "^4.12.1",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@reduxjs/toolkit": "^1.8.0",
@@ -43,7 +41,7 @@
     "gatsby-plugin-google-gtag": "^4.10.0",
     "gatsby-plugin-image": "^2.10.1",
     "gatsby-plugin-manifest": "^4.10.2",
-    "gatsby-plugin-material-ui": "^4.1.0",
+    "gatsby-plugin-material-ui": "^3.0.1",
     "gatsby-plugin-mdx": "^3.10.2",
     "gatsby-plugin-offline": "^5.10.2",
     "gatsby-plugin-react-helmet": "^5.10.0",
@@ -103,7 +101,12 @@
     "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
   },
-  "os": ["darwin","win32","win64","linux"],
+  "os": [
+    "darwin",
+    "win32",
+    "win64",
+    "linux"
+  ],
   "arch": "any",
   "cpu": [
     "x64"

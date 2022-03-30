@@ -20,8 +20,6 @@ exports.onCreateWebpackConfig = ({ actions }) => {
   })
 }
 
-
-
 exports.createSchemaCustomization = ({ actions, schema }) => {
   const { createTypes } = actions
   createTypes(`
