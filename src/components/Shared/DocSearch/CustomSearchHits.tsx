@@ -10,11 +10,11 @@ import {
   Theme,
 } from '@material-ui/core'
 import { ArrowDropUp } from '@material-ui/icons'
-import { createStyles, makeStyles, CSSProperties } from '@material-ui/styles'
+import { createStyles, makeStyles, CSSProperties } from '@material-ui/core'
 import { Link } from 'gatsby'
 import { groupBy, map } from 'lodash'
 import React from 'react'
-import { Scrollbars } from 'react-custom-scrollbars'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 import { connectHits, Snippet } from 'react-instantsearch-dom'
 import service from '../../../services/utility'
 import DocSearchFooter from './DocSearchFooter'

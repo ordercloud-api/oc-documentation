@@ -14,7 +14,7 @@ import {
   TypographyVariant,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
-import { ThemeProvider } from '@material-ui/styles'
+import { ThemeProvider } from '@material-ui/core'
 import { MDXProvider } from '@mdx-js/react'
 import { RouteComponentProps } from '@reach/router'
 import { Link } from 'gatsby'

@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface DocumentAuthor {
   id: string
+  username: string
   name: string
   title: string
 }
@@ -113,7 +114,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
               publishDate(formatString: "MMMM Do, YYYY")
               updatedDate(formatString: "MMMM Do, YYYY")
               author {
-                id
+                username
                 name
                 title
               }
@@ -308,7 +309,7 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
                     node.frontmatter.publishDate
                       ? 'Updated'
                       : 'Published'
-                  } by ${node.frontmatter.author.name} on ${node.frontmatter
+                  } by ${node.frontmatter.author ? node.frontmatter.author.name : 'Unknown'} on ${node.frontmatter
                     .updatedDate || node.frontmatter.publishDate}`}
                 </Typography>
               </Fragment>

@@ -75,3 +75,5 @@ yarn-error.log
 .yarn-integrity
 
 .env.development
+
+.env

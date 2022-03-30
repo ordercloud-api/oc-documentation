@@ -111,9 +111,9 @@ const CodeExample: FunctionComponent<CodeExampleProps> = (
   )
 
   const currentContent = useMemo(() => {
-    let l = language
+    let l = language as keyof CodeExampleContent
     if (!l || !content[l]) {
-      l = Object.keys(content)[0]
+      l = Object.keys(content)[0] as keyof CodeExampleContent
     }
     return Prism.highlight(content[l], Prism.languages[l], l)
   }, [language, content])

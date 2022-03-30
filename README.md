@@ -69,6 +69,19 @@ File names in these directories should follow a specific pattern: `vN.N.NNN.mdx`
 
 Follow the standard [markdown syntax](https://www.markdownguide.org/cheat-sheet/) while writing content. Raw HTML is supported, but not encouraged - sometimes it might be easier to write a `<table>` in HTML. It is also acceptable when using some of the custom components available in the gatsby project.
 
+### Resolving Spelling Errors
+
+We are using a GitHub Action to check for spelling errors whenever you create a new PR. The action uses [cspell](http://cspell.org/) to check for mistakes.
+
+View the details of the action in GitHub to see which files contain spelling errors. Fix and push again.
+
+> "What if my word is correct, but it just isn't in the dictionary?"
+
+We tried our best to cover a litany of jargon but if your word is still getting an error, you have two options:
+
+1. locate the  `"words"`  section of the `cSpell.json`. This section is best suited for words that could be used again in the future *(think company names)*. 
+2. locate the `"ignoreWords"` section at the bottom of the `cSpell.json`. This is best suited for words that are more than likely a one-off to your post.
+
 ## Custom Components
 > Custom components need to be written in one line to avoid breaking the `.mdx` parser in Gatsby.
 

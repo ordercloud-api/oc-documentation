@@ -9,7 +9,7 @@ import { ExpandLess, ExpandMore } from '@material-ui/icons'
 import { graphql, Link } from 'gatsby'
 import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import { groupBy, map, sortBy } from 'lodash'
-import React, { useState, useLayoutEffect } from 'react'
+import React, { Fragment, useState, useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { seafoam } from '../../theme/ocPalette.constants'
 import utility from '../../services/utility'
@@ -75,6 +75,9 @@ const useStyles = makeStyles((theme: Theme) =>
 function ReleaseNotesComponent(props: any) {
   const { data, location } = props
   const classes = useStyles(props)
+  if (!props.pathContext) {
+  return <Fragment></Fragment>  
+  }
   const release = data.allMdx.edges.filter(
     e => e.node.id === props.pathContext.nodeID
   )[0].node
@@ -141,7 +144,7 @@ function ReleaseNotesComponent(props: any) {
         </LayoutMain>
         <LayoutMenu>
           {years.map(y => (
-            <React.Fragment key={y.year}>
+            <Fragment key={y.year}>
               <Typography
                 className={`${classes.year} ${
                   y.year === currentYear ? classes.yearActive : undefined
@@ -156,7 +159,7 @@ function ReleaseNotesComponent(props: any) {
               <Collapse in={y.year === currentYear}>
                 <div className={classes.months}>
                   {y.months.map(m => (
-                    <React.Fragment key={`${y.year}_${m.month}`}>
+                    <Fragment key={`${y.year}_${m.month}`}>
                       <Typography
                         className={`${classes.month} ${
                           y.year === currentYear && m.month === currentMonth
@@ -200,11 +203,11 @@ function ReleaseNotesComponent(props: any) {
                           ))}
                         </div>
                       </Collapse>
-                    </React.Fragment>
+                    </Fragment>
                   ))}
                 </div>
               </Collapse>
-            </React.Fragment>
+            </Fragment>
           ))}
           <RSSFeedLink to="/rss/release-notes.xml" />
         </LayoutMenu>
