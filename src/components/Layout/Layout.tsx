@@ -89,10 +89,12 @@ export const LayoutLink = (props: any) => {
     )
     return <Typography variant="button">[BAD LINK] {props.children}</Typography>
   }
-  if (props.className === 'anchor' || props.href.indexOf('#') === 0) {
+
+  if ((props.className && props.className.indexOf('anchor') > -1) || props.href.indexOf('#') === 0) {
+    const { className, ...actualProps} = props;
     return (
       <div className={classes.root} onClick={handleCopyClick}>
-        <IconButtonLink {...props} to={props.href}>
+        <IconButtonLink {...actualProps} to={props.href}>
           <LinkIcon />
         </IconButtonLink>
       </div>
