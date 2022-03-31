@@ -245,6 +245,17 @@ class Footer extends React.Component<any> {
                 </Link>
                 <a
                   className={classes.footerLinks}
+                  href="https://support.sitecore.com/status"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Sitecore Status Page
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
+                <a
+                  className={classes.footerLinks}
                   href="https://www.sitecore.com/trust/privacy-policy"
                   target="_blank"
                   rel="noopener noreferrer"
