@@ -1,8 +1,5 @@
 import { createTheme, darken } from '@material-ui/core/styles'
-import { sherpablue, seafoam, sizzlingred } from './ocPalette.constants'
-import CoreSansDFonts from '../theme/theme.typography.coresansd'
-import GeometriaFonts from '../theme/theme.typography.geometria'
-import { upperCase } from 'lodash'
+import { sherpablue } from './ocPalette.constants'
 
 export const base_color_1 = '#171d52'
 export const base_color_2 = '#19a5a2'
