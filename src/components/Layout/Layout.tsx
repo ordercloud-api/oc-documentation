@@ -29,7 +29,7 @@ import ContentLink from '../Shared/ContentLink'
 import IconButtonLink from '../Shared/IconButtonLink'
 import { PortalLink } from '../Shared/PortalLink'
 import Footer from './Footer'
-import Header, { navHeight, navHeightMobile } from './Header2'
+import Header, { navHeight, navHeightMobile } from './Header'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
