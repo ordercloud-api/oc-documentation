@@ -1,4 +1,4 @@
-import { createMuiTheme, darken } from '@material-ui/core/styles'
+import { createTheme, darken } from '@material-ui/core/styles'
 import { sherpablue, seafoam, sizzlingred } from './ocPalette.constants'
 import CoreSansDFonts from '../theme/theme.typography.coresansd'
 import GeometriaFonts from '../theme/theme.typography.geometria'
@@ -29,12 +29,12 @@ export const brand_signal_success = '#11a31b'
 export const brand_signal_error = '#ca241c'
 export const brand_signal_info = '#0076d1'
 
-const defaultTheme = createMuiTheme()
+const defaultTheme = createTheme()
 const primaryColor = base_color_1
 const secondaryColor = base_color_2
 const error = brand_signal_error
 
-export default createMuiTheme({
+export default createTheme({
   typography: {
     h1: {
       fontSize: '3rem',
