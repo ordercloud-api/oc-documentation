@@ -8,13 +8,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* @media (min-width: 768px) {
-  body {
-    overflow: hidden;
-    height: 100vh;
-  }
-} */
-
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -46,17 +39,24 @@ code {
 .card__404>* {
   margin: 0;
 }
+
 .card__404 img {
   border: none !important;
 }
 
-
 .levitate {
-  transition: transform 1s ease-in-out;
+  animation: levitate .5s linear infinite alternate;
+  animation-play-state: paused;
 }
 
 .levitate:hover {
-  transform: translateY(-15px);
+  animation-play-state: running;
+}
+
+@keyframes levitate {
+  to {
+    transform: translateY(-15px);
+  }
 }
 
 .card__404 h1 {
@@ -65,10 +65,9 @@ code {
 }
 
 .card__404 a {
-  border: 1px solid #90d5d6;
-  padding: 1rem 2rem;
-  border-radius: .25rem;
-  margin-top: 1rem;
+  border: 1.5px solid #90d5d6;
+  padding: 8px 24px;
+  margin-top: 24px;
   transition: background-color .25s ease;
   color: #e4f5f5;
   text-decoration: none;

@@ -7,6 +7,9 @@ import svg404cloud from '../assets/svg/cloud.svg'
 import '../components/layout.css'
 import { Link } from 'gatsby'
 
+// Need to manually hide the placeholder overlay on 404
+document.querySelector('#placeholder').classList.add('hide')
+
 const NotFoundPage = () => (
   <Layout>
     <SEO title="404: Not found" />
