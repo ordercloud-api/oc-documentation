@@ -34,7 +34,7 @@ The documents folder controls **Knowledge base** content and is managed and appr
 | type | `enum` | `true` | Allows us to differentiate between articles and tutorials in the knowledge base, possible values: `article`, `tutorial`.
 | title | `string` | `true` | The title of the page, it will appear as the first `H1` tag in the content of the page as well as the page `<title>` element (suffixed with ` \| Sitecore OrderCloud`) |
 | description | `string` | `true` | A short description of the page, this will be used in `meta[name="description"]` tag for SEO purposes |
-| author | `string` | `true` | This is the author _identifier_, when set, Gatsby will query data in `root/src/data/author.json` to retrieve the author's name & title. Additionally, there should always be a `.jpg` image for each author entry where the name of the image is the `author.id`. |
+| author | `string` | `true` | This is the author _identifier_, when set, Gatsby will query data in `root/src/data/author.json` to retrieve the author's name & title. Additionally, there should always be a `.jpg` image in `root/static/authors` for each author entry where the name of the image is the `author.id`. |
 | publishDate | `date` | `true` | The date the document is first published using the format `YYYY-MM-DD`. |
 | updatedDate | `date` | `false` | If you are making changes to an existing document update this value using the format `YYYY-MM-DD`. |
 | tags | `string[]` | `true` | An array of strings that you would like this document to be filtered on. This also controls related articles, which will pull up documents with the same tag so be sure you check if a tag already exists for the topic you are thinking of. If you are unsure about what tag to use, consult @rwatt.
