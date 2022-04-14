@@ -173,4 +173,4 @@ Using the token response from your IDP, you can decode the token and use the dat
 }
 ```
 
-Note that in any of the responses your application sends back to OrderCloud, you can return a non-successful HttpStatusCode and optional error details to terminate the process.
+Note that in any of the responses your application sends back to OrderCloud, populating `ErrorMessage` in your response will terminate the process.
