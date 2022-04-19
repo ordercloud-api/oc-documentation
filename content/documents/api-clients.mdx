@@ -1,23 +1,23 @@
 ---
 type:           article
 title:          Introduction to API Clients
-description:    OrderCloud uses the term API Clients to identify various access points to your organization's data. These access points have properties that control what parties can use it, how they can gain access, and for how long that access remains valid.
+description:    OrderCloud uses the term API Clients to identify various access points to your marketplace's data. These access points have properties that control what parties can use it, how they can gain access, and for how long that access remains valid.
 author:         rwatt
 publishDate:    2016-06-24
 updatedDate:    2018-06-25
 tags:           ["API Clients", "Authentication", "Integrations"]
 ---
 
-OrderCloud uses the term API Clients to identify various access points to your organization's data. These access points have properties that control what parties can use it, how they can gain access, and for how long that access remains valid.
+OrderCloud uses the term API Clients to identify various access points to your marketplace's data. These access points have properties that control what parties can use it, how they can gain access, and for how long that access remains valid.
 
 ## Creating API Clients
-Like anything else on the OrderCloud platform, API Clients can be managed via our RESTful API. Whenever a new organization is created on OrderCloud, a default API Client is created along with a Full Access Seller user. You can use this initial context to create anything else in OrderCloud, including more API Clients.
+Like anything else on the OrderCloud platform, API Clients can be managed via our RESTful API. Whenever a new marketplace is created on OrderCloud, a default API Client is created along with a Full Access Seller user. You can use this initial context to create anything else in OrderCloud, including more API Clients.
 
 ### Naming Your API Client
 Choosing the right name for your API Client is important. By picking something descriptive, future developers will better understand when they should be utilized.
 
 ### Defining User Access
-You can control which parties in your organization can access each of your API Clients using any combination of the following three properties:
+You can control which parties in your marketplace can access each of your API Clients using any combination of the following three properties:
 
 - `AllowSeller` - All Seller Users can use the API Client
 - `AllowAnySupplier` - Supplier Users in _any_ Supplier company can use the API Client
@@ -46,9 +46,9 @@ This is where the `IsAnonBuyer` property comes in. When enabled, many of the Me 
 Read more about Anonymous Shopping <Link to="/knowledge-base/anonymous-shopping">here</Link>.
 
 ### Token Durations
-Once a party has the appropriate level of access to your organization - it's important to control _how long_ that access will last. This is controlled by two properties: `AccessTokenDuration` and `RefreshTokenDuration`. The most important of the two is `AccessTokenDuration` - this is how long an `access_token` acquired using a specific API Client ID will live (in minutes).
+Once a party has the appropriate level of access to your marketplace - it's important to control _how long_ that access will last. This is controlled by two properties: `AccessTokenDuration` and `RefreshTokenDuration`. The most important of the two is `AccessTokenDuration` - this is how long an `access_token` acquired using a specific API Client ID will live (in minutes).
 
-Once the primary `access_token` expires, if the API Client is configured with a _longer lasting_ `RefreshTokenDuration`, the original OAuth response will return a corresponding `refresh_token`. This can be used to acquire a fresh `access_token` and maintain user authentication until the `refresh_token` expires. Long lasting token durations are not recommended for systems with a high level of data access in your organization as shorter token durations are more secure.
+Once the primary `access_token` expires, if the API Client is configured with a _longer lasting_ `RefreshTokenDuration`, the original OAuth response will return a corresponding `refresh_token`. This can be used to acquire a fresh `access_token` and maintain user authentication until the `refresh_token` expires. Long lasting token durations are not recommended for systems with a high level of data access in your marketplace as shorter token durations are more secure.
 
 ## Using Multiple API Clients
 In general, we encourage creating a new API Client for each system or isolated piece of functionality. This allows for quicker identification of bottlenecks in your solution, as every authenticated request will have the API Client that was used embedded in the `Authorization` header.
