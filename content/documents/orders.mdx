@@ -12,7 +12,7 @@ The central concept within OrderCloud is not surprisingly the order. This is the
 
 ## Order Direction
 
-A key feature of the Order resource is the order "direction". The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, marketplace owner (MPO), or supplier. What changes however is the order _direction_. A good way to think about order direction is to first thing about how an order moves from the entity that submits the order all the way through to the entity that fulfills the order and then think about how direction appears from a specific user's perspective.
+A key feature of the Order resource is the order "direction". The endpoints used to interact with the order resource are the same endpoints you use regardless of which type of user you are: buyer, marketplace owner (MPO), or supplier. What changes however is the order _direction_. A good way to think about order direction is to first think about how an order moves from the entity that submits the order all the way through to the entity that fulfills the order and then think about how direction appears from a specific user's perspective.
 
 #### Buyer to MPO Order Transaction
 The simplest way a transaction can occur in OrderCloud is from a buyer directly to an MPO. In this scenario, the optional supplier entity is not present, and a diagram of the flow can be depicted like this:
@@ -34,7 +34,7 @@ As of [API 1.0.214](https://ordercloud.io/release-notes/v1.0.214) it is possible
 
 Buyer ➔ Supplier
 
-The buyer sees a direction of "Outgoing", and the supplier sees a direction of "Incoming" however the MPO is left completely out of the flow. Remember though, that the MPO, as the owner of the Marketplace *must* have visibility to orders even if they aren't directly involved in the transaction. To support this, we've introduced the order direction "All". The "All" direction, can be used by any entity (buyer, seller, supplier) and will appropriately select the correct direction for that entity. MPOs can and should still use "Incoming"/"Outgoing" if they have marketplaces where orders are forwarded.
+The buyer sees a direction of "Outgoing", and the supplier sees a direction of "Incoming" however the MPO is left completely out of the flow. Remember though that the MPO, as the owner of the Marketplace, *must* have visibility to orders even if they aren't directly involved in the transaction. To support this, we've introduced the order direction "All". The "All" direction, can be used by any entity (buyer, seller, supplier) and will appropriately select the correct direction for that entity. MPOs can and should still use "Incoming"/"Outgoing" if they have marketplaces where orders are forwarded.
 
 ## Statuses
 
