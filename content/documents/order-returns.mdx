@@ -92,11 +92,11 @@ We’re excited to present a new set of features to enable all aspects of the Or
 
 **Notes:**
 - This resource is not available to buyer users, regardless of assigned roles
-- `OwnerID` is the ID of the organization who owns the rule. Only the Marketplace Owner can write a value other than their own organization ID. The value is used to look up the `ApprovingGroupID` and determine who is eligible to administer the rule.
+- `OwnerID` is the ID of the organization who owns the rule. Only the Marketplace Owner can write a value other than their own organization ID. The value is used to look up the `ApprovingGroupID` and determine who is eligible to administer the rule
 - To enable date based `RuleExpressions` the rules engine now supports a new custom function `now()` which accepts an integer as a parameter
    - For example, if you wanted any `OrderReturn` associated with an `Order` that was completed prior to 30 days ago to route for approval, you would set up an `SellerApprovalRule` with a `RuleExpression` of `Order.DateCompleted < now(-30)`
    - Additionally, a customer can choose to enforce logic in the UI to prevent an `OrderReturn` from being initiated on Orders completed more than a specific time ago
-- We plan to expand this functionality to Order Approvals in the future.
+- We plan to expand this functionality to Order Approvals in the future
 
 ## New `IntegrationEvent` Type: `OrderReturn`
 OrderCloud does not provide an opinion on `RefundAmount` at the `OrderReturn` or `ItemToReturn` levels due to the fact there are an infinite number of ways a customer might wish to calculate a refund, which would include complicated external events such as adjusting tax collection records. Since we are unable to provide an informed opinion, we provide the customer with the opportunity to set up a custom `IntegrationEvent` to handle `OrderReturn` calculations.
@@ -122,7 +122,7 @@ Response expected by OrderCloud
 ```
 **Notes:**
 - The endpoint the Integration Event will `POST` the payload to at the `CustomImplementationUrl` is  `/calculateorderreturn`
-- Unlike other `IntegrationEvent` types, there are no publicly available endpoints associated with the event. It is called from within the OrderCloud code when an `OrderReturn` is created or updated.
+- Unlike other `IntegrationEvent` types, there are no publicly available endpoints associated with the event. It is called from within the OrderCloud code when an `OrderReturn` is created or updated
 - If an `OrderAdmin` passes in a valid `RefundAmount` (either one for every `ItemToReturn` or if there are no `ItemsToReturn` a value at the `OrderReturn` level), the IntegrationEvent will not be called
 
 ## New Message Sender Types
