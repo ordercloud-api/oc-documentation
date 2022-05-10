@@ -6,6 +6,13 @@ import svg404lady from '../assets/svg/lady.svg'
 import svg404cloud from '../assets/svg/cloud.svg'
 import '../components/layout.css'
 import { Link } from 'gatsby'
+import { useEffect } from 'react'
+
+// Need to manually hide the placeholder overlay on 404
+
+if (typeof window !== `undefined`) {
+  document.querySelector('#placeholder').classList.add('hide')
+}
 
 const NotFoundPage = () => (
   <Layout>

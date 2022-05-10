@@ -34,7 +34,7 @@ The documents folder controls **Knowledge base** content and is managed and appr
 | type | `enum` | `true` | Allows us to differentiate between articles and tutorials in the knowledge base, possible values: `article`, `tutorial`.
 | title | `string` | `true` | The title of the page, it will appear as the first `H1` tag in the content of the page as well as the page `<title>` element (suffixed with ` \| Sitecore OrderCloud`) |
 | description | `string` | `true` | A short description of the page, this will be used in `meta[name="description"]` tag for SEO purposes |
-| author | `string` | `true` | This is the author _identifier_, when set, Gatsby will query data in `root/src/data/author.json` to retrieve the author's name & title. Additionally, there should always be a `.jpg` image for each author entry where the name of the image is the `author.id`. |
+| author | `string` | `true` | This is the author _identifier_, when set, Gatsby will query data in `root/src/data/author.json` to retrieve the author's name & title. Additionally, there should always be a `.jpg` image in `root/static/authors` for each author entry where the name of the image is the `author.id`. |
 | publishDate | `date` | `true` | The date the document is first published using the format `YYYY-MM-DD`. |
 | updatedDate | `date` | `false` | If you are making changes to an existing document update this value using the format `YYYY-MM-DD`. |
 | tags | `string[]` | `true` | An array of strings that you would like this document to be filtered on. This also controls related articles, which will pull up documents with the same tag so be sure you check if a tag already exists for the topic you are thinking of. If you are unsure about what tag to use, consult @rwatt.
@@ -68,6 +68,19 @@ File names in these directories should follow a specific pattern: `vN.N.NNN.mdx`
 ## Writing Content
 
 Follow the standard [markdown syntax](https://www.markdownguide.org/cheat-sheet/) while writing content. Raw HTML is supported, but not encouraged - sometimes it might be easier to write a `<table>` in HTML. It is also acceptable when using some of the custom components available in the gatsby project.
+
+### Resolving Spelling Errors
+
+We are using a GitHub Action to check for spelling errors whenever you create a new PR. The action uses [cspell](http://cspell.org/) to check for mistakes.
+
+View the details of the action in GitHub to see which files contain spelling errors. Fix and push again.
+
+> "What if my word is correct, but it just isn't in the dictionary?"
+
+We tried our best to cover a litany of jargon but if your word is still getting an error, you have two options:
+
+1. locate the  `"words"`  section of the `cSpell.json`. This section is best suited for words that could be used again in the future *(think company names)*. 
+2. locate the `"ignoreWords"` section at the bottom of the `cSpell.json`. This is best suited for words that are more than likely a one-off to your post.
 
 ## Custom Components
 > Custom components need to be written in one line to avoid breaking the `.mdx` parser in Gatsby.

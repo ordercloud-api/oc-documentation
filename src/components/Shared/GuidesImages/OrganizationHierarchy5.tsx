@@ -9,37 +9,80 @@ import {
 } from '@material-ui/core'
 import { Business, People, Person } from '@material-ui/icons'
 import React from 'react'
-import { sherpablue, seafoam, sunset } from '../../../theme/ocPalette.constants'
-import globalGraphicsStyles from './GlobalGraphicsStyles'
+import { mediumgrey, sitecore } from '../../../theme/ocPalette.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    ...globalGraphicsStyles(theme),
-    chip: {
-      zIndex: 2,
-      padding: theme.spacing(1.5, 1),
-      border: `1px solid ${sherpablue[50]}`,
-      borderRadius: theme.spacing(7),
-      position: 'absolute' as 'absolute',
-      top: theme.spacing(-2),
+    surfaceLevel1: {
+      margin: theme.spacing(9, 0),
+      padding: theme.spacing(8, 6, 6, 6),
+      borderRadius: theme.spacing(0.35),
+      flexGrow: 1,
+      position: 'relative',
+      boxShadow: theme.shadows[3],
+    },
+    chipContainer: {
+      position: 'relative',
+      textAlign: 'center',
+    },
+    chipBase: {
+      padding: theme.spacing(2.5, 1.5),
+      borderRadius: 0,
+      boxShadow: theme.shadows[1],
+      backgroundColor: mediumgrey[50],
+      '& svg': {
+        fontSize: '1.5em',
+        color: theme.palette.text.secondary,
+      },
+    },
+    chipUserFull: {
+      border: `1px solid ${mediumgrey[50]}`,
+    },
+    chipOverlaying: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
       width: 'max-content',
+      boxShadow: 'unset',
+      backgroundColor: 'transparent',
+      padding: theme.spacing(0.5),
     },
-    chipSpacing: {
-      margin: theme.spacing(2, 0),
+    chipLabel: {
+      fontFamily: theme.typography.h1.fontFamily,
+      color: theme.palette.text.secondary,
+      fontSize: '.75rem',
+      fontWeight: 600,
+      textTransform: 'uppercase',
     },
-    chipGold: {
-      backgroundColor: sunset[500],
-      color: '#fff',
+    chipGroupA: {
+      backgroundColor: sitecore['teal'],
+      border: 'none',
+      '& .MuiChip-label': {
+        color: '#fff',
+      },
       '& > svg': {
         color: '#fff',
       },
     },
-    secondaryContainer: {
-      position: 'relative' as 'relative',
-      padding: theme.spacing(6, 3),
-      backgroundColor: 'transparent',
-      display: 'flex' as 'flex',
-      justifyContent: 'space-between' as 'space-between',
+    chipGroupB: {
+      backgroundColor: sitecore['red'],
+      border: 'none',
+      '& .MuiChip-label': {
+        color: '#fff',
+      },
+      '& > svg': {
+        color: '#fff',
+      },
+    },
+    chipGroupC: {
+      backgroundColor: sitecore['violet'],
+      border: 'none',
+      '& .MuiChip-label': {
+        color: '#fff',
+      },
+      '& > svg': {
+        color: 'white',
+      },
     },
     containerChippers: { flex: 'none' },
     gridContainerChip: {
@@ -47,6 +90,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexFlow: 'column nowrap',
       alignItems: 'center',
       justifyContent: 'center',
+      gap: '16px',
     },
     chipUserBadge: {
       height: 33,
@@ -66,10 +110,10 @@ const useStyles = makeStyles((theme: Theme) =>
         zIndex: -1,
         width: 43,
         height: 43,
-        borderRadius: 50,
+        borderRadius: 0,
         display: 'block',
         margin: -8,
-        background: `linear-gradient( to top, ${sherpablue[400]} 0%, ${sherpablue[400]} 49%, ${seafoam[400]} 49%, ${seafoam[400]} 100%)`,
+        background: `linear-gradient( to top, ${sitecore['red']} 0%, ${sitecore['red']} 49%, ${sitecore['teal']} 49%, ${sitecore['teal']} 100%)`,
       },
       '& > span': {
         display: 'none',
@@ -77,25 +121,27 @@ const useStyles = makeStyles((theme: Theme) =>
       '& > svg': {
         margin: 0,
         padding: theme.spacing(0.5),
-        backgroundColor: sherpablue[100],
-        borderRadius: 50,
+        backgroundColor: mediumgrey[50],
+        color: theme.palette.text.secondary,
+        boxShadow: theme.shadows[1],
+        borderRadius: 0,
         height: 36,
         width: 36,
       },
     },
     chipUserBadgeA: {
       '&::after': {
-        background: `linear-gradient( to top, ${sherpablue[400]} 0%, ${sherpablue[400]} 49%, ${sherpablue[400]} 49%, ${sherpablue[400]} 100%)`,
+        background: `linear-gradient( to top, ${sitecore['red']} 0%, ${sitecore['red']} 49%, ${sitecore['red']} 49%, ${sitecore['red']} 100%)`,
       },
     },
     chipUserBadgeB: {
       '&::after': {
-        background: `linear-gradient( to top, ${seafoam[400]} 0%, ${seafoam[400]} 49%, ${seafoam[400]} 49%, ${seafoam[400]} 100%)`,
+        background: `linear-gradient( to top, ${sitecore['teal']} 0%, ${sitecore['teal']} 49%, ${sitecore['teal']} 49%, ${sitecore['teal']} 100%)`,
       },
     },
     chipUserBadgeC: {
       '&::after': {
-        background: `linear-gradient( to top, ${sunset[500]} 0%, ${sunset[500]} 49%, ${sunset[500]} 49%, ${sunset[500]} 100%)`,
+        background: `linear-gradient( to top, ${sitecore['violet']} 0%, ${sitecore['violet']} 49%, ${sitecore['violet']} 49%, ${sitecore['violet']} 100%)`,
       },
     },
     figureCaption: {
@@ -110,13 +156,13 @@ const useStyles = makeStyles((theme: Theme) =>
 const OrgHierarchyImage5: React.FunctionComponent = () => {
   const classes = useStyles({})
   return (
-    <Paper className={classes.Paper}>
+    <Paper className={classes.surfaceLevel1}>
       <Chip
         color="primary"
         classes={{
           label: classes.chipLabel,
         }}
-        className={classes.chip}
+        className={`${classes.chipBase} ${classes.chipOverlaying}`}
         icon={<Business />}
         label="Company"
       />
@@ -127,7 +173,7 @@ const OrgHierarchyImage5: React.FunctionComponent = () => {
             classes={{
               label: classes.chipLabel,
             }}
-            className={`${classes.chipUser} ${classes.chipSpacing}`}
+            className={`${classes.chipBase} ${classes.chipUserFull} ${classes.chipGroupA}`}
             icon={<People />}
             label="User Group A"
           />
@@ -137,7 +183,7 @@ const OrgHierarchyImage5: React.FunctionComponent = () => {
             classes={{
               label: classes.chipLabel,
             }}
-            className={`${classes.chipUser} ${classes.chipSpacing}`}
+            className={`${classes.chipBase} ${classes.chipUserFull} ${classes.chipGroupB}`}
             icon={<People />}
             label="User Group B"
           />
@@ -146,7 +192,7 @@ const OrgHierarchyImage5: React.FunctionComponent = () => {
             classes={{
               label: classes.chipLabel,
             }}
-            className={`${classes.chipUser} ${classes.chipSpacing} ${classes.chipGold}`}
+            className={`${classes.chipBase} ${classes.chipUserFull} ${classes.chipGroupC}`}
             icon={<People />}
             label="User Group C"
           />

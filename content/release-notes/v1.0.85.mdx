@@ -40,11 +40,11 @@ What will likely be the most common is having one Commerce Role assigned to an A
 
 However, perhaps you want to have one web page, one application where both your buyer users and your admin users can go. One API Client can have multiple _commerce access roles_ to accomplish this.
 
-When your admin user authenticates, the front-end application will show the admin different options than your buyer users will see. This puts the onus of separating functionality visibility on the UI, likely checking [user security roles]() to show or hide functionality.
+When your admin user authenticates, the front-end application will show the admin different options than your buyer users will see. This puts the onus of separating functionality visibility on the UI, likely checking [user security roles](/knowledge-base/security-profiles) to show or hide functionality.
 
 Notably, you can assign _all_ [buyers](/api-reference/buyers) in a Company Organization to an API Client ID, or only specific ones.
 
-Finally, you can assign a Default context user to an API Client ID. This defines a user that acts as a template for [client credential](/platform-guides/authentication/oauth2-workflows/what-is-oauth-) access to the site. The template user sets what security profiles and things like addresses, products, etc that an unauthenticated user will have access to. This allows things like [anonymous shopping](/platform-guides/authentication/anonymous-shopping), or a back-end integration to update your product catalog.
+Finally, you can assign a Default context user to an API Client ID. This defines a user that acts as a template for [client credential](/knowledge-base/authentication#ordercloud-workflows) access to the site. The template user sets what security profiles and things like addresses, products, etc that an unauthenticated user will have access to. This allows things like [anonymous shopping](/platform-guides/authentication/anonymous-shopping), or a back-end integration to update your product catalog.
 
 **Please note**, assigning a default context user to an API CLient that has multiple buyers, seller, or supplier accesses assigned to it allows access to **all** assigned seller, buyer, or suppliers. Thus, you _can_ create an API Client ID with a seller, buyer, and supplier access and a default context user, but you _really probably shouldn't_, unless you really really want that Default Context User to be able to have access, however limited, to all your buyer, supplier and seller information.
 

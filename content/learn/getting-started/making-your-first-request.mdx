@@ -25,6 +25,13 @@ In the example below we are retrieving, and in some examples also storing an acc
 
 Note: If a ClientSecret is defined on the API Client, it will be required for all OAuth workflows
 
+The base URL is determined by the selected region and environment when first creating your marketplace. Please check the base url by navigating to the market place in the api console near the top left and replace it in the following snippets.
+
+
+![base_url](/images/learn/getting-started/base-url.jpg)
+
+
+
 <CodeExample
   title="Password Grant-Type Workflow"
   content={{
@@ -119,7 +126,7 @@ var client = new OrderCloudClient(new OrderCloudClientConfig {
 `}}
 />
 
-If you request a scope that includes _more_ API roles than the user is assigned under `AvailableRoles` you will not recieve an error. Instead, the token will simply include whatever roles the user _does_ have in the requested scope. This allows you to maintain a single all encompassing scope variable for your implementation and use it for any authentication request.
+If you request a scope that includes _more_ API roles than the user is assigned under `AvailableRoles` you will not receive an error. Instead, the token will simply include whatever roles the user _does_ have in the requested scope. This allows you to maintain a single all encompassing scope variable for your implementation and use it for any authentication request.
 
 OrderCloud does not differentiate between incorrect username vs. incorrect password requests to avoid password enumeration. Here are the possible OrderCloud error codes for this particular request:
 

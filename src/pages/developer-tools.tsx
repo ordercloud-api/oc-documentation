@@ -88,9 +88,10 @@ const useStyles = makeStyles((theme: Theme) =>
     boxMain: {
       padding: theme.spacing(2, 2, 3),
       textAlign: 'center',
+      gap: '16px',
     },
-    btnSpacer: {
-      margin: theme.spacing(0, 0.5),
+    btnGroup: {
+      gap: '16px',
     },
   })
 )
@@ -132,7 +133,7 @@ const DeveloperTools: FunctionComponent = () => {
                 Supports both TypeScript and JavaScript development with any of
                 your favorite UI component libraries
               </Typography>
-              <Toolbar disableGutters>
+              <Toolbar disableGutters className={classes.btnGroup}>
                 <Button
                   variant="contained"
                   color="secondary"
@@ -148,7 +149,6 @@ const DeveloperTools: FunctionComponent = () => {
                   href="https://www.npmjs.com/package/ordercloud-javascript-sdk"
                   target="_blank"
                   rel="noreferrer"
-                  className={classes.btnSpacer}
                 >
                   NPM
                 </Button>
@@ -164,7 +164,7 @@ const DeveloperTools: FunctionComponent = () => {
                 Get up and running fast with our innovative C# SDK to support
                 creating and querying extensible objects for eCommerce
               </Typography>
-              <Toolbar disableGutters>
+              <Toolbar disableGutters className={classes.btnGroup}>
                 <Button
                   variant="contained"
                   color="secondary"
@@ -180,7 +180,6 @@ const DeveloperTools: FunctionComponent = () => {
                   href="https://www.nuget.org/packages/OrderCloud.SDK/"
                   target="_blank"
                   rel="noreferrer"
-                  className={classes.btnSpacer}
                 >
                   NuGet
                 </Button>
@@ -196,7 +195,7 @@ const DeveloperTools: FunctionComponent = () => {
                 A foundational library for crafting your own middleware
                 extensions for webhooks and integrations
               </Typography>
-              <Toolbar disableGutters>
+              <Toolbar disableGutters className={classes.btnGroup}>
                 <Button
                   variant="contained"
                   color="secondary"
@@ -212,7 +211,6 @@ const DeveloperTools: FunctionComponent = () => {
                   href="https://www.nuget.org/packages/ordercloud-dotnet-catalyst"
                   target="_blank"
                   rel="noreferrer"
-                  className={classes.btnSpacer}
                 >
                   NuGet
                 </Button>
@@ -288,7 +286,7 @@ const DeveloperTools: FunctionComponent = () => {
         </Grid>
       </Container>
       <Container maxWidth="lg">
-        <Box paddingY={3} paddingX={20}>
+        <Box pt={6} pb={3} paddingX={20}>
           <Divider />
         </Box>
         <Typography variant="h2" align="center">
@@ -296,34 +294,31 @@ const DeveloperTools: FunctionComponent = () => {
         </Typography>
         <Box paddingY={3} paddingX={20} className={classes.boxMain}>
           <Typography>
-            Don't see a library for your language of choice? OrderCloud is built
-            with Open API standards and our SDKs are generated with libaries
-            such as Swagger, and extended to make it even easier to develop
-            applications. If there's a project you have and are looking for
-            another language, you can generate your own client.
+            Don&apos;t see a library for your language of choice? OrderCloud is
+            built with Open API standards and our SDKs are generated with
+            libraries such as Swagger, and extended to make it even easier to
+            develop applications. If there&apos;s a project you have and are
+            looking for another language, you can generate your own client.
           </Typography>
-          <br />
-          <Button
-            variant="outlined"
-            href="https://api.ordercloud.io/v1/openapi/v3"
-            target="_blank"
-            rel="noreferrer"
-            className={classes.btnSpacer}
+          <Box
+            my={3}
+            display="flex"
+            justifyContent="center"
+            className={classes.btnGroup}
           >
-            Open API Spec
-          </Button>
+            <Button
+              variant="outlined"
+              href="https://api.ordercloud.io/v1/openapi/v3"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open API Spec
+            </Button>
 
-          <ButtonLink
-            variant="outlined"
-            to="/slack"
-            color="secondary"
-            className={classes.btnSpacer}
-          >
-            Join Our Community
-          </ButtonLink>
-        </Box>
-        <Box paddingY={3} paddingX={20}>
-          <Divider />
+            <ButtonLink variant="outlined" to="/slack" color="secondary">
+              Join Our Community
+            </ButtonLink>
+          </Box>
         </Box>
       </Container>
     </Layout>

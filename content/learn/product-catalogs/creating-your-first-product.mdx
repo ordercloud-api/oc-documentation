@@ -66,7 +66,7 @@ var product = new Product {
     Active = true
 };\n
 try {
-    Product response = await client.Products.CreateAsync(data);
+    Product response = await client.Products.CreateAsync(product);
 } catch(OrderCloudException ex) {
     Console.WriteLine(ex.Message);
 }`
@@ -107,7 +107,7 @@ OrderCloud has taken care of defaulting certain non-nullable values:
 
 In a real solution you would likely include things like inventory, shipping measurements, and ship-from address (for estimating shipping cost), but we are not going to be creating any integrations for this example so we left them blank.
 
-If the shirt came in mulitple sizes or colors, you would likely create a new spec and assign it to the product. _Once again, to keep this simple product specs and variants will be covered in future guides._
+If the shirt came in multiple sizes or colors, you would likely create a new spec and assign it to the product. _Once again, to keep this simple product specs and variants will be covered in future guides._
 
 ### Adding a Default Price Schedule
 Now that we know what product we are working with, let's come up with a reasonable price for it. We do this by creating a new Price Schedule and then PATCH the product we created with the resulting price schedule ID.

@@ -1,0 +1,20 @@
+name: Spellcheck
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  spellchecking:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Check out the code
+      - uses: actions/setup-node@v1
+        name: Run spell check
+        with:
+          node-version: "12"
+      - run: npm install -g cspell
+      - run: cspell lint --config cSpell.json --no-progress "content/**/*.mdx" "README.md"
+        name: Run spell checker (refer to the README.md for more details on resolving spelling errors.)

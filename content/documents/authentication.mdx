@@ -141,7 +141,7 @@ client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=refresh_token&refresh_
 
 ### Elevated Password Flow
 
-When security really matters. This is the same as the [password grant type workflow](#password-grant-type-workflow) except with an additional requirement of client secret.
+When security really matters. This is the same as the [password grant type workflow](/knowledge-base/authentication#password-grant-type-workflow) except with an additional requirement of client secret.
 
 A successful authentication request with this workflow requires the following information:
 
@@ -199,7 +199,7 @@ When logging in via `/oauth/token`, the following error codes can be returned to
 | `Auth.PasswordExpired` | Based on the security profile, the password is expired | Pwd Reset |
 | `Auth.InsecurePassword` | Password no longer meets requirements, and will need to be changed | Pwd Reset |
 | `Auth.InsufficientRole`  | One or more of the roles requested is not allowed for this user | False |
-| `Auth.SellerNotActive` | The organanization is inactive not not accessible to login | False |
+| `Auth.SellerNotActive` | The MPO is inactive not accessible to login | False |
 | `Auth.UserNotActive` | User is not active, need to complete setup to activate | False |
 | `Auth.LockedOut` | User is locked out due to exceeding the max attempts | False |
 
@@ -243,4 +243,4 @@ Content-Type: application/json; charset=UTF-8
 
 ## Conclusion
 
-As you can see there are many different ways that you can obtain an access token to _give_ someone access to your organization but what about _limiting_ access within your organization? OrderCloud has a built-in way of handling access within your organization via Security Profiles which we'll talk about next.
+As you can see there are many different ways that you can obtain an access token to _give_ someone access to your marketplace but what about _limiting_ access within your marketplace? OrderCloud has a built-in way of handling access within your marketplace via Security Profiles which we'll talk about next.
