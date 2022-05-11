@@ -33,13 +33,9 @@ Note: If a ClientSecret is defined on the API Client, it will be required for al
   content={{
     http: `POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
 Content-Type: application/x-www-form-urlencoded;\n
-{
-    client_id: "INSERT_SHARED_API_CLIENT_ID",
-    grant_type: "password",
-    username: "INSERT_USER_NAME",
-    password: "INSERT_USER_PASSWORD",
-    scope: "Shopper",
-}`,
+	     
+client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=password&username=insert-user-name&password=insert-password&scope=Shopper
+`,
 javascript: `import { Auth, Tokens, Configuration } from "ordercloud-javascript-sdk";\n
 Configuration.Set({
   baseApiUrl: "https://sandboxapi.ordercloud.io",
@@ -111,7 +107,7 @@ A successful authentication request with this workflow requires the following in
 
 ```http
 POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
-Content-Type: text/html; charset=UTF-8
+Content-Type: application/x-www-form-urlencoded;
 
 client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=client_credentials&client_secret=xxxxxxxxxxxxx&scope=Shopper
 ```
@@ -134,7 +130,7 @@ A successful authentication request with this workflow requires the following in
 
 ```http
 POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
-Content-Type: text/html; charset=UTF-8
+Content-Type: application/x-www-form-urlencoded;
 
 client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=refresh_token&refresh_token=xxxxxxxx-xxxxxxxx-xxxx-xxxxxxx&scope=Shopper
 ```
@@ -154,7 +150,7 @@ A successful authentication request with this workflow requires the following in
 
 ```http
 POST https://sandboxapi.ordercloud.io/oauth/token HTTP/1.1
-Content-Type: text/html; charset=UTF-8
+Content-Type: application/x-www-form-urlencoded;
 
 client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&grant_type=client_credentials&client_secret=xxxxxxxxxxxxx&scope=Shopper
 ```
