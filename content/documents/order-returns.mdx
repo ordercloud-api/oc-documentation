@@ -82,7 +82,7 @@ We’re excited to present a new set of features to enable all aspects of the Or
 "SellerApprovalRule": {
   "ID": "",
   "Name": "",
-  "Type": "OrderReturn"
+  "Type": "OrderReturn",
   "Description": "",
   "OwnerID": "",
   "ApprovingGroupID": "",
@@ -103,7 +103,7 @@ We’re excited to present a new set of features to enable all aspects of the Or
 - To enable date based `RuleExpressions` the rules engine now supports a new custom function `now()` which accepts an integer as a parameter
    - For example, if you wanted any `OrderReturn` associated with an `Order` that was completed prior to 30 days ago to route for approval, you would set up an `SellerApprovalRule` with a `RuleExpression` of `Order.DateCompleted < now(-30)`
    - Additionally, a developer can choose to enforce logic in the UI to prevent an `OrderReturn` from being initiated on Orders completed more than a specific time ago
-- `OrderReturn` is the only supported Type currently. We plan to expand this functionality to Order Approvals in the future
+- `OrderReturn` is the only supported Type currently - we plan to expand this functionality to Order Approvals in the future
 
 ## New `IntegrationEvent` Type: `OrderReturn`
 OrderCloud does not provide an opinion on `RefundAmount` at the `OrderReturn` or `ItemToReturn` levels due to the fact there are an infinite number of ways a seller might wish to calculate a refund, which would likely include complicated external events such as adjusting tax collection records. Since we are unable to provide an informed opinion, we provide sellers with the opportunity to set up a custom `IntegrationEvent` to handle `OrderReturn` calculations.
@@ -163,4 +163,4 @@ Response expected by OrderCloud
 - If populated, the OrderReturn Integration Event will be called when creating or updating an OrderReturn
 
 ## Unsubmitted `OrderReturn` Cleanup
-- Unsubmitted `OrderReturns` that have not been updated in the past 14 days will be deleted.
+- Unsubmitted `OrderReturns` that have not been updated in the past 14 days will be deleted
