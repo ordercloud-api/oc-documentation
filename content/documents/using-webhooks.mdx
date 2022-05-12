@@ -121,7 +121,7 @@ This is where you register one or more operations you want to attach your webhoo
 
 ### Elevated Roles
 				
-Elevated roles relay an `access_token` with higher permissions than the client that triggered the webhook. For example, if an authenticated user only had the UserAdmin role but our automated workflow needed to list Categories and perform some other action, we would add CategoryReader to the elevated claims to grant our endpoint a token and simplify our logic. For this example we will choose FullAccess here and save the webhook.
+Elevated roles relay an `access_token` with higher permissions than the client that triggered the webhook. For example, if an authenticated user only had the UserAdmin role but our webhook needed to list Categories and perform some other action, we would add CategoryReader to the `ElevatedRoles`. For this example we will choose FullAccess here and save the webhook.
 
 ### Webhook Registration Example
 
