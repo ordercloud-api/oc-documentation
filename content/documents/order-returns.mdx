@@ -11,9 +11,10 @@ We’re excited to present a new set of features to enable all aspects of the Or
 
 ## Key Highlights
 - An `OrderReturn` must be affiliated with an existing `Order`, and `ItemsToReturn` must be affiliated with existing `LineItems`
+
 - An `OrderReturn` is not required to have any `ItemsToReturn`, and `ItemsToReturn` are not required to have a `Quantity` specified 
    - This allows flexibility for providing refunds not associated with the return of a physical item
-   - Examples include refunding expedited shipping charge due to processing delays or providing a partial discount on an item that arrived damaged 
+   - Examples include refunding expedited shipping charges due to processing delays or providing a partial discount on an item that arrived damaged 
 - A user with the `Shopper` role can create an `OrderReturn` for any order from them (`Order.FromUserID`)
    - Anonymous users are prohibited from creating or modifying `OrderReturns`
 - A user with the `OrderAdmin` role can create an `OrderReturn` for any `Order` visible to them
@@ -27,7 +28,8 @@ We’re excited to present a new set of features to enable all aspects of the Or
 ![Order Return Flow](/images/knowledge-base/inline/order-returns/order-return-flow.png)
 
 ## New Resource `OrderReturn`
-```
+
+```json
 "OrderReturn": {
   "ID": "",
   "OrderID": "" //required
@@ -49,7 +51,7 @@ We’re excited to present a new set of features to enable all aspects of the Or
   "LineItemID": "", //required
   "Quantity": 0,
   "RefundAmount": 0,
-  "Comments", ""
+  "Comments": ""
 }
 ```
 
@@ -71,7 +73,7 @@ We’re excited to present a new set of features to enable all aspects of the Or
 - `GET v1/orderreturns/{returnID}/eliglbleapprovers`
 
 ## New Resource `SellerApprovalRule`
-```
+```json
 "SellerApprovalRule": {
   "ID": "",
   "Name": "",
@@ -102,14 +104,14 @@ We’re excited to present a new set of features to enable all aspects of the Or
 OrderCloud does not provide an opinion on `RefundAmount` at the `OrderReturn` or `ItemToReturn` levels due to the fact there are an infinite number of ways a seller might wish to calculate a refund, which would likely include complicated external events such as adjusting tax collection records. Since we are unable to provide an informed opinion, we provide sellers with the opportunity to set up a custom `IntegrationEvent` to handle `OrderReturn` calculations.
 
 Payload provided by OrderCloud to the `CustomImplementationUrl`
-```
+```json
 "OrderReturnPayload": {
   "OrderReturn": {},
   "OrderWorksheet": {}
 }
 ```
 Response expected by OrderCloud
-```
+```json
 "OrderReturnResponse": {
   "RefundAmount": 0,
   "ItemsToReturnCalcs": [] // see below
@@ -121,7 +123,7 @@ Response expected by OrderCloud
 }
 ```
 **Notes:**
-- The endpoint the Integration Event will `POST` the payload to at the `CustomImplementationUrl` is  `/calculateorderreturn`
+- The endpoint the Integration Event will `POST` the payload to the `CustomImplementationUrl` is `/calculateorderreturn`
 - Unlike other `IntegrationEvent` types, there are no publicly available endpoints associated with the event. It is called from within the OrderCloud code when an `OrderReturn` is created or updated
 - If an `OrderAdmin` passes in a valid `RefundAmount` (either one for every `ItemToReturn` or if there are no `ItemsToReturn` a value at the `OrderReturn` level), the IntegrationEvent will not be called
 
