@@ -57,27 +57,10 @@ const knowledgeBase = `{
 }`
 
 const apiRefQuery = `{
-  allSitePage(filter: {path: {glob: "/api-reference/*/*/*"}, context: {}}) {
+  allSitePage(filter: {path: {glob: "/api-reference/*/*/*"}}) {
     nodes {
       path
-      context {
-        operation {
-          operationId
-          summary
-          description
-          verb
-          path
-          security {
-            OAuth2
-          }
-          section {
-            name
-          }
-          resource {
-            name
-          }
-        }
-      }
+      pageContext
     }
   }
 }`
@@ -130,7 +113,7 @@ const queries = [
           summary,
           verb,
           security,
-        } = result.context.operation
+        } = result.pageContext.operation
         return {
           objectID: operationId,
           link: result.path,
