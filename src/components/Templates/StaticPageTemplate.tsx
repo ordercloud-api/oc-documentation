@@ -11,7 +11,6 @@ import MDXRenderer from 'gatsby-plugin-mdx/mdx-renderer'
 import React from 'react'
 import { Helmet } from 'react-helmet'
 import '../../styles/doc-template.css'
-import { seafoam } from '../../theme/ocPalette.constants'
 import Layout from '../Layout/Layout'
 
 export interface StaticPageFrontmatter {

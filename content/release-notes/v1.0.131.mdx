@@ -3,7 +3,7 @@ apiVersion: 1.0.131
 date: 2020-01-07
 ---
 
-- New Orders endpoint: `POST v1/orders/direction/{orderID}/complete` - Changes an order's Status from `Open` to `Complete`, without the need to create Shipments. Note that this action is irreversable, i.e. Status cannot be reverted to `Open` by removing Shipments, for example.
+- New Orders endpoint: `POST v1/orders/direction/{orderID}/complete` - Changes an order's Status from `Open` to `Complete`, without the need to create Shipments. Note that this action is irreversible, i.e. Status cannot be reverted to `Open` by removing Shipments, for example.
 - New Orders endpoint: `POST v1/orders/direction/{orderID}/validate` - Performs validation on the current state of an unsubmitted order. For example, verifies that Inventory is sufficient (if enforced) and any applied Promotions are still valid. Returns HTTP status 204 (No Content) if the order is valid, otherwise 400 with an array of error objects (much like what would be returned if attempting to submit an invalid order).
 - OpenAPI 3.0 spec exposed at `v1/openapi/v3`. 2.0 spec also exposed at `v1/openapi/v2`, which is identical to `v1/swagger`. **The latter endpoint should be considered deprecated and will likely be removed in a future release.**
 - New property on `OpenIdConnect` model: `UrlEncoded`. Set to `true` to configure for identity providers that only support passing credentials via `application/x-www-form-urlencoded` formatted body content.

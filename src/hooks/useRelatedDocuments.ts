@@ -21,7 +21,7 @@ export const useRelatedDocuments = (tags: string[]) => {
               publishDate(formatString: "MMMM Do, YYYY")
               updatedDate(formatString: "MMMM Do, YYYY")
               author {
-                id
+                username
                 name
                 title
               }

@@ -1,52 +1,62 @@
 [
     {
-        "id": "rwatt",
+        "username": "rwatt",
         "name": "Robert Watt",
         "title": "Senior Developer"
     },
     {
-        "id": "tmenier",
+        "username": "tmenier",
         "name": "Todd Menier",
         "title": "Chief Architect"
     },
     {
-        "id": "sdavis",
+        "username": "sdavis",
         "name": "Steve Davis",
         "title": "Chief Technology Officer"
     },
     {
-        "id": "jhookom",
+        "username": "jhookom",
         "name": "Jake Hookom",
         "title": "Chief Product Officer"
     },
     {
-        "id": "jilse",
+        "username": "jilse",
         "name": "Jeff Ilse",
         "title": "Lead Engineer"
     },
     {
-        "id": "mposthumus",
+        "username": "mposthumus",
         "name": "Miranda Posthumus",
         "title": "Senior Engineer"
     },
     {
-        "id": "oheywood",
+        "username": "oheywood",
         "name": "Oliver Heywood",
         "title": "Senior Developer"
     },
     {
-        "id": "awilson",
+        "username": "awilson",
         "name": "Ashley Wilson",
         "title": "Product Manager"
     },
     {
-        "id": "asutherland",
+        "username": "asutherland",
         "name": "Andrew Sutherland",
         "title": "Partner Technical Advisor"
     },
     {
-        "id": "dsteinmetz",
+        "username": "dsteinmetz",
         "name": "DJ Steinmetz",
         "title": "Senior Developer"
+    },
+    {
+        "username": "sc-roblloyd",
+        "name": "Rob Lloyd",
+        "title": "Senior Developer"
+    },
+    {
+        "username": "crhistianramirez",
+        "name": "Crhistian Ramirez",
+        "title": "Partner Technical Advisor"
     }
 ]

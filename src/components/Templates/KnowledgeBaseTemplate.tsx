@@ -168,9 +168,9 @@ export default function KnowledgeBaseTemplate(
             className={classes.backButton}
             to={`/knowledge-base${
               location.state &&
-              location.state.selectedTags &&
-              location.state.selectedTags.length
-                ? `?t=${location.state.selectedTags.join(',')}`
+              location.state['selectedTags'] &&
+              location.state['selectedTags'].length
+                ? `?t=${location.state?.['selectedTags'].join(',')}`
                 : ''
             }`}
           >
@@ -185,10 +185,12 @@ export default function KnowledgeBaseTemplate(
           <Typography variant="h1">{doc.mdx.frontmatter.title}</Typography>
           <SuggestEditButton path={absolutePath} />
           <Box display="flex" mb={3} alignItems="center">
-            <Avatar
-              alt={doc.mdx.frontmatter.author.name}
-              src={`/images/authors/${doc.mdx.frontmatter.author.id}.jpg`}
-            ></Avatar>
+            {doc.mdx.frontmatter.author && (
+              <Avatar
+                alt={doc.mdx.frontmatter.author.name}
+                src={`/images/authors/${doc.mdx.frontmatter.author.username}.jpg`}
+              ></Avatar>
+            )}
             <div style={{ paddingLeft: 8 }}>
               <Typography color="textSecondary">
                 {`${
@@ -196,7 +198,7 @@ export default function KnowledgeBaseTemplate(
                   doc.mdx.frontmatter.publishDate
                     ? 'Updated'
                     : 'Published'
-                } by ${doc.mdx.frontmatter.author.name}`}
+                } by ${doc.mdx.frontmatter.author ? doc.mdx.frontmatter.author.name : 'Unknown'}`}
               </Typography>
               <Typography color="textSecondary">
                 {doc.mdx.frontmatter.updatedDate !==
@@ -267,7 +269,7 @@ export default function KnowledgeBaseTemplate(
                       component={Link}
                       state={{
                         selectedTags:
-                          location.state && location.state.selectedTags,
+                          location.state && location.state['selectedTags'],
                       }}
                       to={utility.resolvePath(t.fileAbsolutePath)}
                       key={t.id}
@@ -302,7 +304,7 @@ export const query = graphql`
         publishDate(formatString: "MMMM Do, YYYY")
         updatedDate(formatString: "MMMM Do, YYYY")
         author {
-          id
+          username
           name
           title
         }

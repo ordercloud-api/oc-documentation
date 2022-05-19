@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, makeStyles, Theme, createStyles } from '@material-ui/core'
 import { ButtonProps } from '@material-ui/core/Button'
 import classNames from 'classnames'
-import { darken, lighten, fade } from '@material-ui/core/styles'
+import { darken } from '@material-ui/core/styles'
 import { Link } from 'gatsby'
 
 const useStyles = makeStyles((theme: Theme) =>

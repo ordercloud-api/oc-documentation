@@ -1,11 +1,4 @@
-import {
-  Collapse,
-  createStyles,
-  makeStyles,
-  Typography,
-  Theme,
-} from '@material-ui/core'
-import { ExpandLess, ExpandMore } from '@material-ui/icons'
+import { createStyles, makeStyles, Typography, Theme } from '@material-ui/core'
 import { Link } from 'gatsby'
 import rsc from 'replace-special-characters'
 import React from 'react'
@@ -90,7 +83,7 @@ const findActiveArticle = (articles: Article[], path: string) => {
 }
 
 const stripSpecialChars = (string: string) => {
-  return string.replace(/[’/():;"]/gi, '')
+  return string.replace(/[^\w\d\s\-\`]/g, '')
 }
 
 export const transformHeadingToId = (string: string) => {

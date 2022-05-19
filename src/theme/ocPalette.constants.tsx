@@ -273,3 +273,14 @@ export const darkgrey = {
   A700: '#ff0505',
   contrastDefaultColor: 'light',
 }
+
+export const sitecore = {
+  red: '#eb1f1f',
+  darkRed: '#ab000',
+  violet: '#5548d9',
+  darkViolet: '#333378',
+  teal: '#02999a',
+  darkTeal: '#005e6e',
+  charcoal: '#545859',
+  darkCharcoal: '#212621',
+}

@@ -12,7 +12,7 @@ Released to Prod on Sunday, May 7th, 2017.
 
 ## Bug Fixes
 
-- Previously, we required `CatalogAdmin` and `ProductAdmin` to list Catalog and Product assignments, respectively. This is now changed to be consistant with other assignment listing role checks so that the user only needs `CatalogReader` / `ProductReader`.
+- Previously, we required `CatalogAdmin` and `ProductAdmin` to list Catalog and Product assignments, respectively. This is now changed to be consistent with other assignment listing role checks so that the user only needs `CatalogReader` / `ProductReader`.
 - Now, if you patch a line item unit price with either `null` or an empty string, the price will be recalculated.
 - No more 500 error when you try to delete a category with children.
 - Generating variant IDs for Spec Option IDs that have blank spaces in their values will no longer result in IDs with spaces. Now all spaces are translated as -.

@@ -8,7 +8,7 @@ updatedDate:    2021-04-04
 tags:           ["Integrations", "Webhooks"]
 ---
 
-The OrderCloud API supports user-defined HTTP callbacks, known as webhooks. Webhooks are easy to register for your entire organization or on an application specific level. You can choose exactly which OrderCloud API endpoints will trigger your hook, the roles to be passed onto the configured Base URL, and any additional configuration data OrderCloud may need to authenticate into 3rd party systems.
+The OrderCloud API supports user-defined HTTP callbacks, known as webhooks. Webhooks are easy to register for your entire marketplace or on an application specific level. You can choose exactly which OrderCloud API endpoints will trigger your hook, the roles to be passed onto the configured Base URL, and any additional configuration data OrderCloud may need to authenticate into 3rd party systems.
 
 Webhooks can only be triggered by OrderCloud endpoints that write to the database (POST, PUT, PATCH, DELETE). The request body sent to the OrderCloud endpoint (if any) will be passed along to the webhooks that use it.
 
@@ -62,7 +62,7 @@ To better understand what OrderCloud sends in webhooks, here is an update to a b
 - **LogID** for correlating back to any support with OrderCloud
 - **UserToken** the JWT token of the user who requested the original request
 - **Request.Body** what was passed in the original request, be mindful that PATCH can be partially populated requests
-- **Reqeust.Headers** passed headers from the original request
+- **Request.Headers** passed headers from the original request
 - **Response** if this was a Post-Webhook, then this would be populated with the response from OrderCloud
 - **ConfigData** optional data you configure with your original webhook within OrderCloud
 
@@ -94,14 +94,14 @@ If you set ``proceed`` to ``false``, then an error message will be sent back to 
 
 Back in the <PortalLink to="/console">OrderCloud Console</PortalLink> create a new webhook
 
-![create_webhook](/images/knowledge-base/inline/using-webhooks/create_webhook.png)
+![create-webhook](/images/knowledge-base/inline/using-webhooks/create-webhook.png)
 
 ### General Information
 				
 - **Name** internally available name or label to use
 - **Description** optional information you want to add on your webhook
 - **Secret** relates to the ``x-oc-hash`` where OrderCloud will use this secret to generate a fingerprint you can validate against
-- **Payload URL** where your webhook is publically available
+- **Payload URL** where your webhook is publicly available
 - **Pre-hook** if you want this hook to fire before updating OrderCloud is done processing
 
 ### API Client Assignments
@@ -118,7 +118,7 @@ This is where you register one or more operations you want to attach your webhoo
 
 ### Elevated Roles
 				
-Elevated roles are a used for passing along an `access_token` with higher permissions than the client that triggered the webhook. For instance, if the authenticated user only had the UserAdmin role but our Zap needs to list Categories and perform some other action, we would add CategoryReader to the elevated claims. For this example we will choose FullAccess here and save the webhook.
+Elevated roles relay an `access_token` with higher permissions than the client that triggered the webhook. For example, if an authenticated user only had the UserAdmin role but our webhook needed to list Categories and perform some other action, we would add CategoryReader to the `ElevatedRoles`. For this example we will choose FullAccess here and save the webhook.
 
 ### Webhook Registration Example
 

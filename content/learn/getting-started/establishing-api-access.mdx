@@ -21,7 +21,7 @@ Choosing the right name for your API client is important. By picking something d
 
 Jump down to **Client Access Configuration** and make the following changes:
 
-![API Client Access Configuration](/images/learn/getting-started/establishing-1.jpg)
+![establishing-1](/images/learn/getting-started/establishing-1.jpg)
 
 We are leaving supplier access turned off because we will not be diving into the concept of suppliers in this walkthrough. By selecting **Allow All Sellers** and **Allow All Buyers** we are saying that any admin user (seller) and any buyer user (shopper) can authenticate using this new API client. It's worth noting that this type of API configuration that allows both buyers and sellers is not very common. Usually buyers and sellers sign into completely different applications so it makes more sense to create a separate API client for each. We're creating a shared API client here for simplicity.
 
@@ -33,7 +33,8 @@ For the purposes of this walkthrough we will want to be able to access the Order
 ### Create an Admin User
 In the left-hand resource menu select **Seller > Admin Users** and then in the operation selector where it says **GET /adminusers** click to select the _"Create a new admin user"_ option.
 
-![API Client Access Configuration](/images/learn/getting-started/establishing-2.jpg)
+![establishing-2](/images/learn/getting-started/establishing-2.jpg)
+
 
 This will pull up a form where you can either fill in each field individually, or paste in a JSON object of the entire request body. Copy and paste the following into the JSON field:
 
@@ -100,8 +101,7 @@ Navigate to **Authentication and Authorization > Security Profiles** and choose 
 
 If you're viewing the enhanced UI click the lightning bolt icon on the left side of the toolbar to access the operation selector.
 
-![Turning off Enhanced UI](/images/learn/getting-started/establishing-3.jpg)
-
+![establishing-3](/images/learn/getting-started/establishing-3.jpg)
 
 Create the following security profiles:
 
@@ -175,4 +175,4 @@ Woof! We covered quite a lot in this guide. Let's review everything we did to es
 7. Assigned our admin security profile to the seller organization
 8. Assigned our buyer security profile to the buyer organization
 
-Congratulations on getting this far - this is a huge step in understanding some of the most important concepts in OrderCloud. In the next and final guide of the "Getting Started" chapter, we will show you how to retrieve an access token for each user outside of the Portal using our OAuth 2.0 Password grant type and use that token to make our first bonafide OrderCloud API request!
+Congratulations on getting this far - this is a huge step in understanding some of the most important concepts in OrderCloud. In the next and final guide of the "Getting Started" chapter, we will show you how to retrieve an access token for each user outside of the Portal using our OAuth 2.0 Password grant type and use that token to make our first genuine OrderCloud API request!
