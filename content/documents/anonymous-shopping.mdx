@@ -4,7 +4,7 @@ title:          Anonymous Shopping
 description:    Anonymous Shopping, or Guest Checkout, is when a user is enabled to browse a catalog of products and/or checkout without registering themselves. Accomplishing this requires OrderCloud developers to pull together a lot of platform knowledge. We'll summarize that information here.
 author:         rwatt
 publishDate:    2016-02-20
-updatedDate:    2019-05-24
+updatedDate:    2022-04-29
 tags:           ["API Clients", "Users", "Authentication"]
 ---
 
@@ -18,11 +18,11 @@ An anonymous buyer experience must work within a default context user - otherwis
 
 Once you have an active user, navigate to the <PortalLink to="/console">Console</PortalLink> and click on the API Clients from the left hand nav and select your API Client that has Buyer Access defined. 
 
-![Buyers Access](/images/knowledge-base/inline/anonymous-shopping/buyers_access.png)
+![Buyers Access](/images/knowledge-base/inline/anonymous-shopping/buyers-access.jpg)
 
 Now, scroll down to the bottom of the detail for that API Client until you get to the section titled "Default Context User" then search for and select a buyer user. This will be the user that all anonymous users will inherit security and assignments from.
 
-![Default Context User](/images/knowledge-base/inline/anonymous-shopping/default-context-user.png)
+![Default Context User](/images/knowledge-base/inline/anonymous-shopping/default-context-user.jpg)
 
 Finally, scroll down a bit further and make sure "Anonymous Buyer Enabled?" is toggled on.
 
@@ -50,7 +50,7 @@ The request is relatively simple: provide the anonymous access_token for the `an
 API Reference: <Link to="/api-reference/me-and-my-stuff/me/register">Register an anonymous user</Link>
 
 ```http
-POST https://api.ordercloud.io/v1/me/register?anonUserToken=eyJ0eXAi0iJKV1QiLCJhbGci0iJ9... HTTP/1.1
+PUT https://api.ordercloud.io/v1/me/register?anonUserToken=eyJ0eXAi0iJKV1QiLCJhbGci0iJ9... HTTP/1.1
 Authorization: Bearer eyJ0eXAi0iJKV1QiLCJhbGci0iJ9...
 Content-Type: application/json
 
@@ -67,4 +67,4 @@ Content-Type: application/json
 }
 ```
 
-Similar to any other auth response you will receive an access_token after profiling the user. At this point, remove the anonymous access_token and continue forward with the profiled user's access_token.
+Similar to any other auth response you will receive an `access_token` after profiling the user. At this point, remove the anonymous `access_token` and continue forward with the profiled user's `access_token`.
