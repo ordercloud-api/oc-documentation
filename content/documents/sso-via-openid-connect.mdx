@@ -85,7 +85,7 @@ Content-Type: application/json
     "OrdercloudApiClient": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     "ConnectClientID": "…",
     "ConnectClientSecret": "…",
-    "AppStartUrl": "https://mysinglpagebuyerapp.com/login?token={0}",
+    "AppStartUrl": "https://my-buyer-application.com/login?token={0}",
     "AuthorizationEndpoint": "…",
     "TokenEndpoint": "…",
     "IntegrationEventID": "integrationeventID" // required for configs created after 03/31/2020
@@ -103,24 +103,6 @@ https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientI
 ```
 
 where `<ID>` matches the ID field of the configuration object above, `<ApiClientID>` matches the OrdercloudAPIClient field, and `<Roles>` is a space separated list of roles requested. Users will be redirected to an IDP route to provide credentials. If the credentials are valid, users will be redirected again to AppStartUrl with a valid Ordercloud token in the URL. Your front-end application will need to handle grabbing this token from the URL and storing it. But otherwise, they have been granted a valid OrderCloud access token!
-
-## Deep Linking
-
-You'll notice that a successful login via the OpenID connect flow will always send the user to your `AppStartUrl`.
-
-This is not always desirable. For example, your marketing department might start sending out links to promotional products. Your user will click on one of these links and might need to log back in. Upon logging in your user will go to the home page _instead of_ the originally intended link.
-
-To handle this you can add an optional `appStartPath` query parameter to the ocrplogin URL.
-
-```
-https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientID>&appStartPath=/products/my-promotional-product
-```
-
-Now once login via OpenID is successful OrderCloud will redirect your user to the URL that resolves to:
-
-```
-{AppStartUrl}/products/my-promotional-product
-```
 
 ## Configuring Your Integration Event Code
 
@@ -174,3 +156,48 @@ Using the token response from your IDP, you can decode the token and use the dat
 ```
 
 Note that in any of the responses your application sends back to OrderCloud, populating `ErrorMessage` in your response will terminate the process.
+
+
+## Deep Linking
+
+In some cases it may be desirable to redirect your user to a different part of your application upon logging in. For example, your marketing department might start sending out links to promotional products. Your user will click on one of these links and need to log in. Upon logging in your user will need go to the product detail page for that specific product _instead of_ the home page.
+
+To handle this you can add an optional `appstartpath` query parameter to the ocrplogin URL.
+
+```
+https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientID>&appstartpath=/products/my-promotional-product
+```
+
+Then, modify your `AppStartUrl` to include `{2}` which will be replaced with whichever value you defined in `appstartpath`. Make sure the value you pass is url-encoded.
+
+For example if I want to redirect users to `/products/myawesomeproduct` upon logging in then my ocrplogin url would look like this:
+
+```
+https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientID>&appstartpath=%2Fproducts%2Fmyawesomeproduct
+```
+
+And my AppStartUrl would look like this:
+
+```
+https://my-buyer-application.com{2}?token={0}
+
+```
+
+Now once login via OpenID is successful OrderCloud will redirect your user to the URL that resolves to:
+
+https://my-buyer-application.com/products/myawesomeproduct?token={yourordercloudtoken}
+
+## IDP Token
+
+In addition to retrieving OrderCloud's token it is also possible to get the IDP token for the user logging in. You may use this token to perform additional API calls to that IDP directly. To do this simply add `{1}` in your `AppStartUrl`, this will be replaced with the IDP token.
+
+For example:
+
+```
+https://my-buyer-application.com?token={0}&idptoken={1}
+
+```
+
+Now once login via OpenID is successful OrderCloud will redirect your user to the URL that resolves to:
+
+https://my-buyer-application.com?token={yourordercloudtoken}&idptoken={youridptoken}
