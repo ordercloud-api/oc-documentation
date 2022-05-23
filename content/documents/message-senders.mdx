@@ -4,7 +4,7 @@ title:          Message Senders
 description:    Message Senders is a feature that helps to deliver event-driven notifications to users based on certain key commerce activities
 author:         crhistianramirez
 publishDate:    2022-04-08
-updatedDate:    2022-04-08    
+updatedDate:    2022-05-23
 tags:           ["Message Senders", "Email", "Events"]
 ---
 
@@ -13,6 +13,7 @@ Message Senders is a feature that helps to deliver event-driven notifications to
 ## Message Senders vs Webhooks
 
 <Link to="/knowledge-base/using-webhooks">Webhooks</Link> are another OrderCloud feature that are event-driven and could conceivably be used to drive notifications, but webhooks are much less suited than message senders for this task. For example consider trying to build a notification to all users who are able to approve a newly submitted order. To accomplish this with webhooks you would need write code to cover the following steps:
+
 1. Build a handler to receive the submit for your approval webhook
 2. Take the high level order information and query the API for the rest of the needed order data
 3. Query the API for all of the possible approving users (which can be complex)
@@ -54,7 +55,7 @@ Notify the buyer user when an admin user <Link to="/api-reference/buyers/users/c
     </tr>
     <tr>
       <td>OrderApproved</td>
-      <td>Notify the buyer user when the order that was previously on hold, <Link to="/api-reference/orders-and-fulfillment/orders/approve">has been approved</Link> and released to fulfillment</td>
+      <td>Notify the buyer user when the order that was previously on hold, <Link to="/api-reference/orders-and-fulfillment/orders/approve">has been approved</Link> and released for fulfillment</td>
     </tr>
     <tr>
       <td>OrderDeclined</td>
@@ -75,6 +76,38 @@ Notify the buyer user when an admin user <Link to="/api-reference/buyers/users/c
     <tr>
       <td>ShipmentCreated</td>
       <td>Notify the buyer user when a shipment was made for their order. Please note triggering this requires a very specific order of operations. First, the shipment must be created with a <code class="language-text">ShippedDate</code> set to <code class="language-text">null</code>, then the relevant shipment items should be added to the shipment, and finally the shipment should be patched with a <code class="language-text">ShippedDate</code></td>
+    </tr>
+    <tr>
+      <td>OrderReturnSubmitted</td>
+      <td>Notify the buyer user when they <Link to="/api-reference/orders-and-fulfillment/order-returns/submit">submit an order return</Link></td>
+    </tr>
+    <tr>
+      <td>OrderReturnSubmittedForApproval</td>
+      <td>Notify the buyer user when their order has <Link to="/api-reference/orders-and-fulfillment/order-returns/submit">been submitted</Link>, but has been placed on hold pending approval</td>
+    </tr>
+    <tr>
+      <td>OrderReturnApproved</td>
+      <td>Notify the buyer user when the order that was previously on hold, <Link to="/api-reference/orders-and-fulfillment/order-returns/approve">has been approved</Link> and released for fulfillment</td>
+    </tr>
+    <tr>
+      <td>OrderReturnDeclined</td>
+      <td>Notify the buyer user when the order return that was previously on hold, <Link to="/api-reference/orders-and-fulfillment/order-returns/decline">has been declined</Link> and will not be fulfilled</td>
+    </tr>
+    <tr>
+      <td>OrderReturnSubmittedForYourApproval</td>
+      <td>Notify approving users that there is a new order return pending their approval</td>
+    </tr>
+    <tr>
+      <td>OrderReturnSubmittedForYourApprovalHasBeenApproved</td>
+      <td>Notify approving users that an order return that was previously on hold pending their approval <Link to="/api-reference/orders-and-fulfillment/order-returns/approve">has been approved</Link></td>
+    </tr>
+    <tr>
+      <td>OrderReturnSubmittedForYourApprovalHasBeenDeclined</td>
+      <td>Notify approving users that an order return that was previously on hold pending their approval <Link to="/api-reference/orders-and-fulfillment/order-returns/decline">has been declined</Link></td>
+    </tr>
+    <tr>
+      <td>OrderReturnCompleted</td>
+      <td>Notify buyer users that an order return they submitted <Link to="/api-reference/orders-and-fulfillment/order-returns/complete">is now complete</Link></td>
     </tr>
   </tbody>
 </table>
@@ -108,7 +141,7 @@ To enable this option:
 2. Create a message sender in the portal and select "Custom Mandrill Account"
 3. Give it a name
 4. Provide your Mandrill API Key
-5. Select which message types you want to enable. For each message type provide your Mandrill Template Name
+5. Select which message types you want to enable. For each message type provide your Mandrill Template Name. Check out our [default templates](https://github.com/ordercloud-api/mailchimp-email-templates/tree/master/Transactional) to use as a starting point.
 6. <Link to="/api-reference/seller/message-senders/save-assignment">Assign the message sender</Link> to the relevant parties
 
 <figure class="blog-figure">
@@ -139,7 +172,7 @@ To enable this option:
   <figcaption>Custom URL Configuration in the Portal</figcaption>
 </figure>
 
-Of course creating the custom endpoint is going to be the most laborious part of implementing this option. To help you out we've created a [.NET starter project](https://github.com/ordercloud-api/MessageSender) that demonstrates how to handles these types of events and has examples for sending notifications from Mandrill, Sendgrid, and Twilio. Check out the <Link to="/knowledge-base/message-senders#message-sender-event-payload-models">payload models</Link> for each message type here.
+Of course creating the custom endpoint is going to be the most laborious part of implementing this option. To help you out we've created a [.NET starter project](https://github.com/ordercloud-api/MessageSender) that demonstrates how to handles these types of events and has examples for sending notifications from Mandrill, Sendgrid, and Twilio. Check out the <Link to="/knowledge-base/message-senders#message-sender-event-payload-models">payload models</Link> for each message type.
 
 Here are a few other things to keep in mind as you're building your endpoint:
 
@@ -147,6 +180,7 @@ Here are a few other things to keep in mind as you're building your endpoint:
 - Use the special variable `{messagetype}` in the custom URL provided to OrderCloud. This lets you define a single message sender configuration that can handle different message types. For example the custom url `https://my-message-handler/{messagetype}` that has opted in for an `OrderSubmitted` and `ForgottenPassword` message type will receive requests to the endpoint `https://my-message-handler/ordersubmitted` as well as `https://my-message-handler/forgottenpassword`.
 - If your handler needs elevated permissions to complete its work you may consider defining `ElevatedRoles` this will grant your endpoint a token for the recipient user that additionally has any elevated roles defined. This can help simplify your logic especially if your handler is a one-off serverless function for example.
 - Like most other entities in OrderCloud, Message Senders come with <Link to="/knowledge-base/extended-properties">extended properties</Link> which you can use to store business specific data to drive custom behavior. Please note that xp will come through as `ConfigData` in the event payload. 
+- Check out our [default templates](https://github.com/ordercloud-api/mailchimp-email-templates/tree/master/Transactional) to use as a starting point.
 
 ## Custom Email Templates - Mandrill Merge Vars
 If you're using our Mandrill/Mailchimp integration and providing your own custom email templates then you can use these tables to determine which variables are available for you to render in your email templates.
@@ -237,51 +271,51 @@ If you're using our Mandrill/Mailchimp integration and providing your own custom
           <tbody>
             <tr>
               <td>cost</td>
-              <td>LineItem.LineTotal</td>
+              <td>Products[i].LineItem.LineTotal</td>
             </tr>
             <tr>
               <td>quantity</td>
-              <td>LineItem.Quantity</td>
+              <td>Products[i].LineItem.Quantity</td>
             </tr>
             <tr>
               <td>productdesc</td>
-              <td>Product.Description</td>
+              <td>Products[i].Description</td>
             </tr>
             <tr>
               <td>productid</td>
-              <td>Product.ID</td>
+              <td>Products[i].ID</td>
             </tr>
             <tr>
               <td>productname</td>
-              <td>Product.Name</td>
+              <td>Products[i].Name</td>
             </tr>
             <tr>
               <td>shiptoname</td>
-              <td>LineItem.ShippingAddress.FirstName + LineItem.ShippingAddress.LastName</td>
+              <td>Products[i].LineItem.ShippingAddress.FirstName + Products[i].LineItem.ShippingAddress.LastName</td>
             </tr>
             <tr>
               <td>shiptostreet1</td>
-              <td>LineItem.ShippingAddress.Street1</td>
+              <td>Products[i].LineItem.ShippingAddress.Street1</td>
             </tr>
             <tr>
               <td>shiptostreet2</td>
-              <td>LineItem.ShippingAddress.Street2</td>
+              <td>Products[i].LineItem.ShippingAddress.Street2</td>
             </tr>
             <tr>
               <td>shiptocity</td>
-              <td>LineItem.ShippingAddress.City</td>
+              <td>Products[i].LineItem.ShippingAddress.City</td>
             </tr>
             <tr>
               <td>shiptostate</td>
-              <td>LineItem.ShippingAddress.State</td>
+              <td>Products[i].LineItem.ShippingAddress.State</td>
             </tr>
             <tr>
               <td>shiptopostalcode</td>
-              <td>LineItem.ShippingAddress.Zip</td>
+              <td>Products[i].LineItem.ShippingAddress.Zip</td>
             </tr>
             <tr>
               <td>shiptocountry</td>
-              <td>LineItem.ShippingAddress.Country</td>
+              <td>Products[i].LineItem.ShippingAddress.Country</td>
             </tr>
           </tbody>
         </table>
@@ -300,56 +334,56 @@ If you're using our Mandrill/Mailchimp integration and providing your own custom
           <tbody>
             <tr>
               <td>approvinggroupid</td>
-              <td>Order.Approval.ApprovingGroupID</td>
+              <td>OrderApproval[i].ApprovingGroupID</td>
             </tr>
             <tr>
               <td>status</td>
-              <td>Order.Approval.Status</td>
+              <td>OrderApproval[i].Status</td>
             </tr>
             <tr>
               <td>datecreated</td>
-              <td>Order.Approval.DateCreated</td>
+              <td>OrderApproval[i].DateCreated</td>
             </tr>
             <tr>
               <td>datecompleted</td>
-              <td>Order.Approval.DateCompleted</td>
+              <td>OrderApproval[i].DateCompleted</td>
             </tr>
             <tr>
               <td>approverid</td>
-              <td>Order.Approval.Approver.ID</td>
+              <td>OrderApproval[i].Approver.ID</td>
             </tr>
             <tr>
               <td>approveremail</td>
-              <td>Order.Approval.Approver.Email</td>
+              <td>OrderApproval[i].Approver.Email</td>
             </tr>
             <tr>
               <td>approverfirstname</td>
-              <td>Order.Approval.Approver.FirstName</td>
+              <td>OrderApproval[i].Approver.FirstName</td>
             </tr>
             <tr>
               <td>approverlastname</td>
-              <td>Order.Approval.Approver.LastName</td>
+              <td>OrderApproval[i].Approver.LastName</td>
             </tr>
             <tr>
               <td>approverusername</td>
-              <td>Order.Approval.Approver.Username</td>
+              <td>OrderApproval[i].Approver.Username</td>
             </tr>
             <tr>
               <td>approverphone</td>
-              <td>Order.Approval.Approver.Phone</td>
+              <td>OrderApproval[i].Approver.Phone</td>
             </tr>
           </tbody>
         </table>
       </td>
     </tr>
     <tr>
-      <td>orderxp (array)</td>
+      <td>orderxp</td>
       <td>
         <table>
           <thead>
             <tr>
               <th>Mandrill Variable</th>
-              <th>OrderCloud Property</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
@@ -371,6 +405,84 @@ If you're using our Mandrill/Mailchimp integration and providing your own custom
     </tr>
   </tbody>
 </table>
+
+### Variables for OrderReturn
+
+Includes all of the variables for <Link to="/message-senders#variables-for-order-emails">order emails</Link> and additionally the following:
+
+<table>
+  <thead>
+    <tr>
+      <th>Mandrill Variable</th>
+      <th>OrderCloud Property</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>orderreturnid</td>
+      <td>OrderReturn.ID</td>
+    </tr>
+    <tr>
+      <td>refundamount</td>
+      <td>OrderReturn.RefundAmount</td>
+    </tr>
+    <tr>
+      <td>returnitems (array)</td>
+      <td>
+        <table>
+          <thead>
+            <tr>
+              <th>Mandrill Variable</th>
+              <th>OrderCloud Property</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LineItemID</td>
+              <td>OrderReturn.ItemsToReturn[i].LineItemID</td>
+            </tr>
+            <tr>
+              <td>Quantity</td>
+              <td>OrderReturn.ItemsToReturn[i].Quantity</td>
+            </tr>
+            <tr>
+              <td>RefundAmount</td>
+              <td>OrderReturn.ItemsToReturn[i].RefundAmount</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>orderreturnxp (array)</td>
+      <td>
+        <table>
+          <thead>
+            <tr>
+              <th>Mandrill Variable</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>orderreturnxp_keyname</td>
+              <td>for first-level xp properties</td>
+            </tr>
+            <tr>
+              <td>orderreturnxp_keyname_keyname</td>
+              <td>for nested xp properties</td>
+            </tr>
+            <tr>
+              <td>orderreturnxp_keyname_index</td>
+              <td>for xp arrays</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 ### Variables for ShipmentCreated
 
@@ -461,19 +573,19 @@ Includes all of the variables for <Link to="/message-senders#variables-for-order
             </tr>
             <tr>
               <td>quantityshipped</td>
-              <td>Shipment.Item.QuantityShipped</td>
+              <td>Shipment.Items[i].QuantityShipped</td>
             </tr>
             <tr>
               <td>productdesc</td>
-              <td>Shipment.Item.Product.Description</td>
+              <td>Shipment.Items[i].Product.Description</td>
             </tr>
             <tr>
               <td>productid</td>
-              <td>Shipment.Item.Product.ID</td>
+              <td>Shipment.Items[i].Product.ID</td>
             </tr>
             <tr>
               <td>productname</td>
-              <td>Shipment.Item.Product.Name</td>
+              <td>Shipment.Items[i].Product.Name</td>
             </tr>
           </tbody>
         </table>
@@ -586,6 +698,38 @@ If you are building a custom message sender it is necessary to understand what k
     <tr>
       <td>Products</td>
       <td>The array of <Link to="/api-reference/product-catalogs/products/get#response-body">products</Link> for the order</td>
+    </tr>
+  </tbody>
+</table>
+
+### Event Body for OrderReturn Events
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Order</td>
+      <td>The <Link to="/api-reference/orders-and-fulfillment/orders/get#response-body">order</Link> that was submitted</td>
+    </tr>
+    <tr>
+      <td>Approvals</td>
+      <td>The array of <Link to="/api-reference/orders-and-fulfillment/orders/list-approvals#response-body">order approvals</Link> for the order</td>
+    </tr>
+    <tr>
+      <td>LineItems</td>
+      <td>The array of <Link to="api-reference/orders-and-fulfillment/line-items/get#response-body">line items</Link> for the orders</td>
+    </tr>
+    <tr>
+      <td>Products</td>
+      <td>The array of <Link to="/api-reference/product-catalogs/products/get#response-body">products</Link> for the order</td>
+    </tr>
+    <tr>
+      <td>OrderReturn</td>
+      <td>The<Link to="/api-reference/orders-and-fulfillment/order-returns/get#response-body">order return</Link> that was submitted</td>
     </tr>
   </tbody>
 </table>
