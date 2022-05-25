@@ -25,6 +25,7 @@ Want to know how many submitted items still need fulfilling? Get a list of Line 
 Perhaps you want to know the percent of line items purchased that used a discount. You can get a list of line items that have a promotion applied to them or do not have a promotion applied:
 
 `GET v1/lineitems/{direction}?PromotionDiscount=>0`
+
 `GET v1/lineitems/{direction}?PromotionDiscount=0`
 
 Try getting total line items you sold in a specific time frame. Also note on this call that we are getting line items, but we are able to filter on Order level data, such as DateSubmitted. Here is an example to get line items sold the first half of the year:  
@@ -47,7 +48,7 @@ A Marketplace Owner may want to understand total line items submitted to a certa
 
 While getting a list of orders, you can now filter on Line Item data. Let’s say you are interested in getting a list of orders that contain a specific product ID:  
 
-`GET v1/orders/{direction}?Lineitems.Product.ID={ProductID}`
+`GET v1/orders/{direction}?LineItems.Product.ID={ProductID}`
 
 Additionally, you can get Orders with nested data on the Order. We’ve introduced OR operators on filters as well, for more flexible filtering.
 
@@ -59,7 +60,7 @@ Get Orders that were placed with a Billing Address in California OR Colorado
 
 `GET v1/orders/Incoming?BillingAddress.State=CA|CO`
 
-Calibrate your Order Search Results to return what you need
+## Calibrate your Order Search Results to return what you need
 
 Use Search Type on Orders to regulate the ranking and results that return from your search terms based on the specificity you desire. [Review the SearchTypes here](https://ordercloud.io/knowledge-base/new-for-premium-search#new-searchtype-parameter) – they were initially introduced with Product Premium Search, and now have been expanded to Order Premium Search. The example below will show searching across line item data, but note that searching is done across Order data as well.
 
