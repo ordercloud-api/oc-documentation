@@ -23,6 +23,7 @@ import {
   BookmarkTwoTone,
   BuildTwoTone,
   BusinessTwoTone,
+  CallMade,
   CategoryTwoTone,
   Code,
   CodeOutlined,
@@ -40,7 +41,11 @@ import {
 import { Link } from 'gatsby'
 import Prism from 'prismjs'
 import React, { useLayoutEffect } from 'react'
-import { darkgrey, flame, sherpablue } from '../../theme/ocPalette.constants'
+import {
+  darkgrey,
+  sherpablue,
+  sizzlingred,
+} from '../../theme/ocPalette.constants'
 import themeConstants from '../../theme/theme.constants'
 import ButtonLink from '../Shared/ButtonLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
@@ -49,6 +54,13 @@ import ListItemLink from '../Shared/ListItemLink'
 import { navigate } from '../Shared/PortalLink'
 import './../../../custom.d.ts' // custom type definitions
 import { navHeight, navHeightMobile } from './Header'
+import logoAngular from '../../assets/svg/technology-logos/angular.svg'
+import logoJavascript from '../../assets/svg/technology-logos/js.svg'
+import logoTypescript from '../../assets/svg/technology-logos/ts.svg'
+import logoCSharp from '../../assets/svg/technology-logos/csharp.svg'
+import logoNext from '../../assets/svg/technology-logos/nextjs.svg'
+import logoReact from '../../assets/svg/technology-logos/react.svg'
+import logoVue from '../../assets/svg/technology-logos/vue.svg'
 
 if (typeof window !== 'undefined') {
   // attach smooth scroll to all hrefs
@@ -64,9 +76,6 @@ const useStyles = makeStyles((theme: Theme) =>
       right: theme.spacing(4),
       top: theme.spacing(3),
     },
-    spacer: {
-      width: theme.spacing(1),
-    },
     root: {
       minHeight: `calc(100vh - ${navHeightMobile + 409}px)`,
       [theme.breakpoints.up('md')]: {
@@ -77,24 +86,43 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: 1,
       flexGrow: 1,
     },
-    buttonBase: {
+    paperCardAction: {
+      transition: 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)',
       borderRadius: theme.shape.borderRadius,
+      display: 'flex',
+      '&:hover': {
+        textDecoration: 'none',
+        transform: 'translateY(-3px)',
+      },
+    },
+    buttonEndArrowIcon: {
+      fontSize: '1rem !important',
+      fill: sizzlingred[300],
+      transform: 'rotate(45deg)', // <CallMade/> icon most accurately matches Sitecore guidelines; however, it needs to be rotated.
     },
     paperCard: {
-      position: 'relative',
+      width: '100%',
+      display: 'flex',
       flexFlow: 'column nowrap',
-      alignItems: 'center',
-      maxWidth: '100vw',
+      alignItems: 'flex-start',
       padding: theme.spacing(3),
       [theme.breakpoints.up('md')]: {
         height: '100%',
+        minHeight: 375,
+      },
+    },
+    btnCardAction: {
+      alignSelf: 'flex-end',
+      marginTop: 'auto',
+      padding: theme.spacing(1, 2),
+      [theme.breakpoints.up('lg')]: {
+        marginTop: theme.spacing(2),
       },
     },
     paperTitleHeading: {
-      padding: theme.spacing(0, 0, 1),
+      padding: 0,
+      margin: theme.spacing(1.5, 0),
       fontWeight: 700,
-      textAlign: 'left',
-      minHeight: '2.5rem',
     },
     paperTitleSubheading: {
       color: darkgrey[500],
@@ -116,6 +144,32 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       [theme.breakpoints.up('md')]: {
         marginTop: '-5rem',
+      },
+    },
+    iconTech: {
+      height: 75,
+      width: 75,
+      overflow: 'hidden',
+      boxShadow: theme.shadows[1],
+      display: 'flex',
+      flexFlow: 'row wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: theme.spacing(2),
+      '& img': {
+        height: 'auto',
+        maxWidth: '100%',
+      },
+    },
+    List: {
+      '& .MuiButtonBase-root': {
+        textDecortation: 'none',
+      },
+    },
+    marginTopMd: {
+      marginTop: theme.spacing(5),
+      [theme.breakpoints.up('md')]: {
+        marginTop: theme.spacing(10),
       },
     },
   })
@@ -210,7 +264,7 @@ const MainComponent: React.FunctionComponent = props => {
         <Grid container className={classes.cardWrapper} spacing={3}>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
             <ButtonBase
-              className={classes.buttonBase}
+              className={classes.paperCardAction}
               component={Link}
               to="/discover/platform-overview"
             >
@@ -257,16 +311,25 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <ButtonLink fullWidth to="/discover/define-your-marketplace">
+                <ButtonLink
+                  className={classes.btnCardAction}
+                  to="/discover/define-your-marketplace"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
+                >
                   Read More
-                  <img src="/images/icon-arrow.png" />
                 </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
             <ButtonBase
-              className={classes.buttonBase}
+              className={classes.paperCardAction}
               component={Link}
               to="/discover/define-your-marketplace"
             >
@@ -313,16 +376,25 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <ButtonLink fullWidth to="/discover/define-your-marketplace">
+                <ButtonLink
+                  className={classes.btnCardAction}
+                  to="/discover/define-your-marketplace"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
+                >
                   Read More
-                  <img src="/images/icon-arrow.png" />
                 </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
             <ButtonBase
-              className={classes.buttonBase}
+              className={classes.paperCardAction}
               component={Link}
               to="/discover/personalized-shopping"
             >
@@ -369,16 +441,25 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <ButtonLink fullWidth to="/discover/personalized-shopping">
+                <ButtonLink
+                  className={classes.btnCardAction}
+                  to="/discover/personalized-shopping"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
+                >
                   Read More
-                  <img src="/images/icon-arrow.png" />
                 </ButtonLink>
               </Paper>
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm={6} lg={3} className={classes.paperRoot}>
             <ButtonBase
-              className={classes.buttonBase}
+              className={classes.paperCardAction}
               component={Link}
               to="/discover/flexible-fulfillment"
             >
@@ -425,9 +506,18 @@ const MainComponent: React.FunctionComponent = props => {
                     </ListItem>
                   </List>
                 </Hidden>
-                <ButtonLink fullWidth to="/discover/flexible-fulfillment">
+                <ButtonLink
+                  className={classes.btnCardAction}
+                  to="/discover/flexible-fulfillment"
+                  endIcon={
+                    <CallMade
+                      fontSize="small"
+                      aria-hidden="true"
+                      className={classes.buttonEndArrowIcon}
+                    />
+                  }
+                >
                   Read More
-                  <img src="/images/icon-arrow.png" />
                 </ButtonLink>
               </Paper>
             </ButtonBase>
@@ -435,30 +525,31 @@ const MainComponent: React.FunctionComponent = props => {
         </Grid>
       </Container>
       <Container maxWidth="lg">
-        <Box paddingY={3} paddingX={20}>
+        <Box pt={6} pb={3} px={20}>
           <Divider />
         </Box>
         <Typography variant="h1" align="center">
           Future-Proof with Headless Architecture
         </Typography>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} alignItems="center">
           <Grid item xs={12} sm={6}>
             <Typography variant="h3">
               Our RESTful API was built
               <br />
               by developers, for developers.
             </Typography>
-            <Typography variant="h5">
+            <Typography variant="h5" color="textSecondary">
               OrderCloud’s proven architecture has enabled developers from
               around the world to bring powerful B2B applications to life. We
-              aim to provide unmatched interopability by using standardized W3C
-              web standards, extensible data models, and rich feature-sets.
+              aim to provide unmatched interoperability by using standardized
+              W3C web standards, extensible data models, and rich feature-sets.
             </Typography>
             <Box
               display="flex"
               flexDirection="row"
               flexWrap="noWrap"
               marginTop={3}
+              style={{ gap: 24 }}
             >
               <CustomButtonLink
                 color={themeConstants.palette.secondary.main}
@@ -468,28 +559,62 @@ const MainComponent: React.FunctionComponent = props => {
               >
                 Learn the Basics
               </CustomButtonLink>
-              <div className={classes.spacer} />
               <ButtonLink
                 to="/learn/getting-started/welcome-to-ordercloud"
                 size="large"
+                endIcon={
+                  <CallMade
+                    fontSize="small"
+                    aria-hidden="true"
+                    className={classes.buttonEndArrowIcon}
+                  />
+                }
               >
                 Start Coding
-                <img src="/images/icon-arrow.png" />
               </ButtonLink>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <figure>
-              <img
-                style={{ maxWidth: '100%' }}
-                src="/images/oc_homepage_logos.png"
-                alt="Languages and Frameworks"
-              />
-            </figure>
+            <Typography
+              gutterBottom
+              color="textSecondary"
+              variant="body2"
+              align="center"
+            >
+              <em>Use any stack with OrderCloud</em>
+            </Typography>
+            <Box
+              display="flex"
+              justifyContent="center"
+              flexWrap="wrap"
+              style={{ gap: 16 }}
+            >
+              <div className={classes.iconTech}>
+                <img src={logoJavascript} title="Javascript" alt="JS Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoTypescript} title="Typescript" alt="TS Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoCSharp} title="C#" alt="C# Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoNext} title="Next" alt="Next Logo" />
+              </div>
+              <div style={{ flexBasis: '100%' }} aria-hidden="true"></div>
+              <div className={classes.iconTech}>
+                <img src={logoReact} title="React" alt="React Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoAngular} title="Angular" alt="Angular Logo" />
+              </div>
+              <div className={classes.iconTech}>
+                <img src={logoVue} title="Vue" alt="Vue Logo" />
+              </div>
+            </Box>
           </Grid>
         </Grid>
-        <Box height="100px"></Box>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} className={classes.marginTopMd}>
           <Grid item xs={12} sm={6}>
             <Paper
               elevation={5}
@@ -518,7 +643,7 @@ await Orders.Submit("Outgoing", order.ID);`}
               <br />
               progressive web applications.
             </Typography>
-            <Typography variant="h5" align="right">
+            <Typography variant="h5" align="right" color="textSecondary">
               A headless architecture allows solution creators to choose the
               development stack that works best for their workflow. Our
               knowledge base and growing library of developer tools make
@@ -530,12 +655,8 @@ await Orders.Submit("Outgoing", order.ID);`}
               flexWrap="noWrap"
               justifyContent="flex-end"
               marginTop={3}
+              style={{ gap: 16 }}
             >
-              <ButtonLink to="/knowledge-base" size="large">
-                Knowledge Base
-                <img src="/images/icon-arrow.png" />
-              </ButtonLink>
-              <div className={classes.spacer} />
               <CustomButtonLink
                 to="/developer-tools"
                 variant="contained"
@@ -544,6 +665,19 @@ await Orders.Submit("Outgoing", order.ID);`}
               >
                 Developer Tools
               </CustomButtonLink>
+              <ButtonLink
+                to="/knowledge-base"
+                size="large"
+                endIcon={
+                  <CallMade
+                    fontSize="small"
+                    aria-hidden="true"
+                    className={classes.buttonEndArrowIcon}
+                  />
+                }
+              >
+                Knowledge Base
+              </ButtonLink>
             </Box>
           </Grid>
         </Grid>
@@ -560,7 +694,13 @@ await Orders.Submit("Outgoing", order.ID);`}
         >
           Create Your Free Account Today!
         </Typography>
-        <Typography variant="h5" paragraph component="p" align="center">
+        <Typography
+          variant="h5"
+          paragraph
+          component="p"
+          align="center"
+          color="textSecondary"
+        >
           OrderCloud provides a sandbox environment so you can start coding
           without payment right now.
         </Typography>
@@ -571,6 +711,7 @@ await Orders.Submit("Outgoing", order.ID);`}
           alignItems="center"
           justifyContent="center"
           paddingBottom={8}
+          style={{ gap: 16 }}
         >
           <Button
             onClick={() => navigate('/register')}
@@ -580,7 +721,6 @@ await Orders.Submit("Outgoing", order.ID);`}
           >
             Sign Up
           </Button>
-          <div className={classes.spacer} />
           <ButtonLink
             to="/slack"
             size="large"

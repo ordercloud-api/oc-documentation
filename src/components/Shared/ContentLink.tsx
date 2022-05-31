@@ -2,15 +2,8 @@ import {
   Avatar,
   Box,
   ButtonBase,
-  Card,
-  CardActionArea,
-  CardHeader,
   createStyles,
-  Grid,
-  IconProps,
   makeStyles,
-  Paper,
-  SvgIconTypeMap,
   Theme,
   Link as MaterialLink,
   Typography,
@@ -18,6 +11,7 @@ import {
 import { OverridableComponent } from '@material-ui/core/OverridableComponent'
 import {
   BookmarkOutlined,
+  CallMade,
   CodeOutlined,
   MenuBookOutlined,
   School,
@@ -47,10 +41,21 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: '1rem',
       marginBottom: '1.5rem',
     },
+    btnUpNext: {
+      '&:hover': {
+        backgroundColor: 'white',
+      },
+    },
     button: {
       justifyContent: 'stretch',
       borderRadius: theme.shape.borderRadius,
+      transition: 'background-color .25s ease',
       border: `1px solid ${theme.palette.grey[400]}`,
+      minWidth: '50%',
+      '&:hover, &:focus': {
+        textDecoration: 'none',
+        backgroundColor: 'white',
+      },
     },
     avatar: {
       backgroundColor: flame[400],

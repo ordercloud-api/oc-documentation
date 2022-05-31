@@ -14,7 +14,7 @@ import {
   TypographyVariant,
 } from '@material-ui/core'
 import LinkIcon from '@material-ui/icons/Link'
-import { ThemeProvider } from '@material-ui/styles'
+import { ThemeProvider } from '@material-ui/core'
 import { MDXProvider } from '@mdx-js/react'
 import { RouteComponentProps } from '@reach/router'
 import { Link } from 'gatsby'
@@ -29,7 +29,7 @@ import ContentLink from '../Shared/ContentLink'
 import IconButtonLink from '../Shared/IconButtonLink'
 import { PortalLink } from '../Shared/PortalLink'
 import Footer from './Footer'
-import Header, { navHeight, navHeightMobile } from './Header2'
+import Header, { navHeight, navHeightMobile } from './Header'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -39,9 +39,6 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('md')]: {
         marginBottom: theme.spacing(0),
         minHeight: `calc(100vh - ${navHeight}px)`,
-      },
-      '& img': {
-        maxWidth: '100%',
       },
     },
     body: {
@@ -81,6 +78,9 @@ const layoutLinkStyles = makeStyles((theme: Theme) =>
 )
 
 export const LayoutLink = (props: any) => {
+  const handleCopyClick = () =>
+    navigator.clipboard.writeText(`${window.location}`)
+
   const classes = layoutLinkStyles({})
   if (!props.href) {
     console.error(
@@ -89,10 +89,12 @@ export const LayoutLink = (props: any) => {
     )
     return <Typography variant="button">[BAD LINK] {props.children}</Typography>
   }
-  if (props.className === 'anchor' || props.href.indexOf('#') === 0) {
+
+  if ((props.className && props.className.indexOf('anchor') > -1) || props.href.indexOf('#') === 0) {
+    const { className, ...actualProps} = props;
     return (
-      <div className={classes.root}>
-        <IconButtonLink {...props} to={props.href}>
+      <div className={classes.root} onClick={handleCopyClick}>
+        <IconButtonLink {...actualProps} to={props.href}>
           <LinkIcon />
         </IconButtonLink>
       </div>

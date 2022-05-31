@@ -10,7 +10,7 @@ import {
   Theme,
 } from '@material-ui/core'
 import { OpenInNewOutlined } from '@material-ui/icons'
-import { mediumgrey, sherpablue } from '../../theme/ocPalette.constants'
+import { mediumgrey } from '../../theme/ocPalette.constants'
 import footerLogo from '../../assets/svg/Sitecore_logo_RGB_white.svg'
 import { PortalLink } from '../Shared/PortalLink'
 
@@ -239,10 +239,21 @@ class Footer extends React.Component<any> {
                 </Link>
                 <Link
                   className={classes.footerLinks}
-                  to="/portal-release-notes/v1.0.74"
+                  to="/portal-release-notes"
                 >
                   Portal Release Notes
                 </Link>
+                <a
+                  className={classes.footerLinks}
+                  href="https://support.sitecore.com/status"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Sitecore Status Page
+                  <Box marginLeft={0.5} display="flex" alignItems="center">
+                    <OpenInNewOutlined fontSize="inherit" />
+                  </Box>
+                </a>
                 <a
                   className={classes.footerLinks}
                   href="https://www.sitecore.com/trust/privacy-policy"

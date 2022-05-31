@@ -1,0 +1,166 @@
+---
+type:           article
+title:          Introducing Order Returns
+description:    New set of features to enable all aspects of the Order Returns process.
+author:         mposthumus
+publishDate:    2022-05-16    
+tags:           ["Concepts", "Marketplaces", "Orders"]
+---
+
+We’re excited to present a new set of features to enable all aspects of the Order Returns process. These features will be available in all regions and environments by the end of May 2022.
+
+## Key Highlights
+- An `OrderReturn` must be affiliated with an existing `Order`, and `ItemsToReturn` must be affiliated with existing `LineItems`
+- An `OrderReturn` is not required to have any `ItemsToReturn`, and `ItemsToReturn` are not required to have a `Quantity` specified 
+   - This allows flexibility for providing refunds not associated with the return of a physical item
+   - Examples include refunding an expedited shipping charge due to processing delays or providing a partial discount on an item that arrived damaged 
+- A user with the `Shopper` role can create an `OrderReturn` for any order from them (`Order.FromUserID`)
+   - Anonymous users are prohibited from creating or modifying `OrderReturns`
+- A user with the `OrderAdmin` role can create an `OrderReturn` for any `Order` visible to them
+   - For Marketplace Owners this is all orders in the marketplace 
+   - For other Sellers (Suppliers) this is orders placed to them (`Order.ToCompanyID`)
+   - For Buyer users this is orders placed from their company (`Order.FromCompanyID`)
+- `Order.Status` must be `Open` or `Completed` to create an associated `OrderReturn`
+   - If `Order.Status` is `Open`, only the quantity of a given item that has already shipped will be eligible to return
+- Date based return policies can be enforced in your UI, and/or by using the new `SellerApprovalRules` resource
+
+![Order Return Flow](/images/knowledge-base/inline/order-returns/order-return-flow.png)
+
+## New Resource `OrderReturn`
+
+```json
+"OrderReturn": {
+  "ID": "",
+  "OrderID": "",
+  "PaymentIDs": [],
+  "Status": "",
+  "RefundAmount": 0,
+  "ItemsToReturn": [],
+  "DateCreated": "2022-01-04T00:00:00.00+00:00",
+  "DateSubmitted": "2022-01-04T00:00:00.00+00:00",
+  "DateApproved": "2022-01-04T00:00:00.00+00:00",
+  "DateDeclined": "2022-01-04T00:00:00.00+00:00",
+  "DateCanceled": "2022-01-04T00:00:00.00+00:00",
+  "DateCompleted": "2022-01-04T00:00:00.00+00:00",
+  "LastUpdated": "2022-01-04T00:00:00.00+00:00",
+  "xp": {}
+}
+
+"ItemToReturn": {
+  "LineItemID": "",
+  "Quantity": 0,
+  "RefundAmount": 0,
+  "Comments": ""
+}
+```
+
+**Endpoints:**
+- `GET v1/orderreturns`
+   - Use the optional `approvable` filter to list `OrderReturns` awaiting the user's approval 
+- `GET v1/orderreturns/{returnID}`
+- `POST v1/orderreturns`
+- `PUT v1/orderreturns/{returnid}`
+- `PATCH v1/orderreturns/{returnid}`
+- `DELETE v1/orderreturns/{returnid}`
+- `DELETE v1/orderreturns/{returnid}/items/{lineitemid}`
+   - Creating or Updating Items can be done via POST/PUT/PATCH for OrderReturns
+- `POST v1/orderreturns/{returnid}/submit`
+- `POST v1/orderreturns/{returnid}/approve`
+- `POST v1/orderreturns/{returnid}/decline`
+- `POST v1/orderreturns/{returnid}/cancel`
+- `POST v1/orderreturns/{returnid}/complete`
+- `GET v1/orderreturns/{returnID}/approvals`
+- `GET v1/orderreturns/{returnID}/eliglbleapprovers`
+
+**Notes**
+- `OrderID` is required, as is `LineItemID` on `ItemsToReturn`
+- `OrderReturn.RefundAmount` is the sum of all `RefundAmounts` on `ItemsToReturn`. If there are no `ItemsToReturn`, `Order.RefundAmount` is writable by users with the `OrderAdmin` role
+
+## New Resource `SellerApprovalRule`
+
+```json
+"SellerApprovalRule": {
+  "ID": "",
+  "Name": "",
+  "Type": "OrderReturn",
+  "Description": "",
+  "OwnerID": "",
+  "ApprovingGroupID": "",
+  "RuleExpression": "",
+}
+```
+**Endpoints:**
+- `GET v1/approvalrules`
+- `GET v1/approvalrules/{ruleID}`
+- `POST v1/approvalrules`
+- `PUt v1/approvalrules/{ruleID}`
+- `PATCH v1/approvalrules/{ruleID}`
+- `DELETE v1/approvalrules/{ruleID}`
+
+**Notes:**
+- This resource is not available to buyer users, regardless of assigned roles
+- `OwnerID` is the ID of the organization who owns the rule. Only the Marketplace Owner can write a value other than their own organization ID. The value is used to look up the `ApprovingGroupID` and determine who is eligible to administer the rule
+- To enable date based `RuleExpressions` the rules engine now supports a new custom function `now()` which accepts an integer as a parameter
+   - For example, if you wanted any `OrderReturn` associated with an `Order` that was completed prior to 30 days ago to route for approval, you would set up an `SellerApprovalRule` with a `RuleExpression` of `Order.DateCompleted < now(-30)`
+   - Additionally, a developer can choose to enforce logic in the UI to prevent an `OrderReturn` from being initiated on Orders completed more than a specific time ago
+- `OrderReturn` is the only supported Type currently - we plan to expand this functionality to Order Approvals in the future
+
+## New `IntegrationEvent` Type: `OrderReturn`
+OrderCloud does not provide an opinion on `RefundAmount` at the `OrderReturn` or `ItemToReturn` levels due to the fact there are an infinite number of ways a seller might wish to calculate a refund, which would likely include complicated external events such as adjusting tax collection records. Since we are unable to provide an informed opinion, we provide sellers with the opportunity to set up a custom `IntegrationEvent` to handle `OrderReturn` calculations.
+
+Payload provided by OrderCloud to the `CustomImplementationUrl`
+
+```json
+"OrderReturnPayload": {
+  "OrderReturn": {},
+  "OrderWorksheet": {}
+}
+```
+Response expected by OrderCloud
+
+```json
+"OrderReturnResponse": {
+  "RefundAmount": 0,
+  "ItemsToReturnCalcs": []
+}
+
+"LineItemReturnCalculation": {
+  "LineItemID": "",
+  "RefundAmount": ""
+}
+```
+**Notes:**
+- The endpoint the Integration Event will `POST` the payload to is `/calculateorderreturn` at the `CustomImplementationUrl`
+- Unlike other `IntegrationEvent` types, there are no publicly available endpoints associated with the event. It is called from within the OrderCloud code when an `OrderReturn` is created or updated
+- If an `OrderAdmin` passes in a valid `RefundAmount` (either one for every `ItemToReturn` or if there are no `ItemsToReturn` a value at the `OrderReturn` level), the IntegrationEvent will not be called
+
+## New Message Sender Types
+- `OrderReturnSubmitted`
+- `OrderReturnApproved`
+- `OrderReturnDeclined`
+- `OrderReturnCompleted`
+- `OrderReturnSubmittedForApproval`
+- `OrderReturnSubmittedForYourApproval`
+- `OrderReturnSubmittedForYourApprovalHasBeenApproved`
+- `OrderReturnSubmittedForYourApprovalHasBeenDeclined`
+
+**Notes:**
+- To assign a `MessageSender` to the Marketplace Owner, leave both `BuyerID` and `SupplierID` null when creating the `MessageSender` assignment
+
+## New Properties
+
+`Payment.OrderReturnID`
+- Used to populate OrderReturn.PaymentIDs
+- Refunds may not exceed the corresponding Order.Total or the refund amount on the OrderReturn
+- Payment.Amount should be negative to reflect a refund
+- Once a payment (or payments) has been created with an Amount equal to the OrderReturn.RefundAmount the OrderReturn will be marked as complete
+
+`Product.Returnable`
+- Specify whether or not a product can be returned
+- API will restrict creating a return for a given LineItem.Product if this is false if user does not have OrderAdmin
+
+`ApiClient.OrderReturnIntegrationEventID`
+- If populated, the OrderReturn Integration Event will be called when creating or updating an OrderReturn
+
+## Unsubmitted `OrderReturn` Cleanup
+- Unsubmitted `OrderReturns` that have not been updated in the past 14 days will be deleted

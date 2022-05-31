@@ -4,7 +4,7 @@ title:          Implementing SSO via OpenID Connect
 description:    SSO (Single Sign On) allows your users to authenticate themselves to the OrderCloud API by logging into any identity provider you trust.
 author:         jilse
 publishDate:    2019-04-15
-updatedDate:
+updatedDate:    2021-12-21
 tags:           ["Authentication", "OpenID Connects"]
 ---
 
@@ -51,7 +51,9 @@ Whether you are using a service like Google's API or you have written your own I
   </tbody>
 </table>
 
-The Client ID and especially the Client Secret should be private. The URLs can be public, for example, [Google's URLS](https://accounts.google.com/.well-known/openid-configuration). In turn, your identity provider will need a piece of information from OrderCloud called an Authorized Redirect URI. Use the value
+API Reference: <Link to="/api-reference/authentication-and-authorization/open-id-connects/create">Create an OpenID Connect Configuration</Link>
+
+The Client ID and especially the Client Secret should be private. The URLs can be public, for example, [Google's URLS](https://accounts.google.com/.well-known/openid-configuration). In turn, your IDP will need a piece of information from OrderCloud called an Authorized Redirect URI. Use the value
 
 ```
 https://sandboxapi.ordercloud.io/ocrpcode
@@ -61,20 +63,20 @@ This OrderCloud resource accepts the IDP's access token, converts it to an Order
 
 ## Configuring OrderCloud (RP)
 
-#### Step 1: Upload Users
+#### Step 1: Create an OpenID Connect Integration Event
 
-OrderCloud requires an existing user record for any user authenticating through a third party. Make sure the User ID matches that user's email as configured in the IDP. Resource permissions will be determined based on the intersection of the user's assigned roles and the requested roles just like normal OrderCloud authentication. Making these user records optional is a feature on the roadmap.
+OrderCloud requires an OpenID Connect Integration Event to be setup in order to use SSO via OpenID Connect. This will require hosting two endpoints, such as in your own middleware application. These endpoints are discussed in further detail below in the Configuring Your Integration Event Code section. 
 
-API Reference: <Link to="/api-reference/buyers/users/create">Create a User</Link>
+API Reference: <Link to="/api-reference/seller/integration-events/create">Create an Integration Event</Link>
 
 #### Step 2: Create Connection Configuration
 
-Each connection configuration enables user to authenticate to one Ordercloud ApiClient through one Identity Provider. The Ordercloud API supports normal CRUD operations on these configurations.
+Each connection configuration enables users to authenticate to one Ordercloud ApiClient through one IDP. The Ordercloud API supports normal CRUD operations on these configurations.
 
-API Reference: <Link to="/authentication-and-authorization/open-id-connects/create">Create an OpenID Connect Configuration</Link>
+API Reference: <Link to="/api-reference/authentication-and-authorization/open-id-connects/create">Create an OpenID Connect Configuration</Link>
 
 ```http
-POST https://api.ordercloud.io/v1/openidconnects HTTP/1.1
+POST https://sandboxapi.ordercloud.io/v1/openidconnects HTTP/1.1
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json
 
@@ -83,23 +85,24 @@ Content-Type: application/json
     "OrdercloudApiClient": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
     "ConnectClientID": "…",
     "ConnectClientSecret": "…",
-    "AppStartUrl": "https://mysinglpagebuyerapp.com/login?token={token}",
+    "AppStartUrl": "https://mysinglpagebuyerapp.com/login?token={0}",
     "AuthorizationEndpoint": "…",
     "TokenEndpoint": "…",
+    "IntegrationEventID": "integrationeventID" // required for configs created after 03/31/2020
 }
 ```
 
-The fields from the IDP will not be validated until a user attempts to log in, so testing is critical. The field `AppStartUrl` is used to redirect to your front-end app after login; the characters {token} will be replaced with a valid Ordercloud token.
+The fields from the IDP will not be validated until a user attempts to log in, so testing is critical. The field `AppStartUrl` is used to redirect to your front-end app after login; the characters `{0}` will be replaced with a valid Ordercloud token.
 
 ## Implementing Login
 
-Users are now ready to authenticate. Link them to this url
+Users are now ready to authenticate. Link them to this URL
 
 ```
 https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientID>
 ```
 
-where `<ID>` matches the ID field of the configuration object above, `<ApiClientID>` matches the OrdercloudAPIClient field, and `<Roles>` is a space separated list of roles requested. Users will be redirected to an IDP route to provide credentials. If the credentials are valid, users will be redirected again to AppStartUrl with a valid Ordercloud token. They are logged in!
+where `<ID>` matches the ID field of the configuration object above, `<ApiClientID>` matches the OrdercloudAPIClient field, and `<Roles>` is a space separated list of roles requested. Users will be redirected to an IDP route to provide credentials. If the credentials are valid, users will be redirected again to AppStartUrl with a valid Ordercloud token in the URL. Your front-end application will need to handle grabbing this token from the URL and storing it. But otherwise, they have been granted a valid OrderCloud access token!
 
 ## Deep Linking
 
@@ -107,14 +110,67 @@ You'll notice that a successful login via the OpenID connect flow will always se
 
 This is not always desirable. For example, your marketing department might start sending out links to promotional products. Your user will click on one of these links and might need to log back in. Upon logging in your user will go to the home page _instead of_ the originally intended link.
 
-To handle this you can add an optional `appStartPath` query parameter to the ocrplogin url.
+To handle this you can add an optional `appStartPath` query parameter to the ocrplogin URL.
 
 ```
 https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientID>&appStartPath=/products/my-promotional-product
 ```
 
-Now once login via OpenID is successful OrderCloud will redirect your user to the url that resolves to:
+Now once login via OpenID is successful OrderCloud will redirect your user to the URL that resolves to:
 
 ```
 {AppStartUrl}/products/my-promotional-product
 ```
+
+## Configuring Your Integration Event Code
+
+The OpenID Connect Integration Event requires hosting two endpoints in your own application that will be triggered throughout the authentication flow. 
+
+**`/createuser`**
+Called after a user enters their credentials in the IDP for the first time while accessing your application. This endpoint will receive the following request body from OrderCloud:
+
+```json
+  "ExistingUser": null,
+  "OpenIdConnect": {}, // your OpenID Connect configruation you created
+  "TokenResponse": {
+    "id_token": "eyJhbGciOiJSU...", // token from your IDP
+    "access_token": "ya29.a0ARrdaM92vGZsFj"
+  },
+  "Environment": "Sandbox",
+  "OrderCloudAccessToken": "eyJhbGciOiJSU...", // token of the default context user of your API Client for your middleware
+  "ConfigData": null
+```
+
+Using the token response from your IDP, you can decode the token and use the data provided to create a user in OrderCloud. After the user is created, this endpoint will need to send back the following response:
+
+```json
+{
+  "Username": "neworderclouduser", // username of the user created in OrderCloud
+  "ErrorMessage": null
+}
+```
+
+**`/syncuser`** (Optional)
+Called after a user enters their credentials in the IDP on subsequent attempts to access your application after having done so successfully at least once. This endpoint will only be called if `CallSyncUserIntegrationEvent` is `true` in your OpenID Connect config. It will receive the following request body from OrderCloud:
+
+```json
+  "ExistingUser": {}, // existing OrderCloud user
+  "OpenIdConnect": {}, // your OpenID Connect configuration you created
+  "TokenResponse": {
+    "id_token": "eyJhbGciOiJSU...", // token from your IDP
+    "access_token": "ya29.a0ARrdaM92vGZsFj"
+  },
+  "Environment": "Sandbox",
+  "OrderCloudAccessToken": "eyJhbGciOiJSU...", // token of the default context user of your API Client for your middleware
+  "ConfigData": null
+```
+
+Using the token response from your IDP, you can decode the token and use the data provided to update the existing user in OrderCloud. After the user is update, this endpoint will need to send back the following response:
+
+```json
+{
+  "ErrorMessage": null
+}
+```
+
+Note that in any of the responses your application sends back to OrderCloud, populating `ErrorMessage` in your response will terminate the process.

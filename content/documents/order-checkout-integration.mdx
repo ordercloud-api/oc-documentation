@@ -3,7 +3,6 @@ type:           article
 title:          Order Checkout Integration Event
 description:    With many ecommerce systems, what a customer pays for tax and shipping, or how their promotion discount is applied to their order can be difficult to determine at the time they’re checking out. The Order Checkout Integration Event was designed to make these calculations and estimations more customizable to better suit your business needs.
 author:         jilse
-priority:       1
 publishDate:    2021-10-06
 updatedDate:	2021-10-12
 tags:           ["Orders", "Checkout", "Integrations" ]
@@ -15,7 +14,7 @@ Shipping costs vary depending on vendor, product type, materials used in packagi
 
 Promotion discounts may only apply to one item and therefore should only affect the price of that item and not the order as a whole. 
 
-A group of users within your organization may be tax exempt and aren’t subject to regular tax laws as your other users. 
+A group of users within your organization may be tax exempt and aren't subject to regular tax laws as your other users. 
 
 The Order Checkout Integration event was designed to make these calculations and estimates more customizable to better suit your business needs. With the integration event configured for your API Client, certain OrderCloud endpoints relative to the checkout process hook into predefined routes you expose in your hosted middleware application, allowing you more control over how the order total is calculated. Creating and calculating an order is normally broken down into a few steps: 
 
@@ -77,7 +76,7 @@ Receives all the order data and is responsible for returning a list of potential
 *Triggered via `POST v1/orders/{direction}/{orderID}/calculate`*
 Returns shipping total as a result of either selected shipping methods (if the shipping step was triggered) or the value included in the request body, tax total, and any unit price overrides beyond the default price schedules as a result of manual unit price adjustments or promotion overrides. There is also an optional space to return arbitrary json data (XP) that can be used to track, for instance, how the tax and shipping totals were calculated. For example, each line item and shipment could have different tax rates applied to them with each different jurisdiction requiring their share of the tax. This call returns the OrderCloud Order Worksheet object. 
 
-Sample request body
+Sample response body
 
 ```json
 {

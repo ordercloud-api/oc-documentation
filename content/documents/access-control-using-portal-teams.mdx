@@ -4,31 +4,31 @@ title:          Access Control Using Portal Teams
 description:    Building teams of Portal Users enables streamlined control of your contributors and the data they can access.
 author:         rwatt
 publishDate:    2020-11-24
-updatedDate:
+updatedDate:    2020-11-24
 tags:           ["Portal"]
 ---
 
 ## What is access control
 
-Access control in the OrderCloud Portal is the concept of managing a relationship between an Organization you administer and a Portal user or team of users. Each relationship has a set of permissions related to features in the Portal and a list of OrderCloud API roles for controlling data access.
+Access control in the OrderCloud Portal is the concept of managing a relationship between a Marketplace you administer and a Portal user or team of users. Each relationship has a set of permissions related to features in the Portal and a list of OrderCloud API roles for controlling data access.
 
-Upon choosing to invite a new Portal user or team to contribute to your Organization, you will be asked to define these relationships. Once the invitee accepts your request, they will be able to view and/or manage your Organization and the data within it, depending on their level of access.
+Upon choosing to invite a new Portal user or team to contribute to your Marketplace, you will be asked to define these relationships. Once the invitee accepts your request, they will be able to view and/or manage your Marketplace and the data within it, depending on their level of access.
 
-## Organization access controls
+## Marketplace access controls
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/access-controls/org-access-controls.jpg" alt="Organization access controls"/>
-<figcaption>A typical Organization access form in the OrderCloud Portal.</figcaption>
+<img src="/images/knowledge-base/inline/access-controls/marketplace-access-controls.png" alt="Marketplace access controls"/>
+<figcaption>A typical Marketplace access form in the OrderCloud Portal.</figcaption>
 </figure>
 
-### Organization admin
+### Marketplace admin
 
-This permission will allow managing everything in the Organization: team and user access (including their own), permissions, and the name of the Organization. 
+This permission will allow managing everything in the Marketplace: team and user access (including their own), permissions, and the name of the Marketplace. 
 
->Organization administrators do **NOT** have access to transfer or delete the Organization. These actions are limited to the Organization Owner. 
+>Marketplace administrators do **NOT** have access to transfer or delete the Marketplace. These actions are limited to the Marketplace Owner. 
 
 ### Impersonation access
 
-These permissions are directly related to features in the API Console. Organization Administrators can control the types of OrderCloud Users that a contributing party can impersonate (act on behalf of). Without any of these turned on, the contributing party can only access the console as themselves.
+These permissions are directly related to features in the API Console. Marketplace Administrators can control the types of OrderCloud Users that a contributing party can impersonate (act on behalf of). Without any of these turned on, the contributing party can only access the console as themselves.
 
 - Impersonate Seller Users
 - Impersonate Supplier Users
@@ -41,42 +41,37 @@ These are the API Roles that a contributing party has access to when using the A
 
 ## Access inheritance
 
-The OrderCloud Portal provides the ability to create teams. A Portal team is a group of users that share a common relationship with one or more Seller Organizations. Invdividual Portal users can also have their own relationship with a Seller Organization. This means that a single contributing user might inherit access from multiple sources, so how does an Organization administrator know where this access is provisioned when changes need to be made?
+The OrderCloud Portal provides the ability to create teams. A Portal team is a group of users that share a common relationship with one or more Marketplaces. Individual Portal users can also have their own relationship with a Marketplace. This means that a single contributing user might inherit access from multiple sources, so how does a Marketplace administrator know where this access is provisioned when changes need to be made?
 
-### Organization contributors
+### Marketplace contributors
 
-The contributors list is a flattened view of each Portal user that has accepted access to an Organization, whether that be through a direct user assignment, teams, or both. When viewing an individual contributor, you will see exactly which relationships that user has with your Organization, followed by the "inherited" permissions and data access. This "inherited" access is an inclusive merging of settings from all of the relationships listed at the top.
+The contributors list is a flattened view of each Portal user that has accepted access to a Marketplace, whether that be through a direct user assignment, teams, or both. When viewing an individual contributor, you will see exactly which relationships that user has with your Marketplace, followed by the "inherited" permissions and data access. This "inherited" access is an inclusive merging of settings from all of the relationships listed at the top.
 
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/access-controls/org-contributor-detail.jpg" alt="Organization contributor detail view"/>
-<figcaption>Individual contributor view for Example Organiztaion. User B inherits access from a single team (Example Team) and direct user assignment.</figcaption>
+<img src="/images/knowledge-base/inline/access-controls/marketplace-contributor-detail.png" alt="Marketplace contributor detail view"/>
+<figcaption>Individual contributor view for Example Marketplace. User B inherits access from a single team (Example Team) and direct user assignment.</figcaption>
 </figure>
 
-Each inheritance listed provides a link to where you can view and manage (if you have permission) the Organization access controls for that specific relationship.
+Each inheritance listed provides a link to where you can view and manage (if you have permission) the Marketplace access controls for that specific relationship.
 
 #### User Access
 
-Direct user assignments will bring you to user access. Here you create or cancel pending user invitations and manage the users who have accepted individual access to your Organization.
+Direct user assignments will bring you to user access. Here you create or cancel pending user invitations and manage the users who have accepted individual access to your Marketplace.
 
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/access-controls/org-user-access.jpg" alt="Organization user access controls"/>
-<figcaption>User B's direct user access view for Example Organiztaion.</figcaption>
+<img src="/images/knowledge-base/inline/access-controls/marketplace-user-access.png" alt="Marketplace user access controls"/>
+<figcaption>User B's direct user access view for Example Marketplace.</figcaption>
 </figure>
 
 #### Team Access
 
-Team assignments will bring you to team access. Here you create or cancel pending team invitations and manage the teams that have accepted access to your Organization.
+Team assignments will bring you to team access. Here you create or cancel pending team invitations and manage the teams that have accepted access to your Marketplace.
 
 <figure class="blog-figure">
-<img src="/images/knowledge-base/inline/access-controls/org-team-access.jpg" alt="Organization team access controls"/>
-<figcaption>Example Teams's access view for Example Organiztaion.</figcaption>
+<img src="/images/knowledge-base/inline/access-controls/marketplace-team-access.png" alt="Marketplace team access controls"/>
+<figcaption>Example Teams's access view for Example Marketplace.</figcaption>
 </figure>
 
 ## Best practices
 
 In general, it is best to provide more limited access for teams, as the members of each team are managed separately by the team administrators. There is no guarantee that the members of a contributing team won't change. After you've established team access, as certain contributors require additional permissions or data access, invite them in the user access view.
-
-
-
-
-

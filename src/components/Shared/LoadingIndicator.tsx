@@ -1,4 +1,4 @@
-import LoadingOverlay from 'react-loading-overlay'
+import LoadingOverlay from 'react-loading-overlay-ts'
 import BeatLoader from 'react-spinners/BeatLoader'
 import React from 'react'
 

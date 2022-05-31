@@ -111,19 +111,19 @@ const CodeExample: FunctionComponent<CodeExampleProps> = (
   )
 
   const currentContent = useMemo(() => {
-    if (!language) return
-    return Prism.highlight(
-      content[language],
-      Prism.languages[language],
-      language
-    )
-  }, [language])
+    let l = language as keyof CodeExampleContent
+    if (!l || !content[l]) {
+      l = Object.keys(content)[0] as keyof CodeExampleContent
+    }
+    return Prism.highlight(content[l], Prism.languages[l], l)
+  }, [language, content])
 
   const showLanguage = useCallback(
     (language: keyof CodeExampleContent) => {
+      if (!content[language]) return false
       return !hide || (hide && !hide.includes(language))
     },
-    [hide]
+    [hide, content]
   )
 
   const handleCopyClick = useCallback(() => {

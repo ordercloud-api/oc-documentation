@@ -15,23 +15,25 @@ import {
   Breadcrumbs,
   Hidden,
 } from '@material-ui/core/'
-import { Block, Code, Description } from '@material-ui/icons'
+import { Code, Description } from '@material-ui/icons'
 import { graphql, Link, useStaticQuery } from 'gatsby'
 import { flatten, intersection } from 'lodash'
-import React, { Fragment, FunctionComponent, useMemo, useState } from 'react'
+import React, { Fragment, FunctionComponent, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
 import LayoutContainer from '../components/Layout/LayoutContainer'
 import LayoutMain from '../components/Layout/LayoutMain'
 import LayoutMenu from '../components/Layout/LayoutMenu'
 import utility from '../services/utility'
-import themeConstants from '../theme/theme.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     tagChipListItem: {
-      marginRight: theme.spacing(0.5),
-      marginBottom: theme.spacing(0.5),
+      marginRight: theme.spacing(0.75),
+      marginBottom: theme.spacing(0.75),
+      '&:hover': {
+        textDecoration: 'none',
+      },
     },
     tagChipBadge: {
       right: theme.spacing(0.5),
@@ -43,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface DocumentAuthor {
   id: string
+  username: string
   name: string
   title: string
 }
@@ -94,8 +97,8 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
     query {
       allMdx(
         sort: {
-          order: [ASC, DESC]
-          fields: [frontmatter___priority, frontmatter___publishDate]
+          order: [DESC, DESC]
+          fields: [frontmatter___updatedDate, frontmatter___publishDate]
         }
         filter: { fileAbsolutePath: { glob: "**/content/documents/**/*.mdx" } }
       ) {
@@ -111,7 +114,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
               publishDate(formatString: "MMMM Do, YYYY")
               updatedDate(formatString: "MMMM Do, YYYY")
               author {
-                id
+                username
                 name
                 title
               }
@@ -230,7 +233,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
 const useDocListStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      marginBottom: theme.spacing(1),
+      marginBottom: theme.spacing(1.5),
     },
     listItemDescription: {
       marginBottom: theme.spacing(1),
@@ -302,8 +305,11 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
                 </Box>
                 <Typography variant="caption" display="block">
                   {`${
-                    node.frontmatter.updatedDate ? 'Updated' : 'Published'
-                  } by ${node.frontmatter.author.name} on ${node.frontmatter
+                    node.frontmatter.updatedDate !==
+                    node.frontmatter.publishDate
+                      ? 'Updated'
+                      : 'Published'
+                  } by ${node.frontmatter.author ? node.frontmatter.author.name : 'Unknown'} on ${node.frontmatter
                     .updatedDate || node.frontmatter.publishDate}`}
                 </Typography>
               </Fragment>

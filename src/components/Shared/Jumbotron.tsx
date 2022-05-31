@@ -1,7 +1,7 @@
 import {
+  alpha,
   Container,
   createStyles,
-  fade,
   lighten,
   Paper,
   Theme,
@@ -32,10 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
         overflowX: 'hidden',
         backgroundColor: base_color_1,
         backgroundSize: '400% 400%',
-        // background: `linear-gradient(${lighten(
-        //   theme.palette.secondary.main,
-        //   0.0
-        // )}, ${lighten(theme.palette.secondary.main, 0.6)})`,
       }
     },
     jumbotronPattern: {
@@ -114,10 +110,11 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     jumbotronText: ({ align }) => ({
-      color: fade('#ffffff', 0.8),
+      color: alpha('#ffffff', 0.8),
       maxWidth: align === 'center' ? 700 : 900,
       margin: align === 'center' ? '0 auto' : undefined,
       textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
+      lineHeight: 1.5,
     }),
   })
 )

@@ -1,11 +1,4 @@
-import {
-  Collapse,
-  createStyles,
-  makeStyles,
-  Typography,
-  Theme,
-} from '@material-ui/core'
-import { ExpandLess, ExpandMore, OpenInNew } from '@material-ui/icons'
+import { createStyles, makeStyles, Typography, Theme } from '@material-ui/core'
 import { Link, withPrefix } from 'gatsby'
 import React from 'react'
 import { Section } from '../../models/section.model'
