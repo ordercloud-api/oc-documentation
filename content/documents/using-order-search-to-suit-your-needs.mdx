@@ -1,0 +1,117 @@
+---
+type: tutorial
+title: Using Order Search to Suit Your Needs
+description: OrderCloud's Premium Search on Orders gives you the ability to get a list of orders and line items with more flexibility.
+author: cricomendoza
+publishDate: 2022-05-23
+updatedDate: 2022-05-23
+tags: ["Orders", "LineItems", "OrderSearch", "PremiumSearch"]
+---
+
+In April, premium search was released for orders and line items. These changes [provide better search and filtering for the existing orders endpoint](https://ordercloud.io/knowledge-base/order-search). Primarily, these changes will help with building custom order management screens or reporting interfaces for your business users. Additionally, you can build unique experiences for Buyers around their Order History. Refer to the following examples to help guide you in using this new feature on orders and line items calls.
+
+Keep in mind that the search and filter options you apply using Premium Order Search will result in further refinement of the Orders and Line Items you have access to. You’ll return a refined list of only the orders and line items that are visible to your context, whether it be Buyer, Seller, or Supplier.
+
+## Get Line Items based on other Order or Line Item information
+
+Getting sales metrics such as total quantity sold or gross sales for a specific product is a common request for eCommerce Managers. This is now possible with Premium Search for Orders because you can now get a list of line items across orders without relying on an order ID:
+
+`GET v1/lineitems/{direction}?ProductID={ProductID}`
+
+Want to know how many submitted items still need fulfilling? Get a list of Line Items that have no quantity shipped:
+
+`GET v1/lineitems/{direction}?QuantityShipped=0`
+
+Perhaps you want to know the percent of line items purchased that used a discount. You can get a list of line items that have a promotion applied to them or do not have a promotion applied:
+
+`GET v1/lineitems/{direction}?PromotionDiscount=>0`
+
+`GET v1/lineitems/{direction}?PromotionDiscount=0`
+
+Try getting total line items you sold in a specific time frame. Also note on this call that we are getting line items, but we are able to filter on Order level data, such as DateSubmitted. Here is an example to get line items sold the first half of the year:  
+
+`GET v1/lineitems/{direction}?Order.DateSubmitted=>=01-01-2022&Order.DateSubmitted=<=07-01-2022`  
+
+*Note: [All date and times data are in UTC time](https://ordercloud.io/learn/ordercloud-basics/conventions#date-format).*
+
+In your Commerce management screen, you may want to show a list of line items that a specific user has purchased so you can get a glimpse of their purchase history:
+
+`GET v1/lineitems/{direction}?Order.FromUserID={BuyerUserID}`
+
+A Marketplace Owner may want to understand total line items submitted to a certain supplier to see how the supplier compares to other suppliers. Get a list of line items that were placed directly to a specific supplier:
+
+`GET v1/lineitems/All?Order.ToCompanyID={SupplierID}`
+
+*Note: In order to list line items without an order ID, you must be a supplier or seller user with OrderAdmin and OrderReader roles. This feature is not available for shopper users.*
+
+## Filter Orders by a variety of data available on the order and line item information
+
+While getting a list of orders, you can now filter on Line Item data. Let’s say you are interested in getting a list of orders that contain a specific product ID:  
+
+`GET v1/orders/{direction}?LineItems.Product.ID={ProductID}`
+
+Additionally, you can get Orders with nested data on the Order. We’ve introduced OR operators on filters as well, for more flexible filtering.
+
+Get Orders that were placed with a Billing Address in California:
+
+`GET v1/orders/Incoming?BillingAddress.State=CA`
+
+Get Orders that were placed with a Billing Address in California OR Colorado
+
+`GET v1/orders/Incoming?BillingAddress.State=CA|CO`
+
+## Calibrate your Order Search Results to return what you need
+
+Use Search Type on Orders to regulate the ranking and results that return from your search terms based on the specificity you desire. [Review the SearchTypes here](https://ordercloud.io/knowledge-base/new-for-premium-search#new-searchtype-parameter) – they were initially introduced with Product Premium Search, and now have been expanded to Order Premium Search. The example below will show searching across line item data, but note that searching is done across Order data as well.
+
+Let’s suppose you are a shopper and have placed a handful of orders at this online store. You want to search your Order History to find an item you purchased a long time ago and reorder it. For this example, the items you’ve purchased before have product names such as these:
+
+1.  Button-up Black Shirt
+2.  Sleeveless Black Shirt
+3.  Cotton Blue Shirt
+4.  High-top Black Shoes
+5.  Canvas White Shoes
+
+If you are looking for Orders where any shirts were purchased, you can leave searchType blank since the default is AnyTerm, and search for “Shirt” across Order Line Items. In this example, orders with line items 1, 2 and 3 will return.
+
+`GET v1/me/orders/{direction}?searchOn=LineItems.Product.Name&search=Shirt`
+
+If you are looking to hone your search further, and want to get Orders where any black shirts were purchased, you can use the searchType  ExactPhrase, and search for “Black Shirt” across Orders. In our example, orders with line items 1 and 2 will return.
+
+`GET v1/me/orders/{direction}?searchType=ExactPhrase&searchOn=LineItems.Product.Name&search=Black Shirt`
+
+*Note: This example will return a list of orders based on your search across line items. As a shopper, you will need to make a separate call to get a list of line items for each order:  
+`GET v1/orders/{direction}/{orderID}/lineitems`*
+
+*Note: This search can also be done as a supplier or seller user, but the URL will differ slightly.  
+GET v1/orders/{direction}?searchType=ExactPhrase&searchOn=LineItems.Product.Name&search=Black Shirt*
+
+Lastly, the Order.Comments property now has fuzzy search enabled, meaning you can return Orders based on keywords found in the Comments field:
+
+`GET v1/orders/Incoming?search={searchTerm}`
+
+## Other things to keep in mind:
+
+#### Getting submitted and unsubmitted orders
+It’s important to reiterate that you can no longer get submitted and unsubmitted orders in the same call. By default, the orders list call will always return submitted orders. If you don’t include a filter for IsSubmitted or Status, only IsSubmitted=true orders will be returned.
+
+However, if you are looking to get a list of all unsubmitted orders you must include IsSubmitted=false in your call. This will return all Unsubmitted, AwaitingApproval, and Declined orders.
+
+`GET v1/orders/{direction}?IsSubmitted=false`
+
+#### No need to add xp indices on orders
+Let’s say you keep track of shipping options on the order xp. You can now filter orders with a specific shipping option without needing to create a xp index for that property.
+
+`GET v1/orders/{direction}?xp.ShippingOption={shippingOption}`
+
+#### Use NextPageKey for more performant listings
+Is your Meta.Page value less than the Meta.TotalPages value in your line item list response? Instead of using page={pageNumber} in your call to get more line items, include a filter for pageKey={Meta.NextPageKey} [for higher performance,](https://ordercloud.io/knowledge-base/order-search#whats-the-deal-with-metanextpagekey) along with any other filters you want to include.
+
+`GET v1/lineitems/{direction}?Order.DateSubmitted={date}&pageKey={Meta.NextPageKey}`
+
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/using-order-search-to-suit-your-needs/using-order-search-to-suit-your-needs-1.png" alt="Meta.NextPageKey"/>
+<figcaption>Meta.NextPageKey</figcaption>
+</figure>
+
+As you can see, the new Premium Search on Orders gives you a great deal of flexibility for listing Order and Line Item Data. Try these out, and let us know what you think!

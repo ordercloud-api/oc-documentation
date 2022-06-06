@@ -31,7 +31,7 @@ Most resources that map to an entity of some sort (Orders, Users, Addresses, etc
 
 ## Error Handling
 
-For all unsuccessful requests, we attempt to return the [most appropriate HTTP status in the 400 range](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_Error). Only when something goes terribly wrong on our end will you get a 500 response. And so long as our platform is responding (i.e. returning anything in the 4xx range or 500), you can count on the response body taking a standard shape.
+For all unsuccessful requests, we attempt to return the [most appropriate HTTP status in the 400 range](http://en.wikipedia.org/wiki/List_of_HTTP_status_codes#4xx_Client_Error). So long as our platform is responding (i.e. returning anything in the 4xx range or 500), you can count on the response body taking a standard shape.
 
 ## HTTP Methods
 
@@ -80,7 +80,7 @@ OrderCloud uses conventional HTTP response codes to indicate success or failure 
       <tr>
         <td>403 - Forbidden</td>
         <td>
-          The user's Security Profile does not have the necessary roles to make the API call. Update Security Profile to include valid roles for the call. The response will include a list of the missing roles
+          The user's Security Profile does not have the necessary roles to make the API call. Update Security Profile to include valid roles for the call. The response will include a list of the missing roles.
         </td>
       </tr>
       <tr>
