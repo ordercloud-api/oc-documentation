@@ -304,9 +304,9 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
                   })}
                 </Box>
                 <Typography variant="caption" display="block">
-                  {`${
-                    node.frontmatter.updatedDate !==
-                    node.frontmatter.publishDate
+                  {`${node.frontmatter.updatedDate && 
+                    (node.frontmatter.updatedDate !==
+                    node.frontmatter.publishDate) 
                       ? 'Updated'
                       : 'Published'
                   } by ${node.frontmatter.author ? node.frontmatter.author.name : 'Unknown'} on ${node.frontmatter
