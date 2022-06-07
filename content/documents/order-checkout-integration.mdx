@@ -4,7 +4,7 @@ title:          Order Checkout Integration Event
 description:    With many ecommerce systems, what a customer pays for tax and shipping, or how their promotion discount is applied to their order can be difficult to determine at the time they’re checking out. The Order Checkout Integration Event was designed to make these calculations and estimations more customizable to better suit your business needs.
 author:         jilse
 publishDate:    2021-10-06
-updatedDate:	2021-10-12
+updatedDate:	2022-05-19
 tags:           ["Orders", "Checkout", "Integrations" ]
 ---
 
@@ -48,8 +48,8 @@ Calls triggered from OrderCloud to the custom implemented routes defined below c
 {
     "ShipMethodSelections": [
         {
-            "ShipEstimateID": "testingShipmentItem1",
-            "ShipMethodID": "ShipMethod1"
+            "ShipEstimateID": "ShipEstimateID",
+            "ShipMethodID": "ExampleShipMethod1"
         }
     ]
 }
@@ -66,29 +66,133 @@ One of the additional benefits of this integration is that the data that goes in
 
 ## Implementation
 
-Implementing the Order Checkout Integration Event in your marketplace requires creating an OrderCheckout Integration Event Type, connecting it to an existing API Client by PATCHing the OrderCheckoutIntegrationEventID value, and hosting a total of five potential endpoints in your application that will be triggered by certain OrderCloud endpoints, depending on your use case, all of which are triggered by the OrderCloud platform at the appropriate times. 
-
-**`/ShippingRates`**
-*Triggered via `POST v1/orders/{direction}/{orderID}/estimateshipping`*
-Receives all the order data and is responsible for returning a list of potential shipments. Each shipment contains a list of line items and a list of potential shipping methods and each shipping method has a price. The shipping options are presented to the end user for their selection. This call returns the OrderCloud Order Worksheet object.
-
-**`/OrderCalculate`**
-*Triggered via `POST v1/orders/{direction}/{orderID}/calculate`*
-Returns shipping total as a result of either selected shipping methods (if the shipping step was triggered) or the value included in the request body, tax total, and any unit price overrides beyond the default price schedules as a result of manual unit price adjustments or promotion overrides. There is also an optional space to return arbitrary json data (XP) that can be used to track, for instance, how the tax and shipping totals were calculated. For example, each line item and shipment could have different tax rates applied to them with each different jurisdiction requiring their share of the tax. This call returns the OrderCloud Order Worksheet object. 
-
-Sample response body
+Implementing the Order Checkout Integration Event in your marketplace requires creating an OrderCheckout Integration Event Type, connecting it to an existing API Client by PATCHing the OrderCheckoutIntegrationEventID value, and hosting a total of five potential endpoints in your application that will be triggered by certain OrderCloud endpoints, depending on your use case, all of which are triggered by the OrderCloud platform at the appropriate times. The OrderCloud platform will send each of these endpoints the same payload:
 
 ```json
 {
-	"ShippingTotal": null,
-	"TaxTotal": null,
+	"ConfigData": {}, // from your Integration Event
+	"Environment": "Sandbox",
+	"OrderCloudAccessToken": "eyJhbGciOiJSUzI1NiIsTdHJ5RDVEclEifQ...",
+	"OrderWorksheet": {
+		"LineItems": [],
+		"Order": {},
+		"OrderApprovedResponse": {},
+		"OrderCalculateResponse": {},
+		"OrderPromotions": [],
+		"OrderSubmitForApprovalResponse": {},
+		"OrderSubmitResponse": {},
+		"ShipEstimateResponse": {},
+	}
+}
+```
+
+
+**`/ShippingRates`**
+
+*Triggered via `POST v1/orders/{direction}/{orderID}/estimateshipping`*
+
+Receives all the order data and is responsible for returning a list of potential shipments. Each shipment contains a list of line items and a list of potential shipping methods and each shipping method has a price. The shipping options are presented to the end user for their selection. This call returns the OrderCloud Order Worksheet object.
+
+Sample response body from your application:
+
+```json
+{
+	"ShipEstimates": [
+		{
+			"ID": "ShipEstimateID",
+			"SelectedShipMethodID": null,
+			"ShipEstimateItems": [
+				{
+					"LineItemID": "SampleLineItemID",
+					"Quantity": 1
+				}
+			],
+			"ShipMethods": [
+				{
+					"Cost": 10,
+					"ID": "ExampleShipMethod1",
+					"Name": "Example Shipping Method 1",
+					"EstimatedTransitDays": 5,
+					"xp": {}
+				},
+				{
+					"Cost": 8,
+					"ID": "ExampleShipMethod2",
+					"Name": "Example Shipping Method 2",
+					"EstimatedTransitDays": 7,
+					"xp": {}
+				}
+			]
+			"xp": {}
+		}
+	]
+	"xp": {}
+}
+```
+
+Sample response body from OrderCloud:
+```json
+{
+	"OrderWorksheet": {
+		"ShipEstimateResponse": {
+			"ShipEstimates": [
+				{
+					"ID": "ShipEstimateID",
+					"SelectedShipMethodID", null,
+					"ShipEstimateItems": [
+						{
+							"LineItemID": "SampleLineItemID",
+							"Quantity": 1
+						}
+					],
+					"ShipMethods": [
+						{
+							"Cost": 10,
+							"ID": "ExampleShipMethod1",
+							"Name": "Example Shipping Method 1",
+							"EstimatedTransitDays": 5,
+							"xp": {}
+						},
+						{
+							"Cost": 8,
+							"ID": "ExampleShipMethod2",
+							"Name": "Example Shipping Method 2",
+							"EstimatedTransitDays": 7,
+							"xp": {}
+						}
+					]
+					"xp": {}
+				}
+			],
+			"xp": {},
+			"HttpStatusCode": 200, // readonly
+			"UnhandledErrorBody": null // readonly
+		}
+		...
+	}
+}
+```
+
+
+**`/OrderCalculate`**
+
+*Triggered via `POST v1/orders/{direction}/{orderID}/calculate`*
+
+Returns shipping total as a result of either selected shipping methods (if the shipping step was triggered) or the value included in the request body, tax total, and any unit price overrides beyond the default price schedules as a result of manual unit price adjustments or promotion overrides. There is also an optional space to return arbitrary json data (XP) that can be used to track, for instance, how the tax and shipping totals were calculated. For example, each line item and shipment could have different tax rates applied to them with each different jurisdiction requiring their share of the tax. This call returns the OrderCloud Order Worksheet object, with `OrderCalculateResponse` populated. 
+
+Sample response body from your application:
+
+```json
+{
+	"ShippingTotal": 10,
+	"TaxTotal": 3,
 	"LineItemOverrides": [
 		{
-			"LineItemID": "sampleLineItemID",
+			"LineItemID": "SampleLineItemID",
 			"UnitPrice": 6.00,
 			"PromotionOverrides": [
 				{
-					"PromotionID": "samplePromoID",
+					"PromotionID": "SamplePromoID",
 					"Amount": 3.00
 				}
 			]
@@ -98,14 +202,129 @@ Sample response body
 }
 ```
 
+Sample response body from OrderCloud:
+```json
+{
+	"OrderWorksheet": {
+		"OrderCalculateResponse": {
+			"ShippingTotal": 10,
+			"TaxTotal": 3,
+			"LineItemOverrides": [
+				{
+					"LineItemID": "SampleLineItemID",
+					"UnitPrice": 6.00,
+					"PromotionOverrides": [
+						{
+							"PromotionID": "SamplePromoID",
+							"Amount": 3.00
+						}
+					]
+				}
+			],
+			"xp": {},
+			"HttpStatusCode": 200, // readonly
+			"UnhandledErrorBody": null // readonly
+		}
+		...
+	}
+}
+```
+
+
 **`/OrderSubmit`**
+
 *Triggered via `POST v1/orders/{direction}/{orderID}/submit`*
+
 Any custom, post-order submit logic can be handled in a method exposed by this endpoint in your middleware. This is the opportunity to import the order, in real time, into a back-office system or initiate order fulfillment. This call returns the OrderCloud Order object. 
 
+Sample response body from your application:
+
+```json
+{
+	"xp": {
+		"SomeKey": "SomeValue"
+	}
+}
+```
+
+Sample response body from OrderCloud:
+```json
+{
+	"OrderWorksheet": {
+		"OrderSubmitResponse": {
+			"xp": {
+				"SomeKey": "SomeValue"
+			},
+			"HttpStatusCode": 200, // readonly
+			"UnhandledErrorBody": null // readonly
+		}
+		...
+	}
+}
+```
+
+
 **`/OrderSubmitForApproval`**
+
 *Triggered via `POST v1/orders/{direction}/{orderID}/submit`*
+
 Similar to order submit, however this is triggered in the event the order submitted was subject to an approval rule. This call returns the OrderCloud Order object.
 
+Sample response body from your application:
+
+```json
+{
+	"xp": {
+		"SomeKey": "SomeValue"
+	}
+}
+```
+
+Sample response body from OrderCloud:
+```json
+{
+	"OrderWorksheet": {
+		"OrderSubmitForApprovalResponse": {
+			"xp": {
+				"SomeKey": "SomeValue"
+			},
+			"HttpStatusCode": 200, // readonly
+			"UnhandledErrorBody": null // readonly
+		}
+		...
+	}
+}
+```
+
+
 **`/OrderApproved`**
+
 *Triggered via `POST v1/orders/{direction}/{orderID}/approve`*
+
 Any custom, post-order approved logic can be handled in a method exposed by this endpoint in your middleware. This is the opportunity to import the order, in real time, into a back-office system or initiate order fulfillment. This call returns the OrderCloud Order object.
+
+Sample response body from your application:
+
+```json
+{
+	"xp": {
+		"SomeKey": "SomeValue"
+	}
+}
+```
+
+Sample response body from OrderCloud:
+```json
+{
+	"OrderWorksheet": {
+		"OrderApprovedResponse": {
+			"xp": {
+				"SomeKey": "SomeValue"
+			},
+			"HttpStatusCode": 200, // readonly
+			"UnhandledErrorBody": null // readonly
+		}
+		...
+	}
+}
+```
