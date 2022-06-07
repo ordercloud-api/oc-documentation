@@ -211,6 +211,16 @@ const MeSubSections = [
     ],
   },
   {
+    name: 'My Product Collections',
+    'x-section-id': 'MeAndMyStuff',
+    paths: [
+      '/me/productcollections',
+      '/me/productcollections/{productCollectionID}',
+      '/me/productcollections/{productCollectionID}/products',
+      '/me/productcollections/{productCollectionID}/products/{productID}',
+    ],
+  },  
+  {
     name: 'My Orders',
     'x-section-id': 'MeAndMyStuff',
     paths: ['/me/orders', '/me/orders/approvable'],
