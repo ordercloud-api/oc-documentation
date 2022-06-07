@@ -162,7 +162,7 @@ Note that in any of the responses your application sends back to OrderCloud, pop
 
 In some cases it may be desirable to redirect your user to a different part of your application upon logging in. For example, your marketing department might start sending out links to promotional products. Your user will click on one of these links and need to log in. Upon logging in your user will need go to the product detail page for that specific product _instead of_ the home page.
 
-To handle this you can add an optional `appstartpath` query parameter to the ocrplogin URL.
+To handle this you can add an optional `appstartpath` query parameter to the relying party login URL.
 
 ```
 https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientID>&appstartpath=/products/my-promotional-product
@@ -170,7 +170,7 @@ https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientI
 
 Then, modify your `AppStartUrl` to include `{2}` which will be replaced with whichever value you defined in `appstartpath`. Make sure the value you pass is url-encoded.
 
-For example if I want to redirect users to `/products/myawesomeproduct` upon logging in then my ocrplogin url would look like this:
+For example if I want to redirect users to `/products/myawesomeproduct` upon logging in then my relying party login URL would look like this:
 
 ```
 https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientID>&appstartpath=%2Fproducts%2Fmyawesomeproduct
