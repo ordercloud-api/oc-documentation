@@ -218,6 +218,7 @@ const MeSubSections = [
       '/me/productcollections/{productCollectionID}',
       '/me/productcollections/{productCollectionID}/products',
       '/me/productcollections/{productCollectionID}/products/{productID}',
+      '/me/productcollections/{productCollectionID}/{productID}'
     ],
   },  
   {
