@@ -1,5 +1,6 @@
 import { createTheme, darken } from '@material-ui/core/styles'
 import { sherpablue } from './ocPalette.constants'
+import { sc_primary, sc_teal, sc_red, sc_gray, sc_blackAlpha } from './sitecorePalette.constants'
 
 export const base_color_1 = '#171d52'
 export const base_color_2 = '#19a5a2'
@@ -27,9 +28,9 @@ export const brand_signal_error = '#ca241c'
 export const brand_signal_info = '#0076d1'
 
 const defaultTheme = createTheme()
-const primaryColor = base_color_1
-const secondaryColor = base_color_2
-const error = brand_signal_error
+const primaryColor = sc_primary[500]
+const secondaryColor = sc_teal[500]
+const error = sc_red[500]
 
 export default createTheme({
   typography: {
@@ -164,6 +165,15 @@ export default createTheme({
     MuiButton: {
       root: {
         textTransform: 'none',
+        borderRadius: 999,
+      },
+      outlinedSecondary: {
+        borderColor: sc_blackAlpha[200],
+        color: sc_gray[600],
+        '&:hover':{
+          borderColor: sc_blackAlpha[200],
+          backgroundColor: sc_blackAlpha[100]
+        }
       },
       label: {
         '& > img': {
