@@ -57,7 +57,7 @@ const styles = (theme: Theme) =>
       marginBlockEnd: '1rem;',
     },
     extendedIcon: {
-      color: theme.palette.secondary.main,
+      color: theme.palette.primary.main,
       fontSize: theme.typography.h1.fontSize,
     },
     extendedIconSmall: {

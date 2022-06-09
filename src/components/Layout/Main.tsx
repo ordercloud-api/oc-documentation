@@ -46,6 +46,7 @@ import {
   sherpablue,
   sizzlingred,
 } from '../../theme/ocPalette.constants'
+import { sc_primary, sc_teal } from '../../theme/sitecorePalette.constants'
 import themeConstants from '../../theme/theme.constants'
 import ButtonLink from '../Shared/ButtonLink'
 import { CustomButtonLink } from '../Shared/ButtonVariants'
@@ -552,7 +553,7 @@ const MainComponent: React.FunctionComponent = props => {
               style={{ gap: 24 }}
             >
               <CustomButtonLink
-                color={themeConstants.palette.secondary.main}
+                color={sc_primary[500]}
                 to="/learn/ordercloud-basics/architecture"
                 variant="contained"
                 size="large"
@@ -661,7 +662,7 @@ await Orders.Submit("Outgoing", order.ID);`}
                 to="/developer-tools"
                 variant="contained"
                 size="large"
-                color={themeConstants.palette.secondary.main}
+                color={sc_primary[500]}
               >
                 Developer Tools
               </CustomButtonLink>
@@ -715,7 +716,7 @@ await Orders.Submit("Outgoing", order.ID);`}
         >
           <Button
             onClick={() => navigate('/register')}
-            color="secondary"
+            color="primary"
             variant="contained"
             size="large"
           >
@@ -724,7 +725,7 @@ await Orders.Submit("Outgoing", order.ID);`}
           <ButtonLink
             to="/slack"
             size="large"
-            color="secondary"
+            color="primary"
             variant="outlined"
           >
             Join Our Slack
