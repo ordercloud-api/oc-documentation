@@ -210,13 +210,17 @@ Sample response body from OrderCloud:
 			"LineItemOverrides": [
 				{
 					"LineItemID": "SampleLineItemID",
+					"Product": { // updates ad-hoc products only
+						"Name": "some new name"
+					}
 					"UnitPrice": 6.00,
 					"PromotionOverrides": [
 						{
 							"PromotionID": "SamplePromoID",
 							"Amount": 3.00
 						}
-					]
+					],
+					"Remove": false
 				}
 			],
 			"xp": {},
