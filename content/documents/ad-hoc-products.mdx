@@ -8,7 +8,7 @@ updatedDate:    2022-06-21
 tags:           ["Products", "Orders", "Line Items", "Integrations"]
 ---
 
-OrderCloud provides a robust set of features for creating, organizing, and presenting product catalogs. For most, OrderCloud is not the master record for such data, and a significant effort is required to keep this data synchronized. But in a smaller subset of cases, sellers are already equipped not just with back-office product data but with full browsing and search capabilities for their buyers. All they're missing are the purchasing and order management features. In these cases, an integrator can leverage OrderCloud's Ad-Hoc Products feature to provide product data on demand and skip the cumbersome data synchronization effort entirely. Let's take a look at how it works.
+OrderCloud provides a robust set of features for creating, organizing, and presenting product catalogs. For most, OrderCloud is not the master record for such data, and a significant effort is required to keep this data synchronized. But in a smaller subset of cases, sellers are already equipped not just with back-office product data but with full browsing and search capabilities for their buyers. All they need from OrderCloud are purchasing and order management capabilities. In these cases, an integrator can leverage OrderCloud's Ad-Hoc Products feature to provide product data on demand and skip the cumbersome catalog synchronization effort entirely. Let's take a look at how it works.
 
 ## The `AddToCart` Integration Event
 
@@ -50,8 +50,33 @@ Your configured endpoint is expected to return an HTTP 200 response with a body 
 }
 ```
 
-Most fields are optional and are in fact validated in much the same way as [creating a new cataloged product](https://ordercloud.io/api-reference/product-catalogs/products/create#request-body) in terms of required fields, max string lengths, etc. 
+Most `Product` fields are optional and are in fact validated in much the same way as [creating a new cataloged product](https://ordercloud.io/api-reference/product-catalogs/products/create#request-body) in terms of required fields, max string lengths, etc.
 
-**If the requested product is not found in the external system**, the appropriate response from your endpoint is still HTTP 200, but with the `Product` object set to `null`. This will result in a 404 response from OrderCloud with an error code signaling that the product was not found. However, _any_ response in the 4xx or 5xx range (inlcuding 404) returned from your endpoint is interpretted as a misconfigured integration event. This is a safeguard to ensrue OrderCloud can distinguish between a missing product and a missing or misconfigured service endpoint.
+**If the requested product is not found in the external system**, the appropriate response from your endpoint is still HTTP 200, but with the `Product` object set to `null`. This will result in a 404 response from OrderCloud with an error code signaling that the product was not found. However, _any_ response in the 4xx or 5xx range (inlcuding 404) returned from your endpoint is interpretted as a misconfigured integration event and results in a 400 response from OrderCloud. This ensures that OrderCloud can distinguish between a missing product and a missing or misconfigured service endpoint.
 
+A non-null `UnitPrice` is required, but only when `Product` is not null.
 
+Final important note about `AddToCart`: when configured and assigned to the current API client, you are effectively opting out of the ability to order products from an OrderCloud catalog for that client. In other words, if the product does not exist in the external system, OrderCloud will not "fall back" on looking up the product in an OC catalog.
+
+## Synchronizing Products on Unsubmitted Orders
+
+As described, ad-hoc products are captured directly on orders by handling the `AddToCart` event. And it is well understood that in any scenario, a snapshot of product data is captured on order submit, and is no longer subject to changes to the "live" product. But this creates a gap in the ad-hoc case: how do you synchronize changes in the external system with those product on unsubmitted orders?
+
+In keeping with the "on-demand" nature of ad-hoc products, we've enhanced our [Order Checkout integration event](https://ordercloud.io/knowledge-base/order-checkout-integration) to support this scenario. Specifically, the [Order Calculate step](https://ordercloud.io/knowledge-base/order-checkout-integration#ordercalculate) now allows you to (optionally) return a `Product` object as part of its `LineItemOverrides` collection. This can be a partial representation, and behaves much like a [`PATCH` operation](https://ordercloud.io/api-reference/product-catalogs/products/patch) on the ad-hoc product. Also provided is the `Remove` property (also optional), which can be set to `true` to indicate that the line item should be silently removed from the unsubmitted order. This is consistent with what happens automatically when an OC-cataloged product becomes unavailable.
+
+For completeness, here's a look at an Order Calculate response with all `LineItemOverrides` fields included (only `LineItemID` is required):
+
+```json
+{
+  "LineItemOverrides": [
+    {
+      "LineItemID": "SampleLineItemID",
+      "Product": { },
+      "UnitPrice": 6.00,
+      "PromotionOverrides": [],
+      "Remove": false
+    },
+    ...
+  ]
+}
+```
