@@ -1,0 +1,36 @@
+---
+type:           article
+title:          Pre-built Checkout Integrations in .NET
+description:    Accelerate your development of checkout integrations in .NET by understanding OrderCloud's packages and starter projects. 
+author: oheywood        
+publishDate:    2022-06-20
+updatedDate:    2022-06-20
+tags:           ["Integrations", "Checkout", "Events", "Webhooks", ".NET", "Payments"]
+---
+
+## Introduction
+
+Checkout integrations are one of the most challenging and most critical pieces of an e-commerce project. This guide is about open source .NET projects we've published to accelerate your checkout and put your integrations on solid footing. These projects include pre-built integrations with shippers, tax calculators, and payment processors as well as a complete integration scafolding that ties these pieces together with the webhook routes OrderCloud expects.   
+
+## Checkout basics in OrderCloud
+
+Complexity in checkout comes from a variety of sources. Some parts have fairly standard user experience expectations (such as paying with a credit card) but are made complex by security requirements. Other parts are much less standardized (such as shipping rules and rates) and the complexity comes from custom business logic. The challenge for an e-commerce platform like OrderCloud is to provide the right balance between flexibiliy and guide-rails.
+
+In OrderCloud, implementing checkout starts with the <Link to="/api-reference/seller/integration-events/list">Integration Event API resource</Link>. If you have not read the <Link to="/knowledge-base/order-checkout-integration">Order Checkout Integration Event guide</Link>, it contains technical details on these events. The short description is that checkout events in the OrderCloud platform (such as estimate shipping, recalculate order, or submit order) trigger webhook requests from the platform to configured REST api endpoints which contain customer-specific logic. This webhook delegation ensures a secure environment for handling sensitive data like 3rd party credentials and sensitive processes like tax calculation. The structure of the request bodies, response bodies and the recommended flow of events provide guide-rails for a successful checkout, while the ability to inject custom logic provides flexibiliy. 
+
+Historically, we've seen 3 categories of indepenent software vendors used in most checkout flows. In order of user interaction these are 
+
+1. A shipping logistics provider that can give shipping cost estimates for different services based on the items being shipped to each unique destination. These estimates form a basis for what the purchaser will pay for various shipping services, though they may be marked up, marked down, or altered by any other logic. After checkout, a similar integration can be used in a warehouse app to purchase and print shipping labels, but the cost of actually purchasing shipping here is unrelated to the buyer's displayed shipping cost (expcept by the commercial needs of the business). EasyPost is an example of this type of vendor.
+2. A tax calculation provider. This is mainly relevent in the United States where the complexity of federal and state tax requires a dedicated software system for compliance. Since most vendors have API rate limiting, it is important to only calculate tax estimates after the user has entered checkout and not every time they modify their cart. Furthermore, tax must be calculated after shipping costs have been added to the order, since tax is applied to some shipping costs. Therefore, the tax cost must be displayed to the buyer after they select a shipping method and before they enter payment details. This is technically only an estimate until the order is submitted and the tax cost is finalized in the provider's system. Avalara is an example of this type of vendor.
+3. A payment processing provider. The most basic neccesity is to accept credit and debit cards, after that a wide range of payment types exist that may add value: Paypal, digital wallets, bank transfers, etc. To avoid costly PCI compliance, sensitive card data (full card numbers and cvvs) can never be stored in, maniputlated by, or even visible to the merchant's technology system. Users must enter card details into an Iframe provided by the processor, who will forward the merchant a card token or ID representing the full card data. Similarly a shopper's saved credit cards need to be vaulted in the payment processor system.          
+
+We focused on these 3 categories of integrations when we built the scafolding starting project. 
+
+## The scafolding starter project
+
+
+
+## Switching providers by swapping out nuget packages 
+
+
+## Creating a custom integration
