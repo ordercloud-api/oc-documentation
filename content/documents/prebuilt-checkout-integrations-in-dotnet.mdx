@@ -22,15 +22,46 @@ Historically, we've seen 3 categories of indepenent software vendors used in mos
 
 1. A shipping logistics provider that can give shipping cost estimates for different services based on the items being shipped to each unique destination. These estimates form a basis for what the purchaser will pay for various shipping services, though they may be marked up, marked down, or altered by any other logic. After checkout, a similar integration can be used in a warehouse app to purchase and print shipping labels, but the cost of actually purchasing shipping here is unrelated to the buyer's displayed shipping cost (expcept by the commercial needs of the business). EasyPost is an example of this type of vendor.
 2. A tax calculation provider. This is mainly relevent in the United States where the complexity of federal and state tax requires a dedicated software system for compliance. Since most vendors have API rate limiting, it is important to only calculate tax estimates after the user has entered checkout and not every time they modify their cart. Furthermore, tax must be calculated after shipping costs have been added to the order, since tax is applied to some shipping costs. Therefore, the tax cost must be displayed to the buyer after they select a shipping method and before they enter payment details. This is technically only an estimate until the order is submitted and the tax cost is finalized in the provider's system. Avalara is an example of this type of vendor.
-3. A payment processing provider. The most basic neccesity is to accept credit and debit cards, after that a wide range of payment types exist that may add value: Paypal, digital wallets, bank transfers, etc. To avoid costly PCI compliance, sensitive card data (full card numbers and cvvs) can never be stored in, maniputlated by, or even visible to the merchant's technology system. Users must enter card details into an Iframe provided by the processor, who will forward the merchant a card token or ID representing the full card data. Similarly a shopper's saved credit cards need to be vaulted in the payment processor system.          
+3. A payment processing provider. The most basic neccesity is to accept credit and debit cards, after that a wide range of payment types exist that may add value: Paypal, digital wallets, bank transfers, etc. To avoid costly PCI compliance, sensitive card data (full card numbers and cvvs) can never be stored in, maniputlated by, or even visible to the merchant's technology system. Users must enter card details into an Iframe provided by the processor, who will forward the merchant a card token or ID representing the full card data. Similarly, a shopper's saved credit cards need to be vaulted in the payment processor system. Stripe is an example of this type of vendor.           
 
 We focused on these 3 categories of integrations when we built the scafolding starting project. 
 
 ## The scafolding starter project
 
+[Open source on github](https://github.com/ordercloud-api/dotnet-middleware) we've published a complete API project built with .NET 6. It contains more than boilerplate, it also has all the server-side functionality you need for basic checkout, including integrations. Out of the box, the project uses [EasyPost](https://www.easypost.com/docs/api) for shipping, [Avalara](https://developer.avalara.com/) for tax, and [Stripe](https://stripe.com/docs) for payment processing. These default providers are leaders in their fields and partners with OrderCloud. Don't worry about lock-in though, we've explictly made swapping providers very easy. 
 
+To quickly get started and deploy this project follow the <Link to="/knowledge-base/start-dotnet-middleware-from-scratch">Start .NET middleware from Scratch</Link> guide. After this, you will need to create accounts at these default providers (or your replacements) and retrieve API credentials to save as environment variables.
+
+- [Create a free account](https://www.easypost.com/signup) for EasyPost, then visit [this link](https://www.easypost.com/account/api-keys) to get an API key.
+- [Start a 60 day trial](https://buy.avalara.com/returns?type=sbt&campaignid=7015a000001SagVAAS&lsmr=Paid%20Digital&lso=Paid%20Digital) for Avalara, then [get a license key here](https://integrations.avalara.com/#/software-keys), and your account ID and company code at Settings -> All settings.
+- [Create a free account](https://dashboard.stripe.com/register) for Stripe, then visit [this link](https://dashboard.stripe.com/test/apikeys) to get a secret and a publishable API key.
+
+Here is a quick tour of some of the highlights of the scafolding project.
+- [CheckoutController.cs](https://github.com/ordercloud-api/dotnet-middleware/blob/dev/Customer.OrderCloud.Api/Controllers/CheckoutController.cs) defines the API routes that respond to OrderCloud integration events.
+- [CheckoutCommand.cs](https://github.com/ordercloud-api/dotnet-middleware/blob/dev/Customer.OrderCloud.Common/Commands/CheckoutCommand.cs) contains the bulk of the logic for these responses.  
+- [Startup.cs](https://github.com/ordercloud-api/dotnet-middleware/blob/dev/Customer.OrderCloud.Api/Startup.cs) injects the EasyPost, Avalara, and Stripe services.  
+- [AppSettings.cs](https://github.com/ordercloud-api/dotnet-middleware/blob/dev/Customer.OrderCloud.Common/AppSettings.cs) shows the environment variables that are expected.
+- [Xp.cs](https://github.com/ordercloud-api/dotnet-middleware/blob/dev/Customer.OrderCloud.Common/Models/Xp.cs) defines all the extended properties in this project. 
 
 ## Switching providers by swapping out nuget packages 
 
+Looking through the code in CheckoutCommand.cs, you may notice that the logic does not depend directly on specific software vendors. Instead, behavior is abstracted out by interfaces like IShippingRateCalculator, ITaxCalculator, and IPaymentProcessor. Meanwhile, classes like EasyPostService implement those interfaces. This is an intentional strategy to make switching providers extremely easy.
+
+Looking at Startup.cs, you may also notice that the classes EasyPostService, AvalaraService, and StripeService are not defined in this project, they are being imported from separate nuget pacakges. This is another important piece of our integration strategy - to publish pre-built integrations as code libraries. Combined with the interface definitions, this means that switching providers is as easy as swapping out a nuget package and changing dependency injection in Startup.cs. 
+
+In fact, to kickstart this effort with examples, we have published nuget package integrations with 3 providers in each of the 3 categories. Source code and readmes for these integrations can be found [here](https://github.com/ordercloud-api/ordercloud-dotnet-catalyst).
+
+| Name | Nuget Library |
+| ------------- | ------------- |
+| **BlueSnap** | [![](https://img.shields.io/nuget/v/OrderCloud.Integrations.Payment.BlueSnap.svg?maxAge=3600)](https://www.nuget.org/packages/OrderCloud.Integrations.Payment.BlueSnap) |
+| **CardConnect** | [![](https://img.shields.io/nuget/v/OrderCloud.Integrations.Payment.CardConnect.svg?maxAge=3600)](https://www.nuget.org/packages/OrderCloud.Integrations.Payment.CardConnect) | 
+| **EasyPost** | [![](https://img.shields.io/nuget/v/OrderCloud.Integrations.Shipping.EasyPost.svg?maxAge=3600)](https://www.nuget.org/packages/OrderCloud.Integrations.Shipping.EasyPost) |
+| **Fedex** | [![](https://img.shields.io/nuget/v/OrderCloud.Integrations.Shipping.Fedex.svg?maxAge=3600)](https://www.nuget.org/packages/OrderCloud.Integrations.Shipping.Fedex) | 
+| **UPS** | [![](https://img.shields.io/nuget/v/OrderCloud.Integrations.Shipping.UPS.svg?maxAge=3600)](https://www.nuget.org/packages/OrderCloud.Integrations.Shipping.UPS) | 
+| **Avalara** | [![](https://img.shields.io/nuget/v/OrderCloud.Integrations.Tax.Avalara.svg?maxAge=3600)](https://www.nuget.org/packages/OrderCloud.Integrations.Tax.Avalara) | 
+| **Vertex** | [![](https://img.shields.io/nuget/v/OrderCloud.Integrations.Tax.Vertex.svg?maxAge=3600)](https://www.nuget.org/packages/OrderCloud.Integrations.Tax.Vertex) | 
+| **TaxJar** | [![](https://img.shields.io/nuget/v/OrderCloud.Integrations.Tax.TaxJar.svg?maxAge=3600)](https://www.nuget.org/packages/OrderCloud.Integrations.Tax.TaxJar) | 
 
 ## Creating a custom integration
+
+This stragtegy also lends itself to easily creating your own, totally custom implmentations for the interfaces like ITaxCalculator and not having to modify the logic in the scaffolding project at all. You don't have to make these integrations public, but if you would like to add your integration to list above, we would love to have it. Take a look at this [contributing integrations guide](https://github.com/ordercloud-api/ordercloud-dotnet-catalyst/blob/dev/OrderCloud.Catalyst/Integrations/CONTRIBUTING.md) and feel free to start a conversation in a github issue. 
