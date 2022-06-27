@@ -51,6 +51,10 @@ Here is a quick tour of some of the highlights of the scaffolding project code.
 - [AppSettings.cs](https://github.com/ordercloud-api/dotnet-middleware/blob/dev/Customer.OrderCloud.Common/AppSettings.cs) shows the environment variables that are expected.
 - [Xp.cs](https://github.com/ordercloud-api/dotnet-middleware/blob/dev/Customer.OrderCloud.Common/Models/Xp.cs) defines all the extended properties in this project. 
 
+### Connect a custom checkout experience to pre-built integrations
+
+![Checkout Integration Stack](/images/knowledge-base/inline/pre-built-checkout-integrations-in-dotnet/checkout-integrations-diagram.png)
+
 ## Switching providers by swapping out nuget packages 
 
 Looking through the code in CheckoutCommand.cs, you may notice that the logic does not depend directly on specific software vendors. Instead, behavior is abstracted out by interfaces like IShippingRateCalculator, ITaxCalculator, and IPaymentProcessor. Meanwhile, classes like EasyPostService implement those interfaces. This is an intentional strategy to make switching providers extremely easy.
