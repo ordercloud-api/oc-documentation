@@ -193,7 +193,7 @@ const MainComponent: React.FunctionComponent = props => {
         overlayed={true}
         heading="Sitecore OrderCloud"
         text={[
-          'With Sitecore OrderCloud®, design your own commerce solution with an API-first, headless cloud platform for B2B, B2C, and B2X. OrderCloud powers custom eCommerce experiences, order management, and B2B marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually.',
+          'With Sitecore OrderCloud®, design your own commerce solution with an API-first, headless cloud platform for B2B, B2C, and B2X. OrderCloud powers custom eCommerce experiences, order management, and marketplace applications for some of the world’s most well-known brands - processing over 25 million transactions and $5 billion in revenue annually.',
         ]}
         actions={[
           <ButtonLink
@@ -541,7 +541,7 @@ const MainComponent: React.FunctionComponent = props => {
             </Typography>
             <Typography variant="h5" color="textSecondary">
               OrderCloud’s proven architecture has enabled developers from
-              around the world to bring powerful B2B applications to life. We
+              around the world to bring powerful B2B, B2C, and B2X applications to life. We
               aim to provide unmatched interoperability by using standardized
               W3C web standards, extensible data models, and rich feature-sets.
             </Typography>
