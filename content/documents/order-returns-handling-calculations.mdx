@@ -10,13 +10,13 @@ tags:           ["Orders", "Integrations", "Returns", "Refunds", "OrderReturns"]
 
 OrderCloud is unopinionated about how to calculate refund amounts when it comes to product returns, or customer refunds. We know that your business has its own specific requirements around refund amounts, so we give you the tools to put your exact logic in place. This article will cover what you need to consider when building your refund calculation logic.
 
-To assist with your calculation, OrderCloud triggers an integration event any time an `OrderReturn` is either created or updated without a `RefundAmount` specified. Included in that payload is the order worksheet.
+To assist with your calculation, OrderCloud triggers an [OrderReturn Integration Event](https://ordercloud.io/knowledge-base/order-returns#new-integrationevent-type-orderreturn) any time an `OrderReturn` is either created or updated without a `RefundAmount` specified. Included in that payload is the order worksheet.
 
 ## The Importance of the `OrderWorksheet`
 
 The `OrderWorksheet` is the key to unlocking calculation of refunds.  Make sure this gets hydrated during the order calculation process with the necessary tax, shipping, and promotions data, so it will have all the details a developer needs to code a customized calculation feature in their middleware.
 
-Since the `OrderWorksheet` will serve as the source of truth for refund calculations, it’s helpful (though not required) to organize the values that are useful to your returns as `xp` under the `OrderWorksheet.OrderCalculateResponse` object during the `POST / Calculate an order` step of your checkout workflow. This can be valuable for more than just returns, such as if your business uses a third-party tax service and needs this data to create a standard invoice during order submission.
+Since the `OrderWorksheet` will serve as the source of truth for refund calculations, it’s helpful (though not required) to organize the values that are useful to your returns as `xp` under the `OrderWorksheet.OrderCalculateResponse` object during the `POST v1/orders/{direction}/{orderID}/calculate` step of your checkout workflow. This can be valuable for more than just returns, such as if your business uses a third-party tax service and needs this data to create a standard invoice during order submission.
 
 In this scenario, we will store the following custom object as `xp` on the `OrderCalculateResponse` and see how its properties could be used in determining a refund calculation amount. We will refer to this object in this article as `ReturnCalcs`.
 
@@ -106,7 +106,7 @@ We begin with storing several totals that help us understand how line items, shi
 
 ## Taxes & Promotions
 
-OrderCloud does not provide a calculation for how much an order-level promotion reduces the cost of a `LineItem` on the `Order`, allowing businesses to remain flexible on how they wish to apply these discounts. In our example, we've decided to lean on our tax service to apply the order-level promotion proportionally across eligible `LineItems` for us (6.67 for line X002 + 13.33 for line X003 = $20 order-level promotion). That contrasts with how we handled the line item-level promotion, and the reason for the verbose property names of `LineItemPromoAppliedToTaxableSubtotal` and `OrderLevelPromoNotAppliedToTaxableSubtotal`.
+OrderCloud does not provide a calculation for how much an order-level promotion reduces the cost of a `LineItem` on the `Order`, allowing businesses to remain flexible on how they wish to apply these discounts. In our example, we've decided to lean on our tax service to apply the order-level promotion proportionally across eligible `LineItems` for us ($6.67 for line X002 + $13.33 for line X003 = $20 order-level promotion). That contrasts with how we handled the line item-level promotion, and the reason for the verbose property names of `LineItemPromoAppliedToTaxableSubtotal` and `OrderLevelPromoNotAppliedToTaxableSubtotal`.
 
 Since our tax service did not handle line item-level promotions, it was important that we applied that manually to the `LineTaxableSubtotal` prior to submitting this value to the tax service. In the example of line X002, the `LineItem.Subtotal` was 60, but we manually adjusted this to 50 given the line-item level promotion. When we sent the order-level promotion amount of 20 to tax service, it proportionally applied the discount amount for us. If your tax service does not offer this feature, this would also need to be handled via a custom weighting in your middleware, and in that case, you would apply that order-level promo to the line’s taxable subtotal.
 
