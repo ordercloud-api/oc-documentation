@@ -108,7 +108,7 @@ We begin with storing several totals that help us understand how line items, shi
 
 OrderCloud does not provide a calculation for how much an order-level promotion reduces the cost of a `LineItem` on the `Order`, allowing businesses to remain flexible on how they wish to apply these discounts. In our example, we've decided to lean on our tax service to apply the order-level promotion proportionally across eligible `LineItems` for us ($6.67 for line X002 + $13.33 for line X003 = $20 order-level promotion). That contrasts with how we handled the line item-level promotion, and the reason for the verbose property names of `LineItemPromoAppliedToTaxableSubtotal` and `OrderLevelPromoNotAppliedToTaxableSubtotal`.
 
-Since our tax service did not handle line item-level promotions, it was important that we applied that manually to the `LineTaxableSubtotal` prior to submitting this value to the tax service. In the example of line X002, the `LineItem.Subtotal` was 60, but we manually adjusted this to 50 given the line-item level promotion. When we sent the order-level promotion amount of 20 to tax service, it proportionally applied the discount amount for us. If your tax service does not offer this feature, this would also need to be handled via a custom weighting in your middleware, and in that case, you would apply that order-level promo to the line’s taxable subtotal.
+Since our tax service did not handle line item-level promotions, it was important that we applied that manually to the `LineTaxableSubtotal` prior to submitting this value to the tax service. In the example of line X002, the `LineItem.Subtotal` was $60, but we manually adjusted this to $50 given the line-item level promotion. When we sent the order-level promotion amount of $20 to tax service, it proportionally applied the discount amount for us. If your tax service does not offer this feature, this would also need to be handled via a custom weighting in your middleware, and in that case, you would apply that order-level promo to the line’s taxable subtotal.
 
 ## Taxes & Shipping
 
@@ -146,13 +146,13 @@ Regardless of whether you use a tax calculation service to determine refund amou
 }
 ```
 
-The calculation with the most nuances here is for line X003. Only one was returned, but this line had the complicated tax distribution described above, plus an order-level promotion of 13.33 applied to both `LineItems`. While our tax service is taking into account this promotion amount, if you are not using a similar service, you will want to account for this and reconcile the amounts to refund on your own. For each `LineItem`, the refund amount was calculated like this:
+The calculation with the most nuances here is for line X003. Only one was returned, but this line had the complicated tax distribution described above, plus an order-level promotion of $13.33 applied to both `LineItems`. While our tax service is taking into account this promotion amount, if you are not using a similar service, you will want to account for this and reconcile the amounts to refund on your own. For each `LineItem`, the refund amount was calculated like this:
 
-> Unit Price After Line Promos (50) – Share of Order Level Promo (6.66) + Share of Tax (3.77) = 47.11
+> Unit Price After Line Promos (50) – Share of Order Level Promo (6.66) + Share of Tax (3.77) = $47.11
 
 However, if the second quantity needed to be returned later, we would see it use these slightly different values:
 
-> Unit Price After Line Promos (50) – Share of Order Level Promo (6.67) + Share of Tax (3.76) = 47.09
+> Unit Price After Line Promos (50) – Share of Order Level Promo (6.67) + Share of Tax (3.76) = $47.09
 
 This is an example of how our service choses to handle the rounding when returning just one item, but your service could allocate that extra penny or two differently.
 
