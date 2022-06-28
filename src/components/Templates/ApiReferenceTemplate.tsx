@@ -82,7 +82,7 @@ const ApiReference: FC<ApiReferenceProps> = (props: ApiReferenceProps) => {
   }, [props.location.hash])
 
   const defaultDescription =
-    'OrderCloud is a cloud-hosted B2B eCommerce platform exposed entirely via a RESTful API. It enables rapid development of custom, secure, and scalable B2B eCommerce solutions. Spin up a fully functional B2B app in minutes and customize it to the limits of your imagination.'
+    'OrderCloud is a cloud-hosted B2B, B2C, and B2X eCommerce platform exposed entirely via a RESTful API. It enables rapid development of custom, secure, and scalable eCommerce solutions. Spin up a fully functional commerce app in minutes and customize it to the limits of your imagination.'
   const pageInfo = useMemo(() => {
     const suffix = 'Sitecore OrderCloud'
     const { section, resource, operation, menuData, currentPath } = pageContext
