@@ -96,7 +96,7 @@ For an OrderReturn like this, the shopper selects the `ItemsToReturn` so it's kn
 
 As the commerce administrator, once you receive this Return, and validate the proposed delivery date vs. actual delivery date, you can refund the shipping amount back to the payment method that the customer used. Or consider doing the validation step automatically in middleware so no involvement is needed from a commerce administrator.
 
-## Submitting an AdHoc Refund
+## Submitting an Discretionary Refund
 Now, let’s say that your business has a Price Match policy. If a customer can show that an item they’ve purchased is offered at another retailer for a lower price, they’ll match that price within 2 weeks of purchase. This shopper found the same Jogger pants for $45.99 at another retailer.
 
 When the Customer submits the request for a Price Match, you could automatically make these OrderReturns send for approval using Seller Approval Rules. This allows a commerce administrator to review the request before processing. For this, an agent likely needs to:
