@@ -201,3 +201,5 @@ https://my-buyer-application.com?token={0}&idptoken={1}
 Now once login via OpenID is successful OrderCloud will redirect your user to the URL that resolves to:
 
 https://my-buyer-application.com?token={yourordercloudtoken}&idptoken={youridptoken}
+
+> Note: If you're using Azure as your identity provider you will need to add the Azure ClientID to the "AdditionalIdpScopes" array on the OpenIDConnect Configuration otherwise you will not get an IDP access token
