@@ -57,7 +57,7 @@ The shopper proceeds with placing the return request for 1 quantity of the shoes
 <div align="right">Refund Tax: $6.29</div>
 <div align="right">Refund Total: $91.29</div>
 
-Using your own refund calculation logic in custom middleware, the `RefundAmount` for each line item get submitted with the return. Consider item price, item tax, item discounts, and shipping when defining your calculation logic. This article lays out considerations for developing refund calculation logic (coming soon).
+Using your own refund calculation logic in custom middleware, the `RefundAmount` for each line item get submitted with the return. Consider item price, item tax, item discounts, and shipping when defining your calculation logic. [This article](https://ordercloud.io/knowledge-base/order-returns-handling-calculations) lays out considerations for developing refund calculation logic.
 
 In this scenario, we are using Item Price and Item Tax to determine the Refund Amount. Shipping is excluded from this refund. Notice below how the total of `ItemsToReturn.RefundAmounts` roll up to the `OrderReturn.RefundAmount` for a final refund amount.
 
@@ -140,4 +140,4 @@ Make sure to check out these other articles for more information about OrderRetu
 
  - [Introducing
    OrderReturns](https://ordercloud.io/knowledge-base/order-returns)
- - OrderReturns – Handling Calculations (Check back - Coming Soon!)
+ - [OrderReturns – Handling Calculations](https://ordercloud.io/knowledge-base/order-returns-handling-calculations)
