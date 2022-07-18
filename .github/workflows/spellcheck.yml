@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-node@v1
         name: Run spell check
         with:
-          node-version: "12"
+          node-version: "14"
       - run: npm install -g cspell
       - run: cspell lint --config cSpell.json --no-progress "content/**/*.mdx" "README.md"
         name: Run spell checker (refer to the README.md for more details on resolving spelling errors.)

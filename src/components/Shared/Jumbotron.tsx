@@ -2,14 +2,13 @@ import {
   alpha,
   Container,
   createStyles,
-  lighten,
   Paper,
   Theme,
   Typography,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import React, { FunctionComponent } from 'react'
-import { base_color_1 } from '../../theme/theme.constants'
+import { sc_primary } from '../../theme/sitecorePalette.constants'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
         borderRadius: 0,
         overflowY: 'hidden',
         overflowX: 'hidden',
-        backgroundColor: base_color_1,
+        backgroundColor: sc_primary[900],
         backgroundSize: '400% 400%',
       }
     },

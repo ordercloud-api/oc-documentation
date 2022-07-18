@@ -19,6 +19,7 @@ import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
 import { PortalLink, navigate } from '../Shared/PortalLink'
+import { sc_grayNeutral, sc_gray } from '../../theme/sitecorePalette.constants'
 
 export const navHeight =
   ORDERCLOUD_THEME.spacing(8) + ORDERCLOUD_THEME.spacing(5)
@@ -83,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.background.paper,
     },
     appBarSecondary: {
-      backgroundColor: theme.palette.grey[700],
+      backgroundColor: sc_gray[500],
       '& a': {
         color: theme.palette.getContrastText(theme.palette.primary.dark),
         textDecoration: 'none',
