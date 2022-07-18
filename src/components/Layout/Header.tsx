@@ -13,8 +13,6 @@ import {
 import { ChevronRight } from '@material-ui/icons'
 import { graphql, Link, StaticQuery } from 'gatsby'
 import React, { Fragment, FunctionComponent, useMemo } from 'react'
-import sitecoreLogo from '../../assets/svg/oc_sc_logo.svg'
-import sitecoreLogoIcon from '../../assets/svg/oc_sc_icon.svg'
 import ORDERCLOUD_THEME from '../../theme/theme.constants'
 import ChipLink from '../Shared/ChipLink'
 import DocSearch from '../Shared/DocSearch'
@@ -181,7 +179,10 @@ const HeaderContent: FunctionComponent<HeaderContentProps> = ({
           <Container maxWidth="lg">
             <Toolbar disableGutters>
               <Link to="/" className={classes.logo}>
-                <img className={classes.logoNormal} src={sitecoreLogo}></img>
+                <img className={classes.logoNormal}
+                src={'https://mss-p-006-delivery.stylelabs.cloud/api/public/content/4fc742feffd14e7686e4820e55dbfbaa'}
+                alt='Sitecore Ordercloud'
+                />
               </Link>
               <Hidden smDown>
                 <Button

@@ -169,10 +169,14 @@ export default createTheme({
       },
       outlinedSecondary: {
         borderColor: sc_blackAlpha[200],
-        color: sc_gray[600],
+        color: sc_blackAlpha[600],
         '&:hover':{
-          borderColor: sc_blackAlpha[200],
+          borderColor: sc_blackAlpha[200], // need to explicitly set this to avoid changing color
           backgroundColor: sc_blackAlpha[100]
+        },
+        '&:active':{
+          borderColor: sc_blackAlpha[200], // need to explicitly set this to avoid changing color
+          backgroundColor: sc_blackAlpha[200]
         }
       },
       label: {
