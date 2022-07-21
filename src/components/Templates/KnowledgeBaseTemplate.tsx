@@ -124,7 +124,6 @@ export default function KnowledgeBaseTemplate(
       doc.mdx.frontmatter.tags.filter(t => t !== 'Best Practices')
     ), d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath
   )
-  console.log(relatedDocuments.slice(0, 10))
   useLayoutEffect(() => {
     if (!props.location.hash) return
     setTimeout(() => {
