@@ -52,7 +52,7 @@ Your configured endpoint is expected to return an HTTP 200 response with a body 
 
 Most `Product` fields are optional and are in fact validated in much the same way as [creating a new cataloged product](https://ordercloud.io/api-reference/product-catalogs/products/create#request-body) in terms of required fields, max string lengths, etc.
 
-**If the requested product is not found in the external system**, the appropriate response from your endpoint is still HTTP 200, but with the `Product` object set to `null`. This will result in a 404 response from OrderCloud with an error code signaling that the product was not found. However, _any_ response in the 4xx or 5xx range (inlcuding 404) returned from your endpoint is interpretted as a misconfigured integration event and results in a 400 response from OrderCloud. This ensures that OrderCloud can distinguish between a missing product and a missing or misconfigured service endpoint.
+**If the requested product is not found in the external system**, the appropriate response from your endpoint is still HTTP 200, but with the `Product` object set to `null`. This will result in a 404 response from OrderCloud with an error code signaling that the product was not found. However, _any_ response in the 4xx or 5xx range (inlcuding 404) returned from your endpoint is interpreted as a misconfigured integration event and results in a 400 response from OrderCloud. This ensures that OrderCloud can distinguish between a missing product and a missing or misconfigured service endpoint.
 
 A non-null `UnitPrice` is required, but only when `Product` is not null.
 
