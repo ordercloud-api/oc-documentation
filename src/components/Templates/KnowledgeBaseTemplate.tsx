@@ -25,7 +25,7 @@ import '../../styles/doc-template.css'
 import { seafoam } from '../../theme/ocPalette.constants'
 import { transformHeadingToId } from '../Layout/DiscoverMenu'
 import Layout from '../Layout/Layout'
-import { filter } from 'lodash'
+import { filter,intersection } from 'lodash'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
@@ -120,12 +120,8 @@ export default function KnowledgeBaseTemplate(
   const classes = useStyles()
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
   const relatedDocuments = filter(
-    useRelatedDocuments(
-      doc.mdx.frontmatter.tags.filter(t => t !== 'Best Practices')
-    ),
-    d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath
+    useRelatedDocuments(doc.mdx.frontmatter.tags), d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath
   )
-
   useLayoutEffect(() => {
     if (!props.location.hash) return
     setTimeout(() => {
@@ -263,7 +259,7 @@ export default function KnowledgeBaseTemplate(
                   Related Reading
                 </Typography>
                 <div className={classes.menuSection}>
-                  {relatedDocuments.map(t => (
+                  {relatedDocuments.filter(() => intersection(data.mdx.frontmatter.tags).length).map(t => (
                     <Typography
                       className={classes.relatedDocument}
                       component={Link}
