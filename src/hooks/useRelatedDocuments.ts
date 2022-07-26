@@ -6,7 +6,10 @@ export const useRelatedDocuments = (tags: string[]) => {
   const allPosts: QueryResult = useStaticQuery(graphql`
     query {
       allMdx(
-        sort: { order: [ASC, DESC], fields: [frontmatter___priority, frontmatter___publishDate] }
+        sort: {
+          order: [ASC, DESC]
+          fields: [frontmatter___priority, frontmatter___publishDate]
+        }
         filter: { fileAbsolutePath: { glob: "**/content/documents/**/*.mdx" } }
       ) {
         totalCount
@@ -32,8 +35,13 @@ export const useRelatedDocuments = (tags: string[]) => {
       }
     }
   `)
-
   return allPosts.allMdx.edges
-    .filter(e => intersection(e.node.frontmatter.tags, tags).length)
-    .map(e => e.node)
+    .filter((e) => intersection(e.node.frontmatter.tags, tags).length)
+    .sort(
+      (a, b) =>
+        intersection(b.node.frontmatter.tags, tags).length -
+        intersection(a.node.frontmatter.tags, tags).length
+    )
+    .slice(0, 10)
+    .map((e) => e.node)
 }
