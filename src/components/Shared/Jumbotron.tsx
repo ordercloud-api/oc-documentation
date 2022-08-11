@@ -9,6 +9,7 @@ import {
 import { makeStyles } from '@material-ui/styles'
 import React, { FunctionComponent } from 'react'
 import { sc_primary } from '../../theme/sitecorePalette.constants'
+import scPattern from '../../assets/svg/sitecore-pattern.svg'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,19 +30,19 @@ const useStyles = makeStyles((theme: Theme) =>
         borderRadius: 0,
         overflowY: 'hidden',
         overflowX: 'hidden',
-        backgroundColor: sc_primary[900],
+        backgroundColor: sc_primary[800],
         backgroundSize: '400% 400%',
       }
     },
     jumbotronPattern: {
-      backgroundImage: `url(https://sitecorecdn.azureedge.net/-/media/sitecoresite/images/global/homepagerefresh/sitecore-pattern-cross-circle-white.svg)`,
-      content: '',
+      backgroundImage: `url(${scPattern})`,
+      content: '""',
       position: 'absolute',
       top: 0,
       left: 0,
       height: '100%',
       backgroundRepeat: 'repeat-y',
-      backgroundSize: '45%',
+      backgroundSize: '35%',
       mixBlendMode: 'soft-light',
       opacity: 1,
       width: '100%',
@@ -102,17 +103,15 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: '.75rem',
       marginBottom: '0.5rem',
       color: 'white',
-      textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
       [theme.breakpoints.down('sm')]: {
         fontSize: '2rem',
         marginTop: '0.25rem',
       },
     },
     jumbotronText: ({ align }) => ({
-      color: alpha('#ffffff', 0.8),
+      color: sc_primary[200],
       maxWidth: align === 'center' ? 700 : 900,
       margin: align === 'center' ? '0 auto' : undefined,
-      textShadow: '1px 1px 2px rgba(0,0,0,0.25)',
       lineHeight: 1.5,
     }),
   })

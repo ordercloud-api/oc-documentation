@@ -41,7 +41,7 @@ Our recommended approach to devops is to host this API using an [Azure Web App](
 - Download a Publish Profile for your web app from Azure and save it as a Github repository secret with name `AZURE_WEBAPP_PUBLISH_PROFILE`. [Follow these steps](https://docs.microsoft.com/en-us/azure/app-service/app-service-sql-asp-github-actions#create-a-publish-profile-secret). This will authenticate deployments. 
 - Run the github action by pushing to the dev branch. Once it succeeds, visit your base URL, you should see a UI with route documentation for the API.  
 - Finally, use the OrderCloud portal to create an Integration Event object with the `CustomImplementationUrl` set to your API and the `HashKey` set to your project's `WebhookHashKey` environment variable.
-- If you request the calculate order endpoint as a test, you should see a tax calculation comming from Avalara.  
+- If you request the calculate order endpoint as a test, you should see a tax calculation coming from Avalara.  
 
 Here is a quick tour of some of the highlights of the scaffolding project code.
 
