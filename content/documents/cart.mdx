@@ -1,0 +1,88 @@
+---
+type:           article
+title:          Introducing the Cart API
+description:    New endpoints aimed at simplifying development of the shopping experience.
+author:         dsteinmetz 
+publishDate:    2022-08-12
+updatedDate:    2022-08-12
+tags:           ["Orders", "Concepts", "Checkout"]
+---
+
+Introducing new endpoints aimed at simplifying development of the shopping experience. `Cart` is a usability enhancement which provides endpoints to interact with a given order. We consider it best practice to use `Cart` when implementing single-cart shopping experiences; however `Cart` can also be implemented for multi-cart shopping.
+
+Before `Cart`, determining which `Order` should be used when the shopper adds an item required several API calls; which typically looked something like this:
+1. `GET v1/orders/{direction}?Status=Unsubmitted&SortBy=!DateCreated`
+2. Use the ID of most recently created `Order`
+3. If none exists, `call POST v1/orders/{direction}`
+4. Call `POST v1/orders/{direction}/{orderID}/lineitems`
+
+One of the primary aims of the new `Cart` resource is to reduce this very common workflow into a single API call:
+1. `Call POST v1/cart/lineitems`
+
+## Key Highlights
+- `Cart` always represents an unsubmitted `Order`, any action taken on the `Cart` is a proxy to take action on the corresponding order
+- With a few exceptions, `Cart` endpoints will not return null or 404
+  -  `GET v1/cart` will return an empty `Order` with a null ID if the shopper does not yet have an unsubmitted order
+     -  This `Order` with a null ID does not actually exist in OrderCloud, but is returned as a convenience for the developer to be able to utilize the order model if needed for things like displaying the count of items on a cart icon
+   -  `GET v1/cart/lineitems` will return an empty list even if the order does not yet exist
+ -  `PUT v1/cart` can be used to immediately create an `Order`, but should usually be deferred until an item is added
+ -  `POST v1/cart/lineitems` or `PUT v1/cart/lineitems` will add an item to the `Cart`, with the benefit of creating the unsubmitted `Order` if it does not exist
+
+## Single Cart Shopping Flow Example
+1. Call `GET v1/cart` on initial page load to display Order.LineItemCount on the cart icon
+2. Call `POST v1/cart/lineitems` to add an item to the `Cart`
+3. Calls to `POST v1/cart/payments`, `POST v1/cart/validate`, etc. to prepare the `Cart` for submission
+4. Call `POST v1/cart/submit`
+
+### Please note:
+In a single cart shopping experience `Cart` endpoints should be used as an _alternative_ to `Order` endpoints, in order to avoid creating multiple unsubmitted orders for a given user. In the event that multiple unsubmitted orders exist, the most recently created unsubmitted order will be selected as the `Cart`. If the `Cart` is submitted, the next unsubmitted order will become the `Cart` which made lead to confusion for the shopper.
+
+## Multi-Cart Shopping Flow Example
+1. Call `GET v1/orders/{direction}?Status=Unsubmitted` to get the shoppers unsubmitted `Orders`
+  - for this purposes of this example, two Orders are returned. Order.ID: ABC and Order.ID: 123
+2. Call `PUT v1/cart/ABC` to designate that `Order` as the active `Cart`
+3. Call `POST v1/cart/lineitems` to add an item to `Order.ID: ABC`
+4. Call `PUT v1/cart/123` to change the active `Cart` to `Order.ID: 123`
+5. Call `POST v1/cart/lineitems` to add an item to `Order.ID: 123`
+6. Calls to `POST v1/cart/payments`, `POST v1/cart/validate`, etc. to prepare `Order.ID: 123` for submission
+7. Call `POST v1/cart/submit` to submit `Order.ID: 123`
+8. `Order.ID: ABC` is now the `Cart`, as it is the only unsubmitted `Order` remaining
+  - In the event that multiple unsubmitted `Orders` remain, using `PUT v1/cart/{orderID}` would designate which `Order` should be the `Cart` 
+  - If none is designated, the most recently created unsubmitted `Order` will be the `Cart`
+
+**Multi-Cart is not supported for Anonymous Shopping**
+
+## New Endpoints
+All of the `Cart` endpoints (with the exception of `PUT v1/cart/{orderID}` are proxy endpoints to existing `Orders` endpoints, with the added benefit of not needing to pass a Direction or orderID.
+- For Single-Cart Shopping experiences, the `Cart` endpoints will return the most recently created unsubmitted `Order`, when following best practices there would only be one
+- For Multi-Cart Shopping experiences, the `Cart` endpoints return the `Order` designated as the `Cart` OR if none has been designated, it will return the most recently created unsubmitted `Order`
+
+| New Endpoint | Corresponding `Order` Endpoint | RequestBody | Behavior |
+| ------ | ------ | ------ | ------ |
+| `GET v1/cart` | `GET v1/orders/outgoing?PageSize=1&Status=Unsubmitted&SortBy=!DateCreated` | None | Returns the `Cart`. If it does not exist, the ID will be null. Will never return a 404. |
+| `PUT v1/cart` | `POST v1/orders/outgoing` OR `PUT v1/orders/outgoing/{orderID}` | `Order` | Creates the `Cart` if none exists, otherwise Updates the Cart. |
+| `PUT v1/cart/{orderID}` | None | None | **For Multi-Cart shopping experiences only**. Designates an unsubmitted `Order` as the active `Cart`. If the `Order` does not exist, 404 is returned. |
+| `PATCH v1/cart` | `PATCH v1/orders/outgoing/{orderID}` | `PartialOrder` | Partially updates the `Cart`, if one does not exist, it will be created. |
+| `DELETE v1/cart` | `DELETE v1/orders/outgoing/{orderID}` | None | Deletes the `Cart`. If another unsubmitted `Order` exists (only in Multi-Cart shopping experiences), that `Order` would become the `Cart`. |
+| `GET v1/cart/lineitems` | `GET v1/orders/{direction}/{orderID}/lineitems` | None | Returns a list of `LineItems` for the `Cart` - if none exist, returns an empty list of `LineItems`  |
+| `GET v1/cart/lineitems/{lineitemID}` | `GET v1/orders/{direction}/{orderID}/lineitems/{lineItemID}` | None | Returns a single `LineItem` associated with the `Cart.` |
+| `POST v1/cart/lineitems` | `POST v1/orders/{direction}/{orderID}/lineitems` | `LineItem` | Creates a new `LineItem` associated with the `Cart`, if a `Cart` does not exist, one is created.  |
+| `PUT v1/cart/lineitems/{lineitemID}` | `PUT v1/orders/{direction}/{orderID}/lineitems/{lineitemID}` | `LineItem` | Creates or Updates a `LineItem` associated with the `Cart`, if a `Cart` does not exist, one is created.  |
+| `PATCH v1/cart/lineitems/{lineitemID}` | `PATCH v1/orders/{direction}/{orderID}/lineitems/{lineitemID}` | `PartialLineItem` | Partially updates a `LineItem` associated with the `Cart`, if a `Cart` does not exist OR `LineItem` does not exist, a `404 LineItem NotFound` error will be thrown.  |
+| `DELETE v1/cart/lineitems/{lineitemID}` | `DELETE v1/orders/{direction}/{orderID}/lineitems/{lineitemID}` | None | Deletes a `LineItem` associated with the `Cart`, if a `Cart` does not exist OR `LineItem` does not exist, a `404 LineItem NotFound` error will be thrown.  |
+| `GET v1/cart/worksheet` | `GET v1/orders/outgoing/{orderID}/worksheet` | None | Returns the `OrderWorksheet` associated with the `Cart` |
+| `POST v1/cart/estimateshipping` | `POST v1/orders/outgoing/{orderID}/estimateshipping` | None | Estimates Shipping Costs for the `Cart` |
+| `POST v1/cart/shipmethods` | `POST v1/orders/outgoing/{orderID}/shipmethods` | `ShipMethodSelection` | Sets a Shipping Method for the `Cart` |
+| `POST v1/cart/calculate` | `POST v1/orders/outgoing/{orderID}/calculate` | None | Calculates the `Cart` |
+| `GET v1/cart/payments` | `GET v1/orders/outgoing/{orderID}/payments` | None | Lists `Payments` associated with the `Cart` |
+| `GET v1/cart/payments/{paymentID}` | `GET v1/orders/outgoing/{orderID}/payments/{paymentID}` | None | Returns a single `Payment` associated with the `Cart` |
+| `POST v1/cart/payments` | `POST v1/orders/outgoing/{orderID}/payments` | `Payment` | Creates a `Payment` associated with the `Cart` |
+| `PATCH v1/cart/payments/{paymentID}` | `PATCH v1/orders/outgoing/{orderID}/payments/{paymentID}` | `PartialPayment` | Partially updates a `Payment` associated with the `Cart` |
+| `DELETE v1/cart/payments/{paymentID}` | `DELETE v1/orders/outgoing/{orderID}/payments/{paymentID}` | None | Deletes a `Payment` associated with the `Cart` |
+| `POST v1/cart/payments/{paymentID}/transactions` | `POST v1/orders/outgoing/{orderID}/payments/{paymentID}/transactions` | `PaymentTransaction` | Creates a `PaymentTransaction` associated with a given `Payment` on the `Cart` |
+| `DELETE v1/cart/payments/{paymentID}/transactions/{transactionID}` | `DELETE v1/orders/outgoing/{orderID}/payments/{paymentID}/transactions/{transactionID}` | None | Deletes a `PaymentTransaction` associated with a given `Payment` on the `Cart` |
+| `GET v1/cart/promotions` | `GET v1/orders/outgoing/{orderID}/payments/{paymentID}` | None | Lists `Promotions` applied to the `Cart` |
+| `POST v1/cart/promotions/{promoCode}` | `POST v1/orders/outgoing/{orderID}/promotions/{promoCode}` | None | Adds a `Promotion` to the `Cart` |
+| `PATCH v1/cart/fromuser` | `PATCH v1/orders/outgoing/{orderID}/fromuser` | `PartialUser` | Updates the FromUser associated with the `Cart`. Only `FirstName`, `LastName` and `Email` can be updated. Primarily used to facilitate anonymous checkout scenarios. |
+| `POST v1/cart/validate` | `POST v1/orders/outgoing/{orderID}/validate` | None | Validates the `Cart` |
+| `POST v1/cart/submit` | `POST v1/orders/outgoing/{orderID}/submit` | None | Submits the `Cart` |
