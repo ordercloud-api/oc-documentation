@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 require('dotenv').config({
-  path: `.env.${process.env.NODE_ENV}`,
+  path: `.env`,
 })
 const learnQuery = `{
   results: allMdx(filter: {fileAbsolutePath: {glob: "**/content/learn/**/*.mdx"}}) {
@@ -325,8 +325,6 @@ const toExport = {
     },
   ],
 }
-
-module.exports = toExport
 // if (process.env.GATSBY_ALGOLIA_ADMIN_API_KEY) {
 //   toExport.plugins.push({
 //     resolve: `gatsby-plugin-algolia`,
@@ -339,3 +337,4 @@ module.exports = toExport
 //     },
 //   })
 // }
+module.exports = toExport
