@@ -136,6 +136,8 @@
         "usergroup",
         "usergroup",
         "Varient",
+        "openidconnect",
+        "supersecrethash",
         // General Dictionary
         "acodec",
         "Akka",
