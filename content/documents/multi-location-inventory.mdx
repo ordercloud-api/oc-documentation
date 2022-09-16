@@ -33,7 +33,7 @@ The `InventoryRecord` resource exists only in the context of a given Product, an
 - `Address` is a read-only object derived from the `AddressID` given.
 - Multiple InventoryRecords for the same Product/Address combination are allowed. This can be useful if you need to track different inventory levels for different fulfillment methods.
 - The `AddressID` used to create an `InventoryRecord` must be owned by the `OwnerID`.
-- InventoryRecords are not returned on the Product resource; however, you can use filters on InventoryRecord information in product queries, e.g. `v1/me/products?InventoryRecord.AddressID={address1}|{address2}&InventoryRecord.QuantityAvailable=>5`.
+- InventoryRecords are not returned on the Product resource; however, you can use filters on InventoryRecord information in product queries, e.g. `v1/me/products?InventoryRecords.AddressID={address1}|{address2}&InventoryRecords.QuantityAvailable=>5`.
 
 ## New Endpoints 
 
