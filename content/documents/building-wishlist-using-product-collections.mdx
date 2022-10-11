@@ -16,7 +16,6 @@ To make use of the [Product Collections](/knowledge-base/product-collections) re
 ## Assumptions
 - For this tutorial, we are using the URL for the sandbox environment in the region US-West.
 - We have a product with an ID of `enterprise-product-id` that is orderable and visible to our buyer user.
-- We end up with a product that had been added to our Wishlist that we want to remove, with an ID of `basic-product-id`.
 
 ## Create a new Product Collection to represent our Wishlist
 The first thing we need to do, is create the Product Collection itself.  Let's name it "Wishlist" giving it a self-descriptive ID.
@@ -95,37 +94,6 @@ try {
 }}
 />
 
-## Remove a product from our Wishlist
-Remember that product from our [assumptions](/knowledge-base/building-wishlist-using-product-collections#assumptions) that we want to remove from our Wishlist? Let's make the call to remove the product.
-<CodeExample
-  content={{
-    http: `DELETE https://sandboxapi.ordercloud.io/v1/me/productcollections/wishlist/basic-product-id HTTP/1.1
-Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
-Content-Type: application/json; charset=UTF-8`,
-javascript: `import { Me } from "ordercloud-javascript-sdk";\n
-Me.DeleteProductCollectionEntry("wishlist", "basic-product-id")
-.then(() => {
-    console.log("Successfully removed a product from your wishlist.");
-})
-.catch((ex) => console.log(ex));
-`,
-typescript: `import { Me, OrderCloudError } from "ordercloud-javascript-sdk";\n
-Me.DeleteProductCollectionEntry("wishlist", "basic-product-id")
-.then(() => {
-  console.log("Successfully removed a product from your wishlist.");
-})
-.catch((ex: OrderCloudError) => console.log(ex));`,
-csharp: `using OrderCloud.SDK; \n
-try {
-  await Me.DeleteProductCollectionEntry("wishlist", "basic-product-id");
-  Console.WriteLine("Successfully removed a product from your wishlist.")
-} catch(OrderCloudException ex) {
-  Console.WriteLine(ex.Message);
-}
-`
-}}
-/>
-
 ## List products in our Wishlist
 Now that we have our Wishlist Product Collection, and have added a product to it, let's list out the products in our Product Collection to see our Wishlist in action. We should see a list page containing one product (`enterprise-product-id`) returned from the list call.
 <CodeExample
@@ -150,6 +118,37 @@ csharp: `using OrderCloud.SDK; \n
 try {
   ListPageWithFacets<BuyerProduct> response = await Me.ListProductCollectionEntries("wishlist", "enterprise-product-id");
   Console.WriteLine(response.Items)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+## Remove a product from our Wishlist
+We may end up changing our mind, and wanting to remove products from our Wishlist. To remove a product from our Wishlist, we will call `DELETE /me/productcollections/{productCollectionID}/{productID}`.
+<CodeExample
+  content={{
+    http: `DELETE https://sandboxapi.ordercloud.io/v1/me/productcollections/wishlist/enterprise-product-id HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8`,
+javascript: `import { Me } from "ordercloud-javascript-sdk";\n
+Me.DeleteProductCollectionEntry("wishlist", "enterprise-product-id")
+.then(() => {
+    console.log("Successfully removed a product from your wishlist.");
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { Me, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Me.DeleteProductCollectionEntry("wishlist", "enterprise-product-id")
+.then(() => {
+  console.log("Successfully removed a product from your wishlist.");
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+try {
+  await Me.DeleteProductCollectionEntry("wishlist", "enterprise-product-id");
+  Console.WriteLine("Successfully removed a product from your wishlist.")
 } catch(OrderCloudException ex) {
   Console.WriteLine(ex.Message);
 }
