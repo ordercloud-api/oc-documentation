@@ -1,10 +1,10 @@
 ---
-type:           tutorial
-title:          Implementing SSO via OpenID Connect
+type:           article
+title:          Single Sign On via OpenID Connect
 description:    SSO (Single Sign On) allows your users to authenticate themselves to the OrderCloud API by logging into any identity provider you trust.
 author:         jilse
 publishDate:    2019-04-15
-updatedDate:    2021-12-21
+updatedDate:    2022-09-12
 tags:           ["Authentication", "OpenID Connects"]
 ---
 
@@ -203,3 +203,20 @@ Now once login via OpenID is successful OrderCloud will redirect your user to th
 https://my-buyer-application.com?token={yourordercloudtoken}&idptoken={youridptoken}
 
 > Note: If you're using Azure as your identity provider you will need to add the Azure ClientID to the "AdditionalIdpScopes" array on the OpenIDConnect Configuration otherwise you will not get an IDP access token
+
+## OrderCloud Refresh Token
+
+If you wish to retrieve the OrderCloud refresh token along with the OrderCloud token you can add `refresh={3}`.  This will then be replaced with a valid OrderCloud refresh token.
+
+For example:
+
+```
+https://my-buyer-application.com?token={0}&refresh={3}
+
+```
+
+Now once login via OpenID is successful OrderCloud will redirect your user to the URL that resolves to:
+
+https://my-buyer-application.com?token={yourordercloudtoken}&refresh={yourordercloudrefreshtoken}
+
+> Note: You can only receive a refresh token if you have enabled your api client to allow refresh tokens by setting a refresh token duration.
