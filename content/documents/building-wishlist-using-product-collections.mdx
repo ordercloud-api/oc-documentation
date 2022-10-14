@@ -1,0 +1,172 @@
+---
+type:           tutorial
+title:          Building a Wishlist Feature with Product Collections
+description:    A product wishlist feature is one of the many permutations of the OrderCloud Product Collections resource.
+author:         dsteinmetz
+publishDate:    2022-10-11
+updatedDate:    2022-10-11
+tags:           ["Community", "Product Collections", "Wishlist", "Favorites", "Save For Later"]
+---
+
+## Prerequisites
+To make use of the [Product Collections](/knowledge-base/product-collections) resource, we need:
+- An active buyer user
+- Fully orderable products visible to the buyer user
+
+## Assumptions
+- For this tutorial, we are using the URL for the sandbox environment in the region US-West.
+- We have a product with an ID of `enterprise-product-id` that is orderable and visible to our buyer user.
+
+## Create a new Product Collection to represent our Wishlist
+The first thing we need to do, is create the Product Collection itself.  Let's name it "Wishlist" giving it a self-descriptive ID.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/me/productcollections HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "ID": "wishlist",
+  "Name": "Wishlist",
+}`,
+javascript: `import { Me } from "ordercloud-javascript-sdk";\n
+Me.CreateProductCollection({
+  ID: "wishlist",
+  Name: "Wishlist",
+})
+.then((productCollection) => {
+    console.log(productCollection);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { Me, OrderCloudError, ProductCollection } from "ordercloud-javascript-sdk";\n
+Me.CreateProductCollection({
+  ID: "wishlist",
+  Name: "Wishlist",
+})
+.then((productCollection: ProductCollection) => {
+  console.log(productCollection);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var productCollection = new ProductCollection
+{
+    ID = "wishlist",
+    Name = "Wishlist",
+};
+try {
+  ProductCollection response = await Me.CreateProductCollection(data);
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+## Add a product to our Wishlist
+Adding an entry to our Wishlist Product Collection is as easy as calling `PUT /me/productcollections/{productCollectionID}/{productID}` with our Product Collection ID and the product ID we want to add to our collection. If successful, our call should return a `204 No Content` response.
+<CodeExample
+  content={{
+    http: `PUT https://sandboxapi.ordercloud.io/v1/me/productcollections/wishlist/enterprise-product-id HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8`,
+javascript: `import { Me } from "ordercloud-javascript-sdk";\n
+Me.CreateProductCollectionEntry("wishlist", "enterprise-product-id")
+.then(() => {
+    console.log("Successfully added a product to your wishlist!");
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { Me, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Me.CreateProductCollectionEntry("wishlist", "enterprise-product-id")
+.then(() => {
+  console.log("Successfully added a product to your wishlist!");
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+try {
+  await Me.CreateProductCollectionEntry("wishlist", "enterprise-product-id");
+  Console.WriteLine("Successfully added a product to your wishlist!")
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+## List products in our Wishlist
+Now that we have our Wishlist Product Collection, and have added a product to it, let's list out the products in our Product Collection to see our Wishlist in action. We should see a list page containing one product (`enterprise-product-id`) returned from the list call.
+<CodeExample
+  content={{
+    http: `GET https://sandboxapi.ordercloud.io/v1/me/productcollections/wishlist/products HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8`,
+javascript: `import { Me } from "ordercloud-javascript-sdk";\n
+Me.ListProductCollectionEntries("wishlist")
+.then((wishlist) => {
+    console.log(wishlist.Items);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { Me, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Me.ListProductCollectionEntries("wishlist", "enterprise-product-id")
+.then((wishlist: ListPageWithFacets<BuyerProduct>) => {
+  console.log(wishlist.Items);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+try {
+  ListPageWithFacets<BuyerProduct> response = await Me.ListProductCollectionEntries("wishlist", "enterprise-product-id");
+  Console.WriteLine(response.Items)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+## Remove a product from our Wishlist
+We may end up changing our mind, and wanting to remove products from our Wishlist. To remove a product from our Wishlist, we will call `DELETE /me/productcollections/{productCollectionID}/{productID}`.
+<CodeExample
+  content={{
+    http: `DELETE https://sandboxapi.ordercloud.io/v1/me/productcollections/wishlist/enterprise-product-id HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8`,
+javascript: `import { Me } from "ordercloud-javascript-sdk";\n
+Me.DeleteProductCollectionEntry("wishlist", "enterprise-product-id")
+.then(() => {
+    console.log("Successfully removed a product from your wishlist.");
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { Me, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Me.DeleteProductCollectionEntry("wishlist", "enterprise-product-id")
+.then(() => {
+  console.log("Successfully removed a product from your wishlist.");
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+try {
+  await Me.DeleteProductCollectionEntry("wishlist", "enterprise-product-id");
+  Console.WriteLine("Successfully removed a product from your wishlist.")
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+## Implement your new Wishlist feature
+That's it! It's that simple. Product Collections make building wishlist-like features for B2X commerce easy. Now that you have a basic understanding of how Product Collections work, you can take this knowledge and build a UI in your buyer application for buyer users to create and manage their wishlists.
+
+## Considerations
+This implementation is one of the many permutations of the Product Collections resource. There are many ways to utilize Product Collections and a "wishlist" feature is just one of them. A few more example features that could make use of Product Collections are "Save for later" or "Favorites".
+
+Product Collections are:
+- only usable by buyer users.
+- currently only visible to the buyer user who created them.
+- limited to 500 products per collection. There is no limit on the number of Product Collections a buyer user can have.
+- If a buyer user adds a product to a Product Collection and visibility between the product and buyer user is revoked, the product will not be returned from `GET /me/productcollections/{productCollectionID}/products`. 
+If visibility is restored, the product will begin returning from the aforementioned call once again.
+
+Check out the [key highlights](/knowledge-base/product-collections#key-highlights) from the Knowledge Base article introducing Product Collections for more context.
