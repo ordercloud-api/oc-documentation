@@ -28,9 +28,10 @@ Every Sunday at 3:00 UTC we kick off a restore process that makes a copy of most
 
 The following resources are copied down in a modified manner to prevent any "dangerous" actions from occurring. For example, you probably don't want an email sent to a real customer when you pretend-ship their order.
 
-1. Message Senders
-2. Webhooks
-3. Integration events
+1. Message Senders' `URL` property is set to null and all Message Sender Assignments are not copied over.
+2. Webhooks' `Url` property is set to null and `ApiClients` is set to an empty array. 
+3. Integration Events' `CustomImplementationUrl` property is set to null.
+4. Api Clients have all references to integration events set to null, including OrderCheckout, OrderReturn, and AddToCart events.
 
 It is recommended to schedule an automated process that runs after the platform restore to set those specific events back up with test configurations.
 
