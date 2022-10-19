@@ -72,6 +72,11 @@ const flatten = arr => {
   }))
 }
 
+const getUnix = dateStr => {
+  const date = new Date(dateStr);
+  return Math.floor(date.getTime() / 1000);
+}
+
 const settings = {
   attributesToSnippet: [`excerpt:20`, `summary:20`],
 }
@@ -99,6 +104,18 @@ const queries = [
     query: knowledgeBase,
     transformer: ({ data }) => flatten(data.results.edges),
     indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
+    settings,
+  },
+  {
+    query: knowledgeBase,
+    transformer: ({ data }) => 
+      flatten(
+        data.results.edges.map(e => { 
+          e.node.frontmatter.publishDate_timestamp = getUnix(e.node.frontmatter.publishDate)
+          return e
+        })
+      ),
+    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME_SORTED, // overrides main index name
     settings,
   },
   {
@@ -331,7 +348,7 @@ const toExport = {
 //     options: {
 //       appId: process.env.GATSBY_ALGOLIA_APP_ID,
 //       apiKey: process.env.GATSBY_ALGOLIA_ADMIN_API_KEY,
-//       indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
+//       indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // main index name (default) for all queries
 //       queries,
 //       chunkSize: 10000, // default: 1000
 //     },
