@@ -5,7 +5,7 @@ description:    The reality of all enterprise platforms is the need to customize
 author:         rwatt
 publishDate:    2015-11-09
 updatedDate:    2015-11-09
-tags:           ["Extended Properties", "Integrations"]
+tags:           ["Extended Properties", "Integrations", "Tutorial"]
 ---
 
 The reality of all enterprise platforms is the need to customize the data model. To accommodate this, OrderCloud designed a property called Extended Properties (XP) to allow enterprise customization of the OrderCloud data model. OrderCloud exposes the xp property on most resources allowing you to build a JSON object containing your custom properties. The JSON object can be as complex and deeply-nested as necessary. Additionally, the xp property is available for filtering, sorting and searching in all list endpoints. Extended Properties allows you to overcome platform rigidity. To optimize the use of our data model, and to help you fully implement your B2B scenarios, we created a schema-less solution with `xp` and exposed it on virtually every API resource. We may not have `Product.YourSpecialDataPoint`, but we do have `Product.xp.YourSpecialDataPoint`.

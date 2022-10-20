@@ -208,7 +208,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
           <TextField margin="normal" placeholder="Search tags..." type="text" value={tagSearch} onChange={handleTagSearch} />
           <Container disableGutters>
             {availableTags
-              .sort((a: any, b: any) => b[1] - a[1])
+              .sort()
               .map(t => (
                 <Chip
                   color={selectedTags.includes(t[0]) ? 'secondary' : 'default'}
