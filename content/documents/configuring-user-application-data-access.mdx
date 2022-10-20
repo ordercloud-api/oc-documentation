@@ -1,0 +1,205 @@
+---
+type:           tutorial
+title:          Configuring User and Application Data Access
+description:    You have a newly created marketplace, what's next? Let's configure data access for your users and applications.
+author:         dsteinmetz
+publishDate:    2022-10-20
+updatedDate:    2022-10-20
+tags:           ["Security Profiles", "API Clients", "Tutorial"]
+---
+
+## Prerequisites
+In order to configure access to our marketplace data, we will need access to a marketplace. Create a Sandbox marketplace, or follow this tutorial to configure data access for an existing marketplace.
+
+## Assumptions
+- For this tutorial, we are using the URL for the sandbox environment in the region US-West.
+- Any ClientID value that is used in example requests should be replaced with the real ClientIDs that are created from making the requests in this tutorial. For our example, let's assume our ClientIDs are:
+    - Buyer storefront ClientID: `"00000000-0000-0000-0000-000000000000"`
+    - Admin backoffice ClientID: `"11111111-1111-1111-1111-111111111111"`
+    - Middlware API ClientID: `"222222222-2222-2222-2222-222222222222"`
+    - Middleware API Client Secret: `"supersecureclientsecretstring"`
+- You have created a new marketplace, or have access to an existing marketplace in the [OrderCloud Portal](https://portal.ordercloud.io)
+- You have and maintain a buyer storefront application
+- You have and maintain an admin backoffice application
+- You have and maintain a custom middleware API solution to handle more sensitive data and any custom integrations to OrderCloud
+
+## Creating API Clients
+Before we can configure data access for our applications, we need to create API Clients. API Clients are like more complex API keys that grants our different applications certain configured access to our marketplace data. From a security perspective, it is best practice to have one API Client per entry-point to your marketplace data.  
+
+### Create an API Client to represent a buyer storefront application
+First, lets create an API Client for our buyer storefront application.  This API Client will be the gateway for our buyer applicaiton to gain access to our marketplace data. We'll name it `Buyer Storefront`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnyBuyer: true` which means that any buyer user will be able to successfully authenticate against this API Client. If a seller or supplier user attempted to authenticate against this API Client, they will get a `401 Unauthorized` response.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "AppName": "Buyer Storefront",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnyBuyer": true
+}`,
+javascript: `import { ApiClients } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Buyer Storefront",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnyBuyer": true
+})
+.then((apiClient) => {
+    console.log(apiClient);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { ApiClients, ApiClient, OrderCloudError } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Buyer Storefront",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnyBuyer": true
+})
+.then((apiClient: ApiClient) => {
+  console.log(apiClient);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var apiClient = new ApiClient
+{
+  "AppName": "Buyer Storefront",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnyBuyer": true
+};
+try {
+  ApiClient response = await ApiClients.Create(data);
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+### Create an API Client to represent an admin backoffice application
+Next, lets create an API Client for our admin backoffice application.  This API Client will be the gateway for our backoffice application to gain access to our marketplace data. We'll name it `Admin Backoffice`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnySeller: true` _and_ `AllowAnySupplier: true`. In our admin interface, we may have suppliers that need to login to administer their products. Sellers may need to login to administer buyers, catalogs or seller-owned products. If a buyer user attempted to authenticate against this API Client, they will get a `401 Unauthorized` response.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "AllowAnySupplier": true
+}`,
+javascript: `import { ApiClients } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "AllowAnySupplier": true
+})
+.then((apiClient) => {
+    console.log(apiClient);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { ApiClients, ApiClient, OrderCloudError } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "AllowAnySupplier": true
+})
+.then((apiClient: ApiClient) => {
+  console.log(apiClient);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var apiClient = new ApiClient
+{
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "AllowAnySupplier": true
+};
+try {
+  ApiClient response = await ApiClients.Create(data);
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+### Create an API Client to represent a middleware API solution
+Now, It is a fairly common use case for an application tech stack to require a custom middleware solution to handle custom integrations to OrderCloud, or other elevated functions that we want to protect behind an API. To configure access to our marketplace data for our cutsom middleware solution, we will create an API Client and set a Client Secret. We will need a Client Secret for this API Client because our middleware API will authenticate to OrderCloud using the [Client Credentials](knowledge-base/authentication#client-credentials-workflow) grant type, being that a system is authenticating, not a "user" with a Username and Password. We'll name it `Middleware API`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnySeller: true`. Since we have specified a Client Secret on this API Client, the Client Secret will need to be passed with _any_ authentication request, regardless of grant type.  If any user attempts to authenticate with the Password grant type, and does not pass the Client Secret, they will get a `401 Unauthorized` response. Remember: Client Secret is a sensitive data point, and should never be publically exposed. Configure your applications with environment variables to handle this value. If the value is ever exposed, immediately revoke the API Client or re-generate the Client Secret.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "AppName": "Middleware API",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "ClientSecret": "supersecureclientsecretstring"
+}`,
+javascript: `import { ApiClients } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "ClientSecret": "supersecureclientsecretstring"
+})
+.then((apiClient) => {
+    console.log(apiClient);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { ApiClients, ApiClient, OrderCloudError } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "ClientSecret": "supersecureclientsecretstring"
+})
+.then((apiClient: ApiClient) => {
+  console.log(apiClient);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var apiClient = new ApiClient
+{
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "ClientSecret": "supersecureclientsecretstring"
+};
+try {
+  ApiClient response = await ApiClients.Create(data);
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+## Creating Security Profiles
+
+### Create a buyer security proflie
+### Create a seller security proflie
+### Create a supplier security proflie
+
+## Considerations
