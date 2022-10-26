@@ -24,10 +24,10 @@ In order to configure access to our marketplace data, we will need access to a m
 - You have and maintain a buyer storefront application, an admin backoffice application and a custom middleware API solution that handles more sensitive data and any custom integrations to OrderCloud
 
 ## Creating API Clients
-Before we can configure data access for our applications, we need to create API Clients. API Clients are like more complex API keys that grants our different applications certain configured access to our marketplace data. From a security perspective, it is best practice to have one API Client per entry-point to your marketplace data.  
+Before we can configure data access for our applications, we need to create API Clients. API Clients are like more complex API keys that grant our different applications certain configured access to our marketplace data. From a security perspective, it is best practice to have one API Client per entry-point to your marketplace data.  
 
 ### Create an API Client to represent a buyer storefront application
-First, lets create an API Client for our buyer storefront application.  This API Client will be the gateway for our buyer applicaiton to gain access to our marketplace data. We'll name it `Buyer Storefront`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnyBuyer: true` which means that any buyer user will be able to successfully authenticate against this API Client. If a seller or supplier user attempted to authenticate against this API Client, they will get a `401 Unauthorized` response.
+First, let's create an API Client for our buyer storefront application.  This API Client will be the gateway for our buyer application to gain access to our marketplace data. We'll name it `Buyer Storefront`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnyBuyer: true` which means that any buyer user will be able to successfully authenticate against this API Client. If a seller or supplier user attempts to authenticate against this API Client, they will get a `401 Unauthorized` response.
 <CodeExample
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
@@ -81,7 +81,7 @@ try {
 />
 
 ### Create an API Client to represent an admin backoffice application
-Next, lets create an API Client for our admin backoffice application.  This API Client will be the gateway for our backoffice application to gain access to our marketplace data. We'll name it `Admin Backoffice`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnySeller: true` _and_ `AllowAnySupplier: true`. In our admin interface, we may have suppliers that need to login to administer their products. Sellers may need to login to administer buyers, catalogs or seller-owned products. If a buyer user attempted to authenticate against this API Client, they will get a `401 Unauthorized` response.
+Next, let's create an API Client for our admin backoffice application.  This API Client will be the gateway for our backoffice application to gain access to our marketplace data. We'll name it `Admin Backoffice`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnySeller: true` _and_ `AllowAnySupplier: true`. In our admin interface, we may have suppliers that need to login to administer their products. Sellers may need to login to administer buyers, catalogs or seller-owned products. If a buyer user attempts to authenticate against this API Client, they will get a `401 Unauthorized` response.
 <CodeExample
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
@@ -139,7 +139,7 @@ try {
 />
 
 ### Create an API Client to represent a middleware API solution
-Now, It is a fairly common use case for an application tech stack to require a custom middleware solution to handle custom integrations to OrderCloud, or other elevated functions that we want to protect behind an API. To configure access to our marketplace data for our cutsom middleware solution, we will create an API Client and set a Client Secret. We will need a Client Secret for this API Client because our middleware API will authenticate to OrderCloud using the [Client Credentials](knowledge-base/authentication#client-credentials-workflow) grant type, being that a system is authenticating, not a "user" with a Username and Password. We'll name it `Middleware API`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnySeller: true`. Since we have specified a Client Secret on this API Client, the Client Secret will need to be passed with _any_ authentication request, regardless of grant type.  If any user attempts to authenticate with the Password grant type, and does not pass the Client Secret, they will get a `401 Unauthorized` response. Remember: Client Secret is a sensitive data point, and should never be publically exposed. Configure your applications with environment variables to handle this value. If the value is ever exposed, immediately revoke the API Client or re-generate the Client Secret.
+Now, It is a fairly common use case for an application tech stack to require a custom middleware solution to handle custom integrations to OrderCloud, or other elevated functions that we want to protect behind an API. To configure access to our marketplace data for our custom middleware solution, we will create an API Client and set a Client Secret. We will need a Client Secret for this API Client because our middleware API will authenticate to OrderCloud using the [Client Credentials](knowledge-base/authentication#client-credentials-workflow) grant type, being that a system is authenticating, not a "user" with a Username and Password. We'll name it `Middleware API`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnySeller: true`. Since we have specified a Client Secret on this API Client, the Client Secret will need to be passed with _any_ authentication request, regardless of grant type.  If any user attempts to authenticate with the Password grant type, and does not pass the Client Secret, they will get a `401 Unauthorized` response. Remember: Client Secret is a sensitive data point, and should never be publicly exposed. Configure your applications with environment variables to handle this value. If the value is ever exposed, immediately revoke the API Client or re-generate the Client Secret.
 <CodeExample
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
@@ -199,7 +199,7 @@ try {
 ## Creating Security Profiles
 Now that we have our applications configured with specific access to our marketplace data using API Clients, we should create several Security Profiles to configure data access for our individual users.
 
-### Create a buyer security proflie
+### Create a buyer security profile
 Our buyer security profile will represent the breadth of data access we wish to grant to our buyer users, configured using granular API roles.  Let's create a security profile, name it "Default Buyer" with a self-descriptive ID, and specify the `Shopper` role in the Roles array, which enables all actions of the shopping experience.
 <CodeExample
   content={{
@@ -255,7 +255,7 @@ try {
 }}
 />
 
-### Create a seller security proflie
+### Create a seller security profile
 Next, we can create a security profile for our seller users.  Let's create a security profile, name it "Default Seller" with a self-descriptive ID, and specify the `FullAccess` role in the Roles array, which gives our sellers access to any resource in the API.  As a best practice, you would want to control the roles on a more granular level and only assign roles necessary for the user as a security precaution, but for our example, `FullAccess` will work.  You can find more details on security profiles [here](knowledge-base/security-profiles).
 <CodeExample
   content={{
@@ -313,7 +313,7 @@ try {
 
 ### Assign security profiles to users
 Now that we have our Security Profiles created, we need to assign them to our users.  This is the final step before we can make requests to authenticate our users against the API Clients we created earlier.
-Let's make a request to assign our `defaultbuyer` security profile to our buyer user with ID `buyeruser`.  If successful, you should recieve a `204 Created` response.
+Let's make a request to assign our `defaultbuyer` security profile to our buyer user with ID `buyeruser`.  If successful, you should receive a `204 Created` response.
 <CodeExample
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles/assignments HTTP/1.1
@@ -358,7 +358,7 @@ try {
 }}
 />
 
-Next, let's make a request to assign our `defaultseller` security profile to our sellers.  To assign a security profile to all seller users, the only thing we specify in the request body is the ID of the security profile.  If successful, you should recieve a `204 Created` response.
+Next, let's make a request to assign our `defaultseller` security profile to our sellers.  To assign a security profile to all seller users, the only thing we specify in the request body is the ID of the security profile.  If successful, you should receive a `204 Created` response.
 <CodeExample
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles/assignments HTTP/1.1
@@ -400,7 +400,7 @@ try {
 />
 
 ### Make authentication requests
-Now that we have configured application data access with API Clients, user access with Security Profiles and made all necessary assignments, let's make some authentication reqeusts to check our handy work.
+Now that we have configured application data access with API Clients, user access with Security Profiles and made all necessary assignments, let's make some authentication requests to check our handy work.
 First, let's call to authenticate our buyer user against our buyer API client we created earlier.
 <CodeExample
   content={{
@@ -434,7 +434,7 @@ try {
 
 With a successful response, we should receive an access token back, with which we can take to [JWT.io](https://jwt.io) to debug and see our roles reflected, awesome!
 
-Next, let's make a similar reqeust, but to authenticate our seller user against our seller API Client this time.
+Next, let's make a similar request, but to authenticate our seller user against our seller API Client this time.
 <CodeExample
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/outh/token HTTP/1.1
