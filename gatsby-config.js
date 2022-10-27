@@ -102,12 +102,6 @@ const queries = [
   },
   {
     query: knowledgeBase,
-    transformer: ({ data }) => flatten(data.results.edges),
-    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
-    settings,
-  },
-  {
-    query: knowledgeBase,
     transformer: ({ data }) => 
       flatten(
         data.results.edges.map(e => { 
@@ -115,7 +109,7 @@ const queries = [
           return e
         })
       ),
-    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME_SORTED, // overrides main index name
+    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, 
     settings,
   },
   {
