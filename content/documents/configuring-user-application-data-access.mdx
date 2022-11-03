@@ -321,7 +321,7 @@ try {
 
 ### Assign security profiles to the our marketplace entities
 Now that we have our Security Profiles created, we need to assign them to the right entities.  This is the final step before we can make requests to authenticate our users against the API Clients we created earlier.
-Let's make a request to assign our `defaultbuyer` security profile to our buyer copmany with ID `buyercompany`. Once we have successfully made this assignment, these roles will cascade down through any user under this buyer company. If successful, you should receive a `204 Created` response.
+Let's make a request to assign our `defaultbuyer` security profile to our buyer company with ID `buyercompany`. Once we have successfully made this assignment, these roles will cascade down through any user under this buyer company. If successful, you should receive a `204 Created` response.
 <CodeExample
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles/assignments HTTP/1.1
