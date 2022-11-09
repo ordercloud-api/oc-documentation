@@ -4,7 +4,7 @@ title:          Product Visibility Requirements
 description:    You have many options to achieve product visibility, each with a unique purpose. The path you take depends on your business requirements. By the end of this guide you will be familiar enough with the available product visibility options to choose a method that works best for your marketplace.
 author:         mposthumus
 publishDate:    2017-01-14
-updatedDate:    2021-02-24
+updatedDate:    2022-10-26
 tags:           ["Products", "Price Schedules", "Catalogs", "Categories"]
 ---
 
@@ -17,7 +17,7 @@ In this guide we will explore product visibility in three different ways, it's a
 - [Exploring Product Visibility by Use case](product-visibility#exploring-product-visibility-by-use-case)
 
 ### Administrative Access
-Typically seller or supplier users have `ProductAdmin` or `ProductReader` roles allowing them to view products through the `/products` route. The `/products` route will return all products regardless of assignments, including those with `Active` set to false.
+Typically seller or supplier users have `ProductAdmin` or `ProductReader` roles allowing them to view products through the `/products` route. The `/products` route will return all products regardless of assignments, including those with `Active` set to false. For supplier users, only supplier owned products will be returned.
 
 ### Shopper Access
 Buyer users on the other hand generally access products through the `/me/products` route. Making products appear for a Buyer user on the `/me/products` route requires carefully constructed catalog, price schedule, and product assignments. Below we will cover the different options for handling the `/me/products` visibility allowing for flexibility in the experience of different buyers.
@@ -81,7 +81,7 @@ Users receive access to products when a respective catalog is assigned to the bu
 These catalog level assignment configurations play very nicely with category level configurations.
 
 ```http
-POST https://api.ordercloud.io/v1/catalogs/dsf/categories/assignments HTTP/1.1
+POST https://api.ordercloud.io/v1/catalogs/{catalogID}/categories/assignments HTTP/1.1
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
 Content-Type: application/json; charset=UTF-8
 

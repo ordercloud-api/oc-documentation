@@ -17,29 +17,27 @@ An environment is an isolated, independent instance of the OrderCloud API provis
 Providing access to additional environments means that you can test experimental app code, and even unreleased API features, without consuming resources dedicated to your production application(s). Each environment has its own API URL, purpose, and behavior outlined below. Support for environments extends to any of OrderCloud's six [regions](https://ordercloud.io/knowledge-base/ordercloud-regions) you'll just want to make sure you target the correct base url for that region/environment combination.
 
 ### Production
-`https://api.ordercloud.io`
 
 Production is reserved for live apps with real buyers and sellers performing real transactions, and nothing else. It's provisioned for high performance, high availability, and geo-redundant data protection. In order to keep this premium environment performing at the highest possible level, we do a bit more "gatekeeping" of what goes in, this means it isn't possible for you to create production instances yourself. We recommend contacting us at least a month before you plan on going live so that we can work out pricing and get you set up with a production instance.
 
 ### Staging
-`https://stagingapi.ordercloud.io`
 
 If you have live apps deployed to production and want a place to test code changes, or if you want to test unreleased API features against existing app code, Staging is the place to do it.
 
-Every Saturday at 3:00AM UTC we kick off a restore process that makes a copy of most of your production data (marketplaces, users, products, orders, etc.) and transfers it to your associated Staging marketplace. This means you always have near-current, near-real data to test against. Conversely this means that any data created or changed in Staging will only survive until the end of the week.
+Every Sunday at 3:00 UTC we kick off a restore process that makes a copy of most of your production data (marketplaces, users, products, orders, etc.) and transfers it to your associated Staging marketplace. This means you always have near-current, near-real data to test against. Conversely this means that any data created or changed in Staging will only survive until the end of the week.
 
 The following resources are copied down in a modified manner to prevent any "dangerous" actions from occurring. For example, you probably don't want an email sent to a real customer when you pretend-ship their order.
 
-1. Message Senders
-2. Webhooks
-3. Integration events
+1. Message Senders' `URL` property is set to null and all Message Sender Assignments are not copied over.
+2. Webhooks' `Url` property is set to null and `ApiClients` is set to an empty array. 
+3. Integration Events' `CustomImplementationUrl` property is set to null.
+4. Api Clients have all references to integration events set to null, including OrderCheckout, OrderReturn, and AddToCart events.
 
 It is recommended to schedule an automated process that runs after the platform restore to set those specific events back up with test configurations.
 
 ### Sandbox
-`https://sandboxapi.ordercloud.io`
 
 If you're building a new app that does not have a production equivalent, or you have a need to test against long-lived "fake" data that is never overwritten, Sandbox is the right choice. Sandbox is generally easier to maintain than Staging, but if you can live with the caveat of weekly data overwrites, then eliminating the need to do your own data synchronization should be a no-brainer.
 
 ## Conclusion
-OrderCloud's three environments each serve a distinct, unique purpose and by now you should have a good understanding of how to leverage each one. If you have any questions or concerns, please don't hesitate to reach out in the [OrderCloud Slack Community](https://ordercloud.io/slack).
+OrderCloud's three environments each serve a distinct, unique purpose and by now you should have a good understanding of how to leverage each one. If you have any questions or concerns, please don't hesitate to reach out in the [Sitecore OrderCloud Slack Community](https://sitecorechat.slack.com/archives/C024N3H003C).

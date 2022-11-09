@@ -14,11 +14,12 @@ import {
   Typography,
   Breadcrumbs,
   Hidden,
+  TextField,
 } from '@material-ui/core/'
 import { Code, Description } from '@material-ui/icons'
 import { graphql, Link, useStaticQuery } from 'gatsby'
 import { flatten, intersection } from 'lodash'
-import React, { Fragment, FunctionComponent, useMemo } from 'react'
+import React, { Fragment, FunctionComponent, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Layout from '../components/Layout/Layout'
 import LayoutContainer from '../components/Layout/LayoutContainer'
@@ -93,6 +94,10 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
   // const [selectedTags, setSelectedTags] = useState<string[]>(
   //   params.has('t') ? params.get('t').split(',') : []
   // )
+  const [tagSearch, setTagSearch] = useState<string>(``)
+  const handleTagSearch = (e: any) => {
+    setTagSearch(e.target.value)
+  }
   const data: QueryResult = useStaticQuery(graphql`
     query {
       allMdx(
@@ -128,7 +133,8 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
 
   const availableTags = useMemo(() => {
     const tagsArray = data.allMdx.edges.map(n => n.node.frontmatter.tags)
-    const flattenedTags = flatten(tagsArray)
+    let flattenedTags = flatten(tagsArray)
+    if (tagSearch) flattenedTags = flattenedTags.filter(t => t.toLowerCase().includes(tagSearch.toLowerCase()))
     const result: any = {}
     flattenedTags.forEach(t => {
       if (result[t]) {
@@ -138,7 +144,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
       }
     })
     return Object.entries(result)
-  }, [data.allMdx.edges])
+  }, [data.allMdx.edges, tagSearch])
 
   // const handleTagToggle = (tag: string) => () => {
   //   setSelectedTags(s =>
@@ -171,7 +177,7 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
         <link
           rel="icon"
           type="image/png"
-          href="/images/favicon.ico"
+          href="https://mss-p-006-delivery.stylelabs.cloud/api/public/content/e496fb48ca514bb2a06a48e7337b68d9"
           sizes="16x16"
         />
       </Helmet>
@@ -199,9 +205,10 @@ const KnowledgeBase: FunctionComponent<KnowledgeBaseProps> = (
           <Typography variant="h5" paragraph>
             Filter by tag:
           </Typography>
+          <TextField margin="normal" placeholder="Search tags..." type="text" value={tagSearch} onChange={handleTagSearch} />
           <Container disableGutters>
             {availableTags
-              .sort((a: any, b: any) => b[1] - a[1])
+              .sort()
               .map(t => (
                 <Chip
                   color={selectedTags.includes(t[0]) ? 'secondary' : 'default'}
@@ -304,9 +311,9 @@ const DocumentList: FunctionComponent<DocumentListProps> = (
                   })}
                 </Box>
                 <Typography variant="caption" display="block">
-                  {`${
-                    node.frontmatter.updatedDate !==
-                    node.frontmatter.publishDate
+                  {`${node.frontmatter.updatedDate && 
+                    (node.frontmatter.updatedDate !==
+                    node.frontmatter.publishDate) 
                       ? 'Updated'
                       : 'Published'
                   } by ${node.frontmatter.author ? node.frontmatter.author.name : 'Unknown'} on ${node.frontmatter

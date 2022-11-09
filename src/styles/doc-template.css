@@ -154,3 +154,7 @@ body {
   font-style:italic;
   padding: 15px;
 }
+
+code[class*=language-], pre[class*=language-] {
+  word-break: break-all;
+}

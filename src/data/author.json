@@ -58,5 +58,20 @@
         "username": "crhistianramirez",
         "name": "Crhistian Ramirez",
         "title": "Partner Technical Advisor"
+    },
+    {
+        "username": "cricomendoza",
+        "name": "Cynthia Rico Mendoza",
+        "title": "Technical Product Owner"
+    },
+    {
+        "username": "ivanbrygar",
+        "name": "Ivan Brygar",
+        "title": "Senior Developer"
+    },
+    {
+        "username": "mmaher",
+        "name": "Max Maher",
+        "title": "Partner Technical Advisor"
     }
 ]

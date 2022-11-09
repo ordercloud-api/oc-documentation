@@ -37,7 +37,7 @@ The documents folder controls **Knowledge base** content and is managed and appr
 | author | `string` | `true` | This is the author _identifier_, when set, Gatsby will query data in `root/src/data/author.json` to retrieve the author's name & title. Additionally, there should always be a `.jpg` image in `root/static/authors` for each author entry where the name of the image is the `author.id`. |
 | publishDate | `date` | `true` | The date the document is first published using the format `YYYY-MM-DD`. |
 | updatedDate | `date` | `false` | If you are making changes to an existing document update this value using the format `YYYY-MM-DD`. |
-| tags | `string[]` | `true` | An array of strings that you would like this document to be filtered on. This also controls related articles, which will pull up documents with the same tag so be sure you check if a tag already exists for the topic you are thinking of. If you are unsure about what tag to use, consult @rwatt.
+| tags | `string[]` | `true` | An array of strings that you would like this document to be filtered on. This also controls related articles, which will pull up documents with the same tag so be sure you check if a tag already exists for the topic you are thinking of. For best filtered results, try to include at least 4 tags. If the document is a tutorial, please include the "Tutorial" tag. If you are unsure about which tag to use, consult @rwatt.
 
 ### Learn 
 Location: `root/content/learn`

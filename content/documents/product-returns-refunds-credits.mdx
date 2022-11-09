@@ -1,0 +1,206 @@
+---
+type:           tutorial
+title:          Using OrderReturns for Product Returns, Refunds, and Credits
+description:    Set-up customer returns, refunds, or credit scenarios for your business using OrderReturns and Seller Approval rules. 
+author:         awilson
+publishDate:    2022-06-22
+updatedDate:    2022-06-22   
+tags:           ["Returns", "Refunds", "Checkout", "OrderReturns", "Tutorial"]
+---
+
+As a commerce business, you may be looking for ways to enhance your customer experience. One way to do this is to offer a digital return experience.  Allow your buyers to request returns or refunds on products from the same place they placed their order.
+
+Not only is a great shopper experience possible, but consider developing a return management experience for your commerce administrators or customer service reps to smoothly respond to shopper's return requests too.
+
+OrderCloud's OrderReturns allow for flexibility in Return, Refund, and Credit scenarios. Develop your own return policies, return approval requirements, and processes for completing returns and refunds. Let's walk through a few scenarios to show how OrderReturns can answer to your requirements. Make sure to check out our [detailed OrderReturn documentation](https://ordercloud.io/knowledge-base/order-returns) ahead of time for greater understanding.
+
+We are going to use this example order to evaluate different return and refund scenarios below. A shopper placed an order for the following items:
+
+ - LineItem 1: 1 qty - Athletic Shoes, size 8.5
+ - LineItem 2: 4 qty - Socks
+ - LineItem 3: 1 qty - Customized sports jersey (Shopper's name printed on back)
+ - LineItem 4: 2 qty - Joggers, size 10
+
+
+| Line  | Product  | Qty Ordered  | Item Price  | Line Total Price  | Line Total Tax  |
+|---|---|:---:|---:|---:|---:|
+| 1  | Athletic Shoes, Size 8.5  | 1  | $75  | $75  | $5.54  |
+| 2  | Socks  | 4  |  $10 | $40  | $3.01  |
+|  3 |  Customized Sports Jersey |  1 | $100  | $100  | $7.53  |
+|  4 |  Joggers, Size 10 | 2  | $50  | $100  | $7.53  |
+|   | Shipping  |   | $10  | $10  | $0.68  |
+| | | | | **Subtotal** | $315.00
+| | | | | **Shipping** | $10.00
+| | | | | **Tax** | $24.29
+| | | | | **Total** | $349.29
+
+## Submitting a Return for particular items
+
+A few days after placing their order, the shopper received their first shipment. Line Items 1, 2, and 3 all shipped immediately, so the shopper received these items first. Upon receiving the items, the shopper realized that the shoes were too small and they really only need 3 quantity of the socks, not 4.
+
+The shopper logs in to view their order history and start an OrderReturn. Here they select the items that they'd like to return.
+
+At this moment, the shopper notices that they cannot create a return request for LineItem 4 - this is because the item hasn't been shipped yet. Also, they cannot create a return request for LineItem 3 because it's a customized item, and therefore has a setting of `Product.Returnable = False`. The retailer does not allow custom-made products to be returned, and OrderCloud helps enforce that requirement.
+
+The shopper proceeds with placing the return request for 1 quantity of the shoes, and 1 quantity of the socks.
+
+#### Refund Table
+| Line    |  Product   | Qty Ordered  | Qty Delivered  | Qty to Return  | Item Price  | Refund Amount (Product + Tax)  |
+|---|---|:---:|:---:|:---:|---:|---:|
+| 1  | Athletic Shoes, Size 8.5  |  1 | 1  |  1 | $75  | $80.54  |
+| 2  | Socks  |  4 | 4  |  1 | $10  | $10.75  |
+|  3 | Customized Sports Jersey  | 1  |  1 | Not Returnable  |  $100 | -  |
+|  4 | Joggers, Size 10  | 2  |  0 | Not Yet Shipped  |  $50 | -  |
+|   | Shipping  |   |   |  - | $10  | -  |
+| | | | | | **Refund Subtotal** | $85.00
+| | | | | | **Refund Tax** | $6.29
+| | | | | | **Refund Total** | $91.29
+
+Using your own refund calculation logic in custom middleware, the `RefundAmount` for each line item get submitted with the return. Consider item price, item tax, item discounts, and shipping when defining your calculation logic. [This article](https://ordercloud.io/knowledge-base/order-returns-handling-calculations) lays out considerations for developing refund calculation logic.
+
+In this scenario, we are using Item Price and Item Tax to determine the Refund Amount. Shipping is excluded from this refund. Notice below how the total of `ItemsToReturn.RefundAmounts` roll up to the `OrderReturn.RefundAmount` for a final refund amount.
+
+```json
+{
+    "ID": "order3-return4",
+    "OrderID": "order3",
+    "PaymentIDs": [],
+    "Status": "Unsubmitted",
+    "DateCreated": "2022-06-02T20:44:53.663+00:00",
+    "DateSubmitted": null,
+    "DateApproved": null,
+    "DateDeclined": null,
+    "DateCanceled": null,
+    "DateCompleted": null,
+    "LastUpdated": "2022-06-02T20:44:54.723+00:00",
+    "RefundAmount": 91.29,
+    "Comments": null,
+    "ItemsToReturn": [
+        {
+            "LineItemID": "lineitem1",
+            "Quantity": 1,
+            "RefundAmount": 80.54,
+            "Comments": "Shoes are too small"
+        },
+        {
+            "LineItemID": "lineitem2",
+            "Quantity": 1,
+            "RefundAmount": 10.75,
+            "Comments": "Bought too many"
+        }
+    ],
+    "xp": null
+}
+```
+
+Once the Shopper submits the Return, the Seller can complete the return once they've determined it's complete (perhaps they wait until the customer sends the items back). Completion of an OrderReturn corresponds with issuing the refund for the items.
+
+## Submitting a Shipping Refund
+
+Let's say your business has a policy (and great gesture of customer service) that if any of the items from an order get delivered to customers after the proposed delivery date, you provide the customer free shipping. Using the example from above, the Line Item 4 finally got delivered, but much later than what was originally expected.
+
+In this scenario, the customer's return request interface (likely in their Order History) may ask the shopper to first identify which item from the order didn't arrive on time, enter the date it did arrive, and then select a *shipping refund* option, rather than a *standard return* option.
+
+#### Refund Table
+| Line    |  Product   | Qty Ordered  | Qty Delivered  | Qty to Return  | Item Price  | Refund Amount (Shipping Refund + Tax)  |
+|---|---|:---:|:---:|:---:|---:|---:|
+| 1  | Athletic Shoes, Size 8.5  |  1 | 1  |  - | $75  | -  |
+| 2  | Socks  |  4 | 4  |  - | $10  | -  |
+|  3 | Customized Sports Jersey  | 1  |  1 | Not Returnable  |  $100 | -  |
+|  4 | Joggers, Size 10  | 2  |  2 | Shipped Late  |  $50 | -  |
+|   | Shipping  |   |   |  Full Shipping | $10  | $10.68  |
+| | | | | | **Refund Subtotal** | $10.00
+| | | | | | **Refund Tax** | $0.68
+| | | | | | **Refund Total** | $10.68
+
+For an OrderReturn like this, the shopper selects the `ItemsToReturn` so it's known which item was delivered late, but you likely will not set a RefundAmount specifically for that item. Instead, your calculation logic can set the `OrderReturn.RefundAmount` with the shipping cost from the original order.
+
+```json
+{
+    "ID": "order3-return2",
+    "OrderID": "order3",
+    "PaymentIDs": [],
+    "Status": "Unsubmitted",
+    "DateCreated": "2022-05-09T17:12:20.08+00:00",
+    "DateSubmitted": null,
+    "DateApproved": null,
+    "DateDeclined": null,
+    "DateCanceled": null,
+    "DateCompleted": null,
+    "LastUpdated": "2022-06-06T17:59:41.47+00:00",
+    "RefundAmount": 10.68,
+    "Comments": null,
+    "ItemsToReturn": [
+        {
+            "LineItemID": "lineitem4",
+            "Quantity": 2,
+            "RefundAmount": null,
+            "Comments": "Item arrived late"
+        }
+    ],
+    "xp": null
+}
+```
+
+As the commerce administrator, once you receive this Return, and validate the proposed delivery date vs. actual delivery date, you can refund the shipping amount back to the payment method that the customer used. Or consider doing the validation step automatically in middleware so no involvement is needed from a commerce administrator.
+
+## Submitting an Discretionary Refund
+Now, let's say that your business has a Price Match policy. If a customer can show that an item they've purchased is offered at another retailer for a lower price, they'll match that price within 2 weeks of purchase. This shopper found the same Jogger pants for $45.99 at another retailer.
+
+When the Customer submits the request for a Price Match, you could automatically make these OrderReturns send for approval using Seller Approval Rules. This allows a commerce administrator to review the request before processing. For this, an agent likely needs to:
+
+ - Check the date when the item was purchased
+ - Check the price the customer purchased the item at
+ - Review the competitor price the customer provided
+ - Calculate the difference between the purchase price and competitor price
+
+
+#### Refund Table
+| Line    |  Product   | Qty Ordered  | Qty Delivered  | Qty to Return  | Item Price  | Competitor Price  | Refund Amount (Price Difference)|
+|---|---|:---:|:---:|:---:|---:|---:|---:|
+| 1  | Athletic Shoes, Size 8.5  |  1 | 1  |  - | $75  | -  | -|
+| 2  | Socks  |  4 | 4  |  - | $10  | -  | -|
+|  3 | Customized Sports Jersey  | 1  |  1 | Not Returnable  |  $100 | -  |- |
+|  4 | Joggers, Size 10  | 2  |  2 | Found a lower price  |  $50 | $45.99  |$8.02 (2qty @ $4.01) |
+|   | Shipping  |   |   |  - | $10  | -  | -|
+| | | | | | | **Refund Total** | $8.02
+
+Now, approve the OrderReturn and set an exact refund amount based on the competitor price difference. You could even use a Spending Account to give the customer store credit, instead of a refund back to their original payment method.
+
+## Seller Created Return - Customer Service Refund
+
+There come times where an unsatisfied customer contacts customer service to discuss a problem they had with their shopping experience. In cases like this, sometimes the best thing to do is offer a general customer satisfaction discount for their order.
+
+Instead of the customer submitting a request for refund via their Order History, a Commerce Administrator can create the request for them, and define the refund amount for the Order.
+
+This type of OrderReturn may have no `ItemsToReturn` because there was nothing wrong with a particular item they purchased. Create the OrderReturn, and set the RefundAmount - as simple as that.
+
+```json
+{
+    "ID": "order3-return3",
+    "OrderID": "order3",
+    "PaymentIDs": [],
+    "Status": "Unsubmitted",
+    "DateCreated": "2022-05-23T21:31:59.403+00:00",
+    "DateSubmitted": null,
+    "DateApproved": null,
+    "DateDeclined": null,
+    "DateCanceled": null,
+    "DateCompleted": null,
+    "LastUpdated": "2022-06-22T16:02:14.547+00:00",
+    "RefundAmount": 5,
+    "Comments": "50% shipping discount due to unsatisfied customer.",
+    "ItemsToReturn": [],
+    "xp": null
+}
+```
+
+These scenarios likely don't even begin to cover all of the return and refund possibilities in existence. When it comes to the variety of return policies and refund calculation logic that exist for each unique business, you need to way to define processes that work for you.
+
+OrderCloud stays unopinionated on the actual calculation of the refund and return policy. We don't force your business to conform to pre-formatted rules which fail to support your needs. Instead, OrderCloud provides the data needed to calculate, and the extendibility of resources so you can ensure OrderReturns solve your problems.
+
+Make sure to check out these other articles for more information about OrderReturns:
+
+ - [Introducing
+   OrderReturns](https://ordercloud.io/knowledge-base/order-returns)
+ - [OrderReturns - Handling Calculations](https://ordercloud.io/knowledge-base/order-returns-handling-calculations)

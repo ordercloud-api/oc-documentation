@@ -25,7 +25,7 @@ import '../../styles/doc-template.css'
 import { seafoam } from '../../theme/ocPalette.constants'
 import { transformHeadingToId } from '../Layout/DiscoverMenu'
 import Layout from '../Layout/Layout'
-import { filter } from 'lodash'
+import { filter,intersection } from 'lodash'
 import LayoutContainer from '../Layout/LayoutContainer'
 import LayoutMain from '../Layout/LayoutMain'
 import LayoutMenu from '../Layout/LayoutMenu'
@@ -120,12 +120,8 @@ export default function KnowledgeBaseTemplate(
   const classes = useStyles()
   const absolutePath = utility.resolvePath(doc.mdx.fileAbsolutePath)
   const relatedDocuments = filter(
-    useRelatedDocuments(
-      doc.mdx.frontmatter.tags.filter(t => t !== 'Best Practices')
-    ),
-    d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath
+    useRelatedDocuments(doc.mdx.frontmatter.tags), d => d.fileAbsolutePath !== doc.mdx.fileAbsolutePath
   )
-
   useLayoutEffect(() => {
     if (!props.location.hash) return
     setTimeout(() => {
@@ -158,7 +154,7 @@ export default function KnowledgeBaseTemplate(
         <link
           rel="icon"
           type="image/png"
-          href="/images/favicon.ico"
+          href="https://mss-p-006-delivery.stylelabs.cloud/api/public/content/e496fb48ca514bb2a06a48e7337b68d9"
           sizes="16x16"
         />
       </Helmet>
@@ -193,16 +189,16 @@ export default function KnowledgeBaseTemplate(
             )}
             <div style={{ paddingLeft: 8 }}>
               <Typography color="textSecondary">
-                {`${
-                  doc.mdx.frontmatter.updatedDate !==
-                  doc.mdx.frontmatter.publishDate
+                {`${doc.mdx.frontmatter.updatedDate && 
+                  (doc.mdx.frontmatter.updatedDate !==
+                  doc.mdx.frontmatter.publishDate)
                     ? 'Updated'
                     : 'Published'
                 } by ${doc.mdx.frontmatter.author ? doc.mdx.frontmatter.author.name : 'Unknown'}`}
               </Typography>
               <Typography color="textSecondary">
-                {doc.mdx.frontmatter.updatedDate !==
-                doc.mdx.frontmatter.publishDate
+                {doc.mdx.frontmatter.updatedDate && (doc.mdx.frontmatter.updatedDate !==
+                doc.mdx.frontmatter.publishDate)
                   ? doc.mdx.frontmatter.updatedDate
                   : doc.mdx.frontmatter.publishDate}
               </Typography>
@@ -263,7 +259,7 @@ export default function KnowledgeBaseTemplate(
                   Related Reading
                 </Typography>
                 <div className={classes.menuSection}>
-                  {relatedDocuments.map(t => (
+                  {relatedDocuments.filter(() => intersection(data.mdx.frontmatter.tags).length).map(t => (
                     <Typography
                       className={classes.relatedDocument}
                       component={Link}

@@ -1,0 +1,187 @@
+---
+type:           tutorial
+title:          Order Returns - Handling Calculations
+description:    Learn how to implement a strategy for handling calculations in your Order Returns solution.
+author:         mmaher
+publishDate:    2022-07-06
+updatedDate:    2022-07-06
+tags:           ["Orders", "Integrations", "Returns", "Refunds", "OrderReturns", "Tutorial"]
+---
+
+OrderCloud is unopinionated about how to calculate refund amounts when it comes to product returns or customer refunds. We know that your business has its own specific requirements around refund amounts, so we give you the tools to put your exact logic in place. This article will cover what you need to consider when building your refund calculation logic.
+
+To assist with your calculation, OrderCloud triggers an [OrderReturn Integration Event](https://ordercloud.io/knowledge-base/order-returns#new-integrationevent-type-orderreturn) any time an `OrderReturn` is either created or updated without a `RefundAmount` specified. Included in that payload is the order worksheet.
+
+## The Importance of the `OrderWorksheet`
+
+The `OrderWorksheet` is the key to unlocking refund calculations.  Make sure this gets hydrated during the order calculation process with the necessary tax, shipping, and promotions data, so it will have all the details a developer needs to code a customized calculation feature in their middleware.
+
+Since the `OrderWorksheet` will serve as the source of truth for refund calculations, it’s helpful (though not required) to organize the values that are useful to your returns as `xp` under the `OrderWorksheet.OrderCalculateResponse` object during the `POST v1/orders/{direction}/{orderID}/calculate` step of your checkout workflow. This can be valuable for more than just returns, such as if your business uses a third-party tax service and needs this data to create a standard invoice during order submission.
+
+In this scenario, we will store the following custom object as `xp` on the `OrderCalculateResponse` and see how its properties could be used in determining refund calculation amounts for returns on an order. Don't worry about these values for now, we will simply refer to this object later in this article as `ReturnCalcs`.
+
+```json
+{
+  "OrderTotals": {
+    "Subtotal": 170,
+    "LineItemPromotionTotal": 10,
+    "OrderPromotionTotal": 20,
+    "OrderTaxableSubtotal": 140,
+    "LineItemTax": 11.29,
+    "ShippingSubtotal": 25,
+    "ShippingTax": 3.25,
+    "TotalCharged": 179.54
+  },
+  "LineItems": [
+    {
+      "ID": "X001",
+      "Quantity": 2,
+      "UnitPrice": 5,
+      "Subtotal": 10,
+      "LineTaxableSubtotal": 10,
+      "Tax": 0,
+      "Total": 10,
+      "OrderPromotionEligible": false,
+      "LineItemPromoAppliedToTaxableSubtotal": 0,
+      "OrderLevelPromoNotAppliedToTaxableSubtotal": 0
+    },
+    {
+      "ID": "X002",
+      "UnitPrice": 60,
+      "Quantity": 1,
+      "Subtotal": 60,
+      "LineTaxableSubtotal": 50,
+      "Tax": 3.76,
+      "Total": 53.76,
+      "OrderPromotionEligible": true,
+      "LineItemPromoAppliedToTaxableSubtotal": 10,
+      "OrderLevelPromoNotAppliedToTaxableSubtotal": 6.67
+    },
+    {
+      "ID": "X003",
+      "UnitPrice": 50,
+      "Quantity": 2,
+      "Subtotal": 100,
+      "LineTaxableSubtotal": 100,
+      "Tax": 7.53,
+      "Total": 107.53,
+      "OrderPromotionEligible": true,
+      "LineItemPromoAppliedToTaxableSubtotal": 0,
+      "OrderLevelPromoNotAppliedToTaxableSubtotal": 13.33
+    }
+  ],
+  "Shipping": [
+    {
+      "RateID": "bf379e3bee624fb281ebaedeb3ad4893",
+      "LineItemIDs": [
+        "X001", "X002"
+      ],
+      "Subtotal": 10,
+      "Tax": 1.30,
+      "Total": 11.30
+    },
+    {
+      "RateID": "82c8fbf908d142a3919a2f958eb25de3",
+      "LineItemIDs": [
+        "X003"
+      ],
+      "Subtotal": 15,
+      "Tax": 1.95,
+      "Total": 16.95
+    }
+  ]
+}
+```
+
+An `OrderWorksheet` contains properties for `Order`, `LineItems`, `OrderPromotions`, `ShipEstimateResponse`, and `OrderCalculateResponse`. Across these properties, you should have access to all the fields that we’ve mapped to create the `ReturnCalcs` above. This does carry the assumption that you store the necessary response data from integrations to your tax calculation and shipping estimation services on the `OrderCalculateResponse` and `ShipEstimateResponse` objects, respectively. Now, when we create or update an `OrderReturn`, but do not specify a `RefundAmount`, we will have quick access to this customized `ReturnCalcs` object, and we can easily handle several refund scenarios. First, let’s shine a light on some of this data.
+
+## Calculation Considerations
+
+Common factors that contribute to the `RefundAmount` in an `OrderReturn` include taxes, promotions, and shipping costs. Let's review how these affected our order totals and how we tracked these values in our `ReturnCalcs` object.
+
+### Order Totals
+
+We begin with storing several totals that help us understand how line items, shipping, promotions, and tax affected the overall order calculation.
+
+- For line X001, while $10 was determined to be the subtotal to send to the tax estimation service, no tax was calculated because the tax service found the specific item to be tax-exempt.
+- A $10 line item-level promotion was applied to line X002, essentially dropping its list price from $60 to $50 (the value sent for tax estimation purposes).
+- A $20 order promotion was applied to the full order. Because line X001 is not promotion eligible, our tax service will proportionally apply this promotion to lines X002 and X003.
+- $30 worth of promotions were applied to this order, causing the taxable subtotal to drop from $170 to $140.
+
+### Taxes and Promotions
+
+OrderCloud does not provide a calculation for how much an order-level promotion reduces the cost of a `LineItem` on the `Order`, allowing businesses to remain flexible on how they wish to apply these discounts. In our example, we've decided to lean on our tax service to apply the order-level promotion proportionally across eligible `LineItems` for us ($6.67 for line X002 + $13.33 for line X003 = $20 order-level promotion). That contrasts with how we handled the line item-level promotion, and the reason for the verbose property names of `LineItemPromoAppliedToTaxableSubtotal` and `OrderLevelPromoNotAppliedToTaxableSubtotal`.
+
+Since our tax service did not handle line item-level promotions, it was important that we applied these values manually to the `LineTaxableSubtotal` prior to submitting this value to the tax service. In the example of line X002, the `LineItem.Subtotal` was $60, but we manually adjusted this to $50 given the line-item level promotion. When we sent the order-level promotion amount of $20 to tax service, it proportionally applied the discount amount for us. If your tax service does not offer this feature, this would also need to be handled via a custom weighting in your middleware, and in that case, you would apply that order-level promo to the line’s taxable subtotal.
+
+### Shipping
+
+In this order, items shipped from two separate warehouses, and the customer paid for two shipments. The tax service handled the freight tax calculation for each, and we stored these amounts under the `Shipping` property for each rate. These values will be helpful for any return policies that involve full or partial shipping refunds for related shipments.
+
+## Return Calculation Types
+
+Now that this object has been stored as `OrderCalculateResponse.xp`, we have easy access to it whenever a return is created and a `RefundAmount` is not specified. But how will our middleware know what kind of refund to apply? For business use cases, this is a great opportunity to extend the `OrderReturn` data model and add an `xp` property of `ReturnType`. When the integration event is called, your middleware can evaluate the return type and direct it to the desired calculation method that you define.
+
+### Standard Return Invoicing Via Tax Service
+
+Several tax calculation services offer the ability to create return invoices, and it is highly recommended that they be used to determine refund amounts for standard returns. They are likely better equipped to handle some calculation challenges that can arise. For example, consider if someone wanted to return one of line X003 (out of two purchased). Jurisdictions can conform to many tax rates, and these rates can go many decimal places deep. This resulted in a $7.53 tax calculation for both quantities of line X003, which divided in two is $3.765. If both quantities were eventually refunded, one would need to be refunded $3.76 tax, and the other $3.77.
+
+While OrderCloud will ensure you never over-refund a returnable item, how do you make sure you don’t under-refund one? Tax services can handle this for you, but if you are not using one, you’ll want to be sure to track what amount is being refunded upon each return request. This way, the full amount is reconciled if all quantities are returned in the future.
+
+Regardless of whether you use a tax calculation service to determine refund amounts, OrderCloud expects an `OrderReturnResponse` and for you to map these values. In a situation where we request two quantity of line X001, one quantity of line X002, and one quantity of line X003 to be returned, we would respond with this, and we can reference the `ReturnCalcs` object to form our response:
+
+```json
+"OrderReturnResponse": {
+    "RefundAmount": 104.20,
+    "ItemsToReturnCalcs": [
+        {
+            "LineItemID": "X001",
+            "RefundAmount": 10
+        },
+        {
+            "LineItemID": "X002",
+            "RefundAmount": 47.09
+        },
+  {
+            "LineItemID": "X003",
+            "RefundAmount": 47.11
+        }
+    ]
+}
+```
+
+The calculation with the most nuances here is for line X003. Only one was returned, but this line had the complicated tax distribution described above, plus an order-level promotion of $13.33 applied to both `LineItems`. While our tax service is taking into account this promotion amount, if you are not using a similar service, you will want to account for this and reconcile the amounts to refund on your own. For each `LineItem`, the refund amount was calculated like this:
+
+> Unit Price After Line Promos (50) – Share of Order Level Promo (6.66) + Share of Tax (3.77) = $47.11
+
+However, if the second quantity needed to be returned later, we would see it use these slightly different values:
+
+> Unit Price After Line Promos (50) – Share of Order Level Promo (6.67) + Share of Tax (3.76) = $47.09
+
+This is an example of how our service chose to handle the rounding when returning just one item, but your service could allocate that extra penny or two differently.
+
+### Custom Returns
+
+Sometimes situations will arise where you do not want to return the total cost of a `LineItem`. Consider some of the use cases below:
+
+- Shipping should be refunded (fully or partially)
+- Tax should not have been charged (buyer is tax-exempt)
+- Discretionary refunds due to customer experience
+
+All these scenarios would require custom calculation logic, and tax calculation services can likely assist with each. To properly route each of these to the correct calculation method in your middleware, you may wish to consider storing `OrderReturn.xp` in this format:
+
+```json
+{
+  "xp": {
+    "ReturnType": "Shipping",
+    "AmountType": "Fixed",
+    "RefundAmount": 11.30
+  }
+}
+```
+
+To account for the examples above, we may consider possible values of `ReturnTypes` to be `Shipping`, `Tax`, or `Discretionary`. We may use an `AmountType` of either `Fixed` or `Percentage`, and then a `RefundAmount` that conforms to the `AmountType`. On `Fixed` amount types, you have the option to specify the `RefundAmount` in the main body of the `OrderReturn` rather than using `xp`, but if you wish for the integration event to be called (perhaps to handle return invoicing in your tax service), you can leave those values blank and choose to respond to OrderCloud with the `OrderReturnResponse` object instead.
+
+## Conclusion
+
+OrderCloud’s `OrderReturn` integration event allows for the flexibility to integrate with your third-party tax calculation service, or for you to route certain return types to the desired calculation method in your middleware. Coalescing the desired data points during checkout will save time and effort when creating return invoices or defining what elements of an order should be used in your return type’s custom calculation.

@@ -1,0 +1,413 @@
+---
+type:           tutorial
+title:          Implementing Single Sign-On with Google IDP
+description:    A complete end-to-end tutorial on implementing single sign-on via OpenIDConnect with Google as your identity provider
+author:         crhistianramirez
+publishDate:    2022-08-11
+updatedDate:    2022-08-11
+tags:           ["Authentication", "OpenID Connects", "Tutorial"]
+---
+
+OpenID Connect is a powerful feature that enables you to provide single sign-on capabilities for any identity provider that supports the specification. In this tutorial we'll walk you step by step through what you'll need to get single sign-on working by using Google as the identity provider. By the end of this tutorial, you'll be able to sign in via Google and be logged into OrderCloud.
+
+## Demo
+
+Before we start, let's take a look at the finished product. Navigate to [this website](https://oidc-google.herokuapp.com). You will be redirected to Google's sign-in page and after successfully signing in you should see a popup with your OrderCloud token as well as Google's token.
+
+## Create your Marketplace
+
+First, you will need to create a new Marketplace. 
+
+<figure class="blog-figure">
+  <img src="/images/knowledge-base/inline/implementing-single-sign-on-with-google-idp/create-a-marketplace.png" alt="Creating a Marketplace"/>
+  <figcaption>Creating a Marketplace</figcaption>
+</figure>
+
+After creating it, take special note of the API server, this identifies the base URL needed for all API requests. 
+
+<figure class="blog-figure">
+  <img src="/images/knowledge-base/inline/implementing-single-sign-on-with-google-idp/marketplace-details.png" alt="Marketplace Details"/>
+  <figcaption>Marketplace Details</figcaption>
+</figure>
+
+For this demonstration we are on the Sandbox environment in the region Us-West so our base API URL is https://sandboxapi.ordercloud.io, yours may look different.
+
+## 1. Create supporting entities
+
+We will be creating a single-sign-on experience for buyer users specifically, so we'll create the most basic OrderCloud entities required to support that scenario.
+
+### 1. Create a buyer organization
+
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/buyers HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+  "ID": "buyer1",
+  "Name": "Buyer 1",
+  "Active": true
+}`,
+javascript: `import { Tokens, Buyers } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+Buyers.Create({
+  ID: "buyer1",
+  Name: "Buyer 1",
+  Active: true
+})
+.then(response => {
+    // returns the newly created buyer organization
+    console.log(response);
+})
+.catch(err => console.log(err));\n
+})`,
+typescript: `import { Tokens, Buyers, Buyer, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+const buyer: Buyer = await Buyers.Create({
+  ID: "buyer1",
+  Name: "Buyer 1",
+  Active: true
+})
+.catch((err:OrderCloudError) => console.log(err));
+console.log(buyer);`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+Buyer response = await client.Buyers.CreateAsync(new Buyer {
+  ID = "buyer1",
+  Name = "Buyer 1",
+  Active = true
+});`}}
+/>
+
+### 2. Create a Security Profile
+
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+  "ID": "buyerProfile",
+  "Name": "Buyer Security Profile",
+  "Roles": ["Shopper"]
+}`,
+javascript: `import { Tokens, SecurityProfiles } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+SecurityProfiles.Create({
+  ID: "buyerProfile",
+  Name: "Buyer Security Profile",
+  Roles: ["Shopper"],
+})
+.then(response => {
+    // returns the newly created security profile
+    console.log(response);
+})
+.catch(err => console.log(err));\n
+})`,
+typescript: `import { Tokens, SecurityProfiles, SecurityProfile, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+const securityProfile: SecurityProfile = await SecurityProfiles.Create({
+  ID: "buyerProfile",
+  Name: "Buyer Security Profile",
+  Roles: ["Shopper"],
+})
+.catch((err:OrderCloudError) => console.log(err));
+console.log(securityProfile);`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+await client.AuthenticateAsync();\n
+SecurityProfile response = await client.SecurityProfiles.CreateAsync(new SecurityProfile {
+    ID = "buyerProfile",
+    Name = "Buyer Security Profile",
+    Roles = new ApiRole[] { ApiRole.Shopper }
+});`}}
+/>
+
+### 3. Assign the security profile to the buyer organization
+
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles/assignments HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+  "SecurityProfileID": "buyerProfile",
+  "BuyerID": "buyer1"
+}`,
+javascript: `import { Tokens, SecurityProfiles } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+SecurityProfiles.SaveAssignment({
+  SecurityProfileID: "buyerProfile",
+  BuyerID: "buyer1"
+})
+.then(() => {
+    // no response when security profile assigned
+})
+.catch(err => console.log(err));\n
+})`,
+typescript: `import { Tokens, SecurityProfiles, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+await SecurityProfiles.SaveAssignment({
+  SecurityProfileID: "buyerProfile",
+  BuyerID: "buyer1"
+})
+.catch((err:OrderCloudError) => console.log(err));`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+await client.AuthenticateAsync();\n
+await client.SecurityProfiles.SaveAssignmentAsync(new SecurityProfileAssignment {
+  SecurityProfileID = "buyerProfile",
+  BuyerID = "buyer1"
+});`}}
+/>
+
+### 4 Create an API client
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+    "AccessTokenDuration": 600,
+    "Active": true,
+    "AppName": "Buyer Client",
+    "RefreshTokenDuration": 43200,
+    "AllowAnyBuyer": true,
+    "AllowSeller": true
+}`,
+javascript: `import { Tokens, ApiClients } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+ApiClients.Create({
+  AccessTokenDuration: 600,
+  Active: true,
+  AppName: "Buyer Client",
+  RefreshTokenDuration: 43200,
+  AllowAnyBuyer: true,
+  AllowSeller: true
+})
+.then((response) => {
+    console.log(response);
+})
+.catch(err => console.log(err));\n
+})`,
+typescript: `import { Tokens, ApiClients, ApiClient, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+const apiClient: ApiClient = await ApiClients.Create({
+  AccessTokenDuration: 600,
+  Active: true,
+  AppName: "Buyer Client",
+  RefreshTokenDuration: 43200,
+  AllowAnyBuyer: true,
+  AllowSeller: true
+})
+.catch((err:OrderCloudError) => console.log(err));
+console.log(apiClient);`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+await client.AuthenticateAsync();\n
+ApiClient response = await client.ApiClients.Create(new ApiClient {
+  AccessTokenDuration = 600,
+  Active = true,
+  AppName = "Buyer Client",
+  RefreshTokenDuration = 43200,
+  AllowAnyBuyer = true,
+  AllowSeller = true
+});`}}
+/>
+
+Make sure to record the ID from the response. You will need it for <Link to="/knowledge-base/implementing-single-sign-on-with-google-idp#4-create-a-new-openid-connect">step #2.4</Link>
+
+## 2. Configuring OIDC (OpenID Connect) via OrderCloud
+
+### 1. Start ngrok
+
+We'll need a publicly available endpoint. We can use a tool called [ngrok](https://ngrok.com/) to let us do this locally without having to deploy anything. After installing ngrok run the command `ngrok http 4451`. This tells ngrok to expose our endpoint (not yet running) on http://localhost:4451 to two public endpoints. After running the command copy either one of those URLs and record it, we'll need it for <Link to="/knowledge-base/implementing-single-sign-on-with-google-idp#2-create-the-openid-connect-integration-event">step #2.2</Link>
+
+> We recommend to keep ngrok running. Restarting it will generate unique public endpoints and require you to update your configuration in OrderCloud.
+
+### 2. Create the OpenID Connect Integration Event
+
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/integrationEvents  HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+  "ID": "openidconnect",
+  "Name": "openidconnect",
+  "EventType": "OpenIDConnect",
+  "CustomImplementationUrl": "{your-ngrok-url}/integration-events",
+  "HashKey": "supersecrethash",
+  "ElevatedRoles": ["BuyerUserAdmin"]
+}`,
+javascript: `import { Tokens, IntegrationEvents } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+IntegrationEvents.Create({
+  ID: "openidconnect",
+  Name: "openidconnect",
+  EventType: "OpenIDConnect",
+  CustomImplementationUrl: "{your-ngrok-url}/integration-events",
+  HashKey: "supersecrethash",
+  ElevatedRoles: ["BuyerUserAdmin"],
+})
+.then(response => {
+    // returns the newly created integration event
+    console.log(response);
+})
+.catch(err => console.log(err));\n
+})`,
+typescript: `import { Tokens, IntegrationEvents, IntegrationEvent, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+const integrationEvent: IntegrationEvent = await IntegrationEvents.Create({
+  ID: "openidconnect",
+  Name: "openidconnect",
+  EventType: "OpenIDConnect",
+  CustomImplementationUrl: "{your-ngrok-url}/integration-events",
+  HashKey: "supersecrethash",
+  ElevatedRoles: ["BuyerUserAdmin"],
+})
+.catch((err:OrderCloudError) => console.log(err));
+console.log(integrationEvent);`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+await client.AuthenticateAsync();\n
+IntegrationEvent response = await client.IntegrationEvents.CreateAsync(new IntegrationEvent {
+    ID = "openidconnect",
+    Name = "openidconnect",
+    EventType = IntegrationEventType.OpenIDConnect,
+    CustomImplementationUrl = "{your-ngrok-url}/integration-events",
+    HashKey = "supersecrethash",
+    ElevatedRoles = new ApiRole[] { ApiRole.BuyerUserAdmin },
+});`}}
+/>
+
+| OrderCloud Property     | Description                                                                                                                                                                                                                                                   |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ID                      | Unique identifier for the integration event                                                                                                                                                                                                                   |
+| Name                    | A short name describing the integration event, this is not user facing                                                                                                                                                                                        |
+| EventType               | Indicates what type of integration event this is, in our case we should use OpenIDConnect                                                                                                                                                                     |
+| CustomImplementationUrl | This indicates the base URL of your middleware where OrderCloud should post to. For OpenIDConnect it will call out to the path `/createuser` and `/syncuser`                                                                                                      |
+| HashKey                 | This is an important security feature that is used by your middleware to validate that requests made to your endpoints are legitimate and come from OrderCloud                                                                                                |
+| ElevatedRoles           | An optional array of roles that will be encoded in the user's token and sent along in the payload to `/createuser` and `/syncuser`. In our case we are defining BuyerUserAdmin so that our middleware endpoints have the roles necessary to create users on the fly. |
+
+### 3. Configure Google
+
+Follow [Google's instructions](https://developers.google.com/identity/protocols/oauth2/openid-connect) for setting up OpenID Connect configuration on their side. You'll need to set the authorized redirect URI to `{ordercloud_base_url}/ocrpcode`. Take note of the `clientID` and `clientSecret` which OrderCloud will refer to as `ConnectClientID` and `ConnectClientSecret` respectively, these values will be needed in the following step.
+
+<figure class="blog-figure">
+  <img src="/images/knowledge-base/inline/implementing-single-sign-on-with-google-idp/google-console.png" alt="Configuration in Google Console"/>
+  <figcaption>Creating a Marketplace</figcaption>
+</figure>
+
+### 4. Create a new OpenID Connect
+
+This entity configures the connection between Google and OrderCloud.
+
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/openidconnects  HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8;\n
+{
+  "ID": "google",
+  "OrderCloudApiClientID": "CLIENT_ID_FROM_STEP_1.4",
+  "ConnectClientID": "GOOGLE_CLIENT_ID_HERE",
+  "ConnectClientSecret": "GOOGLE_CLIENT_SECRET_HERE",
+  "AppStartUrl": "http://localhost:4451?token={0}&idpToken={1}",
+  "AuthorizationEndpoint": "https://accounts.google.com/o/oauth2/v2/auth",
+  "TokenEndpoint": "https://oauth2.googleapis.com/token",
+  "UrlEncoded": false,
+  "CallSyncUserIntegrationEvent": true,
+  "IntegrationEventID": "openidconnect",
+  "AdditionalIdpScopes": []
+}`,
+javascript: `import { Tokens, OpenIdConnects } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+OpenIdConnects.Create({
+  ID: "google",
+  OrderCloudApiClientID: "CLIENT_ID_FROM_STEP_1.4",
+  ConnectClientID: "GOOGLE_CLIENT_ID_HERE",
+  ConnectClientSecret: "GOOGLE_CLIENT_SECRET_HERE",
+  AppStartUrl: "http://localhost:4451?token={0}&idpToken={1}",
+  AuthorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
+  TokenEndpoint: "https://oauth2.googleapis.com/token",
+  UrlEncoded: false,
+  CallSyncUserIntegrationEvent: true,
+  IntegrationEventID: "openidconnect",
+  AdditionalIdpScopes: []
+})
+.then(response => {
+    // returns the newly created openidconnect
+    console.log(response);
+})
+.catch(err => console.log(err));\n
+})`,
+typescript: `import { Tokens, OpenIdConnects, OpenIdConnect, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Tokens.Set("INSERT_ACCESS_TOKEN_HERE")\n
+const openIdConnect = await OpenIdConnects.Create({
+  ID: "google",
+  OrderCloudApiClientID: "CLIENT_ID_FROM_STEP_1.4",
+  ConnectClientID: "GOOGLE_CLIENT_ID_HERE",
+  ConnectClientSecret: "GOOGLE_CLIENT_SECRET_HERE",
+  AppStartUrl: "http://localhost:4451?token={0}&idpToken={1}",
+  AuthorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
+  TokenEndpoint: "https://oauth2.googleapis.com/token",
+  UrlEncoded: false,
+  CallSyncUserIntegrationEvent: true,
+  IntegrationEventID: "openidconnect",
+  AdditionalIdpScopes: []
+})
+.catch((err:OrderCloudError) => console.log(err));
+console.log(openIdConnect);`,
+csharp: `using OrderCloud.SDK;\n
+var client = new OrderCloudClient(...);\n
+await client.AuthenticateAsync();\n
+OpenIdConnect response = await client.OpenIdConnects.CreateAsync(new OpenIdConnect {
+  ID: "google",
+  OrderCloudApiClientID: "CLIENT_ID_FROM_STEP_1.4",
+  ConnectClientID: "GOOGLE_CLIENT_ID_HERE",
+  ConnectClientSecret: "GOOGLE_CLIENT_SECRET_HERE",
+  AppStartUrl: "http://localhost:4451?token={0}&idpToken={1}",
+  AuthorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
+  TokenEndpoint: "https://oauth2.googleapis.com/token",
+  UrlEncoded: false,
+  CallSyncUserIntegrationEvent: true,
+  IntegrationEventID: "openidconnect",
+  AdditionalIdpScopes: []
+});`}}
+/>
+
+| OrderCloud Property     | Description                                                                                                                                                                                                                |
+    |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+    | `ID`                    | Unique identifier for the connect client config                                                                                                                                                                            |
+    | `OrderCloudApiClientID` | This is the clientID (on OrderCloud) that wants to authenticate via OpenID Connect                                                                                                                                         |
+    | `ConnectClientID`       | This is the clientID of the identify provider (in this case Google)                                                                                                                                                        |
+    | `ConnectClientSecret`   | This is the clientSecret of the identity provider (in this case Google)                                                                                                                                                    |
+    | `AppStartUrl`           | This is where the user will be redirected to after successful authentication via OpenID Connect. The parameter `{0}` represents the OrderCloud token. The parameter `{1} represents the IDP token, and the parameter {2} which is not used here represents the app start path used for deep linking`                                                                                  |
+    | `AuthorizationEndpoint` | Defined by the OpenID provider (in this case Google). It is the endpoint OrderCloud will redirect the user to in order to validate credentials.                                                                                |
+    | `TokenEndpoint`         | Defined by the OpenID provider (in this case Google). It is the endpoint OrderCloud will call out to get a token from the provider.                                                                                        |
+    | `UrlEncoded`            | How to post information to the OpenID provider (in this case Google). It is sent with either Basic Auth if UrlEncoded is `false`, otherwise it posts a Url encoded body. Most providers (such as Google) will accept both. If you encounter an error with your provider a good first step for troubleshooting is changing this value to the opposite of what is set. |
+    | `CallSyncUserIntegrationEvent`            | Whether or not the `/syncuser` endpoint will be called which is used to update user details that may have changed after their initial login |
+    | `IntegrationEventID`    | The ID to the Integration Event created in <Link to="/knowledge-base/implementing-single-sign-on-with-google-idp#2-create-the-openid-connect-integration-event">step 2.2</Link>. This has information about which endpoint OrderCloud should call out to in order to create the user after the user has successfully logged in.                                                                                                                                   |
+    | `AdditionalIdpScopes`   | As defined by the OIDC specification we will request profile, email, and oidc scope but you may request any additional scopes you'd like to request from the IDP at the time of authentication. As an example, you could request permissions from Google to access the user's Google Drive files, then the access token you get back from the IDP would have permission to do that. Please note that these roles will show up in the user consent screen and best practices dictate to only request those that you absolutely need for your application       
+
+## 3. Testing
+OrderCloud and Google should now be completely configured, and we are ready to test to make sure everything is working. To simplify this aspect, we've created a very minimal frontend to test this functionality.
+
+1. Clone [this repository](https://github.com/ordercloud-api/openidconnect-poc)
+2. Install dependencies by running `npm install` at the root of the project
+3. [Configure the settings](https://github.com/ordercloud-api/openidconnect-poc/blob/main/server.js#L11-L15) with details from your marketplace
+3. Run the project by running `npm run start`. This will start the server on port 4451. Remember ngrok is already listening to this port and will expose our endpoints publicly.
+4. Navigate to the url http://localhost:4451. If everything is correct you should be redirected to Google's login page. Upon signing in you will be redirected back to the application and should see an alert with your OrderCloud token along with the IDP token (Google token)
+
+Be sure to look at the source code in server.js, specifically the `/createuser` and `/syncuser` endpoints. 
+
+## Common Issues
+
+### Error message: "error validating token with authority"
+This issue occurs when OrderCloud attempts to retrieve the ID token from the IDP. This is generally a configuration issue. Confirm `ConnectClientID`, `ConnectClientSecret`, and `OrderCloudClientID` are correct. 
+
+## Conclusion
+
+By now you should have a solid understanding of how to implement single sign-on with Google and you should now feel empowered to build the same with any number of other identity providers such as Azure, or Auth0.
+

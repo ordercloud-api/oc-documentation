@@ -70,7 +70,7 @@ export default function Template(props: DiscoverTemplateProps) {
         <link
           rel="icon"
           type="image/png"
-          href="/images/favicon.ico"
+          href="https://mss-p-006-delivery.stylelabs.cloud/api/public/content/e496fb48ca514bb2a06a48e7337b68d9"
           sizes="16x16"
         />
       </Helmet>
