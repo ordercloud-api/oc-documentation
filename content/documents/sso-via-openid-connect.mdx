@@ -4,7 +4,7 @@ title:          Single Sign On via OpenID Connect
 description:    SSO (Single Sign On) allows your users to authenticate themselves to the OrderCloud API by logging into any identity provider you trust.
 author:         jilse
 publishDate:    2019-04-15
-updatedDate:    2022-09-12
+updatedDate:    2022-11-09
 tags:           ["Authentication", "OpenID Connects"]
 ---
 
@@ -88,7 +88,8 @@ Content-Type: application/json
     "AppStartUrl": "https://my-buyer-application.com/login?token={0}",
     "AuthorizationEndpoint": "…",
     "TokenEndpoint": "…",
-    "IntegrationEventID": "integrationeventID" // required for configs created after 03/31/2020
+    "IntegrationEventID": "integrationeventID", // required for configs created after 03/31/2020
+    "CustomErrorUrl": "https://my-buyer-application.com/error?ErrorMessage={0}" // optionally redirect to a custom URL upon error
 }
 ```
 
@@ -220,3 +221,17 @@ Now once login via OpenID is successful OrderCloud will redirect your user to th
 https://my-buyer-application.com?token={yourordercloudtoken}&refresh={yourordercloudrefreshtoken}
 
 > Note: You can only receive a refresh token if you have enabled your api client to allow refresh tokens by setting a refresh token duration.
+
+## Custom Error Redirect
+
+If you wish to redirect a user to a custom page if an error occurs during authentication, you can add a value to `CustomErrorUrl` within your OpenID Connect Configuration.
+
+If an error occurs, OrderCloud will redirect the user to that custom error url.
+
+For example:
+
+```
+https://my-buyer-application.com/error?ErrorMessage={0}
+
+```
+The error message `{0}` will be replaced with the error text from OrderCloud. 
