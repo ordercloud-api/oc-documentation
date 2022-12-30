@@ -258,7 +258,7 @@ try {
 
 ### Create a seller security profile
 Next, we can create a security profile for our seller users.  Let's create a security profile, name it "Default Seller" with a self-descriptive ID, and specify the `ProductAdmin`, `BuyerAdmin`, and `OrderAdmin` roles in the Roles array, which gives our sellers access to administer those specific resources in the API.  
-As a best practice, you want to control the roles on a granular level and only assign roles necessary for the user as a security precaution. For example, the Admins in our application only need to administer Buyers, Products and Orders.  You can find more details on security profiles [here](knowledge-base/security-profiles).
+As a best practice, you want to control the roles on a granular level and only assign roles necessary for the user as a security precaution. For example, the Admins in our application only need to administer Buyers, Products and Orders.  You can find more details on security profiles [here](/knowledge-base/security-profiles).
 <CodeExample
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles HTTP/1.1
