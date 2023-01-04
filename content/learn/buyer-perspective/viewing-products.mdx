@@ -23,7 +23,6 @@ Me.ListProducts()
       // returns the first page of buyer products
       console.log(response);
   })
-  .catch(err => console.log(err.message));`,
 typescript: `import { Tokens, Me, BuyerProduct, OrderCloudError } from "ordercloud-javascript-sdk";\n
 Me.ListProducts()
   .then((response: ListPage<BuyerProduct>) => {
@@ -110,7 +109,7 @@ Another interesting part of this response model is the `Facets` property within 
 subtitle="Further Reading">Introducing Premium Search</ContentLink>
 
 ## Browsing Other Catalogs
-The buyer product list request provides a way for buyer users to browser other product catalogs (when assigned to more than just their organizations default catalog). This can be done using the `CatalogID` option.
+The buyer product list request provides a way for buyer users to browse other product catalogs (when assigned to more than just their organizations default catalog). This can be done using the `CatalogID` option.
 
 ### Browsing by Category
 If one of these other catalogs had categories in it, one would be able to filter buyer products by category using the `CategoryID` property.
