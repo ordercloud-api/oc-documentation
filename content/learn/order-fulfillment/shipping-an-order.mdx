@@ -18,7 +18,8 @@ Let's go ahead and use the shorthand method of shipping and completing an order 
   content={{
     http: `POST https://sandboxapi.ordercloud.io/v1/orders/incoming/INSERT_ORDER_ID_HERE/ship HTTP/1.1
 Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
-Content-Type: application/json; charset=UTF-8;`,
+Content-Type: application/json; charset=UTF-8;\n
+{} //empty order object`,
 javascript: `import { Orders } from "ordercloud-javascript-sdk";\n
 Orders.Ship("Incoming", "INSERT_ORDER_ID_HERE")
 .then(response => {
