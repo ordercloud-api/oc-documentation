@@ -1,0 +1,510 @@
+---
+type:           tutorial
+title:          Configuring User and Application Data Access
+description:    You have a newly created marketplace, what's next? Let's configure data access for your users and applications.
+author:         dsteinmetz
+publishDate:    2022-10-20
+updatedDate:    2022-10-20
+tags:           ["Security Profiles", "API Clients", "Tutorial"]
+---
+
+## Prerequisites
+In order to configure access to our marketplace data, we will need access to a marketplace. Create a Sandbox marketplace, or follow this tutorial to configure data access for an existing marketplace.
+
+## Assumptions
+- For this tutorial, we are using the URL for the sandbox environment in the region US-West.
+- You have an active buyer user with ID _and_ Username `buyeruser`, with a Password "Supersecurepassword123!"
+- You have an active seller user with ID _and_ Username `selleruser`, with a Password "Supersecurepassword123!"
+- You have an active buyer company with ID `buyercompany`
+- Any ClientID value that is used in example requests should be replaced with the real ClientIDs that are created from making the requests in this tutorial. For our example, let's assume our ClientIDs are:
+    - Buyer storefront ClientID: `"00000000-0000-0000-0000-000000000000"`
+    - Admin backoffice ClientID: `"11111111-1111-1111-1111-111111111111"`
+    - Middlware API ClientID: `"222222222-2222-2222-2222-222222222222"`
+    - Middleware API Client Secret: `"supersecureclientsecretstring"`
+- You have created a new marketplace, or have access to an existing marketplace in the [OrderCloud Portal](https://portal.ordercloud.io)
+- You have and maintain a buyer storefront application, an admin backoffice application and a custom middleware API solution that handles more sensitive data and any custom integrations to OrderCloud
+
+## Creating API Clients
+Before we can configure data access for our applications, we need to create API Clients. API Clients are like more complex API keys that grant our different applications certain configured access to our marketplace data. From a security perspective, it is best practice to have one API Client per entry-point to your marketplace data.  
+
+### Create an API Client to represent a buyer storefront application
+First, let's create an API Client for our buyer storefront application.  This API Client will be the gateway for our buyer application to gain access to our marketplace data. We'll name it `Buyer Storefront`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnyBuyer: true` which means that any buyer user will be able to successfully authenticate against this API Client. If a seller or supplier user attempts to authenticate against this API Client, they will get a `401 Unauthorized` response.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "AppName": "Buyer Storefront",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnyBuyer": true
+}`,
+javascript: `import { ApiClients } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Buyer Storefront",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnyBuyer": true
+})
+.then((apiClient) => {
+    console.log(apiClient);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { ApiClients, ApiClient, OrderCloudError } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Buyer Storefront",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnyBuyer": true
+})
+.then((apiClient: ApiClient) => {
+  console.log(apiClient);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var data = new ApiClient
+{
+  "AppName": "Buyer Storefront",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnyBuyer": true
+};
+try {
+  ApiClient response = await ApiClients.Create(data);
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+### Create an API Client to represent an admin backoffice application
+Next, let's create an API Client for our admin backoffice application.  This API Client will be the gateway for our backoffice application to gain access to our marketplace data. We'll name it `Admin Backoffice`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnySeller: true` _and_ `AllowAnySupplier: true`. In our admin interface, we may have suppliers that need to login to administer their products. Sellers may need to login to administer buyers, catalogs or seller-owned products. If a buyer user attempts to authenticate against this API Client, they will get a `401 Unauthorized` response.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "AllowAnySupplier": true
+}`,
+javascript: `import { ApiClients } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "AllowAnySupplier": true
+})
+.then((apiClient) => {
+    console.log(apiClient);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { ApiClients, ApiClient, OrderCloudError } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "AllowAnySupplier": true
+})
+.then((apiClient: ApiClient) => {
+  console.log(apiClient);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var data = new ApiClient
+{
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "AllowAnySupplier": true
+};
+try {
+  ApiClient response = await ApiClients.Create(data);
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+### Create an API Client to represent a middleware API solution
+Now, It is a fairly common use case for an application tech stack to require a custom middleware solution to handle custom integrations to OrderCloud, or other elevated functions that we want to protect behind an API. To configure access to our marketplace data for our custom middleware solution, we will create an API Client and set a Client Secret. We will need a Client Secret for this API Client because our middleware API will authenticate to OrderCloud using the [Client Credentials](knowledge-base/authentication#client-credentials-workflow) grant type, being that a system is authenticating, not a "user" with a Username and Password. We'll name it `Middleware API`, designate it active, and make the access token duration 600 (minutes). Additionally, we will specify this API Client with `AllowAnySeller: true`. Since we have specified a Client Secret on this API Client, the Client Secret will need to be passed with _any_ authentication request, regardless of grant type.  If any user attempts to authenticate with the Password grant type, and does not pass the Client Secret, they will get a `401 Unauthorized` response. Remember: Client Secret is a sensitive data point, and should never be publicly exposed. Configure your applications with environment variables to handle this value. If the value is ever exposed, immediately revoke the API Client or re-generate the Client Secret.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/apiclients HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "AppName": "Middleware API",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "ClientSecret": "supersecureclientsecretstring"
+}`,
+javascript: `import { ApiClients } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "ClientSecret": "supersecureclientsecretstring"
+})
+.then((apiClient) => {
+    console.log(apiClient);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { ApiClients, ApiClient, OrderCloudError } from "ordercloud-javascript-sdk";\n
+ApiClients.Create({
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "ClientSecret": "supersecureclientsecretstring"
+})
+.then((apiClient: ApiClient) => {
+  console.log(apiClient);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var data = new ApiClient
+{
+  "AppName": "Admin Backoffice",
+  "Active": true,
+  "AccessTokenDuration": 600,
+  "AllowAnySeller": true,
+  "ClientSecret": "supersecureclientsecretstring"
+};
+try {
+  ApiClient response = await ApiClients.Create(data);
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+## Creating Security Profiles
+Now that we have our applications configured with specific access to our marketplace data using API Clients, we should create several Security Profiles to configure data access for our individual users.
+
+### Create a buyer security profile
+Our buyer security profile will represent the breadth of data access we wish to grant to our buyer users, configured using granular API roles.  Let's create a security profile, name it "Default Buyer" with a self-descriptive ID, and specify the `Shopper` role in the Roles array, which enables all actions of the shopping experience.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "ID": "defaultbuyer",
+  "Name": "Default Buyer",
+  "Roles": [
+    "Shopper"
+  ]
+}`,
+javascript: `import { SecurityProfiles } from "ordercloud-javascript-sdk";\n
+SecurityProfiles.Create({
+  "ID": "defaultbuyer",
+  "Name": "Default Buyer",
+  "Roles": [
+    "Shopper"
+  ]
+})
+.then((securityProfile) => {
+    console.log(securityProfile);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { SecurityProfiles, SecurityProfile, OrderCloudError } from "ordercloud-javascript-sdk";\n
+SecurityProfiles.Create({
+  "ID": "defaultbuyer",
+  "Name": "Default Buyer",
+  "Roles": [
+    "Shopper"
+  ]
+})
+.then((securityProfile: SecurityProfile) => {
+  console.log(securityProfile);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var data = new SecurityProfile
+{
+  "ID": "defaultbuyer",
+  "Name": "Default Buyer",
+  "Roles": new ApiRole[] { ApiRole.Shopper }
+};
+try {
+  SecurityProfile response = await SecurityProfiles.Create(data);
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+### Create a seller security profile
+Next, we can create a security profile for our seller users.  Let's create a security profile, name it "Default Seller" with a self-descriptive ID, and specify the `ProductAdmin`, `BuyerAdmin`, and `OrderAdmin` roles in the Roles array, which gives our sellers access to administer those specific resources in the API.  
+As a best practice, you want to control the roles on a granular level and only assign roles necessary for the user as a security precaution. For example, the Admins in our application only need to administer Buyers, Products and Orders.  You can find more details on security profiles [here](/knowledge-base/security-profiles).
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "ID": "defaultseller",
+  "Name": "Default Seller",
+  "Roles": [
+    "BuyerAdmin",
+    "ProductAdmin",
+    "OrderAdmin"
+  ]
+}`,
+javascript: `import { SecurityProfiles } from "ordercloud-javascript-sdk";\n
+SecurityProfiles.Create({
+  "ID": "defaultseller",
+  "Name": "Default Seller",
+  "Roles": [
+    "BuyerAdmin",
+    "ProductAdmin",
+    "OrderAdmin"
+  ]
+})
+.then((securityProfile) => {
+    console.log(securityProfile);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { SecurityProfiles, SecurityProfile, OrderCloudError } from "ordercloud-javascript-sdk";\n
+SecurityProfiles.Create({
+  "ID": "defaultseller",
+  "Name": "Default Seller",
+  "Roles": [
+    "BuyerAdmin",
+    "ProductAdmin",
+    "OrderAdmin"
+  ]
+})
+.then((securityProfile: SecurityProfile) => {
+  console.log(securityProfile);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var data = new SecurityProfile
+{
+  "ID": "defaultseller",
+  "Name": "Default Seller",
+  "Roles": new ApiRole[] { ApiRole.BuyerAdmin, ApiRole.ProductAdmin, ApiRole.OrderAdmin }
+};
+try {
+  SecurityProfile response = await SecurityProfiles.Create(data);
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+### Assign security profiles to the our marketplace entities
+Now that we have our Security Profiles created, we need to assign them to the right entities.  This is the final step before we can make requests to authenticate our users against the API Clients we created earlier.
+Let's make a request to assign our `defaultbuyer` security profile to our buyer company with ID `buyercompany`. Once we have successfully made this assignment, these roles will cascade down through any user under this buyer company. If successful, you should receive a `204 Created` response.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles/assignments HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "SecurityProfileID": "defaultbuyer",
+  "BuyerID": "buyercompany"
+}`,
+javascript: `import { SecurityProfiles } from "ordercloud-javascript-sdk";\n
+SecurityProfiles.SaveAssignment({
+  "SecurityProfileID": "defaultbuyer",
+  "BuyerID": "buyercompany"
+})
+.then(() => {
+    console.log("Assignment successful!");
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { SecurityProfiles, SecurityProfile, OrderCloudError } from "ordercloud-javascript-sdk";\n
+SecurityProfiles.SaveAssignment({
+  "SecurityProfileID": "defaultbuyer",
+  "BuyerID": "buyercompany"
+})
+.then(() => {
+  console.log("Assignment successful!");
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var data = new SecurityProfileAssignment
+{
+  "SecurityProfileID": "defaultbuyer",
+  "BuyerID": "buyercompany"
+};
+try {
+  await SecurityProfiles.SaveAssignment(data);
+  Console.WriteLine("Assignment successful!")
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+Next, let's make a request to assign our `defaultseller` security profile to our seller.  To assign a security profile to all seller users, the only thing we specify in the request body is the ID of the security profile.  If successful, you should receive a `204 Created` response.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/securityprofiles/assignments HTTP/1.1
+Authorization: Bearer INSERT_ACCESS_TOKEN_HERE
+Content-Type: application/json; charset=UTF-8\n
+{
+  "SecurityProfileID": "defaultseller"
+}`,
+javascript: `import { SecurityProfiles } from "ordercloud-javascript-sdk";\n
+SecurityProfiles.SaveAssignment({
+  "SecurityProfileID": "defaultseller"
+})
+.then(() => {
+    console.log("Assignment successful!");
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { SecurityProfiles, SecurityProfile, OrderCloudError } from "ordercloud-javascript-sdk";\n
+SecurityProfiles.SaveAssignment({
+  "SecurityProfileID": "defaultseller"
+})
+.then(() => {
+  console.log("Assignment successful!");
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+var data = new SecurityProfileAssignment
+{
+  "SecurityProfileID": "defaultseller"
+};
+try {
+  await SecurityProfiles.SaveAssignment(data);
+  Console.WriteLine("Assignment successful!")
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+### Make authentication requests
+Now that we have configured application data access with API Clients, user access with Security Profiles and made all necessary assignments, let's make some authentication requests to check our handy work.
+First, let's call to authenticate our buyer user against our buyer API client we created earlier.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/outh/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded;\n
+client_id=00000000-0000-0000-0000-000000000000&grant_type=password&username=buyeruser&password=Supersecurepassword123!&scope=Shopper
+`,
+javascript: `import { Auth } from "ordercloud-javascript-sdk";\n
+Auth.Login("defaultbuyer", "Supersecurepassword123!", "00000000-0000-0000-0000-000000000000", ["Shopper"])
+.then((authResponse) => {
+    console.log(authResponse.access_token);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { Auth, AccessToken, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Auth.Login("defaultbuyer", "Supersecurepassword123!", "00000000-0000-0000-0000-000000000000", ["Shopper"])
+.then((authResponse: AccessToken) => {
+  console.log(authResponse.access_token);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+try {
+  AccessToken response = await ocClient.AuthenticateAsync("00000000-0000-0000-0000-000000000000", "defaultbuyer", "Supersecurepassword123!", new ApiRole[] { ApiRole.Shopper });
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+With a successful response, we should receive an access token back, with which we can take to [JWT.io](https://jwt.io) to debug and see our roles reflected, awesome!
+
+Next, let's make a similar request, but to authenticate our seller user against our seller API Client this time.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/outh/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded;\n
+client_id=11111111-1111-1111-1111-111111111111&grant_type=password&username=selleruser&password=Supersecurepassword123!&scope=FullAccess
+`,
+javascript: `import { Auth } from "ordercloud-javascript-sdk";\n
+Auth.Login("selleruser", "Supersecurepassword123!", "11111111-1111-1111-1111-111111111111", ["FullAccess"])
+.then((authResponse) => {
+    console.log(authResponse.access_token);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { Auth, AccessToken, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Auth.Login("selleruser", "Supersecurepassword123!", "11111111-1111-1111-1111-111111111111", ["FullAccess"])
+.then((authResponse: AccessToken) => {
+  console.log(authResponse.access_token);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+try {
+  AccessToken response = await ocClient.AuthenticateAsync("11111111-1111-1111-1111-111111111111", "selleruser", "Supersecurepassword123!", new ApiRole[] { ApiRole.FullAccess });
+  Console.WriteLine(response)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+Lastly, if we are authenticating a "system" rather than an actual user with a Username and Password, we would use our middleware API Client we created, with the `client_credentials` grant type. Let's authenticate against our middleware API Client we created earlier.
+<CodeExample
+  content={{
+    http: `POST https://sandboxapi.ordercloud.io/v1/outh/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded;\n
+client_id=222222222-2222-2222-2222-222222222222&grant_type=client_credentials&client_secret=supersecureclientsecretstring&scope=FullAccess
+`,
+javascript: `import { Auth } from "ordercloud-javascript-sdk";\n
+Auth.ClientCredentials("supersecureclientsecret", "222222222-2222-2222-2222-222222222222", ["FullAccess"])
+.then((token) => {
+    console.log(token);
+})
+.catch((ex) => console.log(ex));
+`,
+typescript: `import { Auth, AccessToken, OrderCloudError } from "ordercloud-javascript-sdk";\n
+Auth.ClientCredentials("supersecureclientsecret", "222222222-2222-2222-2222-222222222222", ["FullAccess"])
+.then((token: AccessToken) => {
+  console.log(token);
+})
+.catch((ex: OrderCloudError) => console.log(ex));`,
+csharp: `using OrderCloud.SDK; \n
+try {
+  AccessToken token = await ocClient.AuthenticateAsync("222222222-2222-2222-2222-222222222222", "supersecureclientsecret", new ApiRole[] { ApiRole.FullAccess });
+  Console.WriteLine(token)
+} catch(OrderCloudException ex) {
+  Console.WriteLine(ex.Message);
+}
+`
+}}
+/>
+
+Great job! You've now gone through the basics of setting up API Clients, Security Profiles and Authenticating users against the respective API Clients to get access tokens for making requests, you are unstoppable!
+
+## Considerations
+This tutorial follows one implementation of the configuration of API Clients and Security Profiles.  There are infinite ways to configure API Clients and Security Profiles to manage and control your data to fit your business needs.  Hopefully this tutorial gives you a better understanding of the differences between API Clients and Security Profiles and how they can be used to build a powerful and secure e-commerce application suite.

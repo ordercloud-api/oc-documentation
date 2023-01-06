@@ -65,11 +65,16 @@ const apiRefQuery = `{
   }
 }`
 
-const flatten = arr => {
+const flatten = (arr) => {
   return arr.map(({ node: { frontmatter, ...rest } }) => ({
     ...frontmatter,
     ...rest,
   }))
+}
+
+const getUnix = dateStr => {
+  const date = new Date(dateStr);
+  return Math.floor(date.getTime() / 1000);
 }
 
 const settings = {
@@ -81,7 +86,7 @@ const queries = [
     query: discoverQuery,
     transformer: ({ data }) =>
       flatten(
-        data.results.edges.map(e => {
+        data.results.edges.map((e) => {
           e.node.frontmatter.section = 'Discover'
           return e
         })
@@ -97,14 +102,20 @@ const queries = [
   },
   {
     query: knowledgeBase,
-    transformer: ({ data }) => flatten(data.results.edges),
-    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME,
+    transformer: ({ data }) => 
+      flatten(
+        data.results.edges.map(e => { 
+          e.node.frontmatter.publishDate_timestamp = getUnix(e.node.frontmatter.publishDate)
+          return e
+        })
+      ),
+    indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, 
     settings,
   },
   {
     query: apiRefQuery,
     transformer: ({ data }) =>
-      data.allSitePage.nodes.map(result => {
+      data.allSitePage.nodes.map((result) => {
         const {
           section,
           resource,
@@ -121,7 +132,7 @@ const queries = [
           summary,
           verb,
           roles: security[0].OAuth2
-            ? security[0].OAuth2.filter(r => r !== 'FullAccess')
+            ? security[0].OAuth2.filter((r) => r !== 'FullAccess')
             : [],
           section: `API Reference / ${section.name} / ${resource.name}`,
         }
@@ -167,6 +178,8 @@ const toExport = {
     `gatsby-plugin-typescript`,
     `gatsby-plugin-typescript-checker`,
     `gatsby-transformer-sharp`,
+    `gatsby-plugin-perf-budgets`,
+    `gatsby-plugin-webpack-bundle-analyser-v2`,
     {
       resolve: `gatsby-plugin-feed`,
       options: {
@@ -185,11 +198,15 @@ const toExport = {
         feeds: [
           {
             serialize: ({ query: { site, allMdx } }) => {
-              return allMdx.nodes.map(node => {
+              return allMdx.nodes.map((node) => {
                 return Object.assign({}, node.frontmatter, {
-                  title: "API v" + node.frontmatter.apiVersion + " Release Notes",
+                  title:
+                    'API v' + node.frontmatter.apiVersion + ' Release Notes',
                   date: node.frontmatter.date,
-                  url: site.siteMetadata.siteUrl + "/release-notes/v" + node.frontmatter.apiVersion,
+                  url:
+                    site.siteMetadata.siteUrl +
+                    '/release-notes/v' +
+                    node.frontmatter.apiVersion,
                 })
               })
             },
@@ -217,17 +234,21 @@ const toExport = {
                 }
               }
             `,
-            output: "/rss/release-notes.xml",
-            title: "OrderCloud API Release Notes",
-            link: "https://feeds.feedburner.com/gatsby/blog",
+            output: '/rss/release-notes.xml',
+            title: 'OrderCloud API Release Notes',
+            link: 'https://feeds.feedburner.com/gatsby/blog',
           },
           {
             serialize: ({ query: { site, allMdx } }) => {
-              return allMdx.nodes.map(node => {
+              return allMdx.nodes.map((node) => {
                 return Object.assign({}, node.frontmatter, {
-                  title: "API v" + node.frontmatter.apiVersion + " Release Notes",
+                  title:
+                    'API v' + node.frontmatter.apiVersion + ' Release Notes',
                   date: node.frontmatter.date,
-                  url: site.siteMetadata.siteUrl + "/portal-release-notes/v" + node.frontmatter.apiVersion,
+                  url:
+                    site.siteMetadata.siteUrl +
+                    '/portal-release-notes/v' +
+                    node.frontmatter.apiVersion,
                 })
               })
             },
@@ -255,10 +276,10 @@ const toExport = {
                 }
               }
             `,
-            output: "/rss/portal-release-notes.xml",
-            title: "OrderCloud Portal Release Notes",
-            link: "https://feeds.feedburner.com/gatsby/blog",
-          }
+            output: '/rss/portal-release-notes.xml',
+            title: 'OrderCloud Portal Release Notes',
+            link: 'https://feeds.feedburner.com/gatsby/blog',
+          },
         ],
       },
     },
@@ -331,7 +352,7 @@ const toExport = {
 //     options: {
 //       appId: process.env.GATSBY_ALGOLIA_APP_ID,
 //       apiKey: process.env.GATSBY_ALGOLIA_ADMIN_API_KEY,
-//       indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // for all queries
+//       indexName: process.env.GATSBY_ALGOLIA_INDEX_NAME, // main index name (default) for all queries
 //       queries,
 //       chunkSize: 10000, // default: 1000
 //     },
