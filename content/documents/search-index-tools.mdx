@@ -8,17 +8,17 @@ updatedDate:    2023-01-03
 tags:           ["Search", "Portal"]
 ---
 
-We're excited to unveil a long-requested enhancement for OrderCloud's premium search feature: a self-service tool for viewing and rebuilding your search indexes. By the end of this article, you should be ready to investigate and resolve basic search errors in your marketplace without the need for OrderCloud support.
+We're excited to unveil an enhancement for OrderCloud's premium search feature: a self-service tool for viewing and rebuilding your search indexes. By the end of this article, you should be ready to investigate and resolve basic search errors in your marketplace, eliminating the need to seek additional support from Sitecore in most cases.
 
 ## A Background On Search Indexes
 
-The following section builds upon [previous articles](/knowledge-base?t=Search) for OrderCloud's premium search capabilities. Understanding these concepts will help you interpret your marketplace's search indexes.
+The following section builds upon [previous content](/knowledge-base?t=Search) on OrderCloud's premium search capabilities. Understanding these concepts will be helpful when troubleshooting your marketplace's search indexes.
 
-- Premium search endpoints serve cached Product and Order data from Elasticsearch to support greater search capabilities and faster performance.
-- Only one "active" search index per type can exist at any given time, and only an index with a status of `Ready` can be the active index for a marketplace. OrderCloud will point to a new index only after a successful rebuild.
+- Premium search endpoints serve cached Product and submitted Order data from Elasticsearch to support greater search capabilities and faster performance.
+- Only one active search index per type (Product or Order) can exist at any given time. OrderCloud will point to a new index only after a successful rebuild.
 - Index errors typically arise when xp data types are not consistent between items within the same resource type. See the section on [xp schema errors](/knowledge-base/search-index-tools#understanding-xp-schema-errors) below for more detail.
-- Errors can exist on an active index. OrderCloud will fail an index build if the number of rejected items is considered too high or xp limits are exceeded.
-- A full index rebuild is a tool to "reset" your search index from the master OrderCloud record, and can oftentimes resolve data synchronization issues. This capability was previously limited to only the support team, but is now extended to marketplace administrators [with limitations](/knowledge-base/search-index-tools#rebuilding-your-index).
+- Errors can exist on an active index. OrderCloud will fail an index build if the number of rejected items is considered too high.
+- A full index rebuild is a tool to "reset" your search index from the master OrderCloud record. This capability was previously limited to only the support team, but is now extended to marketplace administrators [with limitations](/knowledge-base/search-index-tools#rebuilding-your-index).
 
 ## Troubleshooting With Search Index Tools
 
@@ -28,26 +28,25 @@ Registered portal users now have visibility to search index details for their as
 <img src="/images/knowledge-base/inline/search-index-tools/product_index_view.png" alt="Search Index Tools Products View"/>
 </figure>
 
-The details view for a selected search index will display the following:
-- Status - `Ready`, `Building`, `Rebuilding`, `WaitingToBuild`, `Failed`, `Canceled`, or `Invalid`
-- The `Active` badge - indicates the "current" index OrderCloud is pointed to for the selected resource
+The detail view for a selected search index will display the following:
+- Status - `Active`, `Building`, `Rebuilding`, `WaitingToBuild`, `Failed`, `Canceled`, or `Invalid`
 - Schema errors (if any) associated with the index
   - Visibility to error logs allows users to target which items are causing issues for a given index. 
   - Logs may include the rejected Product, Order, or Line Item ID, the flagged xp field, and its corresponding value.
   - Error logs are limited to 100 documents for brevity, although there may be more items in the marketplace that have failed to index in Elasticsearch.
 
->Not seeing a search index for your resource type? You will need to create items for that resource first (reminder that only submitted Orders are indexed) and make a LIST endpoint call. Also keep in mind that premium search for Orders [may not be enabled](/knowledge-base/order-search#how-do-i-test-this) for your Production marketplace if it was created prior to April 20, 2022.
+>Not seeing a search index for your resource type? You will need to create items for that resource first (reminder that only submitted Orders are indexed) and make a call to list either products or orders depending on the index type. Also keep in mind that premium search for Orders [may not be enabled](/knowledge-base/order-search#how-do-i-test-this) for your Production marketplace if it was created prior to April 20, 2022.
 
 ## Understanding Xp Schema Errors
 
-Let's walk through an example of an xp schema inconsistency. Two products are created, both with the same xp field name, but with different datatypes. This inconsistency produces the following error: _"Failed to parse field [xp.FreeShipping] of type [boolean] in document with id 'product2'. Preview of field's value: '0'"_
+Let's walk through an example of an xp schema inconsistency. Two products are created, both with the same xp key name, but with different value types (e.g. an integer and a boolean). This inconsistency produces the following error: _"Failed to parse field [xp.FreeShipping] of type [boolean] in document with id 'product2'. Preview of field's value: '0'"_
 
 `product1.xp.FreeShipping`: `false`  
 `product2.xp.FreeShipping`: `0`
 
-Elasticsearch dynamically maps xp datatypes at index time and will reject incoming documents when it cannot [coerce](https://www.elastic.co/guide/en/elasticsearch/reference/current/coerce.html) the xp value to the previously determined types. In this example `product1` was created and indexed first. As a result, Elasticsearch was not able to coerce the value of `product2.xp.FreeShipping` (type `int`) to a `boolean`, and it was excluded from the index due to an inconsistent datatype.
+Elasticsearch dynamically maps xp datatypes at index time and will reject incoming documents when it cannot coerce the xp value to the previously determined types. In this example `product1` was created and indexed first. As a result, Elasticsearch was not able to coerce the value of `product2.xp.FreeShipping` (type `int`) to a `boolean`, and it was excluded from the index due to an inconsistent xp value type.  The opposite is true for submitted orders, where the last xp value type processed will be the type inferred by Elasticsearch
 
-If you encounter an index error in your marketplace, you will notice that search results do not behave as expected. In this example, `GET v1/products/product2` would return the product as expected, but that same product would not appear in a `GET v1/products` list. 
+If you encounter an index error in your marketplace, you will notice that search results may not behave as expected. In this example, `GET v1/products/product2` would return the product as expected, but that same product would not appear in a `GET v1/products` list. 
 
 To correct search index errors you will need to ensure that xp types are consistent across _all_ items for the given search index type. In this instance, updating `product2.xp.FreeShipping` to `false` would remedy the issue for the products index.
 
