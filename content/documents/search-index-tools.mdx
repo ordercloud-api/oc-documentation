@@ -44,7 +44,7 @@ Let's walk through an example of an xp schema inconsistency. Two products are cr
 `product1.xp.FreeShipping`: `false`  
 `product2.xp.FreeShipping`: `0`
 
-Elasticsearch dynamically maps xp datatypes at index time and will reject incoming documents when it cannot coerce the xp value to the previously determined types. In this example `product1` was created and indexed first. As a result, Elasticsearch was not able to coerce the value of `product2.xp.FreeShipping` (type `int`) to a `boolean`, and it was excluded from the index due to an inconsistent xp value type.  The opposite is true for submitted orders, where the last xp value type processed will be the type inferred by Elasticsearch
+Elasticsearch dynamically maps xp datatypes at index time and will reject incoming documents when it cannot coerce the xp value to the previously determined types. In this example `product1` was created and indexed first. As a result, Elasticsearch was not able to coerce the value of `product2.xp.FreeShipping` (type `int`) to a `boolean`, and it was excluded from the index due to an inconsistent xp value type. The opposite is true for submitted orders, where the last xp value type processed will be the type inferred by Elasticsearch.
 
 If you encounter an index error in your marketplace, you will notice that search results may not behave as expected. In this example, `GET v1/products/product2` would return the product as expected, but that same product would not appear in a `GET v1/products` list. 
 
@@ -59,7 +59,7 @@ To correct search index errors you will need to ensure that xp types are consist
 <img src="/images/knowledge-base/inline/search-index-tools/index_rebuild.png" alt="Initiating a Rebuild"/>
 </figure>
 
-After correcting any xp schema inconsistencies for your affected resource, the next step is triggering a full index rebuild to generate a brand-new index from the master OrderCloud record. A few things to note for the rebuild action:
+After correcting xp schema inconsistencies for your affected resource, check your active index for any lingering errors. If you still see error logs, you will need to "reset" your xp schema in Elasticsearch. This can be accomplished by triggering a full index rebuild to generate a brand-new index from the master OrderCloud record. A few things to note for the rebuild action:
 - Rebuilds are resource intensive operations and should only be used when necessary. For this reason, rebuilds can only be triggered from the Portal and are limited to:
   - 3 rebuilds per hour and 5 rebuilds per week for Production and Staging environments
   - 10 rebuilds per hour and 30 rebuilds per week for Sandbox environments
