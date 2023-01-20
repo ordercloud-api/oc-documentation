@@ -3,8 +3,8 @@ type:           article
 title:          Promotion Enhancements
 description:    Introducing new enhancements to increase flexibility of OrderCloud Promotions.
 author:         dsteinmetz
-publishDate:    2023-01-24
-updatedDate:    2023-01-24    
+publishDate:    2023-01-20
+updatedDate:    2023-01-20    
 tags:           ["Promotions", "Orders", "Auto Apply", "Eligible Promotions"]
 ---
 
@@ -12,7 +12,7 @@ Introducing new enhancements to increase flexibility of OrderCloud Promotions.
 
 ## New Properties
 - `AutoApply`, default `false`
-    - This new property enable customers to designate promotions as `AutoApply`, and set varying numeric `Priority` values which dictate the order in which promotions are automatically applied. 
+    - This new property enables customers to designate promotions as `AutoApply`, and set varying numeric `Priority` values which dictate the order in which promotions are automatically applied. 
 - `Active`, default `true`
     - Promotions where `Active = false` will not be evaluated for either the `.../applypromotions` or `.../eligiblepromotions` endpoints, and will never be returned from `v1/me/promotions`. Designating a promotion `Active = false` prevents a buyer user from accessing the promotion, without deleting the record from your marketplace. 
     - A newly deactivated promotion will also be removed from any Unsubmitted orders immediately following deactivation. The promotion data will remain accessible from the administrative endpoints, making for a good historical record, or for possible reactivation in the future. 
@@ -21,7 +21,7 @@ Introducing new enhancements to increase flexibility of OrderCloud Promotions.
 
 ## New Endpoints
 - `v1/orders/{direction}/{orderID}/eligiblepromotions` and `v1/cart/eligiblepromotions`
-    - The new endpoints enable listing eligible promotions for an order. This supports feature builds such as displaying eligible promo codes to the buyer user during checkout, and many other UI driven promotion-based enhancements.
+    - The new endpoints enable listing eligible promotions for an order. This capability can support features such as displaying eligible promo codes to the buyer user during checkout, and many other UI driven promotion-based enhancements.
 
 - `v1/orders/{direction}/{orderID}/applypromotions` and `v1/cart/applypromotions`
     - When you have a number of promotions designated as AutoApply, whenever you want to attempt to apply these promotions to an order, you call the new respective endpoint above. This will fetch all eligible promotions where `AutoApply = true`, sorted by `Priority` and attempt to apply them to the order one by one. Promotions where `Priority = null` will be evaluated last. The Order model is then returned from this call, enabling the developer to display the new `PromotionDiscount` in the UI. The maximum number of promotions that will be applied to an order in a single API call is 100.
