@@ -1,0 +1,95 @@
+---
+type:           article
+title:          Child Products
+description:    Introducing Child Products, a new feature set that enables developers to define a product as a Parent and subsequently create Child products.
+author:         gvo
+publishDate:    2023-02-09
+updatedDate:    2023-02-09
+tags:           ["Child Products", "Products", "Parent", "Child", "Inheritance"]
+---
+
+## Benefits
+
+- Allows creating product hierarchies without having to generate Variants, which may not be ideal for every marketplace.
+- Allows defining custom pricing per Child product without having to use Spec Markups, which may be cumbersome to set up, and don’t have Multi-Currency support at this time.
+- Child Products can be returned in product lists, which is not possible with Variants.
+
+## New Properties
+
+### Product.IsParent
+- Used to define if a product is a Parent. 
+    - If true, Product.ParentID must be null as Parent products may not be Child products.
+
+- Required, defaults to false.
+
+### Product.ParentID
+
+- An optional reference to the ID of the Parent Product.
+    - If not null, Product.IsParent must be false and the Parent must exist. 
+
+## Visibility and Property Inheritance
+
+- When creating a Child product (one with ParentID defined), if you do not specify a value for a given property, that property will be inherited from the Parent.
+    - For example, if you create a Child and do not provide a Description, the Description displayed to the end user will be the Parent’s Description
+    - You can override the inheritance at any time by updating the Child with value for a given property. Conversely, updating a Child’s property to null will then make it so that the Child inherits the value from the Parent again.
+    - Due to this inheritance, Child’s property cannot be null if Parent property is not null. 
+
+- If a price is assigned to a Parent, it will be inherited by the Children if they do not have other pricing specified.
+
+- Child products inherit specs from their Parent
+    - a Child may also have additional Specs assigned that a Parent does not
+
+- All Product Visibility rules are inherited from the Parent. 
+    - If a shopper can see a Parent, they can see all Children.
+    - The exception to this rule is if the Child has Active = false.
+
+- If a Parent product has Active = false, all Children are Active = false by default. You cannot override this property at the Child level until the Parent is updated to Active = true
+    - You can have a Parent with Active = true and set Active = false on a given Child. This allows flexibility in hiding certain Children from view.
+
+- If Child products should not be returned in a product list, filter on ParentID=!*. 
+
+- To return an entire product family using a product list, filter using ParentID|ID={id}.
+
+- XP are also inherited, but only at the top level. See below for additional details.
+    - For example, if a Parent has the following xp defined, a Child will inherit that xp, unless the Child xp with the same key has been defined on POST, PUT, or PATCH
+
+```json
+{
+  "xp": {
+    "ShippingInfo": {
+      "DaysToShip": 3,
+      "ShippingCost": 5
+    }
+  }
+}
+```
+    - Calling PATCH v1/products/{childProductID} with the following request body, will result in the Child no longer inheriting xp.ShippingInfo.ShippingCost from the Parent, even though it is not defined on the Child, the entire xp.ShippingInfo property has been overwritten and no inheritance will occur.
+
+```json
+{
+  "xp": {
+    "ShippingInfo": {
+      "DaysToShip": 2
+    }
+  }
+}
+```
+
+## Validation Rules
+
+Attempting any of these actions will result in an error being returned from OrderCloud
+
+- A Parent product cannot be purchased; meaning you cannot create a LineItem with a ProductID of a Product where IsParent = true
+
+- A product may only have one Parent, and any product that is a Parent cannot be a Child product. It is a one-to-many relationship.
+
+- A Parent product cannot be deleted if a Child product exists.
+
+- Parent and Child products must have the same OwnerID. 
+
+- Neither Parent nor Child product can be assigned to a Spec with DefinesVariant=true 
+
+- Variants cannot be generated for Parent or Child products
+
+- A Child product cannot be assigned to a catalog or category, those assignments can only be inherited from the Parent
+    - Child Products will not be returned when listing assignments, but if you filter on a category ID in a product query, the children will be returned.
