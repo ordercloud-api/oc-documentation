@@ -83,5 +83,10 @@
         "username": "gvorobyova",
         "name": "Galina Vorobyova",
         "title": "Senior Developer"
+    },
+    {
+        "username": "mbednar",
+        "name": "Marc Bednar",
+        "title": "Lead Developer"
     }
 ]
