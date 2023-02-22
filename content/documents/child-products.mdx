@@ -63,7 +63,8 @@ tags:           ["Child Products", "Products", "Parent", "Child", "Inheritance"]
   }
 }
 ```
-    - Calling PATCH v1/products/{childProductID} with the following request body, will result in the Child no longer inheriting xp.ShippingInfo.ShippingCost from the Parent, even though it is not defined on the Child, the entire xp.ShippingInfo property has been overwritten and no inheritance will occur.
+
+Calling PATCH v1/products/{childProductID} with the following request body, will result in the Child no longer inheriting xp.ShippingInfo.ShippingCost from the Parent, even though it is not defined on the Child, the entire xp.ShippingInfo property has been overwritten and no inheritance will occur.
 
 ```json
 {
