@@ -1,0 +1,72 @@
+---
+type:           article
+title:          Introducing Search Index Tools for Portal
+description:    A new set of tools for troubleshooting search index issues
+author:         edustin 
+publishDate:    2023-01-24
+updatedDate:    2023-01-24
+tags:           ["Search", "Portal"]
+---
+
+We're excited to unveil an enhancement for OrderCloud's premium search feature: a self-service tool for viewing and rebuilding your search indexes. By the end of this article, you should be ready to investigate and resolve basic search indexing errors in your marketplace, eliminating the need to seek additional support from Sitecore in most cases.
+
+## A Background On Search Indexes
+
+The following section builds upon [previous content](/knowledge-base?t=Search) on OrderCloud's premium search capabilities. Understanding these concepts will be helpful when troubleshooting your marketplace's search indexes.
+
+- Premium search endpoints serve cached Product and submitted Order data from Elasticsearch to support greater search capabilities and faster performance.
+- Triggering a manual rebuild of your active search index will create an entirely new index. Your marketplace will continue to point to the old one until the newly triggered index completes successfully.
+- By far the most common cause of indexing errors is inconsistent xp data types between items within the same resource type. See the section on [xp schema errors](/knowledge-base/search-index-tools#understanding-xp-schema-errors) below for more detail.
+- Any schema change to existing xp fields on a resource which uses Premium Search necessitates an index rebuild. A full index rebuild is a tool to "reset" your search index from the master OrderCloud record with the updated types. This capability was previously limited to only the support team, but is now extended to marketplace administrators [with limitations](/knowledge-base/search-index-tools#rebuilding-your-index).
+- Errors can exist on an active index. OrderCloud will fail an index build if the number of rejected items is considered too high.
+- You may notice occasional rebuilds that are not a result of a manual rebuild action. This maintenance happens behind the scenes to optimize search index performance.
+
+## Troubleshooting With Search Index Tools
+
+Registered portal users now have visibility to search index details for their assigned marketplaces. After selecting a marketplace from the list, you will have the option to view either Product or Order search indexes from the tab selections.
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/search-index-tools/product_index_view.png" alt="Search Index Tools Products View"/>
+</figure>
+
+The detail view for a selected search index will display the following:
+- Status - `Active`, `Building`, `Rebuilding`, `WaitingToBuild`, `Failed`, `Canceled`, or `Invalid`
+- Schema errors (if any) associated with the index
+  - Visibility to error logs allows users to target which items are causing issues for a given index. 
+  - Logs may include the rejected Product, Order, or Line Item ID, the flagged xp field, and its corresponding value.
+  - Error logs are limited to 100 documents for brevity, although there may be more items in the marketplace that have failed to index in Elasticsearch.
+
+>Not seeing a search index for your resource type? You will need to create items for that resource first (reminder that only submitted Orders are indexed) and make a call to list either products or orders depending on the index type. Also keep in mind that premium search for Orders [may not be enabled](/knowledge-base/order-search#how-do-i-test-this) for your Production marketplace if it was created prior to April 20, 2022.
+
+## Understanding Xp Schema Errors
+
+As previously mentioned, xp schema errors arise when Elasticsearch encounters inconsistent types on xp values within the same resource. Let's walk through a simple example of one such inconsistency and how to interpret the error. Let’s say two products are created, both with the same xp key name, but with different value types (e.g. an integer and a boolean). This inconsistency produces the following error:  _"Failed to parse field [xp.FreeShipping] of type [boolean] in document with id 'product2'. Preview of field's value: '0'"_
+
+`product1.xp.FreeShipping`: `false`  
+`product2.xp.FreeShipping`: `0`
+
+Elasticsearch dynamically maps xp datatypes at index time and will reject incoming documents when it cannot coerce the xp value to the previously determined types. In this example `product1` was created and indexed first. As a result, Elasticsearch was not able to coerce the value of `product2.xp.FreeShipping` (type `int`) to a `boolean`, and it was excluded from the index due to an inconsistent xp value type. 
+
+If you encounter an index error in your marketplace, you will notice that search results may not behave as expected. In this example, `GET v1/products/product2` would return the product as expected, but that same product would not appear in a `GET v1/products` list.
+
+To correct search index errors you will need to ensure that xp types are consistent across all items for the given search index type. Consider the following two scenarios. First, let’s say that you intended for this key-value pair to be of type `boolean` for your Product schema. In this instance, Elasticsearch has already inferred the correct type, and you would merely need to PATCH `product2.xp.FreeShipping` to `false` to correct the error. However, let’s say that you intened to update your Product schema so that the key-value pair is of type `int`. You would first need to PATCH `product1.xp.FreeShipping` to `0`, then additionally trigger a manual rebuild of your index. This last step is required because you will need to "reset" your index to recognize the updated Product xp types.
+
+>As a reminder, our [Javascript SDK](https://www.npmjs.com/package/ordercloud-javascript-sdk) and [.NET C# SDK](https://www.nuget.org/packages/OrderCloud.SDK/) both offer support for strongly typed xp models to facilitate consistent schemas.
+
+
+## Rebuilding Your Index
+
+<figure class="blog-figure">
+<img src="/images/knowledge-base/inline/search-index-tools/index_rebuild.png" alt="Initiating a Rebuild"/>
+</figure>
+
+Resetting your index with a manual rebuild is a necessary step if you intend to update your xp schema. After ensuring that all items in your resource have consistent xp types, navigate to your active index and locate the Rebuild button. Triggering a rebuild will generate a brand-new index from the master OrderCloud record. A few things to note for the rebuild action:
+- Rebuilds are resource intensive operations and should only be used when necessary. For this reason, rebuilds can only be triggered from the Portal and are limited to:
+  - 3 rebuilds per hour and 5 rebuilds per week for Production and Staging environments
+  - 10 rebuilds per hour and 30 rebuilds per week for Sandbox environments
+- You can only rebuild an index that is currently active. You will not be able to cancel or trigger another rebuild until it is complete.
+- Only marketplace administrators have the option to rebuild an index (Note: you can adjust marketplace user permissions in the marketplace settings)
+- Build times correspond with the number of Products or Orders in your marketplace. You can observe the progress of a large index build through the status icon.
+- Failed rebuilds and their errors are retained for 24 hours for troubleshooting purposes.
+
+
+If issues persist, please reach out to OrderCloud support for assistance.
