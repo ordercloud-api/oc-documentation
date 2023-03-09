@@ -1,0 +1,113 @@
+---
+type:           article
+title:          Subscriptions
+description:    New feature enabling subscription ordering for buyer users.
+author:         asnyder
+publishDate:    2023-03-06
+updatedDate:    2023-03-06   
+tags:           ["Concepts", "Marketplaces", "Orders"]
+---
+
+New OrderCloud resource to enable subscription ordering for buyer users on a set interval and frequency for a predetermined or indefinite amount of time.
+This feature depends on the implementation of the Subscription Integration in order to submit orders. 
+
+## Use Cases
+- I have consumable goods that my customers order on an as needed basis or on a set schedule
+- My product is a subscription based service/digital membership that I charge for monthly
+
+## Key Highlights
+- Set the interval and frequency on the subscription to determine how often the items are ordered 
+- Store payment information to be used for processing the `Subscription`
+- Optional EndDate to allow `Subscriptions` to be processed indefinitely
+- There is no limit on how many `Subscriptions` a buyer user can have
+- Seller users can create `Subscriptions` on behalf of buyer users
+- Only products that are visible to the Subscription.FromUserID will be created as line items at the time the subscription order is created
+
+## New Resource: `Subscription`
+
+```json
+"Subscription": {
+    "ID": "subscription1",
+    "Interval": Daily, Weekly, or Monthly,
+    "Frequency": 1,
+    "NextOrderDate": "2022-11-19+00:00", 
+    "LastOrderDate": "2022-10-19T20:40:06.73+00:00", // read only
+    "EndDate": null, // optional
+    "FromCompanyID": "buyerCompany",
+    "FromUserID": "buyerUser",
+    "ToCompanyID": "sellerCompany",
+    "BillingAddressID": "",
+    "Payment": {
+        "Type": CreditCard, SpendingAccount, or PurchaseOrder 
+        "CreditCardID": "creditcardid", // optional
+        "SpendingAccountID": null, // optional
+    },
+    "xp": {}
+}
+```
+
+**Endpoints:**
+MPO
+- `GET v1/subscriptions`
+- `GET v1/subscriptions/{subscriptionID}`
+- `POST v1/subscriptions`
+- `PUT v1/subscriptions/{subscriptionID}`
+- `PATCH v1/subscriptions/{subscriptionID}`
+- `DELETE v1/subscriptions/{subscriptionID}`
+
+Me
+- `GET v1/me/subscriptions`
+- `GET v1/me/subscriptions/{subscriptionID}`
+- `POST v1/me/subscriptions`
+- `PUT v1/me/subscriptions/{subscriptionID}`
+- `PATCH v1/me/subscriptions/{subscriptionID}`
+- `DELETE v1/me/subscriptions/{subscriptionID}`
+
+## `Subscription Item`
+Not a new resource, this is a Line Item
+
+```json
+{
+    "ID": "shipmentItem1",
+    "ProductID": "product1",
+    "Quantity": 1,
+    "DateAdded": "2018-08-09T17:53:35.997+00:00",
+    "QuantityShipped": 0,
+    "UnitPrice": 15.00,
+    "PromotionDiscount": 0,
+    "LineTotal": 15.00,
+    "LineSubtotal": 15.00,
+    "CostCenter": null,
+    "DateNeeded": null,
+    "ShippingAccount": null,
+    "ShippingAddressID": null,
+    "ShipFromAddressID": null,
+    "Product": {},
+    "Variant": null,
+    "ShippingAddress": {},
+    "ShipFromAddress": null,
+    "SupplierID": null,
+    "InventoryRecordID": null,
+    "PriceScheduleID": null,
+    "PriceOverridden": false,
+    "Specs": [],
+    "xp": {}
+}
+```
+
+**Endpoints:**
+MPO
+- `GET v1/subscriptions/{subscriptionID}/items`
+- `GET v1/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
+- `POST v1/subscriptions/{subscriptionID}/items`
+- `PUT v1/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
+- `PATCH v1/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
+- `DELETE v1/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
+
+Me
+- `GET v1/me/subscriptions/{subscriptionID}/items`
+- `GET v1/me/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
+- `POST v1/me/subscriptions/{subscriptionID}/items`
+- `PUT v1/me/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
+- `PATCH v1/me/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
+- `DELETE v1/me/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
