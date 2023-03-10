@@ -52,7 +52,7 @@ Once InventoryRecords are set-up to represent stock-on-hand for each retailer, s
 
 “I want to see only products that are available at Store A and Store B.”
 
-    GET v1/me/products?InventoryRecord.AddressID={addressA}|{addressB}&InventoryRecord.QuantityAvailable=>0
+    GET v1/me/products?InventoryRecords.AddressID={addressA}|{addressB}&InventoryRecords.QuantityAvailable=>0
 
 Finally, to properly decrement inventory when using InventoryRecords, there must be a value passed to `LineItem.InventoryRecordID` when the Order is Submitted. If this is left null, no inventory will be decremented. The InventoryRecord related to the pick-up location that the shopper selects must be set on `LineItem.InventoryRecordID`.
 
