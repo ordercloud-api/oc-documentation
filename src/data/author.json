@@ -73,5 +73,20 @@
         "username": "mmaher",
         "name": "Max Maher",
         "title": "Partner Technical Advisor"
+    },
+    {
+        "username": "edustin",
+        "name": "Erin Dustin",
+        "title": "Senior Developer"
+    },
+	{
+        "username": "gvorobyova",
+        "name": "Galina Vorobyova",
+        "title": "Senior Developer"
+    },
+    {
+        "username": "mbednar",
+        "name": "Marc Bednar",
+        "title": "Lead Developer"
     }
 ]

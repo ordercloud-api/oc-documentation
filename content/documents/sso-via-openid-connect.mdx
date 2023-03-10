@@ -103,7 +103,7 @@ Users are now ready to authenticate. Link them to this URL
 https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientID>
 ```
 
-where `<ID>` matches the ID field of the configuration object above, `<ApiClientID>` matches the OrdercloudAPIClient field, and `<Roles>` is a space separated list of roles requested. Users will be redirected to an IDP route to provide credentials. If the credentials are valid, users will be redirected again to AppStartUrl with a valid Ordercloud token in the URL. Your front-end application will need to handle grabbing this token from the URL and storing it. But otherwise, they have been granted a valid OrderCloud access token!
+where `<ID>` matches the ID field of the configuration object above, `<ApiClientID>` matches the OrdercloudAPIClient field, and `<Roles>` is a space separated list of roles requested. Standard OrderCloud roles and [custom roles](/knowledge-base/security-profiles#custom-roles) are valid. Users will be redirected to an IDP route to provide credentials. If the credentials are valid, users will be redirected again to AppStartUrl with a valid Ordercloud token in the URL. Your front-end application will need to handle grabbing this token from the URL and storing it. But otherwise, they have been granted a valid OrderCloud access token!
 
 ## Configuring Your Integration Event Code
 

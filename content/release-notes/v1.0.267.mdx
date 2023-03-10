@@ -1,0 +1,33 @@
+---
+apiVersion: 1.0.267
+date: 2023-02-21
+---
+
+Released on Tuesday, February 21st, 2023 at 2:30 PM CST
+
+OrderCloud introduces Tracking Events for commerce solutions, offering analytical insights and infrastructure for targeted systems. For more information, see [Tracking Events](https://ordercloud.io/knowledge-base/tracking-events)
+
+## New Resource
+`TrackingEvent`
+```json
+{
+  "ID": "",
+  "EventType": "UserLoggedIn" | "LineItemAdded" | "LineItemUpdated" | "OrderSubmitted",
+  "ClientID": "",
+  "Name": "",
+  "ConfigData":""
+}
+```
+
+## New Endpoints
+
+| Method | URI | Description |
+| ------ | ------ | ------ |
+| GET | v1/integrations/TrackingEvents | Get list of tracking events |
+| GET | v1/integrations/TrackingEvents/{id} | Get a single tracking event |
+| POST | v1/integrations/TrackingEvents | Create a new tracking event |
+| PUT | v1/integrations/TrackingEvents/{id} | Create or Update an tracking event |
+| PATCH | v1/integrations/TrackingEvents/{id} | Update an tracking event |
+| DELETE | v1/integrations/TrackingEvents/{id} | Delete an tracking event |
+
+For more information, see [Tracking Events API Reference](https://ordercloud.io/api-reference/integrations/tracking-events)

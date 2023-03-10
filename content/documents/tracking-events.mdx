@@ -1,0 +1,113 @@
+---
+type:           article
+title:          Tracking Events
+description:    OrderCloud introduces Tracking Events for commerce solutions, offering analytical insights and infrastructure for targeted systems. Coupled with Sitecore's Send & Discover products, it provides automation without being an analytics solution. It also allows for an external endpoint configuration to reduce development time and avoid browser restrictions.
+author:         mbednar
+publishDate:    2023-02-21
+updatedDate:    2023-02-23  
+tags:           ["Integrations", "Tracking Events"]
+---
+
+## Overview
+Event tracking in Commerce solutions drives a great deal of intelligence and insights into your day to day commerce operations. All systems designed to capture this tracking information provide analytical insights that help you drive conversions through understanding the user behavior on your commerce solution. 
+
+OrderCloud’s role as a composable aspect of a solution is to govern the transaction validation and capture of the order. There is no intent to be an analytics solution because there are many outstanding options in the marketplace. Our role with analytics is to be available for you to transmit information to those systems and be a good citizen of your composed solution.
+
+With that said, we are introducing a new event into OrderCloud: Tracking Events.
+
+While webhooks have existed since the beginning of OrderCloud, they can at times be too tactical to support workflows from the business use case perspective. Tracking events fall into this category. Our events have hydrated models of the information necessary for quality tracking. With an order submit you’ll get a payload that contains the Order, all the LineItems, the Products on those LineItems, as well as User information. The same scenario plays out with the other supported events.
+
+The first iteration of this feature comes with a coupled configuration with Sitecore’s outstanding products Send & Discover. What this means for you is that the system infrastructure to queue and process the volume of events is in place and supported by us. It also means we have a subscriber that will listen for the published topic and transform it into the targeted systems. You get this without any effort on your part. Automatically feed all the information you need to manage email campaigns, abandoned cart management, product recommendations and personalized shopping experiences. 
+
+The second iteration will allow for you to configure an external endpoint for the publishing of these events. While we believe our Sitecore products to be the best of breed we maintain a strong philosophy of agnostic composability. You can evaluate your current solutions and determine the best approach to fulfill on your commerce solutions.
+
+Some may ask why support this on the server side when all these system have good JavaScript beacons and APIs available. The answer is flexibility. You can offload some development time, reduce the noise from the browser, avoid complicated 3rd party cross site scripting restrictions in the browser, and stop fighting with the tracking blockers that proliferate the web. Plus, you may not even be operating from a browser. It’s a new convenience for your implementation discretion.
+
+## Add a connection from OrderCloud
+**Note: This feature is only available to current Sitecore customers.**
+
+You must configure tracking integrations via the OrderCloud portal. The UI to configure tracking integrations will be displayed only when the following criteria have been met:
+
+1. You have access to the Sitecore Portal and within that portal have access to a valid organization. See the following [FAQ](https://developers.sitecore.com/learn/faq/cloud-portal) on how to get access.
+2. You have contacted support with your Sitecore Org ID and Marketplace ID and requested to have your marketplace enabled to use tracking events.
+    - The Sitecore Org ID is located in the URL query param 'organization' after logging into Sitecore Portal
+    - The Marketplace ID is located on the Settings page of your marketplace in the OrderCloud Portal
+3. You have logged into OrderCloud Portal via the Sitecore identity provider.
+4. You are an administrator for the Marketplace you wish to configure.
+
+Once the above has been performed, you will now have access to the Connection menu item.
+
+![Portal Connections](/images\knowledge-base\inline\tracking-events\7807465e-85d7-46ab-b055-43c92319ee62.png)
+
+This is where you will be able to set a connection with Sitecore Send or Sitecore Discover.
+
+### For Sitecore Discover
+
+1. To obtain the necessary connection keys, open the Sitecore Discover portal. In the left navigation menu, click **Developer Resources**.
+2. Copy your client ID (customer key) and API keys.
+
+### For Sitecore Send
+
+1. To obtain the necessary connection keys, open the Sitecore Send portal.
+2. Navigate and copy id of the website you wish to track events for.
+
+To add a new connection in OrderCloud:
+
+1. Obtain the necessary Send or Discover connection keys as mention above.
+2. Open the OrderCloud portal. Click Marketplaces, click Connections, and click Create new connection
+
+![Portal Connections 2](/images\knowledge-base\inline\tracking-events\bd0d978a-a14d-40fc-89c3-a13e9c272fac.png)
+
+3. On the **Select an API client** page, in the list of APIs, click your preferred OrderCloud API client .
+
+![Select an API Client](/images\knowledge-base\inline\tracking-events\509d3779-6f58-4d18-b82e-119300be49c1.png)
+
+4. On the **Select destination** page, click the destination system of your choice.
+
+![Sekect destination](/images\knowledge-base\inline\tracking-events\3dba2664-3659-4256-bf3a-3877fdb5b76b.png)
+
+5. On the **Destination settings** page, in the **Select an environment** section, enter the connection key information depending on the selected destination system.
+
+![Destination settings](/images\knowledge-base\inline\tracking-events\7df7ac7c-5d72-41c2-a7da-3db3847ad713.png)
+
+6. Click Next
+
+## New Properties
+`TrackingEvent`
+```json
+{
+  "ID": "",
+  "EventType": "UserLoggedIn" | "LineItemAdded" | "LineItemUpdated" | "OrderSubmitted",
+  "ClientID": "",
+  "Name": "",
+  "ConfigData":""
+}
+```
+## New Endpoints
+
+| Method | URI | Description |
+| ------ | ------ | ------ |
+| GET | v1/integrations/TrackingEvents | Get list of tracking events |
+| GET | v1/integrations/TrackingEvents/{id} | Get a single tracking event |
+| POST | v1/integrations/TrackingEvents | Create a new tracking event |
+| PUT | v1/integrations/TrackingEvents/{id} | Create or Update an tracking event |
+| PATCH | v1/integrations/TrackingEvents/{id} | Update an tracking event |
+| DELETE | v1/integrations/TrackingEvents/{id} | Delete an tracking event |
+
+For more information, see [Tracking Events API Reference](https://ordercloud.io/api-reference/integrations/tracking-events)
+
+## Triggered Events
+
+| OrderCloud Operation | Sitecore event type | 
+| ------ | ------ |
+| Log in | sitecore.backbone.messages.sessions.identified | 
+| Add item to cart | sitecore.backbone.messages.orders.lines.added sitecore.backbone.messages.orders.lines.updated | 
+| Submit order | sitecore.backbone.messages.orders.submitted | 
+
+## Transition an OrderCloud user from anonymous to authenticated
+Users on a shopping web site are either shopping anonymously or they are authenticated.  OrderCloud has the ability to track the users in both these scenarios and provide a mechanism for stitching the anonymous events with the authenticated ones in order to make sure the system you are integrating with has a complete picture of the user journey.
+
+In order to enable this, you need to follow certain prescribed steps in your web site. 
+
+1. Send and Discover have beacons you insert on your web pages.  These beacons return an id for the current user session.  It is important that you pass along the beacon id in the payload when requesting the anonymous token.  The beacon id will be added to the returned token and all other anonymous calls will be associated with it.
+2. When the user authenticates with OC, you must call "me/orders/TransferAnonUserOrder" passing in the anonymous token in the body of the request.  This will allow the system you are integrating with to stitch the user identity and make sure all tracking events are associated with the current session.

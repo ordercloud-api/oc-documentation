@@ -1,0 +1,11 @@
+---
+apiVersion: 1.0.261
+date: 2023-01-06
+---
+
+Released on Friday January 6, 2023.
+
+- Add `POST v1/cart/calculate` endpoint
+- Misc. Order Calculate bug fixes
+- New optional parameter, `adjustListOrders`, on Category `POST`, `PUT`, and `PATCH`
+   - If `adjustListOrders=true`, we will increment ListOrder for all categories with a ListOrder greater than or equal to the one included in the request body.
