@@ -22,7 +22,7 @@ Me.ListProducts()
   .then(response => {
       // returns the first page of buyer products
       console.log(response);
-  })
+  })`,
 typescript: `import { Tokens, Me, BuyerProduct, OrderCloudError } from "ordercloud-javascript-sdk";\n
 Me.ListProducts()
   .then((response: ListPage<BuyerProduct>) => {

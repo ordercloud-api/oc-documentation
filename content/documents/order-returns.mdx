@@ -133,7 +133,8 @@ Response expected by OrderCloud
 **Notes:**
 - The endpoint the Integration Event will `POST` the payload to is `/calculateorderreturn` at the `CustomImplementationUrl`
 - Unlike other `IntegrationEvent` types, there are no publicly available endpoints associated with the event. It is called from within the OrderCloud code when an `OrderReturn` is created or updated
-- If an `OrderAdmin` passes in a valid `RefundAmount` (either one for every `ItemToReturn` or if there are no `ItemsToReturn` a value at the `OrderReturn` level), the IntegrationEvent will not be called
+- If a user with the `OrderAdmin` role passes in a valid `RefundAmount` (either one for every `ItemToReturn` or if there are no `ItemsToReturn` a value at the `OrderReturn` level), the IntegrationEvent will not be called
+- If a user with the `Shopper` role submits a return but `ApiClient.OrderReturnIntegrationEventID` is not set then the IntegrationEvent will not be called however all `RefundAmount` properties will be set to null
 
 ## New Message Sender Types
 - `OrderReturnSubmitted`
