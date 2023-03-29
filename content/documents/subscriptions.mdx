@@ -8,32 +8,32 @@ updatedDate:    2023-03-06
 tags:           ["Concepts", "Marketplaces", "Orders"]
 ---
 
-In today's e-commerce market, subscriptions have become a popular business model for one simple reason: convenience. 
-They enable a regular, predictable delivery of goods or services with little to no effort from the customer. Subscriptions also foster a greater brand loyalty 
-from your customer base, providing more long term value.
+In today's e-commerce market, subscriptions have become a popular business model for one simple reason: convenience. They enable a regular, predictable delivery of goods or services with little to no effort from the customer. Subscriptions also foster a greater brand loyalty from your customer base, providing more long term value.
 
-The introduction of Subscriptions in OrderCloud enables automated ordering for buyer users on a set interval and frequency for a predetermined or indefinite amount of time.
-This feature depends on the implementation of the Subscription Integration in order to submit orders. 
+The introduction of subscriptions in OrderCloud enables automated ordering for buyer users on a set interval and frequency for a predetermined or indefinite amount of time. This feature depends on the implementation of the subscription integration in order to submit orders, which is detailed below.
 
 ## Use Cases
-- I sell consumable goods that my customers can either order on set schedule they define based on their needs or on an as needed basis 
+- I sell consumable goods that my customers can either order on set schedule they define based on their needs or on an as needed basis
 - My product is a subscription based service/digital membership that I charge for monthly
-- My product is a collection of goods that are either standardized or customized for the user that is delivered on a set interval
+- My product is a collection of goods that are either standardized or customized for the user that are delivered on a set interval
 
 ## Key Highlights
-- Set the interval and frequency on the subscription to determine how often the items are ordered 
-- Store payment information to be used for processing the `Subscription`
-- Optional EndDate to allow `Subscriptions` to be processed indefinitely
-- There is no limit on how many `Subscriptions` a buyer user can have
-- Seller users can create `Subscriptions` on behalf of buyer users
-- Only products that are visible to the Subscription.FromUserID will be created as line items at the time the subscription order is created
+- Set the interval and frequency on the subscription to determine how often the items are ordered
+-- A subscription will process once every `{Frequency}` `{Interval}`
+- Optionally add a reference to OrderCloud Payment information used for processing the subscription
+- Optional `EndDate`
+-- When null subscriptions will be processed indefinitely
+- There is no limit on how many subscriptions a buyer user can have
+- Seller users can create subscriptions on behalf of buyer users
+- Only products that are visible to the `Subscription.FromUserID` will be created as line items at the time the subscription order is created
+- New property on `PriceBreak` of `SubscriptionPrice` which allows you to set specific pricing for items processed via subscription.
 
 ## New Resource: `Subscription`
 
 ```json
 "Subscription": {
     "ID": "subscription1",
-    "Interval": Daily, Weekly, or Monthly,
+    "Interval": "Days", // also accepts Weeks, or Months,
     "Frequency": 1,
     "NextOrderDate": "2022-11-19+00:00", 
     "LastOrderDate": "2022-10-19T20:40:06.73+00:00", // read only
@@ -52,15 +52,16 @@ This feature depends on the implementation of the Subscription Integration in or
 ```
 
 **Endpoints:**
-MPO
+_Writeable endpoints will require the SubscriptionAdmin role, while readable endpoints will require SubscriptionReader or SubscriptionAdmin._
 - `GET v1/subscriptions`
 - `GET v1/subscriptions/{subscriptionID}`
 - `POST v1/subscriptions`
 - `PUT v1/subscriptions/{subscriptionID}`
 - `PATCH v1/subscriptions/{subscriptionID}`
 - `DELETE v1/subscriptions/{subscriptionID}`
+Creating subscriptions for other buyer users will also require the OrderAdmin and UnsubmittedOrderReader roles.
 
-Me
+_Writeable endpoints will require the MeSubscriptionAdmin role, while readable endpoints will require MeSubscriptionReader or MeSubscriptionAdmin._
 - `GET v1/me/subscriptions`
 - `GET v1/me/subscriptions/{subscriptionID}`
 - `POST v1/me/subscriptions`
@@ -69,7 +70,7 @@ Me
 - `DELETE v1/me/subscriptions/{subscriptionID}`
 
 ## `Subscription Item`
-Not a new resource, this is a Line Item
+This data will be used to create a line item representing the subscription item when the subscription is processed. 
 
 ```json
 {
@@ -101,7 +102,7 @@ Not a new resource, this is a Line Item
 ```
 
 **Endpoints:**
-MPO
+_Writeable endpoints will require the SubscriptionAdmin role, while readable endpoints will require SubscriptionReader or SubscriptionAdmin._
 - `GET v1/subscriptions/{subscriptionID}/items`
 - `GET v1/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
 - `POST v1/subscriptions/{subscriptionID}/items`
@@ -109,10 +110,88 @@ MPO
 - `PATCH v1/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
 - `DELETE v1/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
 
-Me
+_Writeable endpoints will require the MeSubscriptionAdmin role, while readable endpoints will require MeSubscriptionReader or MeSubscriptionAdmin._
 - `GET v1/me/subscriptions/{subscriptionID}/items`
 - `GET v1/me/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
 - `POST v1/me/subscriptions/{subscriptionID}/items`
 - `PUT v1/me/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
 - `PATCH v1/me/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
 - `DELETE v1/me/subscriptions/{subscriptionID}/items/{subscriptionItemID}`
+
+## New Resource: `Subscription Integration`
+
+New OrderCloud resource required to process and submit subscription orders. Every hour, the OrderCloud platform will handle creating an order, line items, and payment 
+for subscriptions due for processing at that time based on the subscription and subscription item data. This resource provides OrderCloud with the information needed 
+to send relative data to a hosted application that will be responsible for checkout processes such as tax calculation, payment capture, and order submit.
+
+![Flow chart of Subscription Ordering Solution](/images/content/documents/subscriptions-1.png)
+
+## Key Highlights
+- One per marketplace
+- `NotificationDays` allows you to specify how many days before `Subscription.NextOrderDate` that a user is reminded via email their subscription order is coming up. This email is a new message sender that will need to be configured and assigned
+- Cannot use an API Client that is currently associated with the Order Checkout Integration Event
+-- Checkout is not driven by user interactions in a UI, therefore the Order Checkout Integration Event triggers would not work
+- API Client used must have a `DefaultContextUser` defined
+-- The platform will use the `DefaultContextUser` to generate an OrderCloud Access Token to send to the specified URL
+
+```json
+{
+	"ApiClientID": "", 
+	"HashKey": "",
+	"ElevatedRoles": [],
+	"Active": true,
+	"NotificationDays": 15,
+	"Url": "",
+	"xp": {},
+}
+```
+
+**Endpoints:**
+_Requires SubscriptionAdmin role_
+- `GET v1/integrations/subscription`
+- `PUT v1/integrations/subscription`
+- `PATCH v1/integrations/subscription`
+- `DELETE v1/integrations/subscription`
+
+_Because there is only one per marketplace, there is no ID associated with the Subscription Integration_
+
+An hourly function that queries for active subscriptions, from an active user, with a `NextOrderDate` within the last five hours and an `EndDate` that is either null or in the future.
+
+If the process to create the order, line items, and payment fails, it will keep trying until `NextOrderDate` is more than five hours ago.
+
+## Payload to hosted application
+```json
+{
+    "Environment": "Sandbox",
+    "OrderCloudAccessToken": "", // access token of the DefaultContextUser defined with your associated API Client
+    "OrderWorksheet": {},
+    "UnavailableProductIDs": ["inactiveProduct"],
+    "ErrorCode": ""
+}
+```
+
+### `/success`
+If OrderCloud was able to successfully create an order, line items, and payment per the defined subscription and subscription items, the payload defined above 
+will be sent to this endpoint in your hosted application. For example, if your `SubscriptionIntegration.Url` value is `myhostedapp.com/api/subscriptions`, OrderCloud 
+will send the request to `myhostedapp.com/api/subscriptions/success`. Within this method, you will want to handle all your order submit logic such as payment capture, 
+tax calculation, shipping designations, etc. You will also be responsible for submitting the order. If you currently utilize the Order Checkout Integration Event feature, you can call existing methods used for order checkout to do things such as calculate tax and capture payment.
+
+### `/failure`
+If OrderCloud was unable to successfully create an order, line items, and payment per the defined subscription and subscription items, the payload defined above 
+will be sent to this hosted endpoint in your application. For example, if your `SubscriptionIntegration.Url` value is `myhostedapp.com/api/subscriptions`, OrderCloud 
+will send the request to `myhostedapp.com/api/subscriptions/failure`. Any custom error handling you want to happen would occur here.
+
+## Response to OrderCloud
+```json
+{ 
+    "HttpStatusCode": 200,
+    "UnhandledErrorBody": ""
+}
+```
+
+Both of the endpoints defined above will need to have a response type matching the object above. If `HttpStatusCode` is of a successful value and `UnhandledErrorBody` is null, 
+the `Subscription.NextOrderDate` will be updated based off of the defined interval and frequency on the subscription. The response will be stored on the order worksheet as 
+`SubscriptionIntegrationResponse`. 
+
+## Subscription Reminder Message Sender
+An hourly function that queries for active subscriptions, from an active user, with a `NotificationDate` within the next five hours and an `EndDate` that is either null or in the future. `NotificationDate` is a calculation of `Subscription.NextOrderDate` - `SubscriptionIntegration.NotificationDays` and is read only. If the message sender is assigned, the `Subscription.FromUser` will receive an email that their subscription order will be processed soon.
