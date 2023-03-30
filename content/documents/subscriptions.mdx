@@ -26,7 +26,8 @@ The introduction of subscriptions in OrderCloud enables automated ordering for b
 - There is no limit on how many subscriptions a buyer user can have
 - Seller users can create subscriptions on behalf of buyer users
 - Only products that are visible to the `Subscription.FromUserID` will be created as line items at the time the subscription order is created
-- New property on `PriceBreak` of `SubscriptionPrice` which allows you to set specific pricing for items processed via subscription.
+- New property on `PriceBreak` of `SubscriptionPrice` which allows you to set specific pricing for items processed via subscription
+- New property on `Order` of `SubscriptionID`, which is a read only field identifying the subscription that the order was created for via hourly process
 
 ## New Resource: `Subscription`
 
