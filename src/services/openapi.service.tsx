@@ -1,4 +1,4 @@
-import SwaggerParser from "@apidevtools/swagger-parser";
+import SwaggerParser from '@apidevtools/swagger-parser'
 import { groupBy, keyBy, mapValues, values, flatten } from 'lodash'
 import {
   OrderCloudProps,
@@ -46,9 +46,9 @@ export const Initialize = async (
   if (result.oc) return result.oc
   if (!parsedSpec && !result.oc) {
     const parsedSpec: any = await tryGetParsedSpec()
-    const sections = parsedSpec.tags.filter(tag => tag['x-id'])
+    const sections = parsedSpec.tags.filter((tag) => tag['x-id'])
     const resources = parsedSpec.tags
-      .filter(tag => tag['x-section-id'])
+      .filter((tag) => tag['x-section-id'])
       .concat(GetSubsectionsToAdd())
     const operations = flatten(
       values(
@@ -57,11 +57,15 @@ export const Initialize = async (
             mapValues(ops, (o, verb) => {
               const tags =
                 o.tags[0] === 'Me' ? [GetSubSectionName(path)] : o.tags
-              const resource = resources.filter(r => r.name === tags[0])[0]
-              const section = sections.filter(
-                s => s['x-id'] === resource['x-section-id']
-              )[0]
-              return { ...o, verb, path, tags, resource, section }
+              const resource = resources.filter((r) => r.name === tags[0])[0]
+              try {
+                const section = sections.filter(
+                  (s) => s['x-id'] === resource['x-section-id']
+                )[0]
+                return { ...o, verb, path, tags, resource, section }
+              } catch {
+                console.log(o, tags, resource)
+              }
             })
           )
         })
@@ -74,7 +78,7 @@ export const Initialize = async (
       resources,
       operations,
       operationsById: keyBy(operations, 'operationId'),
-      operationsByResource: groupBy(operations, o => {
+      operationsByResource: groupBy(operations, (o) => {
         return o.tags[0]
       }),
     })
@@ -113,19 +117,23 @@ class OpenApi {
   public initialize = Initialize
 
   public findResourceByName(resourceName: string): ApiResource | undefined {
-    return result.oc.resources.find(resource => resource.name === resourceName)
+    return result.oc.resources.find(
+      (resource) => resource.name === resourceName
+    )
   }
 
   public findResource(operationId: string): ApiResource | undefined {
     const operation = result.oc.operationsById[operationId]
     const resourceName = operation.tags[0]
-    return result.oc.resources.find(resource => resource.name === resourceName)
+    return result.oc.resources.find(
+      (resource) => resource.name === resourceName
+    )
   }
 
   public findOperation(operationId: string): any | undefined {
     const operation = result.oc.operationsById[operationId]
     if (operation.parameters && operation.parameters.length) {
-      operation.parameters.map(param => {
+      operation.parameters.map((param) => {
         switch (param.schema.type) {
           case 'string':
             param.value = ''
@@ -154,12 +162,12 @@ class OpenApi {
 
 // This method is used to attach the correct subsection to routes.
 const GetSubSectionName = (path: string) => {
-  const sec = MeSubSections.find(sec => sec.paths.includes(path))
+  const sec = MeSubSections.find((sec) => sec.paths.includes(path))
   return sec ? sec.name : null
 }
 
 const GetSubsectionsToAdd = () => {
-  return MeSubSections.filter(sec => sec.name !== 'Me') // There is already a Me subsection
+  return MeSubSections.filter((sec) => sec.name !== 'Me') // There is already a Me subsection
 }
 
 const MeSubSections = [
@@ -208,6 +216,8 @@ const MeSubSections = [
       '/me/products/{productID}/specs/{specID}',
       '/me/products/{productID}/variants',
       '/me/products/{productID}/variants/{variantID}',
+      '/me/products/{productID}/inventoryrecords',
+      '/me/products/{productID}/variants/{variantID}/inventoryrecords',
     ],
   },
   {
@@ -218,9 +228,9 @@ const MeSubSections = [
       '/me/productcollections/{productCollectionID}',
       '/me/productcollections/{productCollectionID}/products',
       '/me/productcollections/{productCollectionID}/products/{productID}',
-      '/me/productcollections/{productCollectionID}/{productID}'
+      '/me/productcollections/{productCollectionID}/{productID}',
     ],
-  },  
+  },
   {
     name: 'My Orders',
     'x-section-id': 'MeAndMyStuff',
