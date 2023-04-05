@@ -42,7 +42,8 @@ The introduction of subscriptions in OrderCloud enables automated ordering for b
     "FromCompanyID": "buyerCompany",
     "FromUserID": "buyerUser",
     "ToCompanyID": "sellerCompany",
-    "BillingAddressID": "",
+    "BillingAddressID": "billingAddress",
+    "ShippingAddressID": "shippingAddress",
     "Payment": {
         "Type": CreditCard, SpendingAccount, or PurchaseOrder 
         "CreditCardID": "creditcardid", // optional
@@ -53,7 +54,7 @@ The introduction of subscriptions in OrderCloud enables automated ordering for b
 ```
 
 **Endpoints:**
-_Writeable endpoints will require the SubscriptionAdmin role, while readable endpoints will require SubscriptionReader or SubscriptionAdmin._
+_Writeable endpoints will require the SubscriptionAdmin role, while readable endpoints will require SubscriptionReader or SubscriptionAdmin. Currently only available to Admins and Buyers_
 - `GET v1/subscriptions`
 - `GET v1/subscriptions/{subscriptionID}`
 - `POST v1/subscriptions`
