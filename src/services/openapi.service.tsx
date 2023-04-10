@@ -232,6 +232,19 @@ const MeSubSections = [
     ],
   },
   {
+    name: 'My Subscriptions',
+    'x-section-id': 'MeAndMyStuff',
+    paths: ['/me/subscriptions', '/me/subscriptions/{subscriptionID}'],
+  },
+  {
+    name: 'My Subscription Items',
+    'x-section-id': 'MeAndMyStuff',
+    paths: [
+      '/me/subscriptions/{subscriptionID}/items',
+      '/me/subscriptions/{subscriptionID}/items/{subscriptionItemID}',
+    ],
+  },
+  {
     name: 'My Orders',
     'x-section-id': 'MeAndMyStuff',
     paths: ['/me/orders', '/me/orders/approvable'],
