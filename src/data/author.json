@@ -88,5 +88,10 @@
         "username": "mbednar",
         "name": "Marc Bednar",
         "title": "Lead Developer"
+    },
+    {
+        "username": "asnyder",
+        "name": "Alexa Snyder",
+        "title": "Senior Developer"
     }
 ]
