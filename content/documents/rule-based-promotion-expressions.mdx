@@ -23,10 +23,20 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
  - `items.count()`(returns number of line items on the order matching your specified condition)
  - `items.total()` (compare result to a dollar amount)
 
-`contains()` allows rule engine expressions to check if a value exists in an array. Both string and number arrays are supported. Here are a few examples: 
+ Array properties supports the following functions:
+`contains()` (allows rule engine expressions to check if a value exists in an array. Both string and number arrays are supported.)
+`count()` (returns number of array items matching your specified condition)
+`any()` (true if any array item matches filter)
+`all()` (true if all array items match filter)
+Here are a few examples: 
 - `order.xp.myarray.contains('value2')` (true if Order.xp.myarray contains the value "value2")
+- `order.xp.myarray.count() = 3` (true if Order.xp.myarray has 3 items)
+- `order.xp.myarray.any(item = 'four')` (true if Order.xp.myarray has item = 'four')
+- `order.xp.Tags.all(item = 'tag*') = true` (true if Order.xp.Tags all items start with 'tag')
 - `items.any(Product.xp.Tags.contains('value2')` (true if a lineitem contains a product where Product.xp.Tags contains the value "value2")
 - `item.Product.xp.NumberArray.contains(23)` (true if a lineitem contains a product where Product.xp.NumberArray contains the value 23)
+- `item.product.xp.myarray.any(item = 20)` (true if a lineitem has a product where Product.xp.myarray has any item = 20)
+- `item.product.xp.Tags.count(item = 'tag*') = 3` (true if a lineitem has a product where Product.xp.Tags has 3 items that start with 'tag')
 
 **The following operators are all supported in rule engine expressions:**
 -  Comparison: `=` ,  `<` ,  `>`,  `<=`,  `>=`  
@@ -90,6 +100,10 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
 **10% off all line items where the Product contains a given value in an array:**  
 `EligibleExpression:` *"items.any(Product.xp.Tags.contains('XYZ')"*  
 `ValueExpression:` *"item.LineSubtotal \* .10"*
+
+**15% off all line items where the Product contains a given number of items in an array that start with a given expression:**  
+`EligibleExpression:` *"items.any(Product.xp.Tags.count(item = 'tag*') = 3"*  
+`ValueExpression:` *"item.LineSubtotal \* .15"*
 
 ## That's a lot of flexibility. What else should I know?
 
