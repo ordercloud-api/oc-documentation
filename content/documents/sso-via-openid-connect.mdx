@@ -55,6 +55,8 @@ API Reference: <Link to="/api-reference/authentication-and-authorization/open-id
 
 The Client ID and especially the Client Secret should be private. The URLs can be public, for example, [Google's URLS](https://accounts.google.com/.well-known/openid-configuration). In turn, your IDP will need a piece of information from OrderCloud called an Authorized Redirect URI. Use the value
 
+> Note: If you're using Azure as your IDP, we strongly recommend including `?response_mode=form_post` in your `AuthorizationEndpoint`. Upon authenticating, Azure will send a `POST` request containing the access token encoded as a HTML form value to `https://sandboxapi.ordercloud.io/ocrpcode`, which will be converted to an OrderCloud token. Using `response_mode=query` or `response_mode=fragment` is not recommended due to the length of the authorization code potentially exceeding what is allowed in the OrderCloud API gateway.
+
 ```
 https://sandboxapi.ordercloud.io/ocrpcode
 ```
