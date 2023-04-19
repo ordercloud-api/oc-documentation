@@ -1,0 +1,9 @@
+---
+apiVersion: 1.0.278
+date: 2023-04-19
+---
+
+Released on Wednesday, April 19th, 2023.
+
+- Rule engine enhancement that allows rule engine expressions to check on an array items. The following methods are supported: 'contains', 'count', 'all', 'any'. You can find all the details about the feature [here](/knowledge-base/rule-based-promotion-expressions).
+- OIDC now supports a response_mode of form_post from IDPs. We recommended this configuration for anyone using Azure as their IDP as their authorization codes have [increased in size](https://techcommunity.microsoft.com/t5/microsoft-entra-azure-ad/azure-ad-b2c-authorization-code-and-refresh-token-size-increase/m-p/3770890), and are no longer able to be handled properly as query parameters. Read more [here](/knowledge-base/sso-via-openid-connect#configuring-your-identity-provider-idp).
