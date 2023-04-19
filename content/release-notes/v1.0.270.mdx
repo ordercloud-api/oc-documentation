@@ -1,0 +1,14 @@
+---
+apiVersion: 1.0.270
+date: 2023-03-21
+---
+
+Released on Tuesday, March 21st, 2023 at 3:00 PM CST
+
+## New
+- New read only property `DateApplied` returned on the Promotion resource when [listing promotions on an order](/api-reference/orders-and-fulfillment/orders/list-promotions#response-body)
+- New `contains()` method added to the [Rules Engine](/knowledge-base/rule-based-promotion-expressions#promotions-overview)
+
+## Fixed
+- Fixed an issue where incorrect error was returned after attempting to set UnitPrice on subsequent lineitem PUT requests
+- Fixed an issue with child/parent product visibility inheritance
