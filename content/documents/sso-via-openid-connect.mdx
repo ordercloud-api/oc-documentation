@@ -237,3 +237,13 @@ https://my-buyer-application.com/error?ErrorMessage={0}
 
 ```
 The error message `{0}` will be replaced with the error text from OrderCloud. 
+
+## Custom Query parameters
+
+If you wish to pass custom query parameters to `GET /ocrplogin` that will populate in the URL users are redirected to, you can add `customParams={value}` for each custom query parameter. One example use case would be passing in a locale such as:
+
+```
+https://sandboxapi.ordercloud.io/ocrplogin?id=<ID>&roles=<Roles>&cid=<ApiClientID>&appstartpath=%2Fproducts%2Fmyawesomeproduct&customParams=locale%3Dus.
+```
+
+> Note: If you're using Azure B2C as your IDP, you'll need to include `customParams=response_mode%3Dform_post` in your request
