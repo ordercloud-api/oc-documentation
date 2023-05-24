@@ -109,5 +109,5 @@ Users on a shopping web site are either shopping anonymously or they are authent
 
 In order to enable this, you need to follow certain prescribed steps in your web site. 
 
-1. Send and Discover have beacons you insert on your web pages.  These beacons return an id for the current user session.  It is important that you pass along the beacon id in the payload when requesting the anonymous token.  The beacon id will be added to the returned token and all other anonymous calls will be associated with it.
+1. Send and Discover have beacons you insert on your web pages.  These beacons return a user identifier for the current user session.  It is important that you pass along the identifier in the payload (`anonuserid`) when requesting the anonymous token.  The identifier will be added to the returned token and all other anonymous calls will be associated with it.
 2. When the user authenticates with OC, you must call "me/orders/TransferAnonUserOrder" passing in the anonymous token in the body of the request.  This will allow the system you are integrating with to stitch the user identity and make sure all tracking events are associated with the current session.
