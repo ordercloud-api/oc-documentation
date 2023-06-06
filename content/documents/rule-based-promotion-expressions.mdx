@@ -23,6 +23,8 @@ Every promotion requires two rule expressions, an `EligibleExpression`, which ev
  - `items.count()`(returns number of line items on the order matching your specified condition)
  - `items.total()` (compare result to a dollar amount)
 
+ A single property supports `in()` (allows rule engine to check if a property value exists in the expressions list.)  
+
  Array properties supports the following functions:
 `contains()` (allows rule engine expressions to check if a value exists in an array. Both string and number arrays are supported.)
 `count()` (returns number of array items matching your specified condition)
@@ -69,6 +71,10 @@ Here are a few examples:
 `EligibleExpression`: *"item.product.incategory('Bikes')"*  
 `ValueExpression`: *"item.LineSubtotal \* .15"*
 
+**5% off all line items with a product with ID in the given list:**    
+`EligibleExpression`: *"item.ProductID.in('ID1', 'ID2', 'ID3')"*  
+`ValueExpression`: *"item.LineSubtotal \* .05"*
+
 **10% off when all products are on sale with a maximum promotion discount of $20 (utilizing product xp):**  
 `EligibleExpression`: *"items.all(Product.xp.OnSale = true)"*  
 `ValueExpression`: *"min(order.Subtotal \* .1, 20)"*
@@ -92,6 +98,10 @@ Here are a few examples:
 **25% off a user's first order (utilizing user xp):**  
 `EligibleExpression`: *"order.FromUser.xp.FirstOrder = true"*  
 `ValueExpression`: *"order.Subtotal \* .25"*
+
+**15% off your entire order when order xp property in the array (utilizing user xp):**  
+`EligibleExpression`: *"order.xp.foo.in('bar','brr','brb')"*  
+`ValueExpression`: *"order.Subtotal \* .15"*
 
 **BOGO (scales with quantity):**  
 `EligibleExpression`: *"items.quantity(ProductID = 'XYZ') > 1"*  
